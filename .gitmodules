@@ -1,0 +1,4 @@
+[submodule "highlightjs-hugo"]
+	path = highlightjs-hugo
+	url = https://github.com/irkode/highlightjs-hugo.git
+	branch = main
