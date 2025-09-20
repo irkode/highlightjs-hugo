@@ -2,3 +2,7 @@
 	path = highlightjs-hugo
 	url = https://github.com/irkode/highlightjs-hugo.git
 	branch = main
+[submodule "hugoDocs"]
+	path = hugoDocs
+	url = https://github.com/gohugoio/hugoDocs.git
+	branch = master
