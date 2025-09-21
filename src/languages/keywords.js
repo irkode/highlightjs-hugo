@@ -1,4 +1,3 @@
-// START: H4H keyword based generated code
 export const BUILT_INS = [
   "findRESubmatch",
   "partialCached",
