@@ -1,0 +1,44 @@
+keywords:
+  - keyword:
+      words:
+        - block
+        - break
+        - continue
+        - define
+        - else
+        - end
+        - if
+        - range
+        - return
+        - template
+        - try
+        - with
+      relevant: []
+  - function:
+      scope: built_in
+      words: []
+      relevant:
+        - hugo.BuildDate|10
+        - hugo.CommitHash|10
+        - hugo.Deps|10
+        - hugo.Environment|10
+        - hugo.Generator|10
+        - hugo.GoVersion|10
+        - hugo.IsDevelopment|10
+        - hugo.IsExtended|10
+        - hugo.IsMultihost|10
+        - hugo.IsMultilingual|10
+        - hugo.IsProduction|10
+        - hugo.IsServer|10
+        - hugo.Store|10
+        - hugo.Version|10
+        - hugo.WorkingDir|10
+  - literal:
+      words:
+        - "false"
+        - nil
+        - "true"
+      relevant: []
+  - built_in:
+      words: []
+      relevant: []
