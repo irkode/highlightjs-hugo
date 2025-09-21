@@ -104,36 +104,6 @@ export default function (hljs) {
 
   SUB_EXPRESSION.contains = PIPELINE;
 
-  const ACTION_BLOCK = {
-    // scope: "ACTION_BLOCK",
-    relevance: 10,
-    begin: [/template|block/, /\s+/, re_STRING], beginScope: { 1: 'keyword', 3: 'string' },
-    contains: PIPELINE,
-  };
-
-  const ACTION_DEFINE = {
-    // scope: "ACTION_DEFINE",
-    relevance: 10,
-    begin: [/define/, /\s+/, re_STRING], beginScope: { 1: 'keyword', 3: 'string' },
-    // swallow all after
-    starts: { begin: /.*/, end: re_ACTION_CLOSE, returnEnd: true },
-  };
-
-  const ACTION_KEYWORD_ONLY = {
-    // scope: "ACTION_KEYWORD_ONLY",
-    relevance: 10,
-    begin: /continue|else|end/, beginScope: 'keyword',
-    // swallow all after
-    starts: { begin: /.*/, end: re_ACTION_CLOSE, returnEnd: true },
-  };
-
-  const ACTION_KEYWORD_PIPELINE = {
-    // scope: "ACTION_KEYWORD_PIPELINE",
-    relevance: 10,
-    begin: /else\s+with|else\s+if|return|range|with|try|if/, beginScope: 'keyword',
-    contains: PIPELINE
-  };
-
   return {
     name: 'highlightjs-hugo',
     aliases: [
@@ -148,14 +118,18 @@ export default function (hljs) {
       // stop highlighting if a handlebars begin tag is found
       { begin: /\{\{(#|>|!--|!)/, end: /\}\}/, illegal: /.*/, },
       {
+        begin: [re_ACTION_OPEN, /\s*/, /break|continue|else|end/], beginScope: { 1: 'template-tag', 3: 'keyword' },
+        end: [re_ACTION_CLOSE], endScope: { 1: 'template-tag' },
+      },
+      {
+        begin: [re_ACTION_OPEN, /\s*/, /block|define|else\s+with|else\s+if|range|return|template|with|try|if/], beginScope: { 1: 'template-tag', 3: 'keyword' },
+        end: [re_ACTION_CLOSE], endScope: { 1: 'template-tag' },
+        contains: PIPELINE,
+      },
+      {
         begin: [re_ACTION_OPEN], beginScope: { 1: 'template-tag' },
         end: [re_ACTION_CLOSE], endScope: { 1: 'template-tag' },
-        contains: [
-          ACTION_KEYWORD_PIPELINE,
-          ACTION_KEYWORD_ONLY,
-          ACTION_DEFINE,
-          ACTION_BLOCK,
-        ].concat(PIPELINE),
+        contains: PIPELINE,
       }
     ]
   };
