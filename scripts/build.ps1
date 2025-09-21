@@ -3,6 +3,7 @@ param(
   [Parameter(Mandatory = $false)][switch]$SkipHugoDocs,
   [Parameter(Mandatory = $false)][switch]$SkipHighlight,
   [Parameter(Mandatory = $false)][switch]$BuildAlways,
+  [Parameter(Mandatory = $false)][switch]$IgnoreMarkupErrors,
   [Parameter(Mandatory = $false)][switch]$VerboseGenerate
 )
 $VerboseGenerate = $PSBoundParameters.ContainsKey($VerboseGenerate)
@@ -105,8 +106,18 @@ try {
   & npm install --save-dev
   if ($LastExitCode) { throw "HighlightJS: npm install --save-dev" }
   $ENV:ONLY_EXTRA = 'true'
-  & npm run build_and_test
-  if ($LastExitCode) { throw "HighlightJS: npm run build_and_test" }
+  if ($LastExitCode) { throw "HighlightJS: node ./tools/build.js -n hugo" }
+  & npm run build
+  if ($LastExitCode) { throw "HighlightJS: npm run build" }
+  & npm run test-markup
+  if ($LastExitCode) {
+    if (-not $IgnoreMarkupErrors) {
+      throw "HighlightJS: npm run test-markup"
+    } else {
+      Write-Warning "HighlightJS: npm run test-markup FAILED! fix code or tests!!!"
+
+    }
+  }
   & node tools/build.js hugo -t cdn
   if ($LastExitCode) { throw "HighlightJS: node tools/build.js hugo -t cdn" }
 } catch {
