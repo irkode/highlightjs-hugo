@@ -376,8 +376,8 @@ export const FUNCTIONS = [
 ];
 
 export const KEYWORDS = [
-  "continue",
   "template",
+  "continue",
   "return",
   "define",
   "range",

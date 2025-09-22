@@ -8,7 +8,7 @@ Category: template
 License: MIT
 */
 
-import * as kw from "./keywords.js";
+import * as kw from "../lib/keywords.js";
 
 export default function (hljs) {
 
