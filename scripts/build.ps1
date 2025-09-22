@@ -6,6 +6,7 @@ param(
   [Parameter(Mandatory = $false)][switch]$IgnoreMarkupErrors,
   [Parameter(Mandatory = $false)][switch]$VerboseGenerate
 )
+$ErrorActionPreference = 'Stop'
 $VerboseGenerate = $PSBoundParameters.ContainsKey($VerboseGenerate)
 $startCWD = Get-Location
 try {
@@ -14,9 +15,10 @@ try {
   $HighlightJS_Dir = Resolve-Path (Join-Path $ProjectRoot "highlight.js")
   $HighlightJs_4_Hugo_SourceDir = Resolve-Path (Join-Path $ProjectRoot "highlightjs-hugo")
   $HighlightJs_4_Hugo_TargetDir = Join-Path $HighlightJs_Dir "extra/highlightjs-hugo"
-  $KeywordFile_Current = Resolve-Path (Join-Path $HighlightJs_4_Hugo_SourceDir "src/languages/keywords.js")
+  $KeywordFile_Current = Resolve-Path (Join-Path $HighlightJs_4_Hugo_SourceDir "src/lib/keywords.js")
 } catch {
-  Write-Error "Failed to determine project root"
+  Write-Error "Failed to determine project folders"
+  exit 1
 }
 
 if ($SkipHugoDocs) {
@@ -101,7 +103,15 @@ try {
     Remove-Item -Recurse -Force $HighlightJs_4_Hugo_TargetDir
   }
   Copy-Item -Recurse $HighlightJs_4_Hugo_SourceDir (Join-Path $HighlightJS_Dir "extra")
-  Copy-Item $KeywordFile_Generated (Join-Path $HighlightJS_Dir "extra\highlightjs-hugo\src\languages")
+  Copy-Item -Force $KeywordFile_Generated $KeywordFile_Current
+  "1: $(Join-Path $HighlightJs_4_Hugo_SourceDir "src/styles/hugo-debug.css")" | Out-Host
+  "2: $(Join-Path $HighlightJS_Dir  "src/styles")" | Out-Host
+  Copy-Item -Force (Join-Path $HighlightJs_4_Hugo_SourceDir "src/styles/debug-hugo.css") (Join-Path $HighlightJS_Dir  "src/styles")
+  # add custom debugging style
+  $devtool = Join-Path $HighlightJS_Dir  "tools/developer.html"
+  if (Select-String '<option>default.css</option>' -Path $devtool) {
+    (Get-Content -Encoding utf8 $devtool) -replace '(\s*)(<option>default.css</option>)', "`$1<option>debug-hugo.css</debug-hugo>`n`$1`$2" | Set-Content -Encoding utf8 $devtool
+  }
   Set-Location $HighlightJS_Dir
   & npm install --save-dev
   if ($LastExitCode) { throw "HighlightJS: npm install --save-dev" }
@@ -121,8 +131,8 @@ try {
   & node tools/build.js hugo -t cdn
   if ($LastExitCode) { throw "HighlightJS: node tools/build.js hugo -t cdn" }
 } catch {
-  Write-Error "$_" -ErrorAction Continue
-  throw "build Highlight.JS module failed"
+  Write-Error "build Highlight.JS module failed" -ErrorAction Continue
+  throw $_
 } finally {
   Set-Location $startCWD
 }
