@@ -54,6 +54,11 @@ The following classes are used to style the output. Make sure your style has a d
   different visual appearance for _Context_. Ofc all, styles out there do not define this one. Without adding something
   special it will be styled as `template-variable` which is the standard HighlightJS fallback method.
 
+- string.raw
+
+  A raw string in templates is a sequence of characters enclosed in backticks. All charakters enclosed are taken
+  literally.
+
 ## Keywords used
 
 We use the following keyword settings based on Go templating plus all functions added by Hugo.
@@ -66,13 +71,15 @@ We use the following keyword settings based on Go templating plus all functions 
 
   Documented in [Hugo - Go template functions](https://gohugo.io/functions/go-template/)
 
+  With Go templates `printf` and `urlify` are keywords. We handle both as built_in.
+
 - built_in
 
   Documented in [Hugo - Functions](https://gohugo.io/functions/) except the _keywords_ above.
 
   Hugo's functions are namespaced and some aliases to a -- non prefixed -- simple name. We style **both** as _built_in_.
   Example `strings.Replace` and it's alias `replace`.
-  
+
 ## Submodes
 
 `Highlightjs-hugo` uses Hightlight.JS submode `xml`. Have a look at that module to see which scopes are used within.

@@ -28,6 +28,13 @@ export default function (hljs) {
   const CONTEXT_ONLY_MODE = { scope: 'template-variable.context', match: /\.|\$/ };
   const DOT_PROPERTY_CHAIN = { scope: 'property', match: /(\.\w+)+/ };
 
+  // everything between two backticks
+  const RAW_STRING_MODE = {
+    scope: 'string.raw',
+    match: /`[^`]*`/,
+    keywords: [],
+  };
+
   const METHOD_CHAIN_HELPER = {
     // scope: METHOD_CHAIN_HELPER',
     variants: [
@@ -93,6 +100,7 @@ export default function (hljs) {
     hljs.NUMBER_MODE,
     hljs.QUOTE_STRING_MODE,
     hljs.APOS_STRING_MODE,
+    RAW_STRING_MODE,
     PIPE_FUNCTION_MODE,
     PIPE_BUILTIN_MODE,
     PIPE_CONTEXT_MODE,

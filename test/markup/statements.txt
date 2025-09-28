@@ -10,3 +10,7 @@
 {{ if or 1 2}}
 {{ if true }}
 {{ if eq true false }}
+{{ `raw
+string
+literal
+` }}
