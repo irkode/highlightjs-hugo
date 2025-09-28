@@ -13,12 +13,12 @@ try {
   $ProjectRoot = Resolve-Path (Join-Path $PSScriptRoot "..")
   $WorkDir = Resolve-Path (Join-Path $ProjectRoot "work")
   $HighlightJS_Dir = Resolve-Path (Join-Path $ProjectRoot "highlight.js")
-  $HighlightJs_4_Hugo_SourceDir = Resolve-Path (Join-Path $ProjectRoot "highlightjs-hugo")
-  $HighlightJs_4_Hugo_TargetDir = Join-Path $HighlightJs_Dir "extra/highlightjs-hugo"
-  $KeywordFile_Current = Resolve-Path (Join-Path $HighlightJs_4_Hugo_SourceDir "src/lib/keywords.js")
+  $HighlightJs_Hugo_SourceDir = Resolve-Path (Join-Path $ProjectRoot "highlightjs-hugo")
+  $HighlightJs_Hugo_TargetDir = Join-Path $HighlightJs_Dir "extra/highlightjs-hugo"
+  $KeywordFile_Current = Resolve-Path (Join-Path $HighlightJs_Hugo_SourceDir "src/lib/keywords.js")
 } catch {
-  Write-Error "Failed to determine project folders"
-  exit 1
+  Write-Error "Failed to determine project folders" -ErrorAction Continue
+  throw $_
 }
 
 if ($SkipHugoDocs) {
@@ -98,20 +98,12 @@ if ($SkipHighlight) {
 
 Write-Verbose "Build HighlightJS-Hugo"
 try {
-  Write-Verbose "HighlightJS: copy sources to $HighlightJs_4_Hugo_TargetDir"
-  if (Test-Path $HighlightJs_4_Hugo_TargetDir) {
-    Remove-Item -Recurse -Force $HighlightJs_4_Hugo_TargetDir
+  Write-Verbose "HighlightJS: copy sources to $HighlightJs_Hugo_TargetDir"
+  if (Test-Path $HighlightJs_Hugo_TargetDir) {
+    Remove-Item -Recurse -Force $HighlightJs_Hugo_TargetDir
   }
-  Copy-Item -Recurse $HighlightJs_4_Hugo_SourceDir (Join-Path $HighlightJS_Dir "extra")
+  Copy-Item -Recurse $HighlightJs_Hugo_SourceDir (Join-Path $HighlightJS_Dir "extra")
   Copy-Item -Force $KeywordFile_Generated $KeywordFile_Current
-  "1: $(Join-Path $HighlightJs_4_Hugo_SourceDir "src/styles/hugo-debug.css")" | Out-Host
-  "2: $(Join-Path $HighlightJS_Dir  "src/styles")" | Out-Host
-  Copy-Item -Force (Join-Path $HighlightJs_4_Hugo_SourceDir "src/styles/debug-hugo.css") (Join-Path $HighlightJS_Dir  "src/styles")
-  # add custom debugging style
-  $devtool = Join-Path $HighlightJS_Dir  "tools/developer.html"
-  if (Select-String '<option>default.css</option>' -Path $devtool) {
-    (Get-Content -Encoding utf8 $devtool) -replace '(\s*)(<option>default.css</option>)', "`$1<option>debug-hugo.css</debug-hugo>`n`$1`$2" | Set-Content -Encoding utf8 $devtool
-  }
   Set-Location $HighlightJS_Dir
   & npm install --save-dev
   if ($LastExitCode) { throw "HighlightJS: npm install --save-dev" }
@@ -132,6 +124,28 @@ try {
   if ($LastExitCode) { throw "HighlightJS: node tools/build.js hugo -t cdn" }
 } catch {
   Write-Error "build Highlight.JS module failed" -ErrorAction Continue
+  throw $_
+} finally {
+  Set-Location $startCWD
+}
+
+try {
+  if (Test-Path -PathType Container (Join-Path $HighlightJS_Dir "build/styles/")) {
+    Write-Verbose "Add custom CSS style and patch developer.html - use it from work/developer.html"
+    # add custom debugging style
+    Copy-Item -Force (Join-Path $HighlightJs_Hugo_SourceDir "src/styles/debug-hugo.css") (Join-Path $HighlightJS_Dir "build/styles/")
+    & node $ProjectRoot/scripts/gen_style-options.js
+    $devhtml = Get-Content -Raw -Encoding utf8 (Join-Path $HighlightJS_Dir "tools/developer.html")
+    $devhtml = $devhtml -replace '(?s)(<select class="theme">.*?</select>)', '$1<script src="../work/style-options.js"></script>'
+    $devhtml = $devhtml.Replace(
+      "../src/styles/", "../highlight.js/build/styles/").Replace(
+      "../build/", "../highlight.js/build/").Replace(
+      "vendor/", "../highlight.js/tools/vendor/"
+    )
+    ($devhtml -join "`n") | Set-Content -Encoding utf8 -NoNewline (Join-Path $WorkDir developer.html)
+  }
+} catch {
+  Write-Error "install extra CSS failed" -ErrorAction Continue
   throw $_
 } finally {
   Set-Location $startCWD
