@@ -20,8 +20,25 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: "npm"
+          cache-dependency-path: highlight.js/package-lock.json
+
+      - name: Read Highlight.js version
+        id: hljs-version
+        run: |
+          VERSION=$(cat highlightjs-hugo/.highlightjs-version | tr -d '[:space:]')
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Using Highlight.js version: $VERSION"
+
+      - name: Cache Highlight.js clone
+        id: cache-hljs
+        uses: actions/cache@v4
+        with:
+          path: highlight.js
+          key: highlightjs-${{ steps.hljs-version.outputs.version }}
 
       - name: Clone Highlight.js (v11.11.1)
+        if: steps.cache-hljs.outputs.cache-hit != 'true'
         run: |
           git clone --branch 11.11.1 --depth 1 https://github.com/highlightjs/highlight.js.git
 
@@ -39,8 +56,8 @@ jobs:
       - name: Execute markup tests
         working-directory: highlight.js
         run: |
-          npm test markup
-      # - name: Create Distribution files
-      #   working-directory: highlight.js
-      #   run: |
-      #     node tools/build.js hugo -t cdn
+          npm run test-markup
+      - name: Create Distribution files
+        working-directory: highlight.js
+        run: |
+          node tools/build.js hugo -t cdn
