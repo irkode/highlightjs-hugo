@@ -80,8 +80,15 @@ jobs:
         working-directory: highlight.js
         run: |
           node ./tools/build.js hugo -t cdn
-          tree -f extra/highlightjs-hugo
+          ls -p extra/highlightjs-hugo/dist | grep -v /
 
+      - name: Compare distribution outputs
+        run: |
+          echo "Comparing built dist files with source dist files..."
+          diff -qr highlight.js/extra/highlightjs-hugo/dist highlightjs-hugo/dist || (
+            echo "::error::Distribution files differ!"
+            exit 1
+          )
       # --- Upload built result
       # - name: Upload build output
       #   uses: actions/upload-artifact@v4
