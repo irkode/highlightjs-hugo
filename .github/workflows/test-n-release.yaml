@@ -1,0 +1,92 @@
+# coded with friendly help from https://duckduckgo.com/?q=DuckDuckGo+AI+Chat&ia=chat&duckai=1
+name: Build Highlight.js with extras (fully cached)
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build-highlightjs:
+    runs-on: ubuntu-latest
+
+    steps:
+      # --- Checkout your own repo (highlightjs-hugo)
+      - name: Checkout highlightjs-hugo repository
+        uses: actions/checkout@v4
+        with:
+          path: highlightjs-hugo
+
+      # --- Read Highlight.js version from config file
+      - name: Read Highlight.js version
+        id: hljs-version
+        run: |
+          VERSION=$(cat highlightjs-hugo/.highlightjs-version | tr -d '[:space:]')
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Using Highlight.js version: $VERSION"
+
+      # --- Setup Node.js 22
+      - name: Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # --- Cache the cloned Highlight.js repo
+      - name: Cache Highlight.js clone
+        id: cache-hljs
+        uses: actions/cache@v4
+        with:
+          path: highlight.js
+          key: highlightjs-${{ steps.hljs-version.outputs.version }}
+
+      # --- Clone Highlight.js only if cache missed
+      - name: Clone Highlight.js
+        if: steps.cache-hljs.outputs.cache-hit != 'true'
+        run: |
+          git clone --branch ${{ steps.hljs-version.outputs.version }} --depth 1 https://github.com/highlightjs/highlight.js.git
+
+      # --- Cache node_modules from npm ci (depends on package-lock + version)
+      - name: Cache node_modules
+        id: cache-npm
+        uses: actions/cache@v4
+        with:
+          path: highlight.js/node_modules
+          key: npm-${{ steps.hljs-version.outputs.version }}-${{ hashFiles('highlight.js/package-lock.json') }}
+
+      # --- Copy your custom extras into Highlight.js
+      - name: Copy extras from highlightjs-hugo
+        run: |
+          mkdir -p highlight.js/extra/highlightjs-hugo
+          cp -r highlightjs-hugo/* highlight.js/extra/highlightjs-hugo
+
+      # --- Install and build (npm ci skipped if node_modules restored)
+      - name: Install dependencies and build
+        working-directory: highlight.js
+        run: |
+          if [ ! -d "node_modules" ] || [ -z "$(ls -A node_modules)" ]; then
+            echo "Running npm ci..."
+            npm ci
+          else
+            echo "Using cached node_modules."
+          fi
+          npm run build
+
+      - name: Execute markup tests
+        working-directory: highlight.js
+        run: |
+          npm run test-markup
+
+      - name: Create Distribution files
+        working-directory: highlight.js
+        run: |
+          node ./tools/build.js hugo -t cdn
+          ls -p extra/highlightjs-hugo/dist | grep -v /
+
+      - name: Compare distribution outputs
+        run: |
+          echo "Comparing built dist files with source dist files..."
+          diff -qr highlight.js/extra/highlightjs-hugo/dist highlightjs-hugo/dist || (
+            echo "::error::Distribution files differ!"
+            exit 1
+          )
