@@ -1,0 +1,43 @@
+name: Build Highlight.js with extras
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build-highlightjs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout highlightjs-hugo repository
+        uses: actions/checkout@v4
+        with:
+          path: highlightjs-hugo
+
+      - name: Install Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Clone Highlight.js (v11.11.1)
+        run: |
+          git clone --branch 11.11.1 --depth 1 https://github.com/highlightjs/highlight.js.git
+
+      - name: Copy extras from highlightjs-hugo
+        run: |
+          cp -r highlightjs-hugo highlight.js/extras/
+
+      - name: Install dependencies and build
+        working-directory: highlight.js
+        run: |
+          npm ci
+          npm run build
+      - name: Execute markup tests
+        working-directory: highlight.js
+        run: |
+          npm test markup
+      - name: Create Distribution files
+        working-directory: highlight.js
+        run: |
+          node tools/build.js hugo -t cdn
