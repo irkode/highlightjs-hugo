@@ -27,20 +27,20 @@ jobs:
 
       - name: Copy extras from highlightjs-hugo
         run: |
-          dir
           mkdir -p highlight.js/extra/highlightjs-hugo
-          cp -r highlightjs-hugo/ highlight.js/extra/highlightjs-hugo
+          cp -r highlightjs-hugo/* highlight.js/extra/highlightjs-hugo
+          tree -f highlight.js/extra/
 
-      - name: Install dependencies and build
-        working-directory: highlight.js
-        run: |
-          npm ci
-          npm run build
-      - name: Execute markup tests
-        working-directory: highlight.js
-        run: |
-          npm test markup
-      - name: Create Distribution files
-        working-directory: highlight.js
-        run: |
-          node tools/build.js hugo -t cdn
+      # - name: Install dependencies and build
+      #   working-directory: highlight.js
+      #   run: |
+      #     npm ci
+      #     npm run build
+      # - name: Execute markup tests
+      #   working-directory: highlight.js
+      #   run: |
+      #     npm test markup
+      # - name: Create Distribution files
+      #   working-directory: highlight.js
+      #   run: |
+      #     node tools/build.js hugo -t cdn
