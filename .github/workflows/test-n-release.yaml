@@ -26,7 +26,6 @@ jobs:
           git clone --branch 11.11.1 --depth 1 https://github.com/highlightjs/highlight.js.git
 
       - name: Copy extras from highlightjs-hugo
-        working-directory: highlight.js/extra
         run: |
           dir
           mkdir -p highlight.js/extra/highlightjs-hugo
