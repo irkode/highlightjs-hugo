@@ -20,6 +20,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: "npm"
+          cache-dependency-path: highlight.js/package-lock.json
 
       - name: Read Highlight.js version
         id: hljs-version
@@ -51,6 +53,7 @@ jobs:
         run: |
           npm ci
           npm run build
+
       - name: Execute markup tests
         working-directory: highlight.js
         run: |
@@ -60,4 +63,4 @@ jobs:
         working-directory: highlight.js
         run: |
           node tools/build.js hugo -t cdn
-          tree -f highlight.js/extra/dist
+          tree -f extra/highlightjs-hugo/dist
