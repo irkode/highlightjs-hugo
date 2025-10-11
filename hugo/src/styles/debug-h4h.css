@@ -1,0 +1,234 @@
+/*!
+  Theme: Debug
+  Description: 55 distinct colors for debugging
+  Author: (c) 2025 Irkode <irkode@rikode.de>
+  Maintainer: Irkode
+  Website: https://irkode.github.io/hugo4fun-highlightJS/
+  License: MIT
+  Touched: 2025
+*/
+/* color palette generated with http://mokole.com 55 5% 90% 5000 */
+.debug .unused .develop {
+  --mediumseagreen: #3cb371;
+  --rosybrown: #bc8f8f;
+  --rebeccapurple: #663399;
+  --chocolate: #d2691e;
+  --indianred: #cd5c5c;
+  --mediumturquoise: #48d1cc;
+  --orangered: #ff4500;
+  --mediumspringgreen: #00fa9a;
+  --mediumpurple: #9370db;
+  --greenyellow: #adff2f;
+  --tomato: #ff6347;
+  --palevioletred: #db7093;
+  --khaki: #f0e68c;
+  --lightgreen: #90ee90;
+  --wheat: #f5deb3;
+}
+
+/*
+This is left on purpose making default.css the single file that can be lifted
+as-is from the repository directly without the need for a build step
+
+Typically this "required" baseline CSS is added by `makestuff.js` during build.
+*/
+pre code.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 1em;
+}
+
+code.hljs {
+  padding: 3px 5px;
+}
+
+/* end baseline CSS */
+
+.hljs {
+  background: darkgray;
+  color: #444;
+}
+/* Base color: saturation 0; */
+.hljs-subst {
+  /* default */
+}
+
+.hljs-formula {
+  color: #2f4f4f;
+} /* darkslategray */
+.hljs-attr {
+  color: #556b2f;
+} /* darkolivegreen */
+.hljs-property {
+  color: #6b8e23;
+} /* olivedrab */
+.hljs-params {
+  color: #778899;
+} /* lightslategray */
+
+.hljs-comment {
+  color: #404040;
+} /* darkgray */
+
+.hljs-tag {
+  color: #32cd32;
+} /* forestgreen */
+.hljs-punctuation {
+  color: #8fbc8f;
+} /* darkseagreen */
+
+.hljs-tag .hljs-name {
+  color: #228b22;
+} /* limegreen */
+.hljs-tag .hljs-attr {
+  color: #9acd32;
+} /* yellowgreen */
+
+.hljs-keyword {
+  font-weight: bold;
+  color: #ff00ff;
+} /* maroon2 */
+.hljs-attribute {
+  font-weight: bold;
+  color: #b03060;
+} /* maroon3 */
+.hljs-selector-tag {
+  font-weight: bold;
+  color: #8b4513;
+} /* saddlebrown */
+.hljs-meta .hljs-keyword {
+  font-weight: bold;
+  color: #c71585;
+} /* mediumvioletred */
+.hljs-doctag {
+  font-weight: bold;
+  color: #dc143c;
+} /* crimson */
+.hljs-name {
+  font-weight: bold;
+  color: #ff1493;
+} /* deeppink */
+
+/* User color: hue: 0 */
+
+.hljs-type {
+  color: #191970;
+} /* midnightblue */
+.hljs-string {
+  color: #1e90ff;
+} /* skyblue */
+.hljs-string.raw_ {
+  color: #0080ff;
+} /* skyblue */
+
+.hljs-number {
+  color: #0000cd;
+} /* mediumblue */
+.hljs-selector-id {
+  color: #0000ff;
+} /* blue */
+.hljs-selector-class {
+  color: #4682b4;
+} /* steelblue */
+.hljs-quote {
+  color: #008080;
+} /* teal */
+.hljs-template-tag {
+  color: #32cd32;
+} /* dodgerblue */
+.hljs-deletion {
+  color: #00008b;
+} /* darkblue */
+
+.hljs-title {
+  /* font-weight: bold; */
+  color: #a020f0;
+} /* darkmagenta */
+.hljs-title.function_.invoke__ {
+  /* font-weight: bold; */
+  color: #6b8e23;
+  color: #a020f0;
+} /* darkmagenta */
+.hljs-section {
+  font-weight: bold;
+  color: #8b008b;
+} /* purple3 */
+
+.hljs-regexp {
+  color: #daa520;
+} /* gold */
+.hljs-symbol {
+  color: #ffff00;
+} /* yellow */
+.hljs-variable {
+  color: #ff8c00;
+} /* goldenrod */
+.hljs-template-variable {
+  color: #ff8c00;
+} /* sandybrown */
+.hljs-link {
+  color: #f4a460;
+} /* darkorange */
+.hljs-selector-attr {
+  color: #e9967a;
+} /* darksalmon */
+.hljs-operator {
+  color: #ffd700;
+} /* plum */
+.hljs-selector-pseudo {
+  color: #ffb6c1;
+} /* lightpink */
+
+/* Language color: hue: 90; */
+
+.hljs-literal {
+  color: #00ff00;
+} /* lime */
+.hljs-pipeline {
+  color: #00ff00;
+}
+
+/* lime */
+.hljs-built_in {
+  color: #7f0000;
+} /* fuchsia */
+.hljs-bullet {
+  color: #9932cc;
+} /* darkorchid */
+.hljs-code {
+  color: #ee82ee;
+} /* violet */
+.hljs-addition {
+  color: #ff69b4;
+} /* hotpink */
+
+/* Meta color: hue: 200 */
+
+.hljs-meta {
+  color: #7fffd4;
+} /* aquamarine */
+
+.hljs-meta .hljs-string {
+  color: #00bfff;
+} /* deepskyblue */
+
+/* Misc effects */
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-strong {
+  font-weight: bold;
+}
+
+/* dim embedded html */
+.visible-structure pre code > span.language-xml {
+  display: block;
+  filter: brightness(40%) saturate(50%);
+}
+
+.hljs-template-variable.context_ {
+  color: black;
+  background: lightblue;
+}

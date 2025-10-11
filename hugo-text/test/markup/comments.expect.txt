@@ -1,0 +1,10 @@
+<span class="hljs-comment">{{/* a comment */}}</span><span class="hljs-comment">
+
+{{- /* a comment with white space trimmed from preceding and following text */ -}}</span><span class="hljs-comment">
+
+{{/* a multiline comment
+continued on the next lines
+
+even with a blank line inside
+
+ */ -}}</span>
