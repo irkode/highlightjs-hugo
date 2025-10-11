@@ -83,56 +83,70 @@ jobs:
           node ./tools/build.js hugo -t cdn
           ls -p extra/highlightjs-hugo/dist | grep -v /
 
-      - name: Determine next version and copy dist if changed
-        id: bump-version
+      - name: Update version and commit changes
+        working-directory: highlightjs-hugo
         run: |
           set -e
 
-          PKG_FILE="highlightjs-hugo/package.json"
-          SRC_DIST="highlightjs-hugo/dist"
-          BUILT_DIST="highlight.js/extra/highlightjs-hugo/dist"
+          SRC_DIST="../highlight.js/extra/highlightjs-hugo/dist"
+          DST_DIST="./dist"
+          PKG_FILE="./package.json"
+
+          # Copy built files into highlightjs-hugo/dist
+          echo "Copying built dist files..."
+          mkdir -p "$DST_DIST"
+          cp -r "$SRC_DIST"/* "$DST_DIST"/
+
+          # Check which files changed
+          CHANGED_FILES=$(git status --porcelain)
+          echo "Changed files:"
+          echo "$CHANGED_FILES"
+
+          # Detect if only .github changed
+          ONLY_GITHUB=true
+          DIST_CHANGED=false
+          OTHER_CHANGED=false
+
+          while read -r line; do
+            FILE=$(echo "$line" | awk '{print $2}')
+            if [[ "$FILE" == .github/* ]]; then
+              continue
+            elif [[ "$FILE" == dist/* ]]; then
+              DIST_CHANGED=true
+              ONLY_GITHUB=false
+            else
+              OTHER_CHANGED=true
+              ONLY_GITHUB=false
+            fi
+          done <<< "$CHANGED_FILES"
+
+          echo "ONLY_GITHUB=$ONLY_GITHUB, DIST_CHANGED=$DIST_CHANGED, OTHER_CHANGED=$OTHER_CHANGED"
 
           # Read current version
           OLD_VERSION=$(jq -r '.version' "$PKG_FILE")
-          echo "Current version: $OLD_VERSION"
-
-          # Split into semver parts
           IFS='.' read -r X Y Z <<< "$OLD_VERSION"
 
-          # Detect changes outside .github
-          CHANGED_FILES=$(git -C highlightjs-hugo diff --name-only HEAD~1 HEAD || true)
-          if echo "$CHANGED_FILES" | grep -qv '^\.github/'; then
-            echo "Relevant files changed."
-          else
-            echo "Only .github files changed — keeping version."
-            echo "new_version=$OLD_VERSION" >> $GITHUB_OUTPUT
-            exit 0
-          fi
-
-          # Compare built dist with source dist
-          if diff -qr "$BUILT_DIST" "$SRC_DIST" >/dev/null; then
-            echo "Dist is identical — bump patch."
-            ((Z++))
-            COPY_DIST=false
-          else
-            echo "Dist differs — bump minor and copy new dist."
+          # Decide bump type
+          if [ "$ONLY_GITHUB" = true ]; then
+            echo "Only .github files changed — keep version"
+            NEW_VERSION="$OLD_VERSION"
+          elif [ "$DIST_CHANGED" = true ]; then
+            echo "Dist changed — bump minor"
             ((Y++))
             Z=0
-            COPY_DIST=true
+            NEW_VERSION="${X}.${Y}.${Z}"
+          else
+            echo "Other source files changed but dist identical — bump patch"
+            ((Z++))
+            NEW_VERSION="${X}.${Y}.${Z}"
           fi
 
-          # Compute new version
-          NEW_VERSION="${X}.${Y}.${Z}"
           echo "New version: $NEW_VERSION"
 
-          # Update package.json version
+          # Update package.json
           jq --arg v "$NEW_VERSION" '.version = $v' "$PKG_FILE" > "${PKG_FILE}.tmp" && mv "${PKG_FILE}.tmp" "$PKG_FILE"
 
-          # Copy dist if needed
-          if [ "$COPY_DIST" = true ]; then
-            echo "Copying built dist to source repo..."
-            mkdir -p "$SRC_DIST"
-            cp -r "$BUILT_DIST"/* "$SRC_DIST"/
-          fi
-
-          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
+          # Commit all changes if version changed or files changed
+          git add -A
+          git commit -m "chore: bump version to $NEW_VERSION and update dist" || echo "No changes to commit"
+          git push || echo "Push failed or no changes"
