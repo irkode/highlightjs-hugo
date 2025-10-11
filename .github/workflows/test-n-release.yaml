@@ -4,6 +4,7 @@ on:
   push:
     branches: [main]
   pull_request:
+  workflow_dispatch:
 
 jobs:
   build-highlightjs:
@@ -26,7 +27,8 @@ jobs:
 
       - name: Copy extras from highlightjs-hugo
         run: |
-          cp -r highlightjs-hugo highlight.js/extras/
+          mkdir highlight.js/extras/highlightjs-hugo
+          cp -r highlightjs-hugo/ highlight.js/extras/highlightjs-hugo
 
       - name: Install dependencies and build
         working-directory: highlight.js
