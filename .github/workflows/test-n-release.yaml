@@ -55,7 +55,9 @@ jobs:
         working-directory: highlight.js
         run: |
           npm run test-markup
+
       - name: Create Distribution files
         working-directory: highlight.js
         run: |
           node tools/build.js hugo -t cdn
+          tree -f highlight.js/extra/dist
