@@ -1,3 +1,4 @@
+# coded with friendly help from https://duckduckgo.com/?q=DuckDuckGo+AI+Chat&ia=chat&duckai=1
 name: Build Highlight.js with extras (fully cached)
 
 on:
@@ -82,16 +83,56 @@ jobs:
           node ./tools/build.js hugo -t cdn
           ls -p extra/highlightjs-hugo/dist | grep -v /
 
-      - name: Compare distribution outputs
+      - name: Determine next version and copy dist if changed
+        id: bump-version
         run: |
-          echo "Comparing built dist files with source dist files..."
-          diff -qr highlight.js/extra/highlightjs-hugo/dist highlightjs-hugo/dist || (
-            echo "::error::Distribution files differ!"
-            exit 1
-          )
-      # --- Upload built result
-      # - name: Upload build output
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: highlightjs-build
-      #     path: highlight.js/build/
+          set -e
+
+          PKG_FILE="highlightjs-hugo/package.json"
+          SRC_DIST="highlightjs-hugo/dist"
+          BUILT_DIST="highlight.js/extra/highlightjs-hugo/dist"
+
+          # Read current version
+          OLD_VERSION=$(jq -r '.version' "$PKG_FILE")
+          echo "Current version: $OLD_VERSION"
+
+          # Split into semver parts
+          IFS='.' read -r X Y Z <<< "$OLD_VERSION"
+
+          # Detect changes outside .github
+          CHANGED_FILES=$(git -C highlightjs-hugo diff --name-only HEAD~1 HEAD || true)
+          if echo "$CHANGED_FILES" | grep -qv '^\.github/'; then
+            echo "Relevant files changed."
+          else
+            echo "Only .github files changed — keeping version."
+            echo "new_version=$OLD_VERSION" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          # Compare built dist with source dist
+          if diff -qr "$BUILT_DIST" "$SRC_DIST" >/dev/null; then
+            echo "Dist is identical — bump patch."
+            ((Z++))
+            COPY_DIST=false
+          else
+            echo "Dist differs — bump minor and copy new dist."
+            ((Y++))
+            Z=0
+            COPY_DIST=true
+          fi
+
+          # Compute new version
+          NEW_VERSION="${X}.${Y}.${Z}"
+          echo "New version: $NEW_VERSION"
+
+          # Update package.json version
+          jq --arg v "$NEW_VERSION" '.version = $v' "$PKG_FILE" > "${PKG_FILE}.tmp" && mv "${PKG_FILE}.tmp" "$PKG_FILE"
+
+          # Copy dist if needed
+          if [ "$COPY_DIST" = true ]; then
+            echo "Copying built dist to source repo..."
+            mkdir -p "$SRC_DIST"
+            cp -r "$BUILT_DIST"/* "$SRC_DIST"/
+          fi
+
+          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
