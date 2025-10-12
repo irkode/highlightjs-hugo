@@ -1,5 +1,7 @@
 # highlightjs-hugo - Syntax highlighting for Hugo templates
 
+![preview](preview.png)
+
 [![license](https://badgen.net/badge/license/MIT/blue)](LICENSE)
 
 A language grammar to highlight [Hugo][]'s templating language with [Highlight.js][].
