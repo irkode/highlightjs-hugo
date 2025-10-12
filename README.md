@@ -62,9 +62,9 @@ hljs.highlightAll();
 
 ### The following language names and aliases are provided with this module. All do the same thing.
 
-- hugo - short name
-- hugo-html - full name
-- hugo-text - used to emulate text mode
+- hugo
+- hugo-html
+- hugo-text : used to emulate text mode
 
 #### Highlighting text templates
 
@@ -111,7 +111,7 @@ specify the language you want for every code block.
 
 - for Go template comments we use relevance = 10.
 
-  comments start with `` or `*/ - }}`
+  comments start with `{{/*` or `{{- /*` and end with `*/}}` or `*/ -}}`
 
 - functions in the _hugo_ namespace use relevance = 10 (e.g. hugo.IsDevelopment)
 
