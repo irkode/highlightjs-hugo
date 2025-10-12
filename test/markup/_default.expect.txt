@@ -7,7 +7,7 @@
       <span class="hljs-string">&quot;inlineImports&quot;</span> <span class="hljs-literal">true</span>
     <span class="hljs-template-tag">}}</span>
     <span class="hljs-template-tag">{{</span> <span class="hljs-keyword">with</span> <span class="hljs-template-variable context_">.</span> <span class="hljs-operator">|</span> <span class="hljs-built_in">css.TailwindCSS</span> <span class="hljs-template-variable">$opts</span> <span class="hljs-template-tag">}}</span>
-      <span class="hljs-template-tag">{{</span> if <span class="hljs-built_in">hugo.IsDevelopment</span> <span class="hljs-template-tag">}}</span><span class="language-xml">
+      <span class="hljs-template-tag">{{</span> <span class="hljs-keyword">if</span> <span class="hljs-built_in">hugo.IsDevelopment</span> <span class="hljs-template-tag">}}</span><span class="language-xml">
         <span class="hljs-tag">&lt;<span class="hljs-name">link</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">&quot;stylesheet&quot;</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;</span></span></span><span class="hljs-template-tag">{{</span> <span class="hljs-template-variable context_">.</span><span class="hljs-title function_ invoke__">RelPermalink</span> <span class="hljs-template-tag">}}</span>&quot;&gt;
       <span class="hljs-template-tag">{{</span> <span class="hljs-keyword">else</span> <span class="hljs-template-tag">}}</span>
         <span class="hljs-template-tag">{{</span> <span class="hljs-keyword">with</span> <span class="hljs-template-variable context_">.</span> <span class="hljs-operator">|</span> <span class="hljs-built_in">fingerprint</span> <span class="hljs-template-tag">}}</span><span class="language-xml">

@@ -17,7 +17,7 @@ export default function (hljs) {
   const re_ACTION_OPEN = /\{\{- |\{\{(?!-)/;
   const re_ACTION_CLOSE = / -\}\}|(?<! -)\}\}/;
 
-  const re_PIPELINE_KEYWORDS = /block|define|else\swith|else\s+if|range|return|template|try|with/;
+  const re_PIPELINE_KEYWORDS = /block|define|else\swith|else\s+if|range|return|template|try|with|if/;
   const re_STANDALONE_KEYWORDS = /break|continue|else|end/;
 
   // simple modes, -> always list last to not capture begin of complex modes
