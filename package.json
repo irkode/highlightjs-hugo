@@ -12,11 +12,15 @@
   },
   "keywords": [
     "hugo",
-    "template"
+    "template",
+    "highlighting",
+    "highlight.js",
+    "highlightjs",
+    "syntax"
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/irkode/highlightjs-4-hugo/issues"
+    "url": "https://github.com/irkode/highlightjs-hugo/issues"
   },
-  "homepage": "https://irkode.github.io/highlightjs-4-hugo"
+  "homepage": "https://irkode.github.io/highlightjs-hugo"
 }

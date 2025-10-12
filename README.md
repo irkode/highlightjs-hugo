@@ -1,4 +1,4 @@
-# HighlightJS 4 Hugo - Syntax highlighting for Hugo templates
+# highlightjs-hugo - Syntax highlighting for Hugo templates
 
 [![license](https://badgen.net/badge/license/MIT/blue)](LICENSE)
 
@@ -41,7 +41,7 @@ The module has not been published to any CDN right now. just download it from th
 ```html
 <script
    type="text/javascript"
-   src="https://unpkg.com/highlightjs-hugo-text@0.1.0/dist/hugo-text.min.js"
+   src="https://unpkg.com/highlightjs-hugo@0.1.0/dist/hugo.min.js"
 ></script>
 ```
 
@@ -129,16 +129,14 @@ This package is released under the MIT License. See [LICENSE](LICENSE) file for 
 
 ## Links
 
-Module Homepage: [HighlightJS 4 Hugo][]
+Module Repository: [https://github.com/irkode/highlightjs-hugo]()
 
 ### Other references
 
 - [Highlight.js][]
 - [Hugo][]
-
 - [Go HTML template](https://pkg.go.dev/html/template)
 - [Go TEXT template](https://pkg.go.dev/text/template)
 
-[HighlightJS 4 Hugo]: https://github.com/irkode/highlightjs-4-hugo
 [Highlight.js]: https://highlightjs.org/
 [Hugo]: https://gohugo.io/

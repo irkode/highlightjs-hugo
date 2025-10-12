@@ -3,7 +3,7 @@ Language: highlightjs-hugo
 Requires: xml
 Author: Irkode <irkode@rikode.de>
 Description: Syntax highlighting for Hugo templates.
-Website: https://irkode.github.io/highlightjs-4-hugo
+Website: https://irkode.github.io/highlightjs-hugo
 Category: template
 License: MIT
 */

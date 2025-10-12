@@ -1,8 +1,6 @@
-# Highlight.js 4 Hugo - Class reference
+# highlightjs-hugo - Class reference
 
-This Class reference document is the same for the whole suite of Go and Hugo modules.
-
-Documentation can be found at [Highlight.js 4 Hugo][]
+This class reference document is the same for the whole suite of Go and Hugo modules.
 
 ## Core modes used
 
@@ -80,11 +78,10 @@ We use the following Scopes for keywords:
 
 ## Submodes
 
-[Highlight.js 4 Hugo][] uses the [Highlight.js][] builtin `xml` submode. Have a look at that module to see which scopes are used within.
+_highlighjs-hugo_ uses the [Highlight.js][] builtin `xml` submode which uses some standard scopes.
 
-Check out the [documentation](https://irkode.github.io/highlightjs-4-hugo/) to see how to handle _text_ and _html_ templates differently.
+Have a look at our [README](https://github.com/irkode/highlightjs-hugo/README.md) to see how to handle _text_ and _html_ templates differently.
 
-[Highlight.js 4 Hugo]: https://irkode.github.io/highlightjs-4-hugo/
 [Highlight.js]: https://highlightjs.readthedocs.io/
 
 [^1]: should maybe better in the _fmt_ namespace in Hugo
