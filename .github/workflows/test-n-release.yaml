@@ -55,7 +55,7 @@ jobs:
         if: steps.cache-npm.outputs.cache-hit != 'true'
         run: |
           echo "Running npm ci..."
-          npm ci
+          npm install --save-dev
 
       - name: Run Highlight.js build
         working-directory: highlight.js
