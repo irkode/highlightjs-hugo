@@ -50,13 +50,14 @@ jobs:
       # --- Install and build (npm ci skipped if node_modules restored)
       - name: Install dependencies and build
         working-directory: highlight.js
+        if: steps.cache-npm.outputs.cache-hit != 'true'
         run: |
-          if [ ! -d "node_modules" ] || [ -z "$(ls -A node_modules)" ]; then
-            echo "Running npm ci..."
-            npm ci
-          else
-            echo "Using cached node_modules."
-          fi
+          echo "Running npm ci..."
+          npm ci
+
+      - name: Run Highlight.js build
+        working-directory: highlight.js
+        run: |
           npm run build
 
       - name: Execute markup tests
