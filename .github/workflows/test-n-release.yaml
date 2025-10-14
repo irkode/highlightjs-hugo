@@ -70,7 +70,7 @@ jobs:
           path: highlight.js/extra
 
       - name: run Hugo
-        working-directory: path: scripts/hugen
+        working-directory: scripts/hugen
         run: |
           hugo -d highlight.js/extra
 
