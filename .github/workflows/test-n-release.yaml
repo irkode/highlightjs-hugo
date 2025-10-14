@@ -13,12 +13,32 @@ jobs:
 
     env:
       ONLY_EXTRA: "true"
+      GO_VERSION: 1.25.1
+      HUGO_VERSION: 0.151.0
     steps:
       # --- Setup Node.js 22
       - name: Setup Node.js 22
         uses: actions/setup-node@v4
         with:
           node-version: 22
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.GO_VERSION }}
+      - name: Install Hugo
+        run: |
+          curl -sLJO "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-amd64.tar.gz"
+          mkdir "${HOME}/.local/hugo"
+          tar -C "${HOME}/.local/hugo" -xf "hugo_extended_${HUGO_VERSION}_linux-amd64.tar.gz"
+          rm "hugo_extended_${HUGO_VERSION}_linux-amd64.tar.gz"
+          echo "${HOME}/.local/hugo" >> "${GITHUB_PATH}"
+
+      - name: Verify installations
+        run: |
+          echo "Go: $(go version)"
+          echo "Hugo: $(hugo version)"
+          echo "Node.js: $(node --version)"
 
       # --- Cache the cloned Highlight.js repo
       - name: Cache Highlight.js clone
@@ -48,6 +68,11 @@ jobs:
         uses: actions/checkout@v4
         with:
           path: highlight.js/extra
+
+      - name: run Hugo
+        working-directory: path: scripts/hugen
+        run: |
+          hugo -d highlight.js/extra
 
       # --- Install and build (npm ci skipped if node_modules restored)
       - name: Install dependencies and build
