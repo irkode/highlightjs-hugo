@@ -11,6 +11,8 @@ jobs:
   build-highlightjs:
     runs-on: ubuntu-latest
 
+    env:
+      ONLY_EXTRA: "true"
     steps:
       # --- Setup Node.js 22
       - name: Setup Node.js 22
