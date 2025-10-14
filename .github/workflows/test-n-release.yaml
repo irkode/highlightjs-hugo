@@ -24,7 +24,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: highlight.js
-          key: highlightjs-${{ steps.hljs-version.outputs.version }}
+          key: highlightjs-11.11.1
 
       # --- Clone Highlight.js only if cache missed
       - name: Clone Highlight.js
@@ -39,7 +39,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: highlight.js/node_modules
-          key: npm-${{ steps.hljs-version.outputs.version }}-${{ hashFiles('highlight.js/package-lock.json') }}
+          key: npm-11.11.1-${{ hashFiles('highlight.js/package-lock.json') }}
 
       # --- Checkout your own repo (highlightjs-hugo)
       - name: Checkout highlightjs-hugo repository
