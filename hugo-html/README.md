@@ -1,4 +1,6 @@
-# highlightjs-hugo - Syntax highlighting for Hugo templates
+# Highlight.js 4 Hugo - Syntax highlighting for Hugo-Html templates
+
+This is the README for the Hugo-Html variant of the suite.
 
 ![preview](preview.png)
 
@@ -26,7 +28,7 @@ Load the module after loading `highlight.js`. Take the minified version from `di
 <!-- example using cloudflare CDN. check the original docs for other options -->
 <script type="text/javascript" src="/path/to/highlight.min.js"></script>
 <!->
-<script type="text/javascript" src="/path/to/hugo.min.js"></script>
+<script type="text/javascript" src="/path/to/hugo-html.min.js"></script>
 <script type="text/javascript">
   hljs.highlightAll();
 </script>
@@ -43,7 +45,7 @@ The module has not been published to any CDN right now. just download it from th
 ```html
 <script
    type="text/javascript"
-   src="https://unpkg.com/highlightjs-hugo@0.1.0/dist/hugo.min.js"
+   src="https://unpkg.com/highlightjs-hugo-html@0.1.0/dist/hugo-html.min.js"
 ></script>
 ```
 
@@ -57,59 +59,18 @@ If you're using Node / Webpack / Rollup / Browserify, etc, simply require the la
 
 ```javascript
 var hljs = require("highlight.js");
-var hljsHugo = require("hugo");
-hljs.registerLanguage("hugo", hljsHugo);
+var hljsHugo = require("hugo-html");
+hljs.registerLanguage("hugo-html", hljsHugo-Html);
 hljs.highlightAll();
 ```
-
-### The following language names and aliases are provided with this module. All do the same thing.
-
-- hugo
-- hugo-html
-- hugo-text : used to emulate text mode
-
-#### Highlighting text templates
-
-There's no special variant for text templates. If there's some code around and it's html it will be highlighted using
-[Highlight.js][] XML module.
-
-You can emulate text mode by resetting the `hljs` styles for the xml part. Just use `hugo-text` for your code blocks
-and add something like this:
-
-```css
-/** don't highlight xml/html */
-code.language-hugo-text span.language-xml * {
-  color: inherit !important;
-  font-weight: normal !important;
-  text-decoration: none !important;
-  font-style: normal !important;
-  background: none !important;
-  border: none !important;
-}
-```
-
-HTML within this code block won't get styling.
-
-````
-```hugo-text
-{{ with . | css.TailwindCSS $opts }}
-    {{ if hugo.IsDevelopment }}
-      <link rel="stylesheet" href="{{ .RelPermalink }}">
-    {{ else }}
-      {{ with . | fingerprint }}
-        <link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous">
-          {{ end }}
-        {{ end }}
-    {{ end }}
-```
-````
 
 ## A word on auto detection
 
 _Handlebars_ and _Go templates_ (used by [Hugo][]) have similar template tags. Without additional relevance settings the
-Hugo modules will loose most of the time. To beat Handlebars auto-detection for _Hugo_ templates we add some relevance
-settings. Doing our best to make it possible to have both modules loaded at the same time. To be on the safe side
-specify the language you want for every code block.
+Hugo modules will loose most of the time. To beat Handlebars auto-detection for _Hugo_ templates we add relevance
+settings. Doing our best to make it possible to have both modules loaded at the same time. Importing `hugo-text` and
+`hugo-html` plugins may result in undetermined auto selection.
+To be on the safe side specify the language you want for every code block.
 
 - for Go template comments we use relevance = 10.
 
@@ -121,6 +82,7 @@ specify the language you want for every code block.
 
   `IgnoreIllegals` default value is `false` since version 11. So this stops highlighting with the hugo module
 
+
 ## License
 
 This package is released under the MIT License. See [LICENSE](LICENSE) file for details.
@@ -131,7 +93,7 @@ This package is released under the MIT License. See [LICENSE](LICENSE) file for 
 
 ## Links
 
-Module Repository: [https://github.com/irkode/highlightjs-hugo]()
+Module Repository: [https://github.com/irkode/highlightjs-hugo-html]()
 
 ### Other references
 

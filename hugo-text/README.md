@@ -1,4 +1,6 @@
-# highlightjs-hugo-text - Syntax highlighting for Hugo-Text templates
+# Highlight.js 4 Hugo - Syntax highlighting for Hugo-Text templates
+
+This is the README for the Hugo-Text variant of the suite.
 
 ![preview](preview.png)
 
@@ -62,54 +64,13 @@ hljs.registerLanguage("hugo-text", hljsHugo-Text);
 hljs.highlightAll();
 ```
 
-### The following language names and aliases are provided with this module. All do the same thing.
-
-- hugo-text
-- hugo-text-html
-- hugo-text-text : used to emulate text mode
-
-#### Highlighting text templates
-
-There's no special variant for text templates. If there's some code around and it's html it will be highlighted using
-[Highlight.js][] XML module.
-
-You can emulate text mode by resetting the `hljs` styles for the xml part. Just use `hugo-text-text` for your code blocks
-and add something like this:
-
-```css
-/** don't highlight xml/html */
-code.language-hugo-text-text span.language-xml * {
-  color: inherit !important;
-  font-weight: normal !important;
-  text-decoration: none !important;
-  font-style: normal !important;
-  background: none !important;
-  border: none !important;
-}
-```
-
-HTML within this code block won't get styling.
-
-````
-```hugo-text
-{{ with . | css.TailwindCSS $opts }}
-    {{ if hugo.IsDevelopment }}
-      <link rel="stylesheet" href="{{ .RelPermalink }}">
-    {{ else }}
-      {{ with . | fingerprint }}
-        <link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous">
-          {{ end }}
-        {{ end }}
-    {{ end }}
-```
-````
-
 ## A word on auto detection
 
 _Handlebars_ and _Go templates_ (used by [Hugo][]) have similar template tags. Without additional relevance settings the
-Hugo modules will loose most of the time. To beat Handlebars auto-detection for _Hugo_ templates we add some relevance
-settings. Doing our best to make it possible to have both modules loaded at the same time. To be on the safe side
-specify the language you want for every code block.
+Hugo modules will loose most of the time. To beat Handlebars auto-detection for _Hugo_ templates we add relevance
+settings. Doing our best to make it possible to have both modules loaded at the same time. Importing `hugo-text` and
+`hugo-html` plugins may result in undetermined auto selection.
+To be on the safe side specify the language you want for every code block.
 
 - for Go template comments we use relevance = 10.
 
@@ -120,6 +81,7 @@ specify the language you want for every code block.
 - We mark the following _Handlebars_ opening template tags as invalid for us: `{{#`, `{{>`, `{{!--`, `{{!`
 
   `IgnoreIllegals` default value is `false` since version 11. So this stops highlighting with the hugo module
+
 
 ## License
 

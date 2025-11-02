@@ -1,7 +1,5 @@
 # highlightjs-hugo-text - Class reference
 
-This class reference document is the same for the whole suite of Go and Hugo modules.
-
 ## Core modes used
 
 - hljs.NUMBER_MODE
@@ -78,9 +76,7 @@ We use the following Scopes for keywords:
 
 ## Submodes
 
-_highlighjs-hugo-text_ uses the [Highlight.js][] builtin `xml` submode which uses some standard scopes.
-
-Have a look at our [README](https://github.com/irkode/highlightjs-hugo-text/README.md) to see how to handle _text_ and _html_ templates differently.
+_highlighjs-hugo-html_ uses the [Highlight.js][] builtin `xml` as subLanguage which uses some of the standard scopes.
 
 [Highlight.js]: https://highlightjs.readthedocs.io/
 

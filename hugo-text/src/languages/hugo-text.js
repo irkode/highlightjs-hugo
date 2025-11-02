@@ -112,10 +112,7 @@ export default function (hljs) {
 
   SUB_EXPRESSION.contains = PIPELINE;
 
-  return {
-    name: 'highlightjs-hugo-text',
-    case_insensitive: false,
-    contains: [
+  const mainContains = [
       hljs.COMMENT(re_COMMENT_OPEN, re_COMMENT_CLOSE, { relevance: 10, }),
       // stop highlighting if a handlebars begin tag is found
       { begin: /\{\{(#|>|!--|!)/, end: /\}\}/, illegal: /.*/, },
@@ -133,6 +130,11 @@ export default function (hljs) {
         end: [re_ACTION_CLOSE], endScope: { 1: 'template-tag' },
         contains: PIPELINE,
       }
-    ]
+    ];
+  const languageDefinition = {
+    name: 'highlightjs-hugo-text',
+    case_insensitive: false,
+    contains: mainContains
   };
+  return languageDefinition;
 }
