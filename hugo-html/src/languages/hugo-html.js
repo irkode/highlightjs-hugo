@@ -1,6 +1,6 @@
 /*
 Language: highlightjs-hugo-html
-Requires: xml
+Requires: xml, javascript, css
 
 Author: Irkode <irkode@rikode.de>
 Description: Syntax highlighting for Hugo-Html templates.

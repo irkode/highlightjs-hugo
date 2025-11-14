@@ -133,6 +133,7 @@ export default function (hljs) {
     ];
   const languageDefinition = {
     name: 'highlightjs-hugo-text',
+    aliases: ["hugo-text-template"],
     case_insensitive: false,
     contains: mainContains
   };
