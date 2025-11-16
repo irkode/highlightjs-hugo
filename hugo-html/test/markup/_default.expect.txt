@@ -3,7 +3,7 @@
   <span class="hljs-template-tag">{{</span> <span class="hljs-keyword">with</span> <span class="hljs-built_in">resources.Get</span> <span class="hljs-punctuation">(</span><span class="hljs-built_in">printf</span> <span class="hljs-string">&quot;css/%s.css&quot;</span> <span class="hljs-template-variable">$theme</span><span class="hljs-punctuation">)</span> <span class="hljs-template-tag">}}</span><span class="hljs-comment">
   {{/* with resources.Get &quot;css/test.css&quot; */}}</span>
     <span class="hljs-template-tag">{{</span> <span class="hljs-template-variable">$opts</span> <span class="hljs-operator">:=</span> <span class="hljs-built_in">dict</span>
-      <span class="hljs-string">&quot;minify&quot;</span> <span class="hljs-punctuation">(</span>not <span class="hljs-built_in">hugo.IsDevelopment</span><span class="hljs-punctuation">)</span>
+      <span class="hljs-string">&quot;minify&quot;</span> <span class="hljs-punctuation">(</span><span class="hljs-built_in">not</span> <span class="hljs-built_in">hugo.IsDevelopment</span><span class="hljs-punctuation">)</span>
       <span class="hljs-string">&quot;inlineImports&quot;</span> <span class="hljs-literal">true</span>
     <span class="hljs-template-tag">}}</span>
     <span class="hljs-template-tag">{{</span> <span class="hljs-keyword">with</span> <span class="hljs-template-variable context_">.</span> <span class="hljs-operator">|</span> <span class="hljs-built_in">css.TailwindCSS</span> <span class="hljs-template-variable">$opts</span> <span class="hljs-template-tag">}}</span>

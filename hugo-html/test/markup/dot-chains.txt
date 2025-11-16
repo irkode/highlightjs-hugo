@@ -12,3 +12,5 @@
 {{ $x.Page.Pages }}
 {{ $var. }}
 {{ $var.site.b.c }}
+{{ hugoStore.Set.b.c }}
+{{ hugo_Store.Set.b.c }}
