@@ -1,5 +1,4 @@
-import { apiInitializer } from "discourse/lib/api";
-export default apiInitializer((api) => {/*! `hugo-text` grammar compiled for Highlight.js 11.11.1 */
+import { apiInitializer } from "discourse/lib/api";export default apiInitializer((api) => {/*! `hugo-discourse` plugin compiled for Highlight.js 11.11.1 */
 const hugoLang = function(xml) { return function(e){
 var t=/\{\{- |\{\{(?!-)/,s=/ -\}\}|(?<! -)\}\}/,a={variants:[{
 begin:[/\./,/\w+/],beginScope:{1:"property",2:"title.function.invoke"}},{
@@ -26,8 +25,4 @@ begin:[t,/\s*/,/block|define|else\swith|else\s+if|range|return|template|try|with
 beginScope:{1:"template-tag",3:"keyword"},end:[s],endScope:{1:"template-tag"},
 contains:c},{begin:[t],beginScope:{1:"template-tag"},end:[s],endScope:{
 1:"template-tag"},contains:c}],vl={case_insensitive:!1,contains:vc};
-  if (xml) { vl.subLanguage = ["xml"] }; return l.contains=c,vl; }};
-  api.registerHighlightJSLanguage("hugo", hugoLang(1));
-  api.registerHighlightJSLanguage("hugo-html", hugoLang(1));
-  api.registerHighlightJSLanguage("hugo-text", hugoLang(0));
-  });
+if (xml) { vl.subLanguage = ["xml"] }; return l.contains=c,vl; }};api.registerHighlightJSLanguage("hugo", hugoLang(1));api.registerHighlightJSLanguage("hugo-html", hugoLang(1));api.registerHighlightJSLanguage("hugo-text", hugoLang(0));});
