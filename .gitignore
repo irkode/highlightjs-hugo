@@ -1,0 +1,7 @@
+/work
+/scripts/hugen/public
+/scripts/hugen/.hugo_build.lock
+
+# dependencies
+/highlight.js/
+/highlightjs-hugo/

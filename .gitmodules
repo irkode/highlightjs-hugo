@@ -1,0 +1,3 @@
+[submodule "hugoDocs"]
+	path = hugoDocs
+	url = https://github.com/gohugoio/hugoDocs.git

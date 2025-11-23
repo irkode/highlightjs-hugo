@@ -1,14 +1,14 @@
 # Highlight.js 4 Hugo - Syntax highlighting for Hugo-Html templates
 
-This is the README for the Hugo-Html variant of the suite.
-
-![preview](preview.png)
-
 [![license](https://badgen.net/badge/license/MIT/blue)](LICENSE)
+
+This is the README for the Hugo-Html variant of the suite.
 
 A language grammar to highlight [Hugo][]'s templating language with [Highlight.js][].
 
 - [CSS class reference](css-class-reference.md)
+
+![preview](preview.png)
 
 ## Requirements
 
@@ -25,7 +25,6 @@ Include the `highlight.js` library in your webpage or Node app, then load this m
 Load the module after loading `highlight.js`. Take the minified version from `dist` directory.
 
 ```html
-<!-- example using cloudflare CDN. check the original docs for other options -->
 <script type="text/javascript" src="/path/to/highlight.min.js"></script>
 <!->
 <script type="text/javascript" src="/path/to/hugo-html.min.js"></script>
@@ -38,7 +37,7 @@ Load the module after loading `highlight.js`. Take the minified version from `di
 
 The module has not been published to any CDN right now. just download it from the dist folder
 
-<!-- TODO: publish to a CDN later
+<!-- TODO: publish to a CDN
 
 ### Using directly from the UNPKG CDN
 
@@ -54,14 +53,31 @@ The module has not been published to any CDN right now. just download it from th
 
 ### With Node or another build system
 
+> The Node stuff is untested !!!
+
 If you're using Node / Webpack / Rollup / Browserify, etc, simply require the language module, then register it with
 `highlight.js`.
 
 ```javascript
 var hljs = require("highlight.js");
 var hljsHugo = require("hugo-html");
-hljs.registerLanguage("hugo-html", hljsHugo-Html);
+hljs.registerLanguage("hugo-html", hljsHugo);
 hljs.highlightAll();
+```
+
+### Example code
+
+Enclose your code in `<pre><code>` tags and at best set the language with `class="hugo-html"`. If you want to rely on
+auto detection, read the section about that below.
+
+
+Instead of `hugo-html` you can use the defined aliases: `hugo`.
+
+
+```html
+<pre><code class="hugo-html">
+<title>{{.Title}}</title>
+</code></pre>
 ```
 
 ## A word on auto detection
@@ -82,6 +98,9 @@ To be on the safe side specify the language you want for every code block.
 
   `IgnoreIllegals` default value is `false` since version 11. So this stops highlighting with the hugo module
 
+## Build your own
+
+The module works with the standard approach of [Highlight.js][] for custom builds. Check out their docs for details.
 
 ## License
 
@@ -93,7 +112,8 @@ This package is released under the MIT License. See [LICENSE](LICENSE) file for 
 
 ## Links
 
-Module Repository: [https://github.com/irkode/highlightjs-hugo-html]()
+- [hugo-html][] (this module)
+- [hugo-text][] (other module)
 
 ### Other references
 
@@ -102,5 +122,7 @@ Module Repository: [https://github.com/irkode/highlightjs-hugo-html]()
 - [Go HTML template](https://pkg.go.dev/html/template)
 - [Go TEXT template](https://pkg.go.dev/text/template)
 
+[hugo-html]: https://github.com/irkode/highlightjs-hugo-html
+[hugo-text]: https://github.com/irkode/highlightjs-hugo-text
 [Highlight.js]: https://highlightjs.org/
 [Hugo]: https://gohugo.io/

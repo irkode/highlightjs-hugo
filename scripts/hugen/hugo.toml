@@ -1,0 +1,47 @@
+language = "en-us"
+
+baseurl = "https://irkode.github.io/hugo4fun-highlightJS"
+title   = "Generate Highlight.js Javascript modules for Go/Hugo templates"
+
+#disableAliases = true
+disableKinds   = ['rss', 'sitemap', 'taxonomy', 'term']
+
+[params]
+  author = "Irkode <irkode@rikode.de>"
+  webroot = "https://irkode.github.io/hugo4fun-highlightJS"
+  reporoot = "https://github.com/irkode/"
+  repository = "https://github.com/irkode/hugo4fun-highlightJS"
+  category = "templates"
+  license = "MIT"
+
+# [permalinks]
+# [permalinks.page]
+#   extra = '/:slug'
+# [permalinks.section]
+#   extra = '/'
+
+[[cascade]]
+  # don't render/publish stuff in /functions
+  # don't render/publish stuff in /extra
+  [cascade.build]
+    list             = 'always'
+    publishResources = false
+    render           = 'never'
+  [cascade.target]
+    path = '{/functions,/functions/**}'
+
+[module]
+  # import function part of the documentation
+  [[module.mounts]]
+    source = 'content'
+    target = 'content'
+  [[module.mounts]]
+    source = "../../hugoDocs/content/en/functions"
+    target = "content/functions"
+  # don't fail on missing shortcodes
+  [[module.mounts]]
+    source = 'layouts'
+    target = 'layouts'
+  [[module.mounts]]
+    source = "../../hugoDocs/layouts/_shortcodes"
+    target = "layouts/_shortcodes"

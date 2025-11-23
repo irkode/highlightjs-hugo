@@ -1,0 +1,24 @@
+<span class="hljs-comment">{{/* literals */}}</span>
+<span class="hljs-template-tag">{{</span> <span class="hljs-literal">false</span> <span class="hljs-literal">nil</span> <span class="hljs-literal">true</span> <span class="hljs-template-tag">}}</span><span class="hljs-comment">
+{{/* keywords */}}</span>
+<span class="hljs-template-tag">{{</span> <span class="hljs-keyword">block</span> <span class="hljs-template-tag">}}</span>
+<span class="hljs-template-tag">{{</span> <span class="hljs-keyword">block</span> <span class="hljs-string">&quot;name&quot;</span> <span class="hljs-template-tag">}}</span>
+<span class="hljs-template-tag">{{</span> <span class="hljs-keyword">break</span> <span class="hljs-template-tag">}}</span>
+<span class="hljs-template-tag">{{</span> <span class="hljs-keyword">continue</span> <span class="hljs-template-tag">}}</span>
+<span class="hljs-template-tag">{{</span> <span class="hljs-keyword">define</span> <span class="hljs-template-tag">}}</span>
+<span class="hljs-template-tag">{{</span> <span class="hljs-keyword">define</span> <span class="hljs-string">&quot;name&quot;</span> <span class="hljs-template-tag">}}</span>
+<span class="hljs-template-tag">{{</span> <span class="hljs-keyword">else</span> <span class="hljs-template-tag">}}</span>
+<span class="hljs-template-tag">{{</span> <span class="hljs-keyword">end</span> <span class="hljs-template-tag">}}</span>
+<span class="hljs-template-tag">{{</span> <span class="hljs-keyword">if</span> <span class="hljs-template-tag">}}</span>
+<span class="hljs-template-tag">{{</span> <span class="hljs-keyword">range</span> <span class="hljs-template-tag">}}</span>
+<span class="hljs-template-tag">{{</span> <span class="hljs-keyword">return</span> <span class="hljs-template-tag">}}</span>
+<span class="hljs-template-tag">{{</span> <span class="hljs-keyword">template</span> <span class="hljs-template-tag">}}</span>
+<span class="hljs-template-tag">{{</span> <span class="hljs-keyword">template</span> <span class="hljs-string">&quot;name&quot;</span><span class="hljs-template-tag">}}</span>
+<span class="hljs-template-tag">{{</span> <span class="hljs-keyword">try</span> try <span class="hljs-template-tag">}}</span>
+<span class="hljs-template-tag">{{</span> <span class="hljs-built_in">urlquery</span> <span class="hljs-template-tag">}}</span>
+<span class="hljs-template-tag">{{</span> <span class="hljs-keyword">with</span> <span class="hljs-template-tag">}}</span><span class="hljs-comment">
+{{/* built_ins */}}</span>
+<span class="hljs-template-tag">{{</span> <span class="hljs-built_in">hugo.Generator</span> <span class="hljs-template-tag">}}</span>
+<span class="hljs-template-tag">{{</span> <span class="hljs-built_in">substr</span> <span class="hljs-template-tag">}}</span>
+<span class="hljs-template-tag">{{</span> <span class="hljs-built_in">strings.Substr</span> <span class="hljs-template-tag">}}</span>
+<span class="hljs-template-tag">{{</span> <span class="hljs-built_in">and</span> <span class="hljs-built_in">eq</span> else block with continue<span class="hljs-template-tag">}}</span>

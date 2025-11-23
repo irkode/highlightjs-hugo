@@ -40,39 +40,49 @@ We have some small problems here.
 * Autodetect Hugo may be unreliable if other plugins (handlebars, go templates) are installed.
 * The instance uses a selection box for the language in a code-block. But this only supports
   the registered languages and no alias. So we have to include hugo-html and hugo-text.
-* We are quite big cause all hugo functions are included and a two time installation will double ist.
+* We are quite large in size cause all hugo functions are included and a two time installation will double it.
   Using all available aliases raises that to three.
 
-## Use it like all the other plugins for Highligh.JS
+## Use it like all the other plugins for Highlight.JS
 
 If you have a running Discourse using Highlight.JS you may just
 * use our CDN plugins as you do with others.
 * build a custom Highligh.js variant containing our plugins as extra.
 
-In that case, only `hugo-text` and `hugo-html` are available the alias `hugo`will be missing.
-
 ### Use as Theme component
 
-We provide a special build which includes the header and footer for the official API and adds all three variants with shared code.
-
-After build we generate a special Discourse plugin, that combines the code for all three variants (two and the alias) to 
-one plugin with shared code. We additionally add the necessary API header and footer.
+We provide a special build which includes the header and footer for the official API but reuses common components.
+This will result in close to 50% smaller javascript size.
 
 Installation:
 * you must have Highlight.js configured in your Instance
 * create a new theme component
-* copy paste the content of our [plugins/hugo-discourse-plugin.js]() to tha JS section of your plugin. It looks like that one
-  ```javascript
-  import { apiInitializer } from "discourse/lib/api";
-
-  export default apiInitializer((api) => {
-  /*! hugo grammar compiled for Highlight.js 11.11.1 */
-  /* omitted the code of our plugin here for brevity */
-  api.registerHighlightJSLanguage("hugo", hugoLang(1));
-  api.registerHighlightJSLanguage("hugo-html", hugoLang(1));
-  api.registerHighlightJSLanguage("hugo-text", hugoLang(0));
-  });
-
-  That approach will show you all three variants in your code block language selection dropdown.
-  ```
+* copy paste the content of our [plugins/hugo-discourse-plugin.js]() to the JS section of your plugin.
 * if you want to style the special classes provided. Add your classes to the CSS part of the theme component.
+
+## License
+
+This package is released under the MIT License. See [LICENSE](LICENSE) file for details.
+
+### Author & Maintainer
+
+- Irkode <irkode@rikode.de>
+
+## Links
+
+Standard languages repositories for Highlight.js.
+
+- [hugo-html][]
+- [hugo-text][]
+
+### Other references
+
+- [Highlight.js][]
+- [Hugo][]
+- [Go HTML template](https://pkg.go.dev/html/template)
+- [Go TEXT template](https://pkg.go.dev/text/template)
+
+[hugo-html]: https://github.com/irkode/highlightjs-hugo-html
+[hugo-text]: https://github.com/irkode/highlightjs-hugo-text
+[Highlight.js]: https://highlightjs.org/
+[Hugo]: https://gohugo.io/

@@ -1,0 +1,74 @@
+{{- warnf "PARTIAL: %s" templates.Current.Name }}
+
+{{- /* load keyword definition of given language */ -}}
+{{- $lang := . }}
+
+{{- /* temporary storage for words ordered by scope and length */ -}}
+{{- $pad := newScratch }}
+
+{{- /* add fixed keywords for language */ -}}
+{{- $fixedWords := slice }}
+{{- $scopes := index (index site.Data.keywords $lang) "scopes" }}
+{{- range $scope, $words := $scopes }}
+  {{- $fixedWords = $fixedWords | append $words }}
+  {{- range $word := $words }}
+    {{- $len := len . | string }}
+    {{- with $pad.Get $scope }}
+      {{- with index . $len }}
+        {{- $pad.SetInMap $scope $len (append $word .) }}
+      {{- else }}
+        {{- $pad.SetInMap $scope $len (slice $word) }}
+      {{- end }}
+    {{- else }}
+      {{- $pad.SetInMap $scope $len (slice $word) }}
+    {{- end }}
+  {{- end }}
+{{- end }}
+{{ warnf "FIXED_WORDS: %s" (debug.Dump $fixedWords)}}
+
+{{- /* load hugo keywords from documentation pages */ -}}
+{{- if eq $lang "hugo" }}
+  {{- range $p := where site.RegularPages "Section" "functions" }}
+    {{- range $name := append .Title .Params.functions_and_methods.Aliases }}
+      {{- /* alias might be an array with empty words  */ -}}
+      {{- if eq 0 (len $name) }}
+        {{- warnf "empty name or alias at page: %s" $p.Path }}
+        {{- continue }}
+      {{- end }}
+      {{- /* fixed keywords already added to scope before */ -}}
+      {{- if in $fixedWords $name }}
+        {{- continue }}
+      {{- end }}
+      {{- $scope := "built_in" }}
+      {{- if eq $p.Parent.LinkTitle "go template" }}
+        {{- $scope = "keyword" }}
+      {{- else if strings.Contains $name "." }}
+        {{- $scope = "function"}}
+      {{- end }}
+
+      {{- $len := len $name | string }}
+      {{- with $pad.Get $scope }}
+        {{- with index . $len }}
+          {{- $pad.SetInMap $scope $len (append $name .) }}
+        {{- else }}
+          {{- $pad.SetInMap $scope $len (slice $name) }}
+        {{- end }}
+      {{- else }}
+        {{- $pad.SetInMap $scope $len (slice $name ) }}
+      {{- end }}
+    {{- end }}
+  {{- end }}
+{{- end }}
+
+{{- /* flatten the scratch pad to a map{scope: [words]} */ -}}
+{{- $keywords := dict }}
+{{- range $scope, $values := $pad.Values }}
+  {{- $names := slice }}
+  {{- /* collect all strings for the current scope and take longest strings first */ -}}
+  {{- range sort $values | collections.Reverse }}
+    {{- $names = $names | append (sort .)}}
+  {{- end }}
+  {{- $keywords = merge $keywords (dict $scope $names) }}
+{{- end }}
+{{- return $keywords }}
+{{- /* remove all trailing whitespace */ -}}
