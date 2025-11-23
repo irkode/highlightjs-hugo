@@ -25,4 +25,4 @@ begin:[t,/\s*/,/block|define|else\swith|else\s+if|range|return|template|try|with
 beginScope:{1:"template-tag",3:"keyword"},end:[s],endScope:{1:"template-tag"},
 contains:c},{begin:[t],beginScope:{1:"template-tag"},end:[s],endScope:{
 1:"template-tag"},contains:c}],vl={case_insensitive:!1,contains:vc};
-if (xml) { vl.subLanguage = ["xml"] }; return l.contains=c,vl; }};api.registerHighlightJSLanguage("hugo", hugoLang(1));api.registerHighlightJSLanguage("hugo-html", hugoLang(1));api.registerHighlightJSLanguage("hugo-text", hugoLang(0));});
+if (xml) { vl.subLanguage = ["xml"];vl.aliases=["hugo"] }; return l.contains=c,vl; }};api.registerHighlightJSLanguage("hugo-html", hugoLang(1));api.registerHighlightJSLanguage("hugo-text", hugoLang(0));});

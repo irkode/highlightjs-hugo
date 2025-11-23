@@ -1,7 +1,5 @@
 /*
 Language: highlightjs-hugo-html
-Requires: xml
-
 Author: Irkode <irkode@rikode.de>
 Description: Syntax highlighting for Hugo-Html templates.
 Website: https://irkode.github.io/hugo4fun-highlightJShighlightjs-hugo-html
@@ -135,8 +133,8 @@ export default function (hljs) {
     ];
   const languageDefinition = {
     name: 'highlightjs-hugo-html',
-    aliases: ["hugo"],
     case_insensitive: false,
+    aliases: ["hugo"],
     subLanguage: ["xml"],
     contains: mainContains
   };
