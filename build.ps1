@@ -30,7 +30,7 @@ function Exec {
   Write-Verbose $message
   if ($Passthru) {
     & $cmd @Arguments
-    if ($LastExitCode) { throw "OOPS" }
+    if ($LastExitCode) { throw $result }
   } else {
     $result = & $cmd @Arguments
     if ($LastExitCode) { throw $result }
@@ -65,7 +65,6 @@ function Test-Folder {
 
   )
   try {
-    Write-Verbose "Test-Folder: $Path - $ChildPath"
     $testPath = Join-Path $Path $ChildPath
     Write-Verbose "Test-Folder: $testPath"
     If ($TestPath) {
@@ -96,18 +95,20 @@ $ProgressPreference = 'SilentlyContinue'
 $VerboseGenerate = $PSBoundParameters.ContainsKey($VerboseGenerate)
 $startCWD = Get-Location
 try {
-  $ProjectRoot = Test-Folder $PSScriptRoot ".." -Verbose
+  $ProjectRoot = Test-Folder $PSScriptRoot
   $WorkDir = Test-Folder -Create $ProjectRoot "work"
+  $PublishDir = Test-Folder -Create $ProjectRoot "publish"
+  $PluginsDir = Test-Folder -Create $PublishDir "publish/plugins"
   # will be checked when first time needed
   $HugoDocsDir = Join-Path $ProjectRoot "hugoDocs"
-  $HighlightJsDir = Join-Path $ProjectRoot "highlight.js"
-  $HugoHtmlDir = Join-Path $ProjectRoot "hugo-html"
-  $HugoTextDir = Join-Path $ProjectRoot "hugo-text"
-  $PluginDir = Join-Path $ProjectRoot "plugins"
+  $HighlightJsDir = Join-Path $WorkDir "highlight.js"
+  $HugoHtmlDir = Join-Path $PublishDir "hugo-html"
+  $HugoTextDir = Join-Path $PublishDir "hugo-text"
 } catch {
   Write-Error "Failed to determine project folders" -ErrorAction Continue
   throw $_
 }
+# TODO: CONTINUE RENAMES
 Write-Verbose "ProjectRoot: $ProjectRoot"
 Write-Verbose "WorkDir: $WorkDir"
 
@@ -124,10 +125,14 @@ if ($HugoDocs -contains "SkipUpdate") {
   Write-Verbose "hugoDocs: update...SKIPPED"
 } else {
   try {
-    Write-Verbose "hugoDocs: update submodule"
-    Set-Location $HugoDocsDir
-    Invoke-Git -Passthru submodule update --remote
-    Invoke-Git -Passthru submodule status
+    Write-Verbose "hugoDocs: update submodule: $HugoDocsDir"
+    Set-Location $ProjectRoot
+    Invoke-Git -Passthru submodule update --remote hugoDocs
+    $updated = Invoke-Git -Passthru submodule status hugoDocs
+    if ($updated -match '^\+') {
+      Write-Warning "hugoDocs submodule updated, verify keywords!"
+      Invoke-Git add .\hugoDocs
+    }
   } catch {
     Write-Error "hugoDocs: update submodules failed" -ErrorAction SilentlyContinue
     throw "$_"
@@ -138,10 +143,39 @@ if ($HugoDocs -contains "SkipUpdate") {
 [void](Test-Folder $HugoDocsDir "content/en/functions")
 Write-Verbose "HugoDocsDir: $HugoDocsDir"
 
+$ReleaseSubmodulesChanged = $false
+try {
+  Write-Verbose "Verify Release Submodules for hugo-* have not changed"
+  Set-Location $ProjectRoot
+  Invoke-Git -Passthru submodule update --remote publish/hugo-html
+  $updated = Invoke-Git -Passthru submodule status publish/hugo-html
+  if ($updated -match '^\+') {
+    Write-Warning "publish/hugo-html submodule updated from outside!"
+    $ReleaseSubmodulesChanged = $true
+  }
+  Write-Verbose "Verify Release Submodules for hugo-* have not changed"
+  Set-Location $ProjectRoot
+  Invoke-Git -Passthru submodule update --remote publish/hugo-html
+  $updated = Invoke-Git -Passthru submodule status publish/hugo-text
+  if ($updated -match '^\+') {
+    Write-Warning "publish/hugo-text submodule updated from outside!"
+    $ReleaseSubmodulesChanged = $true
+  }
+} catch {
+  Write-Error "Hugo ReleaseModules: verification failed" -ErrorAction SilentlyContinue
+  throw "$_"
+} finally {
+  Set-Location $startCWD
+}
+if ($ReleaseSubmodulesChanged) {
+  Write-Error "Our Release Submodules are not up to date. check and update in case"
+}
+
 if ($HighlightJS -contains 'SkipClone') {
   Write-Verbose "HighlightJS: clone ...SKIPPED"
 } else {
   try {
+    Set-Location $WorkDir
     if (-Not (Test-Path $HighlightJsDir -PathType Container)) {
       Invoke-Git -void clone --single-branch --depth 1 "-b" $HighlightJsVersion https://github.com/highlightjs/highlight.js.git
     } else {
@@ -171,7 +205,7 @@ try {
 
 $needsInstall = $false
 try {
-  Test-Folder $HighlightJsDir -ChildPath "node_modules"
+  [void](Test-Folder $HighlightJsDir -ChildPath "node_modules")
 } catch {
   $needsInstall = $true
 }
@@ -209,7 +243,7 @@ if ($HighlightJs -contains 'SkipBuild') {
       }
     }
     Invoke-Node tools/build.js hugo-html hugo-text -t cdn
-    Invoke-Node tools/build.js hugo-html hugo-text -t cdn
+
   } catch {
     Write-Error "build Highlight.JS modules failed" -ErrorAction Continue
     throw $_
@@ -218,19 +252,47 @@ if ($HighlightJs -contains 'SkipBuild') {
   }
 }
 try {
-  $StyleTargetFolder = Test-Folder -Path $HighlightJsDir "build/styles"
-  $StyleSourceFile = Test-File -Path $ProjectRoot "scripts/hugen/assets/templates/src/styles/debug-h4h.css"
+  try {
+    Write-Verbose "Rebuild Highlight.js for testing"
+    Set-Location $HighlightJsDir
+    Invoke-Node  tools/build.js -n hugo-html hugo-text xml
+  } catch {
+    Write-Error "running test build failed" -ErrorAction Continue
+    throw $_
+  } finally {
+    Set-Location $startCWD
+  }
+  $StyleTargetFolder = Test-Folder -Path $HighlightJsDir "src/styles"
+  $StyleSourceFile = Test-File -Path $ProjectRoot "scripts/hugen/assets/templates/src/styles/debug-hugo.css"
   $DeveloperHtmlFile = Test-File -Path $HighlightJsDir "tools/developer.html"
   Write-Verbose "Add custom CSS style and patch developer.html - use it from work/developer.html"
   # add custom debugging style
   Copy-Item -Force $StyleSourceFile $StyleTargetFolder
-  & node $ProjectRoot/scripts/gen_style-options.js
+  $styleSheets = (Get-ChildItem $StyleTargetFolder *.css | %{ "'$($_.Name)'" }) -join ','
+  #$cssBase16Files = Get-ChildItem $StyleTargetFolder *.css
+  $JsOptions = @"
+const cssOptions = [${stylesheets}];
+const selectElement = document.querySelector('.theme');
+selectElement.innerHTML = '';
+cssOptions.forEach(css => {
+  const opt = document.createElement('option');
+  opt.textContent = css;
+  selectElement.appendChild(opt);
+});
+
+"@
+
+  $JsOptions | Set-Content -Encoding utf8 -NoNewline (Join-Path $WorkDir style-options.js)
+
+#  & node $ProjectRoot/scripts/gen_style-options.js
     $devhtml = Get-Content -Raw -Encoding utf8 $DeveloperHtmlFile
-    $devhtml = $devhtml -replace '(?s)(<select class="theme">.*?</select>)', '$1<script src="../work/style-options.js"></script>'
+    $devhtml = $devhtml -replace '(?s)(<select class="theme">.*?</select>)', '$1<script src="style-options.js"></script>'
     $devhtml = $devhtml.Replace(
-      "../src/styles/", "../highlight.js/build/styles/").Replace(
-      "../build/", "../highlight.js/build/").Replace(
-      "vendor/", "../highlight.js/tools/vendor/"
+      "../src/styles/", "highlight.js/src/styles/").Replace(
+      "../build/", "highlight.js/build/").Replace(
+      "vendor/", "highlight.js/tools/vendor/").Replace(
+      'default.css"', 'debug-hugo.css"').Replace(
+      "'default.css'", "'debug-hugo.css'"
     )
     ($devhtml -join "`n") | Set-Content -Encoding utf8 -NoNewline (Join-Path $WorkDir developer.html)
 } catch {
@@ -240,6 +302,7 @@ try {
   Set-Location $startCWD
 }
 
+exit
 try {
   Set-Location $startCWD
   $PluginSourceFolder = Test-Folder $HighlightJsExtraDir "hugo-text\dist"
@@ -270,7 +333,7 @@ if ($HugoModules -contains 'Install') {
   try {
     Write-Verbose "Publish generated Files to Release Folders"
     Set-Location $WorkDir # Safety
-    Copy-Item -Recurse -Force "$HighlightJsExtraDir/plugins/*" $PluginDir
+    Copy-Item -Recurse -Force "$HighlightJsExtraDir/plugins/*" $PluginsDir
     Copy-Item -Recurse -Force "$HighlightJsExtraDir/hugo-html/*" $HugoHtmlDir
     Copy-Item -Recurse -Force "$HighlightJsExtraDir/hugo-text/*" $HugoTextDir
   #  Invoke-Git status

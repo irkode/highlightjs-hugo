@@ -1,6 +1,6 @@
 {{- warnf "template %s - %s" .Path templates.Current.Name }}
 {{- /* create reference documents */}}
-{{- range slice "css-class-reference.md" "LICENSE" "package.json" "README.md" "src/styles/debug-h4h.css"}}
+{{- range slice "css-class-reference.md" "LICENSE" "package.json" "README.md" "src/styles/debug-hugo.css"}}
   {{- partial "create-and-publish" (dict "source" . "page" $) }}
 {{- end }}
 {{- /* copy page resources */ -}}
