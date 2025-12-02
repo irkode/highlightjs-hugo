@@ -35,9 +35,9 @@
   {{- $target := $r.Name | replaceRE $basePattern $page.Path }}
   {{- with $r | resources.Copy $target }}
     {{- $noop := .RelPermalink }}
-    {{- warnf "COPY resource: from '%s' to '%s'" $r.Name $target -}}
+    {{- warnf "COPY resource: from 'assets/%s' to '%s'" $r.Name $target -}}
   {{- else }}
-    {{- errorf "failed to copy resource from '%s' to '%s'" $r.Name $target }}
+    {{- errorf "failed to copy resource from 'assets/%s' to '%s'" $r.Name $target }}
   {{- end }}
 {{- end }}
 {{- /* remove all trailing whitespace */ -}}

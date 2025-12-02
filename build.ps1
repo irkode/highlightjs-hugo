@@ -8,35 +8,26 @@ param(
   [Parameter(Mandatory = $false)][string]$HighlightJsVersion = "11.11.1"
 )
 
-function Exec {
-  [Alias('Invoke-Git', 'Invoke-Npm', 'Invoke-Node', "Invoke-Hugo")]
-  param(
-    [Parameter(Mandatory=$false)][switch]$Void,
-    [Parameter(Mandatory=$false)][switch]$Passthru,
-    [Parameter(ValueFromRemainingArguments)][string[]]$Arguments
-  )
-  $cmd = switch ($MyInvocation.InvocationName) {
-    'Invoke-Git' { "git"; break }
-    'Invoke-Hugo' { "hugo"; break }
-    'Invoke-Npm' { "npm"; break }
-    'Invoke-Node' { "node"; break }
-    'Exec' { throw "Exec cannot be called directly. Use the defined aliases to execute a command" }
-    default {
-      throw "Unknown aliased command: $($MyInvocation.InvocationName)"
+function exec {
+  Write-Verbose "exec > $($args -join ' ')"
+  $rc = 0; $throwed = $false
+  try {
+    Invoke-Expression ($args -join " ")
+    $rc = $LASTEXITCODE
+  } catch {
+    $throwed = $_
+  } finally {
+    if ($throwed) {
+      $line = $MyInvocation.ScriptLineNumber
+      $file = Split-Path -Leaf $MyInvocation.ScriptName
+      Write-Error "[${file}:${line}] EXEC throwed: $throwed" -ErrorAction Stop
+    } elseif ($rc) {
+      $line = $MyInvocation.ScriptLineNumber
+      $file = Split-Path -Leaf $MyInvocation.ScriptName
+      if ($rc -ge 128) { $rc -= 128 }
+      Write-Error "[${file}:${line}] EXEC failed with [RC:$rc] : [ $args ]" -ErrorAction Stop
     }
   }
-  if ($Silent) { $Arguments += "--noprogress" }
-  $message = "exec> $cmd $Arguments"
-  Write-Verbose $message
-  if ($Passthru) {
-    & $cmd @Arguments
-    if ($LastExitCode) { throw $result }
-  } else {
-    $result = & $cmd @Arguments
-    if ($LastExitCode) { throw $result }
-    if (-not $Void) { return $result }
-  }
-  if ($LastExitCode) { throw $result }
 }
 
 function Test-File {
@@ -90,6 +81,7 @@ function Test-Folder {
   }
 }
 
+#$OutputEncoding = [System.Text.Encoding]::UTF8
 $ErrorActionPreference = 'Stop'
 $ProgressPreference = 'SilentlyContinue'
 $VerboseGenerate = $PSBoundParameters.ContainsKey($VerboseGenerate)
@@ -97,13 +89,13 @@ $startCWD = Get-Location
 try {
   $ProjectRoot = Test-Folder $PSScriptRoot
   $WorkDir = Test-Folder -Create $ProjectRoot "work"
-  $PublishDir = Test-Folder -Create $ProjectRoot "publish"
-  $PluginsDir = Test-Folder -Create $PublishDir "publish/plugins"
-  # will be checked when first time needed
-  $HugoDocsDir = Join-Path $ProjectRoot "hugoDocs"
   $HighlightJsDir = Join-Path $WorkDir "highlight.js"
+  $PublishDir = Test-Folder -Create $ProjectRoot "publish"
+  $PluginsDir = Test-Folder -Create $PublishDir "plugins"
   $HugoHtmlDir = Join-Path $PublishDir "hugo-html"
   $HugoTextDir = Join-Path $PublishDir "hugo-text"
+  # hugo docs will only be updated on local machine
+  $HugoDocsDir = Join-Path $ProjectRoot "hugoDocs"
 } catch {
   Write-Error "Failed to determine project folders" -ErrorAction Continue
   throw $_
@@ -127,11 +119,11 @@ if ($HugoDocs -contains "SkipUpdate") {
   try {
     Write-Verbose "hugoDocs: update submodule: $HugoDocsDir"
     Set-Location $ProjectRoot
-    Invoke-Git -Passthru submodule update --remote hugoDocs
-    $updated = Invoke-Git -Passthru submodule status hugoDocs
+    exec git submodule update --remote hugoDocs
+    $updated = exec git submodule status hugoDocs
     if ($updated -match '^\+') {
       Write-Warning "hugoDocs submodule updated, verify keywords!"
-      Invoke-Git add .\hugoDocs
+      exec git add .\hugoDocs
     }
   } catch {
     Write-Error "hugoDocs: update submodules failed" -ErrorAction SilentlyContinue
@@ -147,16 +139,16 @@ $ReleaseSubmodulesChanged = $false
 try {
   Write-Verbose "Verify Release Submodules for hugo-* have not changed"
   Set-Location $ProjectRoot
-  Invoke-Git -Passthru submodule update --remote publish/hugo-html
-  $updated = Invoke-Git -Passthru submodule status publish/hugo-html
+  exec git submodule update --remote publish/hugo-html
+  $updated = exec git submodule status publish/hugo-html
   if ($updated -match '^\+') {
     Write-Warning "publish/hugo-html submodule updated from outside!"
     $ReleaseSubmodulesChanged = $true
   }
   Write-Verbose "Verify Release Submodules for hugo-* have not changed"
   Set-Location $ProjectRoot
-  Invoke-Git -Passthru submodule update --remote publish/hugo-html
-  $updated = Invoke-Git -Passthru submodule status publish/hugo-text
+  exec git submodule update --remote publish/hugo-html
+  $updated = exec git submodule status publish/hugo-text
   if ($updated -match '^\+') {
     Write-Warning "publish/hugo-text submodule updated from outside!"
     $ReleaseSubmodulesChanged = $true
@@ -177,7 +169,7 @@ if ($HighlightJS -contains 'SkipClone') {
   try {
     Set-Location $WorkDir
     if (-Not (Test-Path $HighlightJsDir -PathType Container)) {
-      Invoke-Git -void clone --single-branch --depth 1 "-b" $HighlightJsVersion https://github.com/highlightjs/highlight.js.git
+      exec git clone --single-branch --depth 1 "-b" $HighlightJsVersion https://github.com/highlightjs/highlight.js.git
     } else {
       Write-Verbose "HighlightJS: keep current clone. To fresh up remove $HighLightJsDir"
     }
@@ -195,7 +187,7 @@ Write-Verbose "HighlightJsExtraDir: $HighlightJsExtraDir"
 try {
   Write-Verbose "highlightjs-hugo: Generate HLJS plugins to $HighlightJsExtraDir"
   Set-Location (Join-Path $ProjectRoot "scripts/hugen")
-  Invoke-Hugo -Passthru "-d" $HighlightJsExtraDir
+  exec hugo -d $HighlightJsExtraDir
 } catch {
   Write-Error "highlightjs-hugo: generate HIGHLIGHT.JS plugins failed" -ErrorAction SilentlyContinue
   throw "$_"
@@ -213,8 +205,10 @@ if ($NeedsInstall -or ($HighlightJS -contains 'Setup')) {
   try {
     Write-Verbose "Starting from $HighlightJsDir"
     Set-Location $HighlightJsDir
-    Invoke-Npm install --save-dev
-    Invoke-Npm audit fix
+    npm install --save-dev
+    if ($LASTEXITCODE) { throw $_}
+    npm audit fix
+    if ($LASTEXITCODE) { throw $_}
   } finally {
     Set-Location $startCWD
   }
@@ -228,10 +222,10 @@ if ($HighlightJs -contains 'SkipBuild') {
   try {
     Set-Location $HighlightJsDir
     $ENV:ONLY_EXTRA = 'true'
-    Invoke-Npm -Verbose run build
+    exec npm run build
     if (-not ($HighlightJs -contains 'SkipTests')) {
       try {
-        Invoke-Npm -Passthru -Verbose run test-markup
+        exec npm run test-markup
       } catch {
         if ($LastExitCode) {
           if (-not $IgnoreMarkupErrors) {
@@ -242,8 +236,7 @@ if ($HighlightJs -contains 'SkipBuild') {
         }
       }
     }
-    Invoke-Node tools/build.js hugo-html hugo-text -t cdn
-
+    exec node tools/build.js hugo-html hugo-text -t cdn
   } catch {
     Write-Error "build Highlight.JS modules failed" -ErrorAction Continue
     throw $_
@@ -251,17 +244,38 @@ if ($HighlightJs -contains 'SkipBuild') {
     Set-Location $startCWD
   }
 }
+
 try {
-  try {
-    Write-Verbose "Rebuild Highlight.js for testing"
-    Set-Location $HighlightJsDir
-    Invoke-Node  tools/build.js -n hugo-html hugo-text xml
-  } catch {
-    Write-Error "running test build failed" -ErrorAction Continue
-    throw $_
-  } finally {
-    Set-Location $startCWD
-  }
+  Set-Location $startCWD
+  $PluginSourceFolder = Test-Folder $HighlightJsExtraDir "hugo-text\dist"
+  $PluginTargetFolder = Test-Folder $HighlightJsExtraDir "plugins\discourse"
+  & "$ProjectRoot\scripts\build-discourse-plugin.ps1" $PluginSourceFolder $PluginTargetFolder
+  [void](Test-File $PluginTargetFolder "hugo-discourse-plugin.js")
+} catch {
+  Write-Error "Generation of Discourse Plugin failed" -ErrorAction Continue
+  throw $_
+} finally {
+  Set-Location $startCWD
+}
+
+try {
+  Set-Location $startCWD
+  $PluginSourceFolder = Test-Folder $HighlightJsExtraDir "hugo-html\dist"
+  $PluginTargetFolder = Test-Folder $HighlightJsExtraDir "plugins\highlightjs"
+  & "$ProjectRoot\scripts\build-highlightjs-plugin.ps1" $PluginSourceFolder $PluginTargetFolder
+  [void](Test-File $PluginTargetFolder "hugo-highlightjs-plugin.js")
+} catch {
+  Write-Error "Generation of HighlighJS Plugin failed" -ErrorAction Continue
+  throw $_
+} finally {
+  Set-Location $startCWD
+}
+
+try {
+  Write-Verbose "Rebuild Highlight.js for testing"
+  Set-Location $HighlightJsDir
+  exec node tools/build.js -n hugo-html hugo-text xml
+
   $StyleTargetFolder = Test-Folder -Path $HighlightJsDir "src/styles"
   $StyleSourceFile = Test-File -Path $ProjectRoot "scripts/hugen/assets/templates/src/styles/debug-hugo.css"
   $DeveloperHtmlFile = Test-File -Path $HighlightJsDir "tools/developer.html"
@@ -284,46 +298,17 @@ cssOptions.forEach(css => {
 
   $JsOptions | Set-Content -Encoding utf8 -NoNewline (Join-Path $WorkDir style-options.js)
 
-#  & node $ProjectRoot/scripts/gen_style-options.js
-    $devhtml = Get-Content -Raw -Encoding utf8 $DeveloperHtmlFile
-    $devhtml = $devhtml -replace '(?s)(<select class="theme">.*?</select>)', '$1<script src="style-options.js"></script>'
-    $devhtml = $devhtml.Replace(
-      "../src/styles/", "highlight.js/src/styles/").Replace(
-      "../build/", "highlight.js/build/").Replace(
-      "vendor/", "highlight.js/tools/vendor/").Replace(
-      'default.css"', 'debug-hugo.css"').Replace(
-      "'default.css'", "'debug-hugo.css'"
-    )
-    ($devhtml -join "`n") | Set-Content -Encoding utf8 -NoNewline (Join-Path $WorkDir developer.html)
+  $devhtml = Get-Content -Raw -Encoding utf8 $DeveloperHtmlFile
+  $devhtml = $devhtml -replace '(?s)(<select class="theme">.*?</select>)', '$1<script src="style-options.js"></script>'
+  $devhtml = $devhtml.Replace(
+    "../src/styles/", "highlight.js/src/styles/").Replace(
+    "../build/", "highlight.js/build/").Replace(
+    "vendor/", "highlight.js/tools/vendor/").Replace(
+    'default.css"', 'debug-hugo.css"').Replace(
+    "'default.css'", "'debug-hugo.css'"
+  )
+  ($devhtml -join "`n") | Set-Content -Encoding utf8 -NoNewline (Join-Path $WorkDir developer.html)
 } catch {
-  Write-Error "install extra CSS failed" -ErrorAction Continue
-  throw $_
-} finally {
-  Set-Location $startCWD
-}
-
-exit
-try {
-  Set-Location $startCWD
-  $PluginSourceFolder = Test-Folder $HighlightJsExtraDir "hugo-text\dist"
-  $PluginTargetFolder = Test-Folder $HighlightJsExtraDir "plugins\discourse"
-  & "$ProjectRoot\scripts\build-discourse-plugin.ps1" $PluginSourceFolder $PluginTargetFolder -ProjectRoot $ProjectRoot
-  [void](Test-File $PluginTargetFolder "hugo-discourse-plugin.js")
-} catch {
-  Write-Error "Generation of Discourse Plugin failed" -ErrorAction Continue
-  throw $_
-} finally {
-  Set-Location $startCWD
-}
-
-try {
-  Set-Location $startCWD
-  $PluginSourceFolder = Test-Folder $HighlightJsExtraDir "hugo-html\dist"
-  $PluginTargetFolder = Test-Folder $HighlightJsExtraDir "plugins\highlightjs"
-  & "$ProjectRoot\scripts\build-highlightjs-plugin.ps1" $PluginSourceFolder $PluginTargetFolder -ProjectRoot $ProjectRoot
-  [void](Test-File $PluginTargetFolder "hugo-highlightjs-plugin.js")
-} catch {
-  Write-Error "Generation of HighlighJS Plugin failed" -ErrorAction Continue
   throw $_
 } finally {
   Set-Location $startCWD
@@ -332,13 +317,19 @@ try {
 if ($HugoModules -contains 'Install') {
   try {
     Write-Verbose "Publish generated Files to Release Folders"
-    Set-Location $WorkDir # Safety
+    Set-Location $PluginsDir -ErrorAction Stop # Safety
+    gci -Force . -Exclude .git* | Remove-Item -Recurse -Force
     Copy-Item -Recurse -Force "$HighlightJsExtraDir/plugins/*" $PluginsDir
-    Copy-Item -Recurse -Force "$HighlightJsExtraDir/hugo-html/*" $HugoHtmlDir
+
+    Set-Location $HugoTextDir -ErrorAction Stop # Safety
+    gci -Force . -Exclude .git* | Remove-Item -Recurse -Force
     Copy-Item -Recurse -Force "$HighlightJsExtraDir/hugo-text/*" $HugoTextDir
-  #  Invoke-Git status
+
+    Set-Location $HugoHtmlDir -ErrorAction Stop # Safety
+    gci -Force . -Exclude .git* | Remove-Item -Recurse -Force
+    Copy-Item -Recurse -Force "$HighlightJsExtraDir/hugo-html/*" $HugoHtmlDir
   } catch {
-    Write-Error "HighlightJsHugo: failed to get list of changes" -ErrorAction SilentlyContinue
+    Write-Error "Installing to $PublisDir failed" -ErrorAction SilentlyContinue
     throw "$_"
   } finally {
     Set-Location $startCWD
