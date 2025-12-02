@@ -2,17 +2,18 @@
 param()
 $Script:VersionFailedTest = $false
 $Versions = Get-Content -Raw -Path '.versions.json' | ConvertFrom-Json -AsHashtable
+$VersionTestFailed = $false
 $Versions.Keys | ForEach-Object {
   if ($_.StartsWith('!')) {
     $key = $_.Replace('!', '')
+    $wantedVersion = [System.Environment]::GetEnvironmentVariable($($key.ToUpper() + "_VERSION"))
     if (Get-Command $key -ErrorAction SilentlyContinue) {
       $installedVersion = switch ($key) {
         "go" { $(go version) -replace '^.*go(\d+\.\d+\.\d+).*$', '$1'; break }
-        "hugo" { $(hugo version) -replace '^.*hugo v(\d+\.\d+\.\d+).*$', '$1'; break }
+        "hugo" { $(hugo.exe version) -replace '^.*hugo v(\d+\.\d+\.\d+).*$', '$1'; break }
         "node" { $(node --version) -replace '^v(.*)$', '$1'; break }
         default { throw "unsupported executable: $key" }
       }
-      $wantedVersion = [System.Environment]::GetEnvironmentVariable($($key.ToUpper() + "_VERSION"))
       if ($installedVersion -ne $wantedVersion) {
         Write-Verbose ("FAIL: {0,-8} version is {1,10} but we want {2,10}" -f $key, $installedVersion, $wantedVersion)
         $Script:VersionTestFailed = $true
