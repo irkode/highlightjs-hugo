@@ -13,11 +13,6 @@ try {
   $TargetFolder = Resolve-Path -ErrorAction Stop $TargetFolder
   $TargetPath = Join-Path $TargetFolder $TargetFile
 
-  if ($ProjectRoot) {
-    Write-Verbose "Generate Discourse Plugin from $($SourcePath.Replace($ProjectRoot, '')) to $($TargetPath.Replace($ProjectRoot, ''))"
-  } else {
-    Write-Verbose "Generate Discourse Plugin from $SourcePath to $TargetPath"
-  }
   $plugin = Get-Content -Raw -Encoding utf8 "$SourcePath"
   $discourseHeaderPattern = ("(?s)" + [regex]::Escape('(()=>{var e=(()=>{"use strict";return e=>{') + '\s*const')
   $discourseReturnLangPattern = "(?s);(return l\.contains=c,)(.*?)(\s*contains:)(\[e\.COMMENT.*,contains:c)(.*)"

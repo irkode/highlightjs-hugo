@@ -1,8 +1,10 @@
 [CmdLetBinding()]
-param()
-$Script:VersionFailedTest = $false
-$Versions = Get-Content -Raw -Path '.versions.json' | ConvertFrom-Json -AsHashtable
+param(
+    [Parameter(Mandatory=$true)][String]$VersionConfigFile = ".versions.json"
+)
 $VersionTestFailed = $false
+[void](Test-Path $VersionConfigFile -ErrorAction Stop)
+$Versions = Get-Content -Raw -Path $VersionConfigFile | ConvertFrom-Json -AsHashtable
 $Versions.Keys | ForEach-Object {
   if ($_.StartsWith('!')) {
     $key = $_.Replace('!', '')
@@ -10,7 +12,7 @@ $Versions.Keys | ForEach-Object {
     if (Get-Command $key -ErrorAction SilentlyContinue) {
       $installedVersion = switch ($key) {
         "go" { $(go version) -replace '^.*go(\d+\.\d+\.\d+).*$', '$1'; break }
-        "hugo" { $(hugo.exe version) -replace '^.*hugo v(\d+\.\d+\.\d+).*$', '$1'; break }
+        "hugo" { $(hugo version) -replace '^.*hugo v(\d+\.\d+\.\d+).*$', '$1'; break }
         "node" { $(node --version) -replace '^v(.*)$', '$1'; break }
         default { throw "unsupported executable: $key" }
       }

@@ -13,12 +13,6 @@ try {
   $TargetFolder = Resolve-Path -ErrorAction Stop $TargetFolder
   $TargetPath = Join-Path $TargetFolder $TargetFile
 
-  if ($ProjectRoot) {
-    Write-Verbose "Generate HighlightJS Plugin from $($SourcePath.Replace($ProjectRoot, '')) to $($TargetPath.Replace($ProjectRoot, ''))"
-  } else {
-    Write-Verbose "Generate HighlightJS Plugin from $SourcePath to $TargetPath"
-  }
-
   $plugin = Get-Content -Raw -Encoding utf8 "$SourcePath"
   $HighlightJSEndPattern = [regex]::Escape('})();') + '\s*$'
   $HighlightJSReplacement = ';var e1 = function(hljs){  var def = e(hljs) || {};' +
@@ -31,7 +25,6 @@ try {
 
   $plugin = $plugin -replace $HighlightJSEndPattern, $HighlightJSReplacement
 
-  Write-Verbose "Writing to $TargetPath"
   $plugin | Set-Content -Encoding utf8 $TargetPath -Force -NoNewline
   [void](Test-Path -PathType Leaf $TargetPath -ErrorAction Stop)
 } catch {

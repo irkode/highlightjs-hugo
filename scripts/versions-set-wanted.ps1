@@ -1,8 +1,9 @@
 [CmdLetBinding()]
-param()
-$Script:VersionFailedTest = $false
-[void](Test-Path ./.versions.json -ErrorAction Stop)
-$Versions = Get-Content -Raw -Path ./.versions.json | ConvertFrom-Json -AsHashtable
+param(
+  [Parameter(Mandatory=$true)][String]$VersionConfigFile = ".versions.json"
+)
+[void](Test-Path $VersionConfigFile -ErrorAction Stop)
+$Versions = Get-Content -Raw -Path $VersionConfigFile | ConvertFrom-Json -AsHashtable
 $Versions.Keys | ForEach-Object {
   $key = $_.Replace('!', '')
   $envVarName = $key.ToUpper() + '_VERSION'
