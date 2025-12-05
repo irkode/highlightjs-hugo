@@ -1,9 +1,3 @@
 [submodule "hugoDocs"]
 	path = hugoDocs
 	url = https://github.com/gohugoio/hugoDocs.git
-[submodule "highlightjs/hugo-text"]
-	path = publish/hugo-text
-	url = https://github.com/irkode/highlightjs-hugo-text.git
-[submodule "highlightjs/hugo-html"]
-	path = publish/hugo-html
-	url = https://github.com/irkode/highlightjs-hugo-html.git
