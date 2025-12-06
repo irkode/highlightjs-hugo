@@ -163,7 +163,7 @@ jobs:
           "=======================" | Out-Host
           tree /f ${{env.PLUGINS_DIR}}
           "=======================" | Out-Host
-          tree /f ${{env.PLUGINS_DIR}}
+          tree /f ${{ env.HIGHLIGHTJS_DIR }}/extra/
           "=======================" | Out-Host
 
       # - name: Add Changes and commit
