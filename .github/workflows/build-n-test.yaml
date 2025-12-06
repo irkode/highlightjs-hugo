@@ -47,7 +47,7 @@ jobs:
       - name: Set Tool Versions
         working-directory: ${{ github.workspace }}
         run: |
-          ./scripts/versions-set-wanted.ps1 -VersionConfigFile .versions.json
+          ./scripts/versions-set-wanted.ps1 -Verbose -VersionConfigFile .versions.json
 
       - name: Setup Node.js
         uses: actions/setup-node@v6
@@ -87,7 +87,7 @@ jobs:
       - name: Check Versions
         working-directory: ${{ github.workspace }}
         run: |
-          scripts/versions-check-installed.ps1 -Verbose
+          ./scripts/versions-check-installed.ps1 -Verbose -VersionConfigFile .versions.json
 
       # SETUP Highlight.js (clone, npm ci - cache - save folder path)
       - name: Cache Highlight.js clone and dependencies
