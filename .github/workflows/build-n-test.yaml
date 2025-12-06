@@ -126,9 +126,9 @@ jobs:
         working-directory: ${{ env.HIGHLIGHTJS_DIR }}
         run: |
           Set-Location ${{ env.HIGHLIGHTJS_DIR }}/extra/hugo-html
-          GetChildItem . -Force -Exclude .git | remove-Item -Force -Recurse
+          Get-ChildItem . -Force -Exclude .git | remove-Item -Force -Recurse
           Set-Location ${{ env.HIGHLIGHTJS_DIR }}/extra/hugo-text
-          GetChildItem . -Force -Exclude .git | remove-Item -Force -Recurse
+          Get-ChildItem . -Force -Exclude .git | remove-Item -Force -Recurse
 
       - name: Generate Custom Modules
         working-directory: scripts/hugen
@@ -158,8 +158,13 @@ jobs:
           Set-Location ${{ env.HIGHLIGHTJS_DIR }}/extra/hugo-html
           git status
           Set-Location ${{ env.HIGHLIGHTJS_DIR }}/extra/hugo-text
+          "=======================" | Out-Host
           git status
+          "=======================" | Out-Host
           tree /f ${{env.PLUGINS_DIR}}
+          "=======================" | Out-Host
+          tree /f ${{env.PLUGINS_DIR}}
+          "=======================" | Out-Host
 
       # - name: Add Changes and commit
       #   working-directory: ${{ github.workspace }}/publish
