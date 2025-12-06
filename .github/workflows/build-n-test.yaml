@@ -110,14 +110,14 @@ jobs:
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.PUBLISH_TOKEN }}
-          repository: https://github.com/irkode/highlightjs-hugo-html.git
+          repository: irkode/highlightjs-hugo-html.git
           path: ${{ env.HIGHLIGHTJS_DIR }}/extra/hugo-html
 
       - name: Checkout highlightjs-hugo-text repository
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.PUBLISH_TOKEN }}
-          repository: https://github.com/irkode/highlightjs-hugo-html.git
+          repository: irkode/highlightjs-hugo-html.git
           path: ${{ env.HIGHLIGHTJS_DIR }}/extra/hugo-text
 
       - name: Clean for fresh build
