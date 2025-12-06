@@ -39,7 +39,7 @@ jobs:
 
     steps:
       - name: Checkout highlightjs-hugo repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           token: ${{ secrets.PUBLISH_TOKEN }}
           submodules: "true"
@@ -107,18 +107,20 @@ jobs:
           Write-Host "Highlight.js version folder ready at: ${env:HIGHLIGHTJS_DIR}"
 
       - name: Checkout highlightjs-hugo-html repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           token: ${{ secrets.PUBLISH_TOKEN }}
           repository: irkode/highlightjs-hugo-html.git
-          path: ${{ env.HIGHLIGHTJS_DIR }}/extra/hugo-html
+          ref: main
+          path: work/highlight.js/extra/hugo-html
 
       - name: Checkout highlightjs-hugo-text repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           token: ${{ secrets.PUBLISH_TOKEN }}
           repository: irkode/highlightjs-hugo-html.git
-          path: ${{ env.HIGHLIGHTJS_DIR }}/extra/hugo-text
+          ref: main
+          path: work/highlight.js/extra/hugo-text
 
       - name: Clean for fresh build
         working-directory: ${{ env.HIGHLIGHTJS_DIR }}
