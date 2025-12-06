@@ -118,7 +118,7 @@ jobs:
         uses: actions/checkout@v6
         with:
           token: ${{ secrets.PUBLISH_TOKEN }}
-          repository: irkode/highlightjs-hugo-html.git
+          repository: irkode/highlightjs-hugo-text.git
           ref: main
           path: work/highlight.js/extra/hugo-text
 
@@ -140,7 +140,7 @@ jobs:
         run: |
           npm run build
           npm run test-markup
-          node ./tools/build.js hugo-text hugo-text -t cdn
+          node ./tools/build.js hugo-html hugo-text -t cdn
 
       - name: Build Discourse plugin
         working-directory: ${{ github.workspace }}
@@ -155,10 +155,11 @@ jobs:
       - name: Update Hugo-Html Publish
         working-directory: ${{ env.HIGHLIGHTJS_DIR }}/extra
         run: |
+          "=======================" | Out-Host
           Set-Location ${{ env.HIGHLIGHTJS_DIR }}/extra/hugo-html
           git status
-          Set-Location ${{ env.HIGHLIGHTJS_DIR }}/extra/hugo-text
           "=======================" | Out-Host
+          Set-Location ${{ env.HIGHLIGHTJS_DIR }}/extra/hugo-text
           git status
           "=======================" | Out-Host
           tree /f ${{env.PLUGINS_DIR}}
