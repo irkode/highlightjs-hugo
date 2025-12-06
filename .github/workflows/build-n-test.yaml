@@ -44,16 +44,6 @@ jobs:
           token: ${{ secrets.PUBLISH_TOKEN }}
           submodules: "true"
 
-      - name: Un-detach submodules and check out main
-        run: |
-          Set-Location ${{env.HUGO_TEXT_DIR}}
-          git checkout main
-          git pull --ff-only origin $default || Write-Host "Could not fast-forward $s (it may be behind or have local changes)"
-
-          Set-Location ${{env.HUGO_HTML_DIR}}
-          git checkout main
-          git pull --ff-only origin $default || Write-Host "Could not fast-forward $s (it may be behind or have local changes)"
-
       - name: Set Tool Versions
         run: |
           ./scripts/versions-set-wanted.ps1 -Verbose
@@ -88,7 +78,7 @@ jobs:
           Invoke-WebRequest -Uri $url -OutFile $archiveName
           Expand-Archive -Path $archiveName -DestinationPath ${{ github.workspace }}/work/bin -Force
           Remove-Item $archiveName
-      
+
       - name: Add Hugo to Path
         run: |
           "${{ github.workspace }}/work/bin/" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
@@ -115,10 +105,31 @@ jobs:
           npm audit fix
           Write-Host "Highlight.js version folder ready at: ${env:HIGHLIGHTJS_DIR}"
 
+      - name: Checkout highlightjs-hugo-html repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.PUBLISH_TOKEN }}
+          repository: https://github.com/irkode/highlightjs-hugo-html.git
+          path: ${{ env.HIGHLIGHTJS_DIR }}/extra/hugo-html
+
+      - name: Checkout highlightjs-hugo-text repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.PUBLISH_TOKEN }}
+          repository: https://github.com/irkode/highlightjs-hugo-html.git
+          path: ${{ env.HIGHLIGHTJS_DIR }}/extra/hugo-text
+
+      - name: Clean for fresh build
+        working-directory: ${{ env.HIGHLIGHTJS_DIR }}
+        run: |
+          Set-Location ${{ env.HIGHLIGHTJS_DIR }}/extra/hugo-html
+          GetChildItem . -Force -Exclude .git | remove-Item -Force -Recurse
+          Set-Location ${{ env.HIGHLIGHTJS_DIR }}/extra/hugo-text
+          GetChildItem . -Force -Exclude .git | remove-Item -Force -Recurse
+
       - name: Generate Custom Modules
         working-directory: scripts/hugen
         run: |
-          Remove-Item ${{ env.HIGHLIGHTJS_DIR }}/extra -Recurse -Force
           & hugo.exe -d ${{ env.HIGHLIGHTJS_DIR }}/extra
 
       - name: Build Highlight.js incl. custom modules and CDNs
@@ -138,68 +149,77 @@ jobs:
         run: |
           ./scripts/build-highlightjs-plugin.ps1 -Verbose "${{ env.HIGHLIGHTJS_DIR }}/extra/hugo-html/dist" "${{env.PLUGINS_DIR}}/highlightjs"
 
-      - name: Add Changes and commit
-        working-directory: ${{ github.workspace }}/publish
-        env:
-          PUBLISH_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
+      - name: Update Hugo-Html Publish
+        working-directory: ${{ env.HIGHLIGHTJS_DIR }}/extra
         run: |
-          $sha = ${env:GITHUB_SHA}
-          $tag = git describe --abbrev=0 ${env:GITHUB_SHA}
-          $shortSha = $sha.Substring(0,7)
-
-          echo $env:PUBLISH_TOKEN | gh auth login --with-token
-          gh auth setup-git
-          Write-Host "TAG: $tag"
-
-          Set-Location ${{env.HUGO_TEXT_DIR}}
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          gci -Force . -Exclude .git* | Remove-Item -Recurse
-          copy-Item -Recurse -Force "${{ env.HIGHLIGHTJS_DIR }}/extra/hugo-text/*" .
+          Set-Location ${{ env.HIGHLIGHTJS_DIR }}/extra/hugo-html
           git status
-          git add .
-          if (git diff --cached --quiet) {
-            Write-Host "hugo-text: No changes to commit"
-          } else {
-            git commit -m "Publish working artifacts based on [$shortSha]"
-            if ($tag) {
-              Write-Host "Tagged push - so add a tag to the submodule, too"
-              git tag $tag -m "Release $tag" $sha
-              git push --atomic origin main $tag
-            } else {
-              git push origin main
-            }
-          }
-
-          Set-Location ${{env.HUGO_HTML_DIR}}
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          gci -Force . -Exclude .git* | Remove-Item -Recurse
-          copy-Item -Recurse -Force "${{ env.HIGHLIGHTJS_DIR }}/extra/hugo-html/*" .
+          Set-Location ${{ env.HIGHLIGHTJS_DIR }}/extra/hugo-text
           git status
-          git add .
-          if (git diff --cached --quiet) {
-            Write-Host "hugo-html: No changes to commit"
-          } else {
-            git commit -m "Publish working artifacts based on [$shortSha]"
-            if ($tag) {
-              Write-Host "Tagged push - so add a tag to the submodule, too"
-              git tag $tag -m "Release $tag" $sha
-              git push --atomic origin main $tag
-            } else {
-              git push origin main
-            }
-          }
+          tree /f ${{env.PLUGINS_DIR}}
 
-      - name: Update Main Repo Publish folder
-        working-directory: ${{ github.workspace }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          $shortSha = ${env:GITHUB_SHA}.Substring(0,7)
-          git status
-          git add publish
-          git commit -m "Publish Artifacts after automatic build for [$shortSha]"
-          git push origin main
+      # - name: Add Changes and commit
+      #   working-directory: ${{ github.workspace }}/publish
+      #   env:
+      #     PUBLISH_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
+      #   run: |
+      #     $sha = ${env:GITHUB_SHA}
+      #     $tag = git describe --abbrev=0 ${env:GITHUB_SHA}
+      #     $shortSha = $sha.Substring(0,7)
+
+      #     echo $env:PUBLISH_TOKEN | gh auth login --with-token
+      #     gh auth setup-git
+      #     Write-Host "TAG: $tag"
+
+      #     Set-Location ${{env.HUGO_TEXT_DIR}}
+      #     git config user.name "github-actions[bot]"
+      #     git config user.email "github-actions[bot]@users.noreply.github.com"
+      #     gci -Force . -Exclude .git* | Remove-Item -Recurse
+      #     copy-Item -Recurse -Force "${{ env.HIGHLIGHTJS_DIR }}/extra/hugo-text/*" .
+      #     git status
+      #     git add .
+      #     if (git diff --cached --quiet) {
+      #       Write-Host "hugo-text: No changes to commit"
+      #     } else {
+      #       git commit -m "Publish working artifacts based on [$shortSha]"
+      #       if ($tag) {
+      #         Write-Host "Tagged push - so add a tag to the submodule, too"
+      #         git tag $tag -m "Release $tag" $sha
+      #         git push --atomic origin main $tag
+      #       } else {
+      #         git push origin main
+      #       }
+      #     }
+
+      #     Set-Location ${{env.HUGO_HTML_DIR}}
+      #     git config user.name "github-actions[bot]"
+      #     git config user.email "github-actions[bot]@users.noreply.github.com"
+      #     gci -Force . -Exclude .git* | Remove-Item -Recurse
+      #     copy-Item -Recurse -Force "${{ env.HIGHLIGHTJS_DIR }}/extra/hugo-html/*" .
+      #     git status
+      #     git add .
+      #     if (git diff --cached --quiet) {
+      #       Write-Host "hugo-html: No changes to commit"
+      #     } else {
+      #       git commit -m "Publish working artifacts based on [$shortSha]"
+      #       if ($tag) {
+      #         Write-Host "Tagged push - so add a tag to the submodule, too"
+      #         git tag $tag -m "Release $tag" $sha
+      #         git push --atomic origin main $tag
+      #       } else {
+      #         git push origin main
+      #       }
+      #     }
+
+      # - name: Update Main Repo Publish folder
+      #   working-directory: ${{ github.workspace }}
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
+      #   run: |
+      #     git config user.name "github-actions[bot]"
+      #     git config user.email "github-actions[bot]@users.noreply.github.com"
+      #     $shortSha = ${env:GITHUB_SHA}.Substring(0,7)
+      #     git status
+      #     git add publish
+      #     git commit -m "Publish Artifacts after automatic build for [$shortSha]"
+      #     git push origin main
