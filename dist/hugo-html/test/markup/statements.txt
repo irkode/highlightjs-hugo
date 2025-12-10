@@ -1,0 +1,16 @@
+{{ $var := pipeline }}
+{{ $var = partialCached }}
+{{- range $r,$x := ( pipeline ) }}
+{{- range $r , $x = ( pipeline ) }}
+{{ if 1 and 2}}
+{{ if false }}
+{{ if len "hello"}}
+{{ if nil }}
+{{ if not 1 }}
+{{ if or 1 2}}
+{{ if true }}
+{{ if eq true false }}
+{{ `raw
+string
+literal
+` }}

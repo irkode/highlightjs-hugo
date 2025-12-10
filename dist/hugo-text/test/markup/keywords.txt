@@ -1,0 +1,24 @@
+{{/* literals */}}
+{{ false nil true }}
+{{/* keywords */}}
+{{ block }}
+{{ block "name" }}
+{{ break }}
+{{ continue }}
+{{ define }}
+{{ define "name" }}
+{{ else }}
+{{ end }}
+{{ if }}
+{{ range }}
+{{ return }}
+{{ template }}
+{{ template "name"}}
+{{ try try }}
+{{ urlquery }}
+{{ with }}
+{{/* built_ins */}}
+{{ hugo.Generator }}
+{{ substr }}
+{{ strings.Substr }}
+{{ and eq else block with continue}}

@@ -1,0 +1,27 @@
+{"name": "highlightjs-hugo-html",
+  "version": "0.1.0",
+  "description": "Syntax highlighting for Hugo-Html templates",
+  "main": "src/languages/hugo-html.js",
+  "scripts": {
+    "test": "mocha test",
+    "test-markup": "mocha test/markup"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/irkode/hugo4fun-highlightJS"
+  },
+  "keywords": [
+    "hugo",
+    "hugo-html",
+    "template",
+    "highlighting",
+    "highlight.js",
+    "highlightjs",
+    "syntax"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/irkode/hugo4fun-highlightJS/issues"
+  },
+  "homepage": "https://irkode.github.io/hugo4fun-highlightJS/highlightjs-hugo-html"
+}

@@ -1,0 +1,16 @@
+<span class="hljs-template-tag">{{</span> <span class="hljs-built_in">hugo.Generator</span> <span class="hljs-template-tag">}}</span>
+<span class="hljs-template-tag">{{</span> <span class="hljs-built_in">hugo.Generator</span><span class="hljs-property">.</span><span class="hljs-title function_ invoke__">a</span><span class="hljs-property">.b.c</span> <span class="hljs-template-tag">}}</span>
+<span class="hljs-template-tag">{{</span> <span class="hljs-built_in">hugo.Store</span> <span class="hljs-template-tag">}}</span>
+<span class="hljs-template-tag">{{</span> <span class="hljs-built_in">hugo.Store</span><span class="hljs-property">.</span><span class="hljs-title function_ invoke__">Set</span><span class="hljs-property">.b.c</span> <span class="hljs-template-tag">}}</span>
+<span class="hljs-template-tag">{{</span> <span class="hljs-template-variable context_">.</span><span class="hljs-title function_ invoke__">Page</span> <span class="hljs-template-tag">}}</span>
+<span class="hljs-template-tag">{{</span> <span class="hljs-template-variable context_">.</span><span class="hljs-title function_ invoke__">Page</span><span class="hljs-property">.Pages</span> <span class="hljs-template-tag">}}</span>
+<span class="hljs-template-tag">{{</span> <span class="hljs-template-variable context_">.</span><span class="hljs-title function_ invoke__">1</span> <span class="hljs-string">&quot;hello&quot;</span> <span class="hljs-template-tag">}}</span>
+<span class="hljs-template-tag">{{</span> <span class="hljs-template-variable context_">.</span><span class="hljs-title function_ invoke__">site</span><span class="hljs-property">.b.c</span> <span class="hljs-template-tag">}}</span>
+<span class="hljs-template-tag">{{</span> <span class="hljs-template-variable context_">.</span> <span class="hljs-template-tag">}}</span>
+<span class="hljs-template-tag">{{</span> <span class="hljs-template-variable">$var</span> <span class="hljs-template-tag">}}</span>
+<span class="hljs-template-tag">{{</span> <span class="hljs-template-variable">$x</span><span class="hljs-property">.</span><span class="hljs-title function_ invoke__">Page</span> <span class="hljs-template-tag">}}</span>
+<span class="hljs-template-tag">{{</span> <span class="hljs-template-variable">$x</span><span class="hljs-property">.</span><span class="hljs-title function_ invoke__">Page</span><span class="hljs-property">.Pages</span> <span class="hljs-template-tag">}}</span>
+<span class="hljs-template-tag">{{</span> <span class="hljs-template-variable">$var</span><span class="hljs-template-variable context_">.</span> <span class="hljs-template-tag">}}</span>
+<span class="hljs-template-tag">{{</span> <span class="hljs-template-variable">$var</span><span class="hljs-property">.</span><span class="hljs-title function_ invoke__">site</span><span class="hljs-property">.b.c</span> <span class="hljs-template-tag">}}</span>
+<span class="hljs-template-tag">{{</span> hugoStore<span class="hljs-property">.</span><span class="hljs-title function_ invoke__">Set</span><span class="hljs-property">.b.c</span> <span class="hljs-template-tag">}}</span>
+<span class="hljs-template-tag">{{</span> hugo_Store<span class="hljs-property">.</span><span class="hljs-title function_ invoke__">Set</span><span class="hljs-property">.b.c</span> <span class="hljs-template-tag">}}</span>
