@@ -1,0 +1,10 @@
+{{/* a comment */}}
+
+{{- /* a comment with white space trimmed from preceding and following text */ -}}
+
+{{/* a multiline comment
+continued on the next lines
+
+even with a blank line inside
+
+ */ -}}

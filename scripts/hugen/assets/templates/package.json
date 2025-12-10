@@ -1,0 +1,29 @@
+{
+  {{- $lang := .page.Params.hljs.language -}}
+  "name": "highlightjs-{{$lang}}",
+  "version": "0.1.0",
+  "description": "Syntax highlighting for {{ title $lang }} templates",
+  "main": "src/languages/{{$lang}}.js",
+  "scripts": {
+    "test": "mocha test",
+    "test-markup": "mocha test/markup"
+  },
+  "repository": {
+    "type": "git",
+    "url": "{{ .site.Params.repository }}"
+  },
+  "keywords": [
+    "hugo",
+    "{{ $lang }}",
+    "template",
+    "highlighting",
+    "highlight.js",
+    "highlightjs",
+    "syntax"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "{{ .site.Params.repository }}/issues"
+  },
+  "homepage": "{{ .site.Params.webroot }}/highlightjs-{{$lang}}"
+}

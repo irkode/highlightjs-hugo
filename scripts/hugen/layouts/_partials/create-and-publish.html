@@ -1,0 +1,52 @@
+{{- warnf "PARTIAL: %s" templates.Current.Name }}
+{{- /*
+  Create a new Item from a resource file while expanding template code
+  Parameters:
+
+  .source:  the path of the source template relative to the assets/templates folder
+  .target:  the target path relative to the current page. (logical path)
+            if not specified $source will be used using the same folder structure from assets
+  .page:    The Page object for which this is rendered.
+  .params:  parameters that can be accessed in the template code
+            the actual parameters passed is a merge of
+              - .page.params
+              - .page.Params
+              - site parameters may be accessed using the global site function
+
+*/ -}}
+{{- if not $.page }}
+  {{- errorf "create_and_publish needs a 'page' parameter" }}
+{{- end }}
+{{- if not $.source }}
+  {{- errorf "create_and_publish needs a 'source' parameter" }}
+{{- end }}
+
+{{- $page := .page }}
+{{- $source := add "templates/" .source }}
+{{- /* calculate relative target path from current page */ -}}
+{{- $target := add $page.Path "/" (or $.target $.source) }}
+
+{{- /* merge page parameters with additional arguments passed */ -}}
+{{- $params := (dict "page" $page "site" site) }}
+{{- with $.params }}
+  {{- $params = merge $params . }}
+{{- end }}
+
+{{- with $template := resources.Get $source }}
+  {{- with $r := resources.FromString $target $template.Content }}
+    {{- with $gen := resources.ExecuteAsTemplate $target $params $r }}
+    {{- if $gen.Content | findRE `(?s)<no value>` }}
+      {{- warnf "unreplaced parameter: '%s' -> '%s'" $source $target }}
+      {{- warnf "----\n%s\n----" (debug.Dump $params) }}
+    {{- end }}
+      {{- $gen.Publish }}
+    {{- else }}
+      {{- errorf "failed to generate target content from '%s'" $source }}
+    {{- end }}
+  {{- else }}
+    {{- errorf "failed to generate resource content from '%s'" $source }}
+  {{- end }}
+{{- else }}
+  {{- errorf "no source file found at '/templates/%s'" $source }}
+{{- end }}
+{{- /* remove all trailing whitespace */ -}}

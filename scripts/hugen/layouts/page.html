@@ -1,0 +1,20 @@
+{{- warnf "template %s - %s" .Path templates.Current.Name }}
+{{- /* create reference documents */}}
+{{- range slice "css-class-reference.md" "LICENSE" "package.json" "README.md" "src/styles/debug-hugo.css"}}
+  {{- partial "create-and-publish" (dict "source" . "page" $) }}
+{{- end }}
+{{- /* copy page resources */ -}}
+{{- range slice "preview.png" }}
+  {{- partial "copy-and-publish" (dict "source" . "page" $) }}
+{{- end }}
+
+{{- /* create the language javascript module based on keyword definition */}}
+{{- $javascript := partial "get-javascript" $ }}
+{{- $target := add "src/languages/" .Params.hljs.language ".js" }}
+{{- partial "create-and-publish" (dict "source" "src/languages/language.js" "target" $target "page" $ "params" $javascript) }}
+
+{{- /* copy the test cases and styles unchanged */}}
+{{- range slice "test" }}
+  {{- partial "copy-and-publish" (dict "dir" true "source" . "page" $) }}
+{{- end }}
+{{- /* remove all trailing whitespace */ -}}

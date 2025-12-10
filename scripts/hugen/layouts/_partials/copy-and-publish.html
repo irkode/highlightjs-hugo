@@ -1,0 +1,43 @@
+{{- warnf "PARTIAL: %s" templates.Current.Name }}
+{{- /*
+  copy items from $source to the page without any processing
+  Parameters:
+
+  .source:  the path of the source template relative to the assets/templates folder
+  .base:    if set the lookup folder is changed to assets/$base
+  .dir:     if set to a truthy value copies the complete folder content (recursively)
+            if not set or falsy copies the given file only
+  .page:    The Page object for which this is rendered.
+
+*/ -}}
+{{- if not $.page }}
+  {{- errorf "create_and_publish needs a 'page' parameter" }}
+{{- end }}
+{{- if not $.source }}
+  {{- errorf "create_and_publish needs a 'source' parameter" }}
+{{- end }}
+{{- $base := or .base "templates" }}
+{{- $basePattern := add `^\/` $base }}
+{{- $page := .page }}
+{{- $source := add $base "/" .source }}
+{{- $resources := slice }}
+{{- if .dir }}
+  {{- $resources = resources.Match (add $source "/**") }}
+{{- else }}
+  {{- with resources.Get $source }}
+    {{- $resources = slice . }}
+  {{- else }}
+    {{- warnf "no resource found at %s " $source }}
+  {{- end }}
+{{- end -}}
+{{- range $r := $resources }}
+  {{- /* calculate relative target path from current page */ -}}
+  {{- $target := $r.Name | replaceRE $basePattern $page.Path }}
+  {{- with $r | resources.Copy $target }}
+    {{- $noop := .RelPermalink }}
+    {{- warnf "COPY resource: from 'assets%s' to '%s'" $r.Name $target -}}
+  {{- else }}
+    {{- errorf "failed to copy resource from 'assets/%s' to '%s'" $r.Name $target }}
+  {{- end }}
+{{- end }}
+{{- /* remove all trailing whitespace */ -}}
