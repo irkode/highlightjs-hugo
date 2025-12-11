@@ -4,6 +4,7 @@ param(
   [Parameter(Mandatory = $false)][ValidateSet(
     'BuildHighlightJS',
     'CloneHighlightJS',
+    'GenerateHugoModules',
     'GenerateModules',
     'UpdateHugoDocs',
     'TestHighlightJS',
