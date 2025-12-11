@@ -2,7 +2,7 @@
 Language: highlightjs-hugo-html
 Author: Irkode <irkode@rikode.de>
 Description: Syntax highlighting for Hugo-Html templates.
-Website: https://irkode.github.io/hugo4fun-highlightJShighlightjs-hugo-html
+Website: https://irkode.github.io/highlightjs-hugo/
 Category: template
 License: MIT
 */
