@@ -17,16 +17,16 @@ patterns:
     - end
 
 scopes:
-  literal:
-    - "false"
-    - nil
-    - "true"
   built_in:
     - and
     - len
     - not
     - or
     - urlquery
+  literal:
+    - "false"
+    - nil
+    - "true"
 
 generate:
   literal: ['kw']
