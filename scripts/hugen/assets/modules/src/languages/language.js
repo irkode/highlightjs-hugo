@@ -4,7 +4,7 @@ Language: highlightjs-{{$lang}}
 {{- with .page.Params.hljs.requires }}{{ printf "\nRequires: %s\n" . }}{{ end }}
 Author: {{ .site.Params.author }}
 Description: Syntax highlighting for {{ title $lang }} templates.
-Website: {{ .site.Params.webroot }}highlightjs-{{$lang}}
+Website: {{ site.Home.Permalink }}
 Category: template
 License: {{ .site.Params.license }}
 */

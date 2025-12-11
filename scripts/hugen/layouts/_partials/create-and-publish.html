@@ -1,4 +1,4 @@
-{{- warnf "PARTIAL: %s" templates.Current.Name }}
+{{- $tpl := replace (templates.Current.Name) "_partials/" "" }}
 {{- /*
   Create a new Item from a resource file while expanding template code
   Parameters:
@@ -6,6 +6,7 @@
   .source:  the path of the source template relative to the assets/templates folder
   .target:  the target path relative to the current page. (logical path)
             if not specified $source will be used using the same folder structure from assets
+  .base:    if set the lookup folder is changed to assets/$base
   .page:    The Page object for which this is rendered.
   .params:  parameters that can be accessed in the template code
             the actual parameters passed is a merge of
@@ -15,14 +16,16 @@
 
 */ -}}
 {{- if not $.page }}
-  {{- errorf "create_and_publish needs a 'page' parameter" }}
+  {{- errorf "%-25s: missing 'page' parameter" $tpl }}
 {{- end }}
 {{- if not $.source }}
-  {{- errorf "create_and_publish needs a 'source' parameter" }}
+  {{- errorf "%-25s: missing 'source' parameter" $tpl }}
 {{- end }}
 
 {{- $page := .page }}
-{{- $source := add "templates/" .source }}
+{{- $pagePath := $page.Path }}
+{{- $base := or .base "templates" }}
+{{- $source := add $base "/" .source }}
 {{- /* calculate relative target path from current page */ -}}
 {{- $target := add $page.Path "/" (or $.target $.source) }}
 
@@ -35,18 +38,19 @@
 {{- with $template := resources.Get $source }}
   {{- with $r := resources.FromString $target $template.Content }}
     {{- with $gen := resources.ExecuteAsTemplate $target $params $r }}
-    {{- if $gen.Content | findRE `(?s)<no value>` }}
-      {{- warnf "unreplaced parameter: '%s' -> '%s'" $source $target }}
-      {{- warnf "----\n%s\n----" (debug.Dump $params) }}
-    {{- end }}
+      {{- if $gen.Content | findRE `(?s)<no value>` }}
+        {{- warnf "WARN %-25s[ %-20s ]: unreplaced parameter: '%s' -> '%s'" $tpl $pagePath $source $target }}
+        {{- warnf "WARN ----\n%s\nWARN ----" (debug.Dump $params) }}
+      {{- end }}
       {{- $gen.Publish }}
+      {{- warnf "OK   %-25s[ %-20s ]: published '%s' -> '%s'" $tpl $pagePath $source $target}}
     {{- else }}
-      {{- errorf "failed to generate target content from '%s'" $source }}
+      {{- errorf "FAIL %-25s[ %-20s ]: ExecuteAsTemplate failed for '%s'" $tpl $pagePath $source }}
     {{- end }}
   {{- else }}
-    {{- errorf "failed to generate resource content from '%s'" $source }}
+    {{- errorf "FAIL %-25s[ %-20s ]: FromString failed for '%s'" $tpl $pagePath $source }}
   {{- end }}
 {{- else }}
-  {{- errorf "no source file found at '/templates/%s'" $source }}
+  {{- errorf "FAIL %-25s[ %-20s ]: missing source at '/%s/%s'" $tpl $pagePath $base $source }}
 {{- end }}
 {{- /* remove all trailing whitespace */ -}}

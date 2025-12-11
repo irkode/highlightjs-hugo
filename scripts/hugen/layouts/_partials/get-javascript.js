@@ -1,5 +1,4 @@
-{{- warnf "PARTIAL: %s" templates.Current.Name }}
-
+{{- warnf "EXEC %s" templates.Current.Name }}
 {{- $dataLang := .Params.hljs.keywords }}
 
 {{- $keywords := partial "get-keywords.html" $dataLang }}

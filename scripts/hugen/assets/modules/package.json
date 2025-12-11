@@ -25,5 +25,5 @@
   "bugs": {
     "url": "{{ .site.Params.repository }}/issues"
   },
-  "homepage": "{{ .site.Params.webroot }}/highlightjs-{{$lang}}"
+  "homepage": "{{ .site.Params.webroot }}/index.html"
 }

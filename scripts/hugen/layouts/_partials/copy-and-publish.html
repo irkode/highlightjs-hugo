@@ -1,4 +1,4 @@
-{{- warnf "PARTIAL: %s" templates.Current.Name }}
+{{- $tpl := replace (templates.Current.Name) "_partials/" "" }}
 {{- /*
   copy items from $source to the page without any processing
   Parameters:
@@ -11,14 +11,15 @@
 
 */ -}}
 {{- if not $.page }}
-  {{- errorf "create_and_publish needs a 'page' parameter" }}
+  {{- errorf "FAIL %-25s: missing 'page' parameter" $tpl }}
 {{- end }}
 {{- if not $.source }}
-  {{- errorf "create_and_publish needs a 'source' parameter" }}
+  {{- errorf "FAIL %-25s: missing 'source' parameter" $tpl }}
 {{- end }}
+{{- $page := .page }}
+{{- $pagePath := $page.Path }}
 {{- $base := or .base "templates" }}
 {{- $basePattern := add `^\/` $base }}
-{{- $page := .page }}
 {{- $source := add $base "/" .source }}
 {{- $resources := slice }}
 {{- if .dir }}
@@ -27,7 +28,7 @@
   {{- with resources.Get $source }}
     {{- $resources = slice . }}
   {{- else }}
-    {{- warnf "no resource found at %s " $source }}
+    {{- warnf "OK   %-25s[ %-20s ]: no resource found at %s " $tpl $pagePath $source }}
   {{- end }}
 {{- end -}}
 {{- range $r := $resources }}
@@ -35,9 +36,9 @@
   {{- $target := $r.Name | replaceRE $basePattern $page.Path }}
   {{- with $r | resources.Copy $target }}
     {{- $noop := .RelPermalink }}
-    {{- warnf "COPY resource: from 'assets%s' to '%s'" $r.Name $target -}}
+    {{- warnf "OK   %-25s[ %-20s ]: copy resource 'assets%s' to '%s'" $tpl $pagePath $r.Name $target -}}
   {{- else }}
-    {{- errorf "failed to copy resource from 'assets/%s' to '%s'" $r.Name $target }}
+    {{- errorf "FAIL %-25s[ %-20s ]: copy resource 'assets/%s' to '%s'" $tpl $pagePath $r.Name $target }}
   {{- end }}
 {{- end }}
 {{- /* remove all trailing whitespace */ -}}

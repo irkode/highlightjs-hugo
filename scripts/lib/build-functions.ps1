@@ -106,7 +106,7 @@ function developerBuild {
       exec node tools/build.js -n hugo-html hugo-text xml
 
       $StyleTargetFolder = Test-Folder -Path $HighlightJsDir "src/styles"
-      $StyleSourceFile = Test-File -Path $HugoGenDir "/assets/templates/src/styles/debug-hugo.css"
+      $StyleSourceFile = Test-File -Path $HugoGenDir "/assets/modules/src/styles/debug-hugo.css"
       $DeveloperHtmlFile = Test-File -Path $HighlightJsDir "tools/developer.html"
       Write-Verbose "Add custom CSS style and patch developer.html - use it from work/developer.html"
       # add custom debugging style

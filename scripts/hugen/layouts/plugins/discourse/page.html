@@ -1,7 +1,7 @@
 {{- warnf "template %s - %s" .Path templates.Current.Name }}
 {{- /* copy page resources */ -}}
 {{- range slice "preview.png" }}
-  {{- partial "copy-and-publish" (dict "source" . "dir" false "page" $) }}
+  {{- partial "copy-and-publish" (dict "base" "common" "source" . "dir" false "page" $) }}
 {{- end }}
 {{- partial "copy-and-publish" (dict "base" "plugins/discourse" "source" "README.md" "dir" false "page" $) }}
 {{- /* remove all trailing whitespace */ -}}

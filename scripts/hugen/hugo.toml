@@ -1,6 +1,6 @@
 language = "en-us"
 
-baseurl = "https://irkode.github.io/hugo4fun-highlightJS"
+baseurl = "https://irkode.github.io/highlightjs-hugo"
 title   = "Generate Highlight.js Javascript modules for Go/Hugo templates"
 
 #disableAliases = true
@@ -8,9 +8,9 @@ disableKinds   = ['rss', 'sitemap', 'taxonomy', 'term']
 
 [params]
   author = "Irkode <irkode@rikode.de>"
-  webroot = "https://irkode.github.io/hugo4fun-highlightJS"
+  webroot = "https://irkode.github.io/highlightjs-hugo"
   reporoot = "https://github.com/irkode/"
-  repository = "https://github.com/irkode/hugo4fun-highlightJS"
+  repository = "https://github.com/irkode/highlightjs-hugo"
   category = "templates"
   license = "MIT"
 
