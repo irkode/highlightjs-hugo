@@ -141,7 +141,7 @@ jobs:
           Set-Location ${{ env.DISTRIBUTION_DIR }}
           Remove-Item -Recurse -Force *
           Get-ChildItem -Directory ${{ env.HIGHLIGHTJS_EXTRA_DIR }} | Copy-Item -Recurse -Destination .
-          "==== RELEASE_DIR ===================" | Out-Host
+          "==== DIST ===================" | Out-Host
           tree /a ${{ env.DISTRIBUTION_DIR }}
           "==== GIT STATUS ===================" | Out-Host
           git status
@@ -154,15 +154,25 @@ jobs:
           $sha = ${env:GITHUB_SHA}
           $shortSha = $sha.Substring(0,7)
           "COMMIT ID: $shortSha" | Out-Host
-          # git config user.name "github-actions[bot]"
-          # git config user.email "github-actions[bot]@users.noreply.github.com"
-          "==== RELEASE_DIR ===================" | Out-Host
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          "==== DIST_DIR ===================" | Out-Host
           "==== $(Get-Location)" | Out-Host
           "------------------------------------" | Out-Host
           git status .
           "==== RELEASE_DIR ===================" | Out-Host
-          if ((git diff --quiet .) -or (git diff --cached --quiet .) -or ((git ls-files --others --exclude-standard .).Count -ne 0)) {
-            $message = "ci(): Update distribution artifacts based on [$shortSha]"
+          $changed = $false
+          git diff --quiet .
+          $changed = $LASTEXITCODE -ne 0
+          if (-Not $changed) {
+            git diff --cached --quiet .
+            $changed = $LASTEXITCODE -ne 0
+          }
+          if (-Not $changed) {
+            $changed = (git ls-files --others --exclude-standard).Count -ne 0
+          }
+          if ($changed) {
+            $message = "ci(build): Update dist folder based on [$shortSha]"
             Write-Host $message
             git add .
             git commit -m $message
