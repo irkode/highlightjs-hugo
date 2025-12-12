@@ -134,8 +134,6 @@ jobs:
 
       - name: Publish to distribution folder
         working-directory: ${{ env.HIGHLIGHTJS_EXTRA_DIR }}
-        # env:
-        #   PUBLISH_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
         run: |
           New-Item -ItemType Directory ${{ env.DISTRIBUTION_DIR }} -ErrorAction SilentlyContinue
           Set-Location ${{ env.DISTRIBUTION_DIR }}
@@ -148,8 +146,6 @@ jobs:
 
       - name: Publish build results
         working-directory: ${{ env.DISTRIBUTION_DIR }}
-        # env:
-        #   GITHUB_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
         run: |
           $sha = ${env:GITHUB_SHA}
           $shortSha = $sha.Substring(0,7)
