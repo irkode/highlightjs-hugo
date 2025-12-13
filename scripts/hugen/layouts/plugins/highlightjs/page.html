@@ -1,6 +1,6 @@
 {{- warnf "template %s - %s" .Path templates.Current.Name }}
 {{- /* copy page resources */ -}}
-{{- range slice "preview.png" }}
+{{- range slice "plugins.png" }}
   {{- partial "copy-and-publish" (dict "base" "common" "source" . "dir" false "page" $) }}
 {{- end }}
 {{- partial "copy-and-publish" (dict "base" "plugins/highlightjs" "source" "README.md" "dir" false "page" $) }}

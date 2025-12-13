@@ -8,9 +8,10 @@
 - hljs.APOS_STRING_MODE
 - hljs.COMMENT
 
-## Default scopes (classes)
+## Standard scopes (classes)
 
-The following classes are used to style the output. Make sure your style has a definition for them.
+The following standard scopes are used to style the output.
+Make sure your style has a definition for them.
 
 - operator
 
@@ -27,7 +28,7 @@ The following classes are used to style the output. Make sure your style has a d
 
 - string
 
-  Used for Names used in `block`, `define`, and `partial` actions.
+  Strings and used for Names used in `block`, `define`, and `partial` actions.
 
 - template-tag
 
@@ -39,24 +40,23 @@ The following classes are used to style the output. Make sure your style has a d
 
 - title.function.invoke (special)
 
-  If a _built_in_ is followed by a _dot_ this must be an object. Knowing it's something special and it definitely calls
-  something else we assign scope as _title.function.invoke_. Up-to-date themes may have a style configured. If not you can
-  create your own or live with the fallback.
+  If a _built_in_ is followed by a _dot_ it must return an object. Knowing it's something special and it definitely calls something else we assign
+  _title.function.invoke_. Up-to-date themes may have a style configured.
+  If not you can create your own or live with the fallback.
 
-## New Scopes (Classes)
+## New scopes (classes)
 
 - template-variable.context
 
-  The _Context_ -- a leading `.` or `$.` -- is a special thing in Go/Hugo templating so we use a dedicated class here. Use it in your CSS to create a different visual appearance for _Context_. keep in mind, that all styles out there do not define this one. So either add that for our own styles or take the fallback which is `template-variable` .
+  The _Context_ -- a leading `.` or `$.` -- is a special thing in Go/Hugo templating. We use a dedicated class here to allow emphasis. Use it in your CSS to create a different visual appearance for _Context_. keep in mind, that all styles out there do not define this one. If you want it, define a style or take the fallback which is `template-variable`.
 
 - string.raw
 
-  A raw string in templates is a sequence of characters enclosed in backticks. All characters enclosed are taken
-  literally.
+  A raw string in Go/Hugo templates is a sequence of characters enclosed in backticks. All characters enclosed are taken literally.
 
 ## Keywords used
 
-We use the following Scopes for keywords:
+We divide Go/Hugo keywords into the following standard scopes.
 
 - literal
 
@@ -77,7 +77,7 @@ We use the following Scopes for keywords:
 
 ## Submodes
 
-_highlighjs-hugo-html_ uses the [Highlight.js][] builtin `xml` as subLanguage which uses some of the standard scopes.
+_highlighjs-hugo-html_ uses the [Highlight.js][] builtin `xml` for highlighting HTML as subLanguage. See thier documentation for scopes used.
 
 [Highlight.js]: https://highlightjs.readthedocs.io/
 

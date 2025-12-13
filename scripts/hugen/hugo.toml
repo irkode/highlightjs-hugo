@@ -11,6 +11,8 @@ disableKinds   = ['rss', 'sitemap', 'taxonomy', 'term']
   webroot = "https://irkode.github.io/highlightjs-hugo"
   reporoot = "https://github.com/irkode/"
   repository = "https://github.com/irkode/highlightjs-hugo"
+  releases = "https://github.com/irkode/highlightjs-hugo/releases/latest"
+  blobs = "https://github.com/irkode/highlightjs-hugo/blob/main"
   category = "templates"
   license = "MIT"
 
