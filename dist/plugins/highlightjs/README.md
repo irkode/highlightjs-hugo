@@ -1,30 +1,28 @@
-# Highlight.js 4 Hugo - Highlight.js Plugin (dual mode)
+# Highlight.js Hugo - Highlight.js Plugin (dual mode)
 
 [![license](https://badgen.net/badge/license/MIT/blue)](LICENSE)
 
-This is the README for the downsized Highlight.js plugin of the suite.
+> This is the README for the _downsized_ Highlight.js variant of the suite.
+> For more details have a look at our [repository README]({{ .site.Params.repository }}).
 
 A language grammar to highlight [Hugo][]'s templating language with [Highlight.js][].
 
 Including both modules - [hugo-text][] and [hugo-html][] results in larger Javascript footprint. Highlight.js
 does not support reusing language components between different plugins.
 
-To overcome this, we created a custom highlight.js plugin which is close to 50% in size.
+To overcome this, we created a custom plugin which is close to 50% in size, supporting `text`and `html`templates.
 
-![preview](preview.png)
-
-## Disclaimer
-
-I will try to fix bugs, and handle enhancement requests. But please understand, that for issues
-falling in these areas ... I cannot help. I'm
-- totally bare with anything around Discourse (just an end user)
-- not experienced in Highlight.JS (beyond these modules)
+![preview](plugins.png)
 
 ## Requirements
 
-The module has been implemented using [Highlight.js][] version 11.11.1.
+The module has been implemented using [Highlight.js][] version 11.11.1. It will most likely not work with an older version.
 
-It will most likely not work with an older version.
+## Download
+
+The module has not been published to any CDN right now. You will have to clone or download the stuff you need.
+- latest version from the [dist folder][]
+- a released package from our [releases page]({{ .site.Params.releases}}).
 
 ## Usage
 
@@ -43,11 +41,10 @@ Load the module after loading `highlight.js`. Take the minified version from `di
 </script>
 ```
 
+<!-- TODO: publish to a CDN
 ### Using a CDN
 
 The module has not been published to any CDN right now. just download it from the dist folder
-
-<!-- TODO: publish to a CDN
 
 ### Using directly from the UNPKG CDN
 
@@ -63,7 +60,8 @@ The module has not been published to any CDN right now. just download it from th
 
 ### With Node or another build system
 
-> The Node stuff is untested !!!
+> The Node stuff is untested and straight from some other highlight.js module!!!
+> In fact _this_ customized_ plugin is only tested visually in the browser.
 
 If you're using Node / Webpack / Rollup / Browserify, etc, simply require the language module, then register it with
 `highlight.js`.
@@ -90,29 +88,27 @@ Instead of `{{$lang}}` you can use the defined aliases: `{{ delimit . "`, `" }}`
 </code></pre>
 ```
 
-## A word on auto detection
+_Handlebars_ and _Go templates_ (used by [Hugo][]) have similar template tags. Without additional
+relevance settings Hugo modules will loose most of the time. We use the following relevance settings
+to beat _Handlebars_ auto-detection but doing our best to make it possible to have both modules
+loaded at the same time. Importing `hugo-text` and `hugo-html` plugins may result in undetermined
+auto-detection. To be on the safe side specify the language you want for every code block.
 
-> We have both modules included, so **do not** rely on auto detection but specify language names inh the class attribute.
-
-_Handlebars_ and _Go templates_ (used by [Hugo][]) have similar template tags. Without additional relevance settings the
-Hugo modules will loose most of the time. To beat Handlebars auto-detection for _Hugo_ templates we add relevance
-settings. Doing our best to make it possible to have both modules loaded at the same time. Importing `hugo-text` and
-`hugo-html` plugins may result in undetermined auto selection.
-To be on the safe side specify the language you want for every code block.
-
-- for Go template comments we use relevance = 10.
+- Go template comments get relevance = 10.
 
   comments start with {{ "`{{/*` or `{{- /*` and end with `*/}}` or `*/ -}}`" }}
 
-- functions in the _hugo_ namespace use relevance = 10 (e.g. hugo.IsDevelopment)
+- Functions in the _hugo_ namespace get relevance = 10 (e.g. hugo.IsDevelopment)
 
-- We mark the following _Handlebars_ opening template tags as invalid for us: {{ "`{{#`, `{{>`, `{{!--`, `{{!`" }}
-
-  `IgnoreIllegals` default value is `false` since version 11. So this stops highlighting with the hugo module
+- The following _Handlebars_ opening template tags are set too _invalid_ for hugo: {{ "`{{#`, `{{>`, `{{!--`, `{{!`" }}
+ 
+  `IgnoreIllegals` default value is `false` since version 11. So this stops highlighting with the hugo module.
 
 ## Build your own
 
-This plugin is created from the standard Highlight.js build results. Which means, you cannot include izt in a custom Highlight.js build.
+This is a post build patched plugin that merges _hugo-html_ and _hugo-text_ into one plugin using the same keyword table.
+
+It cannot in any way build with a standard _Highlight.js_ build.
 
 ## License
 
@@ -122,12 +118,15 @@ This package is released under the MIT License. See [LICENSE](LICENSE) file for 
 
 - Irkode <irkode@rikode.de>
 
-### Other references
+## Links
 
-- [Highlight.js][]
-- [Hugo][]
-- [Go HTML template](https://pkg.go.dev/html/template)
-- [Go TEXT template](https://pkg.go.dev/text/template)
+- [highlightjs-hugo][] : The main repository with additional grammars and plugins. Have a look
+- [Highlight.js][] : The Internet's favorite JavaScript syntax highlighter supporting Node.js and the web
+- [Hugo][] : The world’s fastest framework for building websites
+- [Go HTML template](https://pkg.go.dev/html/template) : Go's html template package
+- [Go TEXT template](https://pkg.go.dev/text/template) : Go's text template package
 
+[highlightjs-hugo]: {{ site.Params.repository }}
 [Highlight.js]: https://highlightjs.org/
 [Hugo]: https://gohugo.io/
+[dist folder]: {{ site.Params.blobs }}/dist/{{$lang}}/dist/

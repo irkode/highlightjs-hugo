@@ -3,11 +3,11 @@
   Description: 55 distinct colors for debugging
   Author: (c) 2025 Irkode <irkode@rikode.de>
   Maintainer: Irkode
-  Website: https://irkode.github.io/highlightjs-hugo/
+  Website: https://github.com/irkode/highlightjs-hugo
   License: MIT
   Touched: 2025
 */
-/* color palette generated with http://mokole.com 55 5% 90% 5000 */
+/* color palette generated with http://mokole.com 55 5% 90% 5000 and tweaked a little*/
 .debug .unused .develop {
   --mediumseagreen: #3cb371;
   --rosybrown: #bc8f8f;
