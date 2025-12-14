@@ -185,31 +185,6 @@ function distribute {
   }
 }
 
-function release {
-  [CmdLetBinding()]
-  param()
-  try {
-    if ($Release -or $ReleaseOnly) {
-      Write-Verbose "Release highlightjs-hugo"
-      [void](Test-Folder $PublishDir)
-      Set-Location $WorkDir -ErrorAction Stop # Safety
-      if (-Not (Test-Path $ReleaseDir)) {
-        exec git clone -b main https://github.com/irkode/highlightjs-hugo.git $ReleaseDir
-      }
-      [void](Test-Folder $ReleaseDir)
-      Set-Location $ReleaseDir -ErrorAction Stop # Safety
-      Get-ChildItem . -Force -Exclude .git*,README.md | Remove-Item -Recurse -Force
-      Copy-Item -Recurse -Force "$PublishDir\*" .
-      exec git status
-    }
-  } catch {
-    Write-Error "$_`Installing to $ReleaseDir failed" -ErrorAction Continue
-    throw "$_"
-  } finally {
-    Set-Location $startCWD
-  }
-}
-
 function showStatus {
   [CmdLetBinding()]
   param()
