@@ -3,7 +3,7 @@
 [![license](https://badgen.net/badge/license/MIT/blue)](LICENSE)
 
 > This is the README for the _downsized_ Highlight.js variant of the suite.
-> For more details have a look at our [repository README]({{ .site.Params.repository }}).
+> For more details have a look at our [repository README]({{ site.Params.repository }}).
 
 A language grammar to highlight [Hugo][]'s templating language with [Highlight.js][].
 
@@ -51,7 +51,7 @@ The module has not been published to any CDN right now. just download it from th
 ```html
 <script
    type="text/javascript"
-   src="https://unpkg.com/highlightjs-{{$lang}}@0.1.0/dist/{{$lang}}.min.js"
+   src="https://unpkg.com/highlightjs-hugo-highlightjs-plugin@0.1.0/dist/hugo-highlightjs-plugin.min.js"
 ></script>
 ```
 
@@ -60,7 +60,7 @@ The module has not been published to any CDN right now. just download it from th
 
 ### With Node or another build system
 
-> The Node stuff is untested and straight from some other highlight.js module!!!
+> I suppose these instructions from the docs won't work for this patched plugin.
 > In fact _this_ customized_ plugin is only tested visually in the browser.
 
 If you're using Node / Webpack / Rollup / Browserify, etc, simply require the language module, then register it with
@@ -68,19 +68,16 @@ If you're using Node / Webpack / Rollup / Browserify, etc, simply require the la
 
 ```javascript
 var hljs = require("highlight.js");
-var hljsHugo = require("{{$lang}}");
-hljs.registerLanguage("{{$lang}}", hljs-{{title $lang}});
+var hljsHugo = require("hugo-highlightjs-plugin.js");
+/* guess the registration is done when importing the plugin */
+/* hljs.registerLanguage("???", hljs-???); */
 hljs.highlightAll();
 ```
 
 ### Example code
 
-Enclose your code in `<pre><code>` tags and at best set the language with `class="{{$lang}}"`. If you want to rely on
+Enclose your code in `<pre><code>` tags and at best set the language with `class="hugo-(html|text)"`. If you want to rely on
 auto detection, read the section about that below.
-
-{{ with .page.Params.hljs.aliases }}
-Instead of `{{$lang}}` you can use the defined aliases: `{{ delimit . "`, `" }}`.
-{{ end }}
 
 ```html
 <pre><code class="hugo-html">
@@ -129,4 +126,4 @@ This package is released under the MIT License. See [LICENSE](LICENSE) file for 
 [highlightjs-hugo]: {{ site.Params.repository }}
 [Highlight.js]: https://highlightjs.org/
 [Hugo]: https://gohugo.io/
-[dist folder]: {{ site.Params.blobs }}/dist/{{$lang}}/dist/
+[dist folder]: {{ site.Params.blobs }}/dist/plugins/dist/highlightjs

@@ -16,12 +16,6 @@ disableKinds   = ['rss', 'sitemap', 'taxonomy', 'term']
   category = "templates"
   license = "MIT"
 
-# [permalinks]
-# [permalinks.page]
-#   extra = '/:slug'
-# [permalinks.section]
-#   extra = '/'
-
 [[cascade]]
   # don't render/publish stuff in /functions
   # don't render/publish stuff in /extra

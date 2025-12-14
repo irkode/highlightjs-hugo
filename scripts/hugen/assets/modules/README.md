@@ -4,7 +4,7 @@
 [![license](https://badgen.net/badge/license/MIT/blue)](LICENSE)
 
 > This is the README for the **{{ title $lang }}** variant of the suite.\
-> For more details have a look at our [repository README]({{ .site.Params.repository }}).
+> For more details have a look at our [repository README]({{ site.Params.repository }}).
 
 A language grammar to highlight [Hugo][]'s templating language with [Highlight.js][].
 

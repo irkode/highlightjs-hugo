@@ -35,14 +35,14 @@
   {{- $params = merge $params . }}
 {{- end }}
 
-{{- with $template := resources.Get $source }}
-  {{- with $r := resources.FromString $target $template.Content }}
-    {{- with $gen := resources.ExecuteAsTemplate $target $params $r }}
-      {{- if $gen.Content | findRE `(?s)<no value>` }}
+{{- with resources.Get $source }}
+  {{- with resources.FromString $target .Content }}
+    {{- with $gen := resources.ExecuteAsTemplate $target $params . }}
+      {{- if .Content | findRE `(?s)<no value>` }}
         {{- warnf "WARN %-25s[ %-20s ]: unreplaced parameter: '%s' -> '%s'" $tpl $pagePath $source $target }}
         {{- warnf "WARN ----\n%s\nWARN ----" (debug.Dump $params) }}
       {{- end }}
-      {{- $gen.Publish }}
+      {{- .Publish }}
       {{- warnf "OK   %-25s[ %-20s ]: published '%s' -> '%s'" $tpl $pagePath $source $target}}
     {{- else }}
       {{- errorf "FAIL %-25s[ %-20s ]: ExecuteAsTemplate failed for '%s'" $tpl $pagePath $source }}
