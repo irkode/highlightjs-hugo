@@ -79,6 +79,6 @@ This package is released under the MIT License. See [LICENSE](LICENSE) file for 
 - [Go HTML template](https://pkg.go.dev/html/template) : Go's html template package
 - [Go TEXT template](https://pkg.go.dev/text/template) : Go's text template package
 
-[highlightjs-hugo]: {{ site.Params.repository }}
+[highlightjs-hugo]: https://github.com/irkode/highlightjs-hugo
 [Highlight.js]: https://highlightjs.org/
 [Hugo]: https://gohugo.io/

@@ -3,7 +3,7 @@
 [![license](https://badgen.net/badge/license/MIT/blue)](LICENSE)
 
 > This is the README for the _downsized_ Highlight.js variant of the suite.
-> For more details have a look at our [repository README]({{ .site.Params.repository }}).
+> For more details have a look at our [repository README](https://github.com/irkode/highlightjs-hugo).
 
 A language grammar to highlight [Hugo][]'s templating language with [Highlight.js][].
 
@@ -22,7 +22,7 @@ The module has been implemented using [Highlight.js][] version 11.11.1. It will 
 
 The module has not been published to any CDN right now. You will have to clone or download the stuff you need.
 - latest version from the [dist folder][]
-- a released package from our [releases page]({{ .site.Params.releases}}).
+- a released package from our [releases page](https://github.com/irkode/highlightjs-hugo/releases/latest).
 
 ## Usage
 
@@ -51,7 +51,7 @@ The module has not been published to any CDN right now. just download it from th
 ```html
 <script
    type="text/javascript"
-   src="https://unpkg.com/highlightjs-{{$lang}}@0.1.0/dist/{{$lang}}.min.js"
+   src="https://unpkg.com/highlightjs-hugo-highlightjs-plugin@0.1.0/dist/hugo-highlightjs-plugin.min.js"
 ></script>
 ```
 
@@ -60,7 +60,7 @@ The module has not been published to any CDN right now. just download it from th
 
 ### With Node or another build system
 
-> The Node stuff is untested and straight from some other highlight.js module!!!
+> I suppose these instructions from the docs won't work for this patched plugin.
 > In fact _this_ customized_ plugin is only tested visually in the browser.
 
 If you're using Node / Webpack / Rollup / Browserify, etc, simply require the language module, then register it with
@@ -68,23 +68,20 @@ If you're using Node / Webpack / Rollup / Browserify, etc, simply require the la
 
 ```javascript
 var hljs = require("highlight.js");
-var hljsHugo = require("{{$lang}}");
-hljs.registerLanguage("{{$lang}}", hljs-{{title $lang}});
+var hljsHugo = require("hugo-highlightjs-plugin.js");
+/* guess the registration is done when importing the plugin */
+/* hljs.registerLanguage("???", hljs-???); */
 hljs.highlightAll();
 ```
 
 ### Example code
 
-Enclose your code in `<pre><code>` tags and at best set the language with `class="{{$lang}}"`. If you want to rely on
+Enclose your code in `<pre><code>` tags and at best set the language with `class="hugo-(html|text)"`. If you want to rely on
 auto detection, read the section about that below.
-
-{{ with .page.Params.hljs.aliases }}
-Instead of `{{$lang}}` you can use the defined aliases: `{{ delimit . "`, `" }}`.
-{{ end }}
 
 ```html
 <pre><code class="hugo-html">
-<title>{{ `{{.Title}}` }}</title>
+<title>{{.Title}}</title>
 </code></pre>
 ```
 
@@ -96,11 +93,11 @@ auto-detection. To be on the safe side specify the language you want for every c
 
 - Go template comments get relevance = 10.
 
-  comments start with {{ "`{{/*` or `{{- /*` and end with `*/}}` or `*/ -}}`" }}
+  comments start with `{{/*` or `{{- /*` and end with `*/}}` or `*/ -}}`
 
 - Functions in the _hugo_ namespace get relevance = 10 (e.g. hugo.IsDevelopment)
 
-- The following _Handlebars_ opening template tags are set too _invalid_ for hugo: {{ "`{{#`, `{{>`, `{{!--`, `{{!`" }}
+- The following _Handlebars_ opening template tags are set too _invalid_ for hugo: `{{#`, `{{>`, `{{!--`, `{{!`
  
   `IgnoreIllegals` default value is `false` since version 11. So this stops highlighting with the hugo module.
 
@@ -126,7 +123,7 @@ This package is released under the MIT License. See [LICENSE](LICENSE) file for 
 - [Go HTML template](https://pkg.go.dev/html/template) : Go's html template package
 - [Go TEXT template](https://pkg.go.dev/text/template) : Go's text template package
 
-[highlightjs-hugo]: {{ site.Params.repository }}
+[highlightjs-hugo]: https://github.com/irkode/highlightjs-hugo
 [Highlight.js]: https://highlightjs.org/
 [Hugo]: https://gohugo.io/
-[dist folder]: {{ site.Params.blobs }}/dist/{{$lang}}/dist/
+[dist folder]: https://github.com/irkode/highlightjs-hugo/blob/main/dist/plugins/dist/highlightjs
