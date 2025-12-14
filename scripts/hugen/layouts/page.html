@@ -4,7 +4,7 @@
   {{- partial "create-and-publish" (dict "base" "modules" "source" . "page" $) }}
 {{- end }}
 {{- /* copy page resources */ -}}
-{{- range slice "{{ Params.hljs.language }}.png" }}
+{{- range slice (add .Params.hljs.language ".png") }}
   {{- partial "copy-and-publish" (dict "base" "common" "source" . "page" $) }}
 {{- end }}
 
