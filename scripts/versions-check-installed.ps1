@@ -11,8 +11,8 @@ $Versions.Keys | ForEach-Object {
     $wantedVersion = [System.Environment]::GetEnvironmentVariable($($key.ToUpper() + "_VERSION"))
     if (Get-Command $key -ErrorAction SilentlyContinue) {
       $installedVersion = switch ($key) {
-        "go" { $(go version) -replace '^.*go(\d+\.\d+\.\d+).*$', '$1'; break }
-        "hugo" { $(hugo version) -replace '^.*hugo v(\d+\.\d+\.\d+).*$', '$1'; break }
+        "go" { (go version) -replace '^.*go(\d+\.\d+\.\d+).*$', '$1'; break }
+        "hugo" { ((hugo version) -join '') -replace '(?s).*hugo v(\d+\.\d+\.\d+).*', '$1'; break }
         "node" { $(node --version) -replace '^v(.*)$', '$1'; break }
         default { throw "unsupported executable: $key" }
       }

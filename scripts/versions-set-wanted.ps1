@@ -23,5 +23,3 @@ $Versions.Keys | ForEach-Object {
     [System.Environment]::SetEnvironmentVariable($envVarName, $version)
   }
 }
-
-#$version gc .\go.mod | select-string "^go (\d+\.\d+\.\d+)").Matches.Groups[1].Value"
