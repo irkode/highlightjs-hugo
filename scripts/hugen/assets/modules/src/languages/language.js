@@ -126,13 +126,13 @@ export default function (hljs) {
       // stop highlighting if a handlebars begin tag is found
       { begin: /\{\{(#|>|!--|!)/, end: /\}\}/, illegal: /.*/, },
       {
-        begin: [re_ACTION_OPEN, /\s*/, re_STANDALONE_KEYWORDS], beginScope: { 1: 'template-tag', 3: 'keyword' },
-        end: [re_ACTION_CLOSE], endScope: { 1: 'template-tag' },
-      },
-      {
         begin: [re_ACTION_OPEN, /\s*/, re_PIPELINE_KEYWORDS], beginScope: { 1: 'template-tag', 3: 'keyword' },
         end: [re_ACTION_CLOSE], endScope: { 1: 'template-tag' },
         contains: PIPELINE,
+      },
+      {
+        begin: [re_ACTION_OPEN, /\s*/, re_STANDALONE_KEYWORDS], beginScope: { 1: 'template-tag', 3: 'keyword' },
+        end: [re_ACTION_CLOSE], endScope: { 1: 'template-tag' },
       },
       {
         begin: [re_ACTION_OPEN], beginScope: { 1: 'template-tag' },

@@ -9,7 +9,7 @@
 {{ if not 1 }}
 {{ if or 1 2}}
 {{ if true }}
-{{ if eq true false }}
+{{ else if eq true false }}
 {{ `raw
 string
 literal

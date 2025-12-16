@@ -2,7 +2,7 @@ patterns:
   PIPELINE_KEYWORDS:
     - block
     - define
-    - else\swith
+    - else\s+with
     - else\s+if
     - range
     - return
