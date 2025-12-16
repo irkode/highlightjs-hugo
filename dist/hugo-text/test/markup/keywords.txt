@@ -8,6 +8,9 @@
 {{ define }}
 {{ define "name" }}
 {{ else }}
+{{ else if }}
+{{ else with }}
+{{ else     with }}
 {{ end }}
 {{ if }}
 {{ range }}

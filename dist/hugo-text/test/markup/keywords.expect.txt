@@ -8,6 +8,9 @@
 <span class="hljs-template-tag">{{</span> <span class="hljs-keyword">define</span> <span class="hljs-template-tag">}}</span>
 <span class="hljs-template-tag">{{</span> <span class="hljs-keyword">define</span> <span class="hljs-string">&quot;name&quot;</span> <span class="hljs-template-tag">}}</span>
 <span class="hljs-template-tag">{{</span> <span class="hljs-keyword">else</span> <span class="hljs-template-tag">}}</span>
+<span class="hljs-template-tag">{{</span> <span class="hljs-keyword">else if</span> <span class="hljs-template-tag">}}</span>
+<span class="hljs-template-tag">{{</span> <span class="hljs-keyword">else with</span> <span class="hljs-template-tag">}}</span>
+<span class="hljs-template-tag">{{</span> <span class="hljs-keyword">else     with</span> <span class="hljs-template-tag">}}</span>
 <span class="hljs-template-tag">{{</span> <span class="hljs-keyword">end</span> <span class="hljs-template-tag">}}</span>
 <span class="hljs-template-tag">{{</span> <span class="hljs-keyword">if</span> <span class="hljs-template-tag">}}</span>
 <span class="hljs-template-tag">{{</span> <span class="hljs-keyword">range</span> <span class="hljs-template-tag">}}</span>

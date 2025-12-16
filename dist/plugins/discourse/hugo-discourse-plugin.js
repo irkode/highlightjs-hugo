@@ -19,10 +19,9 @@ end:[/\)/],endScope:{1:"punctuation"}
 match:/`[^`]*`/,keywords:[]},i,o,r,n,{scope:"operator",match:/[|,=]|:=/},{
 scope:"template-variable.context",match:/\.|\$/},l],vc=[e.COMMENT(/\s*(\{\{- \/\*|\{\{\/\*)/,/\*\/ -\}\}|\*\/\}\}/,{
 relevance:10}),{begin:/\{\{(#|>|!--|!)/,end:/\}\}/,illegal:/.*/},{
-begin:[t,/\s*/,/break|continue|else|end/],beginScope:{1:"template-tag",
-3:"keyword"},end:[s],endScope:{1:"template-tag"}},{
-begin:[t,/\s*/,/block|define|else\swith|else\s+if|range|return|template|try|with|if/],
+begin:[t,/\s*/,/block|define|else\s+with|else\s+if|range|return|template|try|with|if/],
 beginScope:{1:"template-tag",3:"keyword"},end:[s],endScope:{1:"template-tag"},
-contains:c},{begin:[t],beginScope:{1:"template-tag"},end:[s],endScope:{
-1:"template-tag"},contains:c}],vl={case_insensitive:!1,contains:vc};
+contains:c},{begin:[t,/\s*/,/break|continue|else|end/],beginScope:{
+1:"template-tag",3:"keyword"},end:[s],endScope:{1:"template-tag"}},{begin:[t],
+beginScope:{1:"template-tag"},end:[s],endScope:{1:"template-tag"},contains:c}],vl={case_insensitive:!1,contains:vc};
 if (xml) { vl.subLanguage = ["xml"];vl.aliases=["hugo"] }; return l.contains=c,vl; }};api.registerHighlightJSLanguage("hugo-html", hugoLang(1));api.registerHighlightJSLanguage("hugo-text", hugoLang(0));});

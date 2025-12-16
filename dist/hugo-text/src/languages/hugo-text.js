@@ -16,7 +16,7 @@ export default function (hljs) {
   const re_ACTION_OPEN = /\{\{- |\{\{(?!-)/;
   const re_ACTION_CLOSE = / -\}\}|(?<! -)\}\}/;
 
-  const re_PIPELINE_KEYWORDS = /block|define|else\swith|else\s+if|range|return|template|try|with|if/;
+  const re_PIPELINE_KEYWORDS = /block|define|else\s+with|else\s+if|range|return|template|try|with|if/;
   const re_STANDALONE_KEYWORDS = /break|continue|else|end/;
 
   // simple modes, -> always list last to not capture begin of complex modes
@@ -117,13 +117,13 @@ export default function (hljs) {
       // stop highlighting if a handlebars begin tag is found
       { begin: /\{\{(#|>|!--|!)/, end: /\}\}/, illegal: /.*/, },
       {
-        begin: [re_ACTION_OPEN, /\s*/, re_STANDALONE_KEYWORDS], beginScope: { 1: 'template-tag', 3: 'keyword' },
-        end: [re_ACTION_CLOSE], endScope: { 1: 'template-tag' },
-      },
-      {
         begin: [re_ACTION_OPEN, /\s*/, re_PIPELINE_KEYWORDS], beginScope: { 1: 'template-tag', 3: 'keyword' },
         end: [re_ACTION_CLOSE], endScope: { 1: 'template-tag' },
         contains: PIPELINE,
+      },
+      {
+        begin: [re_ACTION_OPEN, /\s*/, re_STANDALONE_KEYWORDS], beginScope: { 1: 'template-tag', 3: 'keyword' },
+        end: [re_ACTION_CLOSE], endScope: { 1: 'template-tag' },
       },
       {
         begin: [re_ACTION_OPEN], beginScope: { 1: 'template-tag' },

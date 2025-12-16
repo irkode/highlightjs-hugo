@@ -22,9 +22,9 @@ name:"highlightjs-hugo-html",case_insensitive:!1,aliases:["hugo"],
 subLanguage:["xml"],
 contains:[e.COMMENT(/\s*(\{\{- \/\*|\{\{\/\*)/,/\*\/ -\}\}|\*\/\}\}/,{
 relevance:10}),{begin:/\{\{(#|>|!--|!)/,end:/\}\}/,illegal:/.*/},{
-begin:[t,/\s*/,/break|continue|else|end/],beginScope:{1:"template-tag",
-3:"keyword"},end:[s],endScope:{1:"template-tag"}},{
-begin:[t,/\s*/,/block|define|else\swith|else\s+if|range|return|template|try|with|if/],
+begin:[t,/\s*/,/block|define|else\s+with|else\s+if|range|return|template|try|with|if/],
 beginScope:{1:"template-tag",3:"keyword"},end:[s],endScope:{1:"template-tag"},
-contains:c},{begin:[t],beginScope:{1:"template-tag"},end:[s],endScope:{
-1:"template-tag"},contains:c}]}}})();hljs.registerLanguage("hugo-html",e);var e1 = function(hljs){  var def = e(hljs) || {};if (def && typeof def === "object") { var clone = Object.assign({}, def);if (clone.subLanguage) delete clone.subLanguage;if (clone.aliases) delete clone.aliases;clone.name = "highlightjs-hugo-text";return clone;}return def;};hljs.registerLanguage("hugo-text", e1);})();
+contains:c},{begin:[t,/\s*/,/break|continue|else|end/],beginScope:{
+1:"template-tag",3:"keyword"},end:[s],endScope:{1:"template-tag"}},{begin:[t],
+beginScope:{1:"template-tag"},end:[s],endScope:{1:"template-tag"},contains:c}]}}
+})();hljs.registerLanguage("hugo-html",e);var e1 = function(hljs){  var def = e(hljs) || {};if (def && typeof def === "object") { var clone = Object.assign({}, def);if (clone.subLanguage) delete clone.subLanguage;if (clone.aliases) delete clone.aliases;clone.name = "highlightjs-hugo-text";return clone;}return def;};hljs.registerLanguage("hugo-text", e1);})();
