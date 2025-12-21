@@ -8,6 +8,7 @@ Website: {{ site.Home.Permalink }}
 Category: template
 License: {{ .site.Params.license }}
 */
+import * as hugo from "./lib/keywords.js";
 export default function (hljs) {
 
   // action comments
@@ -17,10 +18,10 @@ export default function (hljs) {
   // action commands
   const re_ACTION_OPEN = /\{\{- |\{\{(?!-)/;
   const re_ACTION_CLOSE = / -\}\}|(?<! -)\}\}/;
-
+{{/* 
   {{ or .js.PIPELINE_KEYWORDS "" }}
   {{ or .js.STANDALONE_KEYWORDS "" }}
-
+ */}}
   // simple modes, -> always list last to not capture begin of complex modes
   const PIPE_OPERATOR_MODE = { scope: 'operator', match: /[|,=]|:=/, };
   const CONTEXT_ONLY_MODE = { scope: 'template-variable.context', match: /\.|\$/ };
@@ -43,7 +44,7 @@ export default function (hljs) {
     ],
     contains: [DOT_PROPERTY_CHAIN],
   };
-
+{{/*
   {{- with .js.kw_LITERAL }}{{ printf "\n  %s" .}}{{end }}
   {{- with .js.kw_FUNCTION }}{{ printf "\n  %s" .}}{{end }}
   {{- with .js.kw_KEYWORD }}{{ printf "\n  %s" .}}{{end }}
@@ -65,11 +66,23 @@ export default function (hljs) {
     keywords: FUNCTION_KEYWORDS,
     contains: [METHOD_CHAIN_HELPER]
   };` -}}{{- end }}
+*/}}
+
+  const FUNCTION_KEYWORDS = {
+    $pattern: /\w+\.\w+/,
+    'built_in': hugo.kw_FUNCTION,
+  };
+  const PIPE_FUNCTION_MODE = {
+    // scope: 'PIPE_FUNCTION_MODE',
+    begin: hugo.re_g_FUNCTION,
+    keywords: FUNCTION_KEYWORDS,
+    contains: [METHOD_CHAIN_HELPER]
+  };
 
   const PIPELINE_KEYWORDS = {
     $pattern: /\w+/,
-    'built_in': kw_BUILT_IN,
-    'literal': kw_LITERAL,
+    'built_in': hugo.kw_BUILT_IN,
+    'literal': hugo.kw_LITERAL,
   };
 
   // method chain - starting with a context DOT
@@ -110,7 +123,8 @@ export default function (hljs) {
     hljs.QUOTE_STRING_MODE,
     hljs.APOS_STRING_MODE,
     RAW_STRING_MODE,
-    {{- if .js.kw_FUNCTION }}{{ printf "\n    PIPE_FUNCTION_MODE," }}{{ end }}
+    PIPE_FUNCTION_MODE,
+    {{- /* if .js.kw_FUNCTION }}{{ printf "\n    PIPE_FUNCTION_MODE," }}{{ end */}}
     PIPE_BUILTIN_MODE,
     PIPE_CONTEXT_MODE,
     PIPE_VARIABLE_MODE,
@@ -126,12 +140,12 @@ export default function (hljs) {
       // stop highlighting if a handlebars begin tag is found
       { begin: /\{\{(#|>|!--|!)/, end: /\}\}/, illegal: /.*/, },
       {
-        begin: [re_ACTION_OPEN, /\s*/, re_PIPELINE_KEYWORDS], beginScope: { 1: 'template-tag', 3: 'keyword' },
+        begin: [re_ACTION_OPEN, /\s*/, hugo.re_PIPELINE_KEYWORDS], beginScope: { 1: 'template-tag', 3: 'keyword' },
         end: [re_ACTION_CLOSE], endScope: { 1: 'template-tag' },
         contains: PIPELINE,
       },
       {
-        begin: [re_ACTION_OPEN, /\s*/, re_STANDALONE_KEYWORDS], beginScope: { 1: 'template-tag', 3: 'keyword' },
+        begin: [re_ACTION_OPEN, /\s*/, hugo.re_STANDALONE_KEYWORDS], beginScope: { 1: 'template-tag', 3: 'keyword' },
         end: [re_ACTION_CLOSE], endScope: { 1: 'template-tag' },
       },
       {

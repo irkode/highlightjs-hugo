@@ -24,7 +24,6 @@
     {{- end }}
   {{- end }}
 {{- end }}
-{{ warnf "FIXED_WORDS: %s" (debug.Dump $fixedWords)}}
 
 {{- /* load hugo keywords from documentation pages */ -}}
 {{- if eq $lang "hugo" }}
@@ -64,7 +63,7 @@
 {{- $keywords := dict }}
 {{- range $scope, $values := $pad.Values }}
   {{- $names := slice }}
-  {{- /* collect all strings for the current scope and take longest strings first */ -}}
+  {{- /* collect all strings for the current scope, sort by length(desc) and name(asc)*/ -}}
   {{- range sort $values | collections.Reverse }}
     {{- $names = $names | append (sort .)}}
   {{- end }}
