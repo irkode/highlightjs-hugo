@@ -1,4 +1,6 @@
-{{- warnf "template %s - %s" .Path templates.Current.Name }}
+{{- $tpl := templates.Current.Name }}
+{{- $pagePath := .Path }}
+{{- warnf "TPL  %s - %s" $pagePath $tpl }}
 {{- /* copy page resources */ -}}
 {{- range slice "plugins.png" }}
   {{- partial "copy-and-publish" (dict "base" "common" "source" . "dir" false "page" $) }}

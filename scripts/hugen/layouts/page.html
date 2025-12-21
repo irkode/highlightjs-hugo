@@ -1,4 +1,6 @@
-{{- warnf "template %s - %s" .Path templates.Current.Name }}
+{{- $tpl := templates.Current.Name }}
+{{- $pagePath := .Path }}
+{{- warnf "TPL  %s - %s" $pagePath $tpl }}
 {{- /* create reference documents */}}
 {{- range slice "css-class-reference.md" "LICENSE" "package.json" "README.md" "src/styles/debug-hugo.css"}}
   {{- partial "create-and-publish" (dict "base" "modules" "source" . "page" $) }}
