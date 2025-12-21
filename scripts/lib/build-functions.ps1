@@ -13,7 +13,7 @@ function buildHighlightJS {
         Write-Verbose "Skip Highlight.js tests"
       } else {
         try { exec npm run test-markup }
-        catch { if (-not $IgnoreMarkupErrors) { throw $_ }}
+        catch { if (-not $IgnoreMarkupErrors) { throw $_ } }
       }
       exec node tools/build.js hugo-html hugo-text -t cdn
     }
@@ -70,26 +70,26 @@ function cloneHighlightJS {
       Write-Verbose "HighlightJS: clone ...SKIPPED"
     } else {
       Set-Location $WorkDir
-      if (-Not (Test-Path $HighlightJsDir -PathType Container)) {
+      if (-not (Test-Path $HighlightJsDir -PathType Container)) {
         exec git clone --single-branch --depth 1 "-b" ${ENV:HIGHLIGHTJS_VERSION} https://github.com/highlightjs/highlight.js.git
       } else {
         Write-Warning "HighlightJS: keep current clone. To fresh up remove $HighLightJsDir"
       }
     }
     [void](Test-Folder $HighlightJsExtraDir)
-    $needsInstall = -Not (Test-Path (Join-Path -Path $HighlightJsDir -ChildPath "node_modules"))
+    $needsInstall = -not (Test-Path (Join-Path -Path $HighlightJsDir -ChildPath "node_modules"))
     if ($NeedsInstall -or ($Force -contains 'SetupHighlightJS')) {
       Set-Location $HighlightJsDir
       exec npm install --save-dev
-      if ($LASTEXITCODE) { throw $_}
+      if ($LASTEXITCODE) { throw $_ }
       exec npm audit fix
-      if ($LASTEXITCODE) { throw $_}
+      if ($LASTEXITCODE) { throw $_ }
     }
     [void](Test-Folder $HighLightJsDir\node_modules)
   } catch {
     Write-Error "$_`nHighlightJS: clone and setup failed" -ErrorAction Continue
     throw $_
-  throw
+    throw
   } finally {
     Set-Location $startCWD
   }
@@ -111,7 +111,7 @@ function developerBuild {
       Write-Verbose "Add custom CSS style and patch developer.html - use it from work/developer.html"
       # add custom debugging style
       Copy-Item -Force $StyleSourceFile $StyleTargetFolder
-      $styleSheets = (Get-ChildItem $StyleTargetFolder *.css | %{ "'$($_.Name)'" }) -join ','
+      $styleSheets = (Get-ChildItem $StyleTargetFolder *.css | ForEach-Object { "'$($_.Name)'" }) -join ','
       # $cssBase16Files = Get-ChildItem $StyleTargetFolder *.css
       $JsOptions = @"
 const cssOptions = [${stylesheets}];
@@ -153,7 +153,7 @@ function generateHugoModules {
       Write-Verbose "HugoModules: Generate Highlight.JS plugins to $HighlightJsExtraDir"
     } else {
       Set-Location $HugoGenDir
-      exec hugo -d $HighlightJsExtraDir
+      exec hugo -d $HighlightJsExtraDir --cleanDestinationDir
     }
     [void](Test-File $HighlightJsExtraDir "hugo-html\src\languages\hugo-html.js")
     [void](Test-File $HighlightJsExtraDir "hugo-text\src\languages\hugo-text.js")
@@ -169,14 +169,12 @@ function distribute {
   [CmdLetBinding()]
   param()
   try {
-    if ($Distribute -or $DistributeOnly) {
-      Write-Verbose "Distribute build results"
-      [void](Test-Folder $DistributionDir)
-      Set-Location $DistributionDir -ErrorAction Stop # Safety
-      Remove-Item -Recurse -Force *
+    Write-Verbose "Distribute build results"
+    [void](Test-Folder $DistributionDir)
+    Set-Location $DistributionDir -ErrorAction Stop # Safety
+    Remove-Item -Recurse -Force *
 
-      Get-ChildItem -Directory $HighlightJsExtraDir | Copy-Item -Recurse -Destination .
-    }
+    Get-ChildItem -Directory $HighlightJsExtraDir | Copy-Item -Recurse -Destination .
   } catch {
     Write-Error "$_`Distribution to $DistributionDir failed" -ErrorAction Continue
     throw "$_"

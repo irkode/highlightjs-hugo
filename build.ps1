@@ -17,7 +17,7 @@ param(
   # Force actions that else might be skipped based on project state
   [Parameter(Mandatory = $false)][ValiDateSet('SetupHighlightJS')][string[]]$Force,
   # Build only extra languages
-  [Parameter(Mandatory = $false)][ValiDateSet('true','false')][string]$OnlyExtra = 'true',
+  [Parameter(Mandatory = $false)][ValiDateSet('true', 'false')][string]$OnlyExtra = 'true',
   # Proceed regardless of test failures
   [Parameter(Mandatory = $false)][switch]$IgnoreMarkupErrors,
   # publish to Distribution folder
@@ -33,13 +33,13 @@ param(
     'Distribute',
     'ShowStatus',
     'updateHugoDocs'
-    )][string[]]$Steps
+  )][string[]]$Steps
 )
 
 $startCWD = Get-Location
 $ErrorActionPreference = 'Stop'
 $ProgressPreference = 'SilentlyContinue'
-If ($PSBoundParameters.Keys -notcontains 'Steps') {
+if ($PSBoundParameters.Keys -notcontains 'Steps') {
   $Steps = @(
     'updateHugoDocs', 'cloneHighlightJS',
     'generateHugoModules',
@@ -48,9 +48,9 @@ If ($PSBoundParameters.Keys -notcontains 'Steps') {
   )
 }
 if ($PSBoundParameters.Keys -contains 'Skip') {
-  $Steps = $steps | Where-Object { $Skip -notcontains $_}
+  $Steps = $steps | Where-Object { $Skip -notcontains $_ }
 }
-if ($Distribute) { $Steps += 'distribute'}
+if ($Distribute) { $Steps += 'distribute' }
 
 try {
   try {
@@ -74,13 +74,13 @@ try {
     Set-Location $StartCWD
   }
 
-  $Steps | Out-Host
   try {
     & $ScriptsDir/versions-set-wanted.ps1 -VersionConfigFile $ProjectRoot\.versions.json
     # we expect all external tools be installed before starting a local build
     & $ScriptsDir/versions-check-installed.ps1 -VersionConfigFile $ProjectRoot\.versions.json
 
     foreach ($step in $Steps) {
+      Write-Verbose "> Executing: [ $step ]"
       & $step
     }
   } catch {
@@ -90,7 +90,7 @@ try {
     Set-Location $StartCWD
   }
 } catch {
-    Write-Error  "$_`nBUILD failed!" -ErrorAction Stop
+  Write-Error  "$_`nBUILD failed!" -ErrorAction Stop
 } finally {
   Remove-Module -Force utilities
   Remove-Module -Force build-functions
