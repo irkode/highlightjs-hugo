@@ -76,7 +76,7 @@ Hugo is a powerful templating engine, and we utilize it to generate and assemble
 - generate tests
 - generate README
 
-Take it as a hacky showcasehow to use Hugo to generate _any_ files from content templates.
+Take it as a hacky showcase how to use Hugo to generate _any_ files from content templates.
 
 If you want to dig in, you'll find the site source at [scripts\hugen](scripts\hugen)
 
