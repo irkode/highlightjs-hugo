@@ -14,12 +14,15 @@ try {
   $TargetPath = Join-Path $TargetFolder $TargetFile
 
   $plugin = Get-Content -Raw -Encoding utf8 "$SourcePath"
-  $discourseHeaderPattern = ("(?s)" + [regex]::Escape('(()=>{var e=(()=>{"use strict";return e=>{') + '\s*const')
-  $discourseReturnLangPattern = "(?s);(return l\.contains=c,)(.*?)(\s*contains:)(\[e\.COMMENT.*,contains:c)(.*)"
+  #$discourseHeaderPattern = ("(?s)" + [regex]::Escape('(()=>{var e=(()=>{"use strict";return e=>{') + '\s*const')
+  $discourseHeaderPattern = "(?s)^.*?\(\(\)=>\{var e=\(\(\)=>(.*)return (\w+)=>\{const"
+
+  $discourseReturnLangPattern = "(?s);(return h\.contains=f,)(.*?)(\s*contains:)(\[n\.COMMENT.*,contains:f)(.*)"
   $PluginSourceCheckSuccess = $false
   if ( $plugin -match $discourseHeaderPattern) {
     # replace header
-    $plugin = $plugin -replace $discourseHeaderPattern, "const hugoLang = function(xml) { return function(e){`nvar"
+    #$plugin = $plugin -replace $discourseHeaderPattern, "const hugoLang = function(xml) { return function(e){`nvar"
+    $plugin = $plugin -replace $discourseHeaderPattern, 'const hugoLang = function(xml) { return function($2)$1var'
     $plugin = $plugin.Replace('`hugo-text` grammar compiled', '`hugo-discourse` plugin compiled')
     if ( $plugin -match $discourseReturnLangPattern) {
       if ($Matches.Length -eq 1) {
