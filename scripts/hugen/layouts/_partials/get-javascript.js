@@ -1,7 +1,7 @@
-{{- warnf "EXEC %s" templates.Current.Name }}
+{{- warnf "EXEC %s for %s" templates.Current.Name .Page.Path}}
 {{- $dataLang := .Params.hljs.keywords }}
 
-{{- $keywords := partial "get-keywords.html" $dataLang }}
+{{- $keywords := partialCached "get-keywords.html" $dataLang $dataLang }}
 
 {{- $dataKeywords := index site.Data.keywords $dataLang }}
 

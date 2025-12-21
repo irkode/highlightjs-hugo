@@ -1,0 +1,17 @@
+{{/*
+  replaces shorthand links [text][]
+  with standard markdown links [text](link])
+  using the link definition [text]: link
+
+  reasoniong: The markdown template file is processed by ExecuteAsTemplate which does
+  not execute link render hooks and github READMEs don't understand shorthand notation.
+*/}}
+
+{{- $content := . }}
+{{- with $content }}
+  {{- range findRESubmatch `(?m)^(\[[^\]]+?\]):\s*(.*)$` $content }}
+    {{- $content = replace $content (add (index . 1) "[]") (printf "%s(%s)" (index . 1) (index . 2)) }}
+  {{- end }}
+{{- end }}
+{{- return $content }}
+{{- /* remove all trailing whitespace */ -}}

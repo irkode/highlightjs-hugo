@@ -4,21 +4,36 @@ baseurl = "https://irkode.github.io/highlightjs-hugo"
 title   = "Generate Highlight.js Javascript modules for Go/Hugo templates"
 
 #disableAliases = true
-disableKinds   = ['rss', 'sitemap', 'taxonomy', 'term']
+disableKinds = ['rss', 'sitemap', 'taxonomy', 'term']
 
 [params]
-  author = "Irkode <irkode@rikode.de>"
-  webroot = "https://irkode.github.io/highlightjs-hugo"
-  reporoot = "https://github.com/irkode/"
+  author     = "Irkode <irkode@rikode.de>"
+  webroot    = "https://irkode.github.io/highlightjs-hugo"
+  reporoot   = "https://github.com/irkode/"
   repository = "https://github.com/irkode/highlightjs-hugo"
-  releases = "https://github.com/irkode/highlightjs-hugo/releases/latest"
-  blobs = "https://github.com/irkode/highlightjs-hugo/blob/main"
-  category = "templates"
-  license = "MIT"
+  releases   = "https://github.com/irkode/highlightjs-hugo/releases/latest"
+  blobs      = "https://github.com/irkode/highlightjs-hugo/blob/main"
+  category   = "templates"
+  license    = "MIT"
+
+# we generate yaml files containing keywords
+[outputFormats.yaml]
+  baseName       = "keywords"
+  isHTML         = false
+  isPlainText    = true
+  mediaType      = "application/yaml"
+  notAlternative = true
+
+# we generate javascript files for the data structures needed by plugins
+[outputFormats.js]
+  baseName       = "src/languages/lib/keywords"
+  isHTML         = false
+  isPlainText    = true
+  mediaType      = "text/javascript"
+  notAlternative = true
 
 [[cascade]]
-  # don't render/publish stuff in /functions
-  # don't render/publish stuff in /extra
+  # don't render/publish stuff in /functions imported from hugoDocs
   [cascade.build]
     list             = 'always'
     publishResources = false
