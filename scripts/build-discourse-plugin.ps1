@@ -25,7 +25,7 @@ try {
       if ($Matches.Length -eq 1) {
         $vc = $Matches
         $plugin = $plugin -replace $discourseReturnLangPattern, ",vc=$($vc[4])}],vl={case_insensitive:!1,contains:vc};`n"
-         $PluginSourceCheckSuccess = $true
+        $PluginSourceCheckSuccess = $true
       } else {
         Write-Error "To many matches for 'Return language' section in plugin source found - Adapt build script and retry" -ErrorAction Continue
       }
@@ -38,13 +38,14 @@ try {
   if ($PluginSourceCheckSuccess) {
     $plugin = 'import { apiInitializer } from "discourse/lib/api";export default apiInitializer((api) => {' +
     $plugin + 'if (xml) { vl.subLanguage = ["xml"];vl.aliases=["hugo"] }; return l.contains=c,vl; }};' +
-      'api.registerHighlightJSLanguage("hugo-html", hugoLang(1));' +
-      'api.registerHighlightJSLanguage("hugo-text", hugoLang(0));});' +
-      "`n"
+    'api.registerHighlightJSLanguage("hugo-html", hugoLang(1));' +
+    'api.registerHighlightJSLanguage("hugo-text", hugoLang(0));});' +
+    "`n"
     $plugin | Set-Content -Encoding utf8 $TargetPath -Force -NoNewline
+    [void](Test-Path -PathType Leaf $TargetPath -ErrorAction Stop)
+  } else {
+    Write-Error "generate Discourse Plugin failed" -ErrorAction Stop
   }
-  [void](Test-Path -PathType Leaf $TargetPath -ErrorAction Stop)
 } catch {
-  Write-Error "generate Discourse Plugin failed" -ErrorAction Continue
   throw $_
 }

@@ -133,13 +133,13 @@ jobs:
         run: |
           $PluginSourceFolder = "${{ env.HIGHLIGHTJS_EXTRA_DIR }}/hugo-text/dist"
           $PluginTargetFolder = "${{ env.HIGHLIGHTJS_EXTRA_DIR }}/plugins/discourse"
-          ./scripts/build-discourse-plugin.ps1 -Verbose $PluginSourceFolder $PluginTargetFolder
+          ./scripts/build-discourse-plugin.ps1 -Verbose $PluginSourceFolder $PluginTargetFolder -ErrorAction Stop
 
       - name: Build Highlight.js plugin
         run: |
           $PluginSourceFolder = "${{ env.HIGHLIGHTJS_EXTRA_DIR }}/hugo-html/dist"
           $PluginTargetFolder = "${{ env.HIGHLIGHTJS_EXTRA_DIR }}/plugins/highlightjs"
-          ./scripts/build-highlightjs-plugin.ps1 -Verbose $PluginSourceFolder $PluginTargetFolder
+          ./scripts/build-highlightjs-plugin.ps1 -Verbose $PluginSourceFolder $PluginTargetFolder -ErrorAction Stop
 
       - name: Publish to distribution folder
         run: |
