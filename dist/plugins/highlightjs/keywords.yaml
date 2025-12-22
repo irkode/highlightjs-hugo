@@ -370,6 +370,8 @@ function:
 - urls.Anchorize
 - urls.JoinPath
 - urls.Parse
+- urls.PathEscape
+- urls.PathUnescape
 - urls.Ref
 - urls.RelLangURL
 - urls.RelRef
