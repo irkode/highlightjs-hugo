@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: 'Tag to create a release for'
+        description: "Tag to create a release for"
         required: true
 
 permissions:
@@ -24,7 +24,7 @@ jobs:
           ref: main
           fetch-depth: 0
           fetch-tags: true
-          submodules: 'false'
+          submodules: "false"
 
       - name: Get and save tag name
         run: |
@@ -49,11 +49,16 @@ jobs:
 
       - name: Create archives
         run: |
+          if ("${{ github.event_name }}" -eq "workflow_dispatch") {
+            $givenTag="${{ github.event.inputs.tag }}"
+          } else {
+            $givenTag="${{ github.ref }}".Replace("refs/tags/","")
+          }
           [void](New-Item -ItemType Directory ${{ github.workspace }}/work -ErrorAction SilentlyContinue)
           Set-Location ${{ github.workspace }}/dist
-          7z a ${{ github.workspace }}/work/hugo-html-${TAG}.zip hugo-html
-          7z a ${{ github.workspace }}/work/hugo-text-${TAG}.zip hugo-text
-          7z a ${{ github.workspace }}/work/hugo-plugins-${TAG}.zip plugins
+          7z a ${{ github.workspace }}/work/hugo-html-${givenTag}.zip hugo-html
+          7z a ${{ github.workspace }}/work/hugo-text-${givenTag}.zip hugo-text
+          7z a ${{ github.workspace }}/work/hugo-plugins-${givenTag}.zip plugins
 
       - name: Create Release
         id: create_release
