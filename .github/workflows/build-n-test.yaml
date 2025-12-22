@@ -1,7 +1,7 @@
 # This is prepared for builing on windows and linux either as matrix or single run
 # as of now the ONLY_EXTRA is not considered on linux runner
 # It looks like the `npm run test-markup` on linux is not properly enumerating the extra modules
-# dunno if this is node/npm problem or the implementation of the Highlight.js build scripts
+# dunno if this is node/npm problem or the implementation of the Highlight.js build scripts or mine
 name: Build and Test
 
 on:
@@ -45,7 +45,7 @@ jobs:
 
       - name: Set Tool Versions
         run: |
-          ./scripts/versions-set-wanted.ps1 -Verbose .versions.json
+          ./build/versions-set-wanted.ps1 -Verbose .versions.json
 
       - name: Setup Node.js
         uses: actions/setup-node@v6
@@ -91,7 +91,7 @@ jobs:
 
       - name: Check Versions
         run: |
-          ./scripts/versions-check-installed.ps1 -Verbose -VersionConfigFile .versions.json
+          ./build/versions-check-installed.ps1 -Verbose -VersionConfigFile .versions.json
 
       # SETUP Highlight.js (clone, npm ci - cache - save folder path)
       - name: Cache Highlight.js clone and dependencies
@@ -118,7 +118,7 @@ jobs:
           key: highlightjs-${{ runner.os }}-${{ env.HIGHLIGHTJS_VERSION }}
 
       - name: Generate Custom Modules
-        working-directory: ./scripts/hugen
+        working-directory: ./build/hugen
         run: |
           & hugo.exe -d ${{ env.HIGHLIGHTJS_EXTRA_DIR }}
 
@@ -133,13 +133,13 @@ jobs:
         run: |
           $PluginSourceFolder = "${{ env.HIGHLIGHTJS_EXTRA_DIR }}/hugo-text/dist"
           $PluginTargetFolder = "${{ env.HIGHLIGHTJS_EXTRA_DIR }}/plugins/discourse"
-          ./scripts/build-discourse-plugin.ps1 -Verbose $PluginSourceFolder $PluginTargetFolder -ErrorAction Stop
+          ./build/build-discourse-plugin.ps1 -Verbose $PluginSourceFolder $PluginTargetFolder -ErrorAction Stop
 
       - name: Build Highlight.js plugin
         run: |
           $PluginSourceFolder = "${{ env.HIGHLIGHTJS_EXTRA_DIR }}/hugo-html/dist"
           $PluginTargetFolder = "${{ env.HIGHLIGHTJS_EXTRA_DIR }}/plugins/highlightjs"
-          ./scripts/build-highlightjs-plugin.ps1 -Verbose $PluginSourceFolder $PluginTargetFolder -ErrorAction Stop
+          ./build/build-highlightjs-plugin.ps1 -Verbose $PluginSourceFolder $PluginTargetFolder -ErrorAction Stop
 
       - name: Publish to distribution folder
         run: |

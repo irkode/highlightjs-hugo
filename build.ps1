@@ -54,7 +54,7 @@ if ($Distribute) { $Steps += 'distribute' }
 
 try {
   try {
-    $ScriptsDir = Resolve-Path (Join-Path -Path $PSScriptRoot -ChildPath "scripts")
+    $ScriptsDir = Resolve-Path (Join-Path -Path $PSScriptRoot -ChildPath "build")
     Import-Module (Join-Path -Path $ScriptsDir -ChildPath "lib/utilities.ps1")
     Import-Module (Join-Path -Path $ScriptsDir -ChildPath "lib/build-functions.ps1")
     $ProjectRoot = Test-Folder $PSScriptRoot

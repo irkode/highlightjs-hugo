@@ -1,6 +1,6 @@
 {
-  "!go": { "source": "scripts/hugen/go.mod" },
-  "!hugo": { "source": "scripts/hugen/.hvm" },
+  "!go": { "source": "build/hugen/go.mod" },
+  "!hugo": { "source": "build/hugen/.hvm" },
   "!node": { "version": "22.14.0" },
   "highlightjs": { "version": "11.11.1" }
 }
