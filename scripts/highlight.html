@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>highlight.js developer</title>
+    <link rel="stylesheet" href="../work/highlight.js/extra/hugo-html/src/styles/debug-hugo.css" />
+  </head>
+  <body>
+    <h1>highlight JS for Hu-Go</h1>
+    <h2>hugo-html</h2>
+    <pre>
+      <code class="hugo-html">
+        "Just a string with a {{ tag }}"
+        {{ with (templates.Defer (dict "key" "global")) }}
+          {{ $theme := $.Site.Params.colorScheme | default "slate" }}
+          {{ with resources.Get (printf "css/%s.css" $theme) }}
+          {{/* with resources.Get "css/test.css" */}}
+            {{ $opts := dict
+              "minify" (not hugo.IsDevelopment)
+              "inlineImports" true
+            }}
+            {{ with . | css.TailwindCSS $opts }}
+              {{ if hugo.IsDevelopment }}
+                &lt;link rel="stylesheet" href="{{ .RelPermalink }}"&gt;
+              {{ else }}
+                {{ with . | fingerprint }}
+                  &lt;link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous"&gt;
+                    {{ end }}
+                  {{ end }}
+              {{ end }}
+          {{ end }}
+        {{ end }}
+      </code>
+    </pre>
+    <h2>hugo-text</h2>
+    <pre>
+      <code class="hugo-text">
+        "Just a string with a {{ tag }}"
+        {{ with (templates.Defer (dict "key" "global")) }}
+          {{ $theme := $.Site.Params.colorScheme | default "slate" }}
+          {{ with resources.Get (printf "css/%s.css" $theme) }}
+          {{/* with resources.Get "css/test.css" */}}
+            {{ $opts := dict
+              "minify" (not hugo.IsDevelopment)
+              "inlineImports" true
+            }}
+            {{ with . | css.TailwindCSS $opts }}
+              {{ if hugo.IsDevelopment }}
+                &lt;link rel="stylesheet" href="{{ .RelPermalink }}"&gt;
+              {{ else }}
+                {{ with . | fingerprint }}
+                  &lt;link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous"&gt;
+                    {{ end }}
+                  {{ end }}
+              {{ end }}
+          {{ end }}
+        {{ end }}
+      </code>
+    </pre>
+    <h2>handlebars</h2>
+    <pre>
+      <code class="handlebars">
+        "Just a string with a {{ tag }}"
+        {{> with (templates.Defer (dict "key" "global")) <}}
+          {{ $theme := $.Site.Params.colorScheme | default "slate" }}
+          {{ with resources.Get (printf "css/%s.css" $theme) }}
+          {{/* with resources.Get "css/test.css" */}}
+            {{ $opts := dict
+              "minify" (not hugo.IsDevelopment)
+              "inlineImports" true
+            }}
+            {{ with . | css.TailwindCSS $opts }}
+              {{ if hugo.IsDevelopment }}
+                &lt;link rel="stylesheet" href="{{ .RelPermalink }}"&gt;
+              {{ else }}
+                {{ with . | fingerprint }}
+                  &lt;link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous"&gt;
+                    {{ end }}
+                  {{ end }}
+              {{ end }}
+          {{ end }}
+        {{ end }}
+      </code>
+    </pre>
+    <!-- <script src="../work/highlight.js/build/highlight.min.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.0/highlight.min.js"></script>
+    <script src="../work/highlight.js/extra/plugins/highlightjs/hugo-highlightjs-plugin.js"></script>
+    <script>hljs.highlightAll();</script>
+  </body>
+</html>

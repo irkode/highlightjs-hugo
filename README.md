@@ -1,7 +1,7 @@
 # Highlightjs Hugo - Advanced syntax highlighting for Hugo templates using Highlight.js
 
-Every time a read a [Discourse topic](https://discourse.gohugo.io/) I wondered about the random
-look of highlighted template code. [Highlight.js][] has no support for Go and Hugo templates.
+Every time a read a [Discourse topic](https://discourse.gohugo.io/) I wondered about the random look of highlighted
+template code. [Highlight.js][] has no support for Go and Hugo templates.
 
 But it could look so nice
 
@@ -9,12 +9,15 @@ But it could look so nice
 
 ## Introduction
 
-To improve that the first was to implement standard [Highlight.js][] plugins.
-I digged in Highlight.JS and came up with two syntax modules for _text_ and _html_ templates.
+To improve that the first was to implement standard [Highlight.js][] plugins. I digged in Highlight.JS and came up with
+two syntax modules for _text_ and _html_ templates.
 
-Our keyword tables are hugo cause we support to style _Hugo_ functions as _built-in_. So we also provide a patched plugin with both language variants but sharing the same keyword table.
+Our keyword tables are huge cause we support to style _Hugo_ functions as _built-in_. Both plugins _hugo-html_ and
+_hugo-text_ are 9.5KB minified. We also provide patched plugins that includes both variants but only define the keyword
+tables once. The result is an also 9.5KB plugin (+300 bytes).
 
-Bringing that to _Discourse_ was a different story but I wanted to be able to do my own tests there.
+Bringing that to _Discourse_ was a different story. Our theme plugin supports both language variants also with 10 KB in
+size.
 
 ## Disclaimer
 
@@ -22,7 +25,8 @@ Bringing that to _Discourse_ was a different story but I wanted to be able to do
 
 Expect things to change between tags -- also with breaking changes or even incompatible ways.
 
-All we push to our dist folder is _work in progress_. Also we try to only push working changes, there might be something we missed out and it will break.
+All we push to our dist folder is _work in progress_. Also we try to only push working changes, there might be something
+we missed out and it will break.
 
 ## Provided plugins
 
@@ -38,15 +42,16 @@ Here's the list of our provided plugins. browse the folders to dig into details.
 
 - [hugo-highlightjs-plugin](dist/plugins/highlightjs/)
 
-  downsized variant as a standalone plugin.
+  downsized variant as a standalone plugin -- supporting _hugo_html_ and _hugo-text_.
 
 - [hugo-discourse-plugin](dist/plugins/discourse/)
 
-  downsized variant bundled as Discourse plugin.
+  downsized variant bundled as Discourse theme plugin -- supporting _hugo_html_ and _hugo-text_.
 
 ## Download
 
 The module has not been published to any CDN right now. You will have to clone or download the stuff you need.
+
 - latest version from the [dist folder][dist/]
 - a released package from our [releases page](https://github.com/irkode/highlightjs-hugo/releases/latest).
 
@@ -56,19 +61,23 @@ Please refer to the respective modules README.md.
 
 ## Build your own
 
-The two language modules work with the standard [Highlight.js][] custom build system. Check out their docs for details.bundling these (or just one) and other languages you need.
+The two language modules work with the standard [Highlight.js][] custom build system. Check out their docs for
+details.bundling these (or just one) and other languages you need.
 
-The other two are patched variants of the both above. We generate these based on a standard build results. The build process works, but it heavily depends on _undocumented internals_.
+The other two are patched variants of the both above. We generate these based on a standard build results. The build
+process works, but it heavily depends on _undocumented internals_.
 
 ## Contributing and Issues
 
-I would never say never, but currently it's our working playground so it's nothing where one could do stable contributions right now.
+I would never say never, but currently it's our working playground so it's nothing where one could do stable
+contributions right now.
 
 If you found a bug, have a question or an idea, please use the [Issue tracker][].
 
 ## Hugo as a generator
 
 Hugo is a powerful templating engine, and we utilize it to generate and assemble our plugins:
+
 - fetch function names from hugoDocs pages
 - generate keyword tables for the plugins
 - generate plugin javascript code
