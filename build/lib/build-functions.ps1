@@ -95,18 +95,23 @@ function cloneHighlightJS {
   }
 }
 
+
+# create a patched version of developer.html
+# - copy custom styles
+# - create custom option reader to display them
+# TODO: check if just css copy is enough
+#       at least they have to be patched before build
+#
+# reasoning: Highlight.js build does not collect custom styles from extra modules
 function developerBuild {
   [CmdLetBinding()]
   param()
   try {
     if ($Skip -contains 'DeveloperBuild') {
-      Write-Verbose "Rebuild Highlight.js for testing"
+      Write-Verbose "Skip Developer/Test Build"
     } else {
-      Set-Location $HighlightJsDir
-      exec node tools/build.js -n hugo-html hugo-text xml
-
       $StyleTargetFolder = Test-Folder -Path $HighlightJsDir "src/styles"
-      $StyleSourceFile = Test-File -Path $HugoGenDir "/assets/modules/src/styles/debug-hugo.css"
+      $StyleSourceFile = Test-File -Path $HighlightJsExtraDir "hugo-html/src/styles/debug-hugo.css"
       $DeveloperHtmlFile = Test-File -Path $HighlightJsDir "tools/developer.html"
       Write-Verbose "Add custom CSS style and patch developer.html - use it from work/developer.html"
       # add custom debugging style
@@ -139,6 +144,9 @@ cssOptions.forEach(css => {
       ($devhtml -join "`n") | Set-Content -Encoding utf8 -NoNewline (Join-Path $WorkDir developer.html)
     }
     [void](Test-File $WorkDir developer.html)
+    Set-Location $HighlightJsDir
+    exec node tools/build.js -t browser hugo-html hugo-text xml
+
   } catch {
     throw $_
   } finally {
