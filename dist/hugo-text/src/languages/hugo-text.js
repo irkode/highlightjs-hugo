@@ -1,5 +1,5 @@
 /*
-Language: highlightjs-hugo-text
+Language: Hugo-Text
 Author: Irkode <irkode@rikode.de>
 Description: Syntax highlighting for Hugo-Text templates.
 Website: https://irkode.github.io/highlightjs-hugo/
@@ -127,8 +127,8 @@ export default function (hljs) {
       }
     ];
   const languageDefinition = {
-    name: 'highlightjs-hugo-text',
     case_insensitive: false,
+    aliases: ["hugo-text"],
     contains: mainContains
   };
   return languageDefinition;

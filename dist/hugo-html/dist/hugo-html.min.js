@@ -5,17 +5,16 @@
 begin:[/\./,/\w+/],beginScope:{1:"property",2:"title.function.invoke"}},{
 begin:[/\w+/],beginScope:{1:"title.function.invoke"}}],contains:[{
 scope:"property",match:/(\.\w+)+/}]},m={begin:i,keywords:{$pattern:/\w+\.\w+/,
-built_in:s},contains:[c]},g={begin:[/\.(?=\w+)/],beginScope:{
-1:"template-variable.context"},contains:[c]},u={variants:[{begin:/\w+(?=\.)/,
+built_in:s},contains:[c]},u={begin:[/\.(?=\w+)/],beginScope:{
+1:"template-variable.context"},contains:[c]},g={variants:[{begin:/\w+(?=\.)/,
 contains:[c]},{match:/\w+/}],keywords:{$pattern:/\w+/,built_in:a,literal:r}},p={
 variants:[{begin:[/\$\w+(?=\.)/],beginScope:{1:"template-variable"},contains:[c]
 },{match:/\$\w+/,scope:"template-variable"}]},h={begin:[/\(/],beginScope:{
 1:"punctuation"},end:[/\)/],endScope:{1:"punctuation"}
 },f=[n.NUMBER_MODE,n.QUOTE_STRING_MODE,n.APOS_STRING_MODE,{scope:"string.raw",
-match:/`[^`]*`/,keywords:[]},m,u,g,p,{scope:"operator",match:/[|,=]|:=/},{
+match:/`[^`]*`/,keywords:[]},m,g,u,p,{scope:"operator",match:/[|,=]|:=/},{
 scope:"template-variable.context",match:/\.|\$/},h];return h.contains=f,{
-name:"highlightjs-hugo-html",case_insensitive:!1,aliases:["hugo"],
-subLanguage:["xml"],
+case_insensitive:!1,aliases:["hugo-html"],subLanguage:"xml",
 contains:[n.COMMENT(/\s*(\{\{- \/\*|\{\{\/\*)/,/\*\/ -\}\}|\*\/\}\}/,{
 relevance:10}),{begin:/\{\{(#|>|!--|!)/,end:/\}\}/,illegal:/.*/},{
 begin:[o,/\s*/,e],beginScope:{1:"template-tag",3:"keyword"},end:[l],endScope:{
