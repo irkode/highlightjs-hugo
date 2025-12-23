@@ -1,6 +1,6 @@
 /*
 {{- $lang := .page.Params.hljs.language }}
-Language: highlightjs-{{$lang}}
+Language: {{ title $lang }}
 {{- with .page.Params.hljs.requires }}{{ printf "\nRequires: %s\n" . }}{{ end }}
 Author: {{ .site.Params.author }}
 Description: Syntax highlighting for {{ title $lang }} templates.
@@ -155,10 +155,9 @@ export default function (hljs) {
       }
     ];
   const languageDefinition = {
-    name: 'highlightjs-{{$lang}}',
     case_insensitive: false,
     {{- with .page.Params.hljs.aliases }}{{ printf "\n    aliases: %s," (jsonify .) }}{{ end }}
-    {{- with .page.Params.hljs.subLanguages }}{{ printf "\n    subLanguage: %s," (jsonify .) }}{{ end }}
+    {{- with .page.Params.hljs.subLanguages }}{{ printf "\n    subLanguage: %s," . }}{{ end }}
     contains: mainContains
   };
   return languageDefinition;

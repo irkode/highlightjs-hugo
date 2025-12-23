@@ -40,7 +40,7 @@ try {
   }
   if ($PluginSourceCheckSuccess) {
     $plugin = 'import { apiInitializer } from "discourse/lib/api";export default apiInitializer((api) => {' +
-    $plugin + 'if (xml) { vl.subLanguage = ["xml"];vl.aliases=["hugo"] }; return l.contains=c,vl; }};' +
+    $plugin + "if (xml) { vl.subLanguage = 'xml';}; vl.aliases=[]; return l.contains=c,vl; }};" +
     'api.registerHighlightJSLanguage("hugo-html", hugoLang(1));' +
     'api.registerHighlightJSLanguage("hugo-text", hugoLang(0));});' +
     "`n"

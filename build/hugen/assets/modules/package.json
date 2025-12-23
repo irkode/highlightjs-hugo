@@ -1,7 +1,7 @@
 {
   {{- $lang := .page.Params.hljs.language -}}
-  "name": "highlightjs-{{$lang}}",
-  "version": "0.1.0",
+  "name": "{{ title $lang }}",
+  "version": "0.5.0",
   "description": "Syntax highlighting for {{ title $lang }} templates",
   "main": "src/languages/{{$lang}}.js",
   "scripts": {

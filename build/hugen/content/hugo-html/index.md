@@ -5,6 +5,6 @@ outputs = ['HTML', 'JS', 'YAML']
   language = "hugo-html"
   keywords = "hugo"
   groupedRegex = false
-  aliases = ["hugo"]
-  subLanguages = ["xml"]
+  aliases = ["hugo-html"]
+  subLanguages = "'xml'"
 +++
