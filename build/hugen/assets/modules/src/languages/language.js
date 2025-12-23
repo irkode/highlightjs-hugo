@@ -18,10 +18,6 @@ export default function (hljs) {
   // action commands
   const re_ACTION_OPEN = /\{\{- |\{\{(?!-)/;
   const re_ACTION_CLOSE = / -\}\}|(?<! -)\}\}/;
-{{/* 
-  {{ or .js.PIPELINE_KEYWORDS "" }}
-  {{ or .js.STANDALONE_KEYWORDS "" }}
- */}}
   // simple modes, -> always list last to not capture begin of complex modes
   const PIPE_OPERATOR_MODE = { scope: 'operator', match: /[|,=]|:=/, };
   const CONTEXT_ONLY_MODE = { scope: 'template-variable.context', match: /\.|\$/ };
@@ -44,29 +40,6 @@ export default function (hljs) {
     ],
     contains: [DOT_PROPERTY_CHAIN],
   };
-{{/*
-  {{- with .js.kw_LITERAL }}{{ printf "\n  %s" .}}{{end }}
-  {{- with .js.kw_FUNCTION }}{{ printf "\n  %s" .}}{{end }}
-  {{- with .js.kw_KEYWORD }}{{ printf "\n  %s" .}}{{end }}
-  {{- with .js.kw_BUILT_IN }}{{ printf "\n  %s" .}}{{end }}
-
-  {{- with .js.re_LITERAL }}{{ printf "\n  %s" .}}{{end }}
-  {{- with .js.re_KEYWORD }}{{ printf "\n  %s" .}}{{end }}
-  {{- with .js.re_BUILT_IN }}{{ printf "\n  %s" .}}{{end }}
-  {{- with .js.re_FUNCTION }}{{ printf "\n  %s" .}}
-{{
-`
-  const FUNCTION_KEYWORDS = {
-    $pattern: /\w+\.\w+/,
-    'built_in': kw_FUNCTION,
-  };
-  const PIPE_FUNCTION_MODE = {
-    // scope: 'PIPE_FUNCTION_MODE',
-    begin: re_FUNCTION,
-    keywords: FUNCTION_KEYWORDS,
-    contains: [METHOD_CHAIN_HELPER]
-  };` -}}{{- end }}
-*/}}
 
   const FUNCTION_KEYWORDS = {
     $pattern: /\w+\.\w+/,
@@ -124,7 +97,6 @@ export default function (hljs) {
     hljs.APOS_STRING_MODE,
     RAW_STRING_MODE,
     PIPE_FUNCTION_MODE,
-    {{- /* if .js.kw_FUNCTION }}{{ printf "\n    PIPE_FUNCTION_MODE," }}{{ end */}}
     PIPE_BUILTIN_MODE,
     PIPE_CONTEXT_MODE,
     PIPE_VARIABLE_MODE,
