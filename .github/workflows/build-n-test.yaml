@@ -1,4 +1,4 @@
-# This is prepared for builing on windows and linux either as matrix or single run
+# This is prepared for building on windows and linux either as matrix or single run
 # as of now the ONLY_EXTRA is not considered on linux runner
 # It looks like the `npm run test-markup` on linux is not properly enumerating the extra modules
 # dunno if this is node/npm problem or the implementation of the Highlight.js build scripts or mine
