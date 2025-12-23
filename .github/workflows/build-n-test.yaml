@@ -6,7 +6,13 @@ name: Build and Test
 
 on:
   push:
-    branches: [main]
+    branches:
+      - "**"
+    tags:
+      - "**"
+  pull_request:
+    branches:
+      - "**"
   workflow_dispatch:
 
 permissions:
@@ -35,6 +41,44 @@ jobs:
       DISTRIBUTION_DIR: ${{ github.workspace }}/dist
 
     steps:
+      - name: Get Trigger
+        run: |
+          # Fail on any error
+          $ErrorActionPreference = "Stop"
+
+          $event = "${{ github.event_name }}"
+          $ref_type = "${{ github.ref_type }}"
+          $head_commit = "${{ github.event.head_commit }}"
+
+          $TriggeredBy = ""
+
+          if ($event -eq "pull_request") {
+              $TriggeredBy = "pr"
+          } elseif ($event -eq "push") {
+              if ($ref_type -eq "branch") {
+                  $TriggeredBy = "commit"
+              } elseif ($ref_type -eq "tag") {
+                  if (![string]::IsNullOrEmpty($head_commit)) {
+                      $TriggeredBy = "taggedcommit"
+                  } else {
+                      $TriggeredBy = "tag"
+                  }
+              }
+          }
+
+          if ($TriggeredBy -notin @("commit","pr","tag","taggedcommit")) {
+            Write-Error "ERROR: Unrecognized trigger classification"
+            exit 1
+          }
+
+          # Optional debug
+          Write-Host "  event_name  = $event"
+          Write-Host "  ref_type    = $ref_type"
+          Write-Host "  head_commit = $($head_commit -ne '' ? 'present' : 'null')"
+          Write-Host "  TriggeredBy = $TriggeredBy"
+
+          echo "TRIGGERED_BY=$TriggeredBy" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
+
       - name: Checkout highlightjs-hugo repository
         uses: actions/checkout@v6
         with:
@@ -122,11 +166,14 @@ jobs:
         run: |
           & hugo.exe -d ${{ env.HIGHLIGHTJS_EXTRA_DIR }}
 
-      - name: Build Highlight.js incl. custom modules and CDNs
+      - name: Build and Test Highlight.js
         working-directory: ${{ env.HIGHLIGHTJS_DIR }}
         run: |
-          npm run build
-          npm run test-markup
+          npm run build_and_test
+
+      - name: Build CDN plugins Highlight.js
+        working-directory: ${{ env.HIGHLIGHTJS_DIR }}
+        run: |
           node ./tools/build.js hugo-html hugo-text -t cdn
 
       - name: Build Discourse plugin
@@ -141,42 +188,42 @@ jobs:
           $PluginTargetFolder = "${{ env.HIGHLIGHTJS_EXTRA_DIR }}/plugins/highlightjs"
           ./build/build-highlightjs-plugin.ps1 -Verbose $PluginSourceFolder $PluginTargetFolder -ErrorAction Stop
 
-      - name: Publish to distribution folder
-        run: |
-          Remove-Item -Recurse -Force ${{ env.DISTRIBUTION_DIR }}/*
-          Get-ChildItem -Directory ${{ env.HIGHLIGHTJS_EXTRA_DIR }} | Copy-Item -Recurse -Destination ${{ env.DISTRIBUTION_DIR }}
-          "==== STATUS ===================" | Out-Host
-          git status dist
+      # - name: Publish to distribution folder
+      #   run: |
+      #     Remove-Item -Recurse -Force ${{ env.DISTRIBUTION_DIR }}/*
+      #     Get-ChildItem -Directory ${{ env.HIGHLIGHTJS_EXTRA_DIR }} | Copy-Item -Recurse -Destination ${{ env.DISTRIBUTION_DIR }}
+      #     "==== STATUS ===================" | Out-Host
+      #     git status dist
 
-      - name: Publish build results
-        working-directory: ${{ env.DISTRIBUTION_DIR }}
-        run: |
-          $sha = ${env:GITHUB_SHA}
-          $shortSha = $sha.Substring(0,7)
-          "COMMIT ID: $shortSha" | Out-Host
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          "==== DIST_DIR ===================" | Out-Host
-          "==== $(Get-Location)" | Out-Host
-          "------------------------------------" | Out-Host
-          git status .
-          "==== RELEASE_DIR ===================" | Out-Host
-          $changed = $false
-          git diff --quiet .
-          $changed = $LASTEXITCODE -ne 0
-          if (-Not $changed) {
-            git diff --cached --quiet .
-            $changed = $LASTEXITCODE -ne 0
-          }
-          if (-Not $changed) {
-            $changed = (git ls-files --others --exclude-standard).Count -ne 0
-          }
-          if ($changed) {
-            $message = "ci(build): Update dist folder based on [$shortSha]"
-            Write-Host $message
-            git add .
-            git commit -m $message
-            git push origin main
-          } else {
-            Write-Host "No distribution file change: Nothing to commit"
-          }
+      # - name: Publish build results
+      #   working-directory: ${{ env.DISTRIBUTION_DIR }}
+      #   run: |
+      #     $sha = ${env:GITHUB_SHA}
+      #     $shortSha = $sha.Substring(0,7)
+      #     "COMMIT ID: $shortSha" | Out-Host
+      #     git config user.name "github-actions[bot]"
+      #     git config user.email "github-actions[bot]@users.noreply.github.com"
+      #     "==== DIST_DIR ===================" | Out-Host
+      #     "==== $(Get-Location)" | Out-Host
+      #     "------------------------------------" | Out-Host
+      #     git status .
+      #     "==== RELEASE_DIR ===================" | Out-Host
+      #     $changed = $false
+      #     git diff --quiet .
+      #     $changed = $LASTEXITCODE -ne 0
+      #     if (-Not $changed) {
+      #       git diff --cached --quiet .
+      #       $changed = $LASTEXITCODE -ne 0
+      #     }
+      #     if (-Not $changed) {
+      #       $changed = (git ls-files --others --exclude-standard).Count -ne 0
+      #     }
+      #     if ($changed) {
+      #       $message = "ci(build): Update dist folder based on [$shortSha]"
+      #       Write-Host $message
+      #       git add .
+      #       git commit -m $message
+      #       git push origin main
+      #     } else {
+      #       Write-Host "No distribution file change: Nothing to commit"
+      #     }
