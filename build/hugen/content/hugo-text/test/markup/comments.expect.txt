@@ -5,6 +5,6 @@
 {{/* a multiline comment
 continued on the next lines
 
-even with a blank line inside
+even with a blank line inside and a template {{ false }}
 
  */ -}}</span>
