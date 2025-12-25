@@ -128,6 +128,7 @@ export default function (hljs) {
     ];
   const languageDefinition = {
     case_insensitive: false,
+    {{- with .page.Params.hljs.language }} {{ printf "\n    name: '%s'," (title .) }}{{ end }}
     {{- with .page.Params.hljs.aliases }}{{ printf "\n    aliases: %s," (jsonify .) }}{{ end }}
     {{- with .page.Params.hljs.subLanguages }}{{ printf "\n    subLanguage: %s," . }}{{ end }}
     contains: mainContains

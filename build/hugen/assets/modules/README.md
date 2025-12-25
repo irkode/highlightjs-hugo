@@ -1,10 +1,10 @@
 {{- $lang := .page.Params.hljs.language -}}
-# Highlight.js Hugo - Syntax highlighting for Hugo templates
+# {{ title $lang }} - Syntax highlighting for Hugo templates
 
 [![license](https://badgen.net/badge/license/MIT/blue)](LICENSE)
 
 > This is the README for the **{{ title $lang }}** variant of the suite.\
-> For more details have a look at our [repository README]({{ site.Params.repository }}).
+> there are some other variants. Check out our [repository README]({{ site.Params.repository }}) for details.
 
 A language grammar to highlight [Hugo][]'s templating language with [Highlight.js][].
 
@@ -19,8 +19,9 @@ The module has been implemented using [Highlight.js][] version 11.11.1. It will 
 ## Download
 
 The module has not been published to any CDN right now., you will have to clone or download the stuff you need.
-- latest version from the [dist folder][]
-- a released package from our [releases page]({{ .site.Params.releases}}).
+
+- tagged versions are pushed to the dist folder of our repo [dist folder][]
+- release packages can be downloaded from our [releases page]({{ .site.Params.releases}}) per module.
 
 ## Usage
 
@@ -100,12 +101,14 @@ auto-detection. To be on the safe side specify the language you want for every c
 - Functions in the _hugo_ namespace get relevance = 10 (e.g. hugo.IsDevelopment)
 
 - The following _Handlebars_ opening template tags are set too _invalid_ for hugo: {{ "`{{#`, `{{>`, `{{!--`, `{{!`" }}
- 
+
   `IgnoreIllegals` default value is `false` since version 11. So this stops highlighting with the hugo module.
 
 ## Build your own
 
-The module works with the standard [Highlight.js][] custom build system. Check out their docs for details.
+The module works with the standard [Highlight.js][] custom build system. Copy needed folders from your download or -- if
+you cloned our repo -- to the highlight.js extra directory. Check out the [Highlight.js][] documentation for more
+details.
 
 ## License
 

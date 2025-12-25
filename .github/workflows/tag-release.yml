@@ -56,6 +56,7 @@ jobs:
           }
           [void](New-Item -ItemType Directory ${{ github.workspace }}/work -ErrorAction SilentlyContinue)
           Set-Location ${{ github.workspace }}/dist
+          7z a ${{ github.workspace }}/work/hugo-tpl-${givenTag}.zip hugo-html
           7z a ${{ github.workspace }}/work/hugo-html-${givenTag}.zip hugo-html
           7z a ${{ github.workspace }}/work/hugo-text-${givenTag}.zip hugo-text
           7z a ${{ github.workspace }}/work/hugo-plugins-${givenTag}.zip plugins
@@ -74,4 +75,4 @@ jobs:
           tag_name: ${{ env.TAG_NAME }}
           body: |
             Things changed with release:
-          files: ${{ github.workspace }}/work/*
+          files: ${{ github.workspace }}/dist/*

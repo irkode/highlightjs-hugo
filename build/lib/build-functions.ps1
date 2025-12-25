@@ -15,7 +15,7 @@ function buildHighlightJS {
         try { exec npm run test-markup }
         catch { if (-not $IgnoreMarkupErrors) { throw $_ } }
       }
-      exec node tools/build.js hugo-html hugo-text -t cdn
+      exec node tools/build.js hugo-tpl hugo-html hugo-text -t cdn
     }
     [void](Test-File $HighlightJsExtraDir "hugo-html\dist\hugo-html.min.js")
     [void](Test-File $HighlightJsExtraDir "hugo-text\dist\hugo-text.min.js")
@@ -145,7 +145,7 @@ cssOptions.forEach(css => {
     }
     [void](Test-File $WorkDir developer.html)
     Set-Location $HighlightJsDir
-    exec node tools/build.js -t browser hugo-html hugo-text xml
+    exec node tools/build.js -t browser hugo-tpl hugo-html hugo-text xml
 
   } catch {
     throw $_

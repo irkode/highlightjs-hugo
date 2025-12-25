@@ -32,13 +32,40 @@ we missed out and it will break.
 
 Here's the list of our provided plugins. browse the folders to dig into details.
 
+### Standard Highlight.js plugins
+
+These can be used as any other extra plugins. You may include that in your custom Hhighlight.js build.
+
 - [hugo-html](dist/hugo-html/)
 
-  highlight template code using our plugin and style surrounding HTML using [Highligh.js][] standard _xml_
+  Highlight template code using our plugin and style surrounding HTML using [Highligh.js][] standard _xml_
 
 - [hugo-text](dist/hugo-text/)
 
-  highlight template code using our plugin and just dump out surrounding text unstyled.
+  Highlight template code using our plugin and just dump out surrounding text unstyled.
+
+- [hugo-html](dist/hugo-tpl/)
+
+  highlight template code using our plugin and style surrounding HTML using [Highligh.js][] standard _xml_
+  This plugin defines `hugo-html` and `hugo-text` as aliases. to style `hugo-text`without highlighting you
+  need to apply CSS rules. Somthing like:
+  ```css
+  /* change these to match your 'standard' for non-highlighted code */
+  code.hugo-text span.language-xml {
+    text-decoration: none;
+  }
+  code.hugo-text span.language-xml * {
+    font-style: none;
+    font-weight: normal;
+    background: darkgray;
+    color: #444;
+  }
+  ```
+
+### Downsized special Highlight.js plugins
+
+These have to be used as is. They are generated and patched for smaller size. There's no aliasing
+but it's two languages, no CSS tricks neccessary.
 
 - [hugo-highlightjs-plugin](dist/plugins/highlightjs/)
 

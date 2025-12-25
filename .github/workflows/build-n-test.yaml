@@ -174,7 +174,7 @@ jobs:
       - name: Build CDN plugins Highlight.js
         working-directory: ${{ env.HIGHLIGHTJS_DIR }}
         run: |
-          node ./tools/build.js hugo-html hugo-text -t cdn
+          node ./tools/build.js -t cdn hugo-tpl hugo-html hugo-text
 
       - name: Build Discourse plugin
         run: |

@@ -1,5 +1,5 @@
 {{- $lang := .page.Params.hljs.language -}}
-# highlightjs-{{$lang}} - Class reference
+# {{ title $lang }} - Class reference
 
 ## Core modes used
 

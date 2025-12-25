@@ -2,10 +2,10 @@
 outputs = ['HTML', 'JS', 'YAML']
 
 [params.hljs]
-  aliases = ["hugo-html"]
+  aliases = ["hugo-html", "hugo-text"]
   groupedRegex = false
   keywords = "hugo"
-  language = "hugo-html"
+  language = "hugo-tpl"
   requires = "xml.js"
   subLanguages = "'xml'"
 +++
