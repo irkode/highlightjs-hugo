@@ -1,4 +1,4 @@
-# highlightjs-hugo-text - Class reference
+# Hugo-Text - Class reference
 
 ## Core modes used
 

@@ -1,9 +1,9 @@
 /*
-Language: Hugo-Html
+Language: Hugo-Tpl
 Requires: xml.js
 
 Author: Irkode <irkode@rikode.de>
-Description: Syntax highlighting for Hugo-Html templates.
+Description: Syntax highlighting for Hugo-Tpl templates.
 Website: https://irkode.github.io/highlightjs-hugo/
 Category: template
 License: MIT
@@ -128,8 +128,8 @@ export default function (hljs) {
     ];
   const languageDefinition = {
     case_insensitive: false, 
-    name: 'Hugo-Html',
-    aliases: ["hugo-html"],
+    name: 'Hugo-Tpl',
+    aliases: ["hugo-html","hugo-text"],
     subLanguage: 'xml',
     contains: mainContains
   };

@@ -1,4 +1,4 @@
-# Hugo-Html - Class reference
+# Hugo-Tpl - Class reference
 
 ## Core modes used
 

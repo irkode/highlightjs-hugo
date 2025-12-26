@@ -14,7 +14,7 @@ variants:[{begin:[/\$\w+(?=\.)/],beginScope:{1:"template-variable"},contains:[c]
 },f=[n.NUMBER_MODE,n.QUOTE_STRING_MODE,n.APOS_STRING_MODE,{scope:"string.raw",
 match:/`[^`]*`/,keywords:[]},m,g,u,p,{scope:"operator",match:/[|,=]|:=/},{
 scope:"template-variable.context",match:/\.|\$/},h];return h.contains=f,{
-case_insensitive:!1,aliases:["hugo-html"],subLanguage:"xml",
+case_insensitive:!1,name:"Hugo-Html",aliases:["hugo-html"],subLanguage:"xml",
 contains:[n.COMMENT(/\s*(\{\{- \/\*|\{\{\/\*)/,/\*\/ -\}\}|\*\/\}\}/,{
 relevance:10}),{begin:/\{\{(#|>|!--|!)/,end:/\}\}/,illegal:/.*/},{
 begin:[o,/\s*/,e],beginScope:{1:"template-tag",3:"keyword"},end:[l],endScope:{

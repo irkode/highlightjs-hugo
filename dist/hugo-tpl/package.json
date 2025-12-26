@@ -1,0 +1,27 @@
+{"name": "Hugo-Tpl",
+  "version": "0.5.0",
+  "description": "Syntax highlighting for Hugo-Tpl templates",
+  "main": "src/languages/hugo-tpl.js",
+  "scripts": {
+    "test": "mocha test",
+    "test-markup": "mocha test/markup"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/irkode/highlightjs-hugo"
+  },
+  "keywords": [
+    "hugo",
+    "hugo-tpl",
+    "template",
+    "highlighting",
+    "highlight.js",
+    "highlightjs",
+    "syntax"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/irkode/highlightjs-hugo/issues"
+  },
+  "homepage": "https://irkode.github.io/highlightjs-hugo/"
+}

@@ -16,7 +16,6 @@ export default function (hljs) {
   // action commands
   const re_ACTION_OPEN = /\{\{- |\{\{(?!-)/;
   const re_ACTION_CLOSE = / -\}\}|(?<! -)\}\}/;
-
   // simple modes, -> always list last to not capture begin of complex modes
   const PIPE_OPERATOR_MODE = { scope: 'operator', match: /[|,=]|:=/, };
   const CONTEXT_ONLY_MODE = { scope: 'template-variable.context', match: /\.|\$/ };
@@ -39,7 +38,6 @@ export default function (hljs) {
     ],
     contains: [DOT_PROPERTY_CHAIN],
   };
-
 
   const FUNCTION_KEYWORDS = {
     $pattern: /\w+\.\w+/,
@@ -127,7 +125,8 @@ export default function (hljs) {
       }
     ];
   const languageDefinition = {
-    case_insensitive: false,
+    case_insensitive: false, 
+    name: 'Hugo-Text',
     aliases: ["hugo-text"],
     contains: mainContains
   };

@@ -1,15 +1,15 @@
-# Hugo-Html - Syntax highlighting for Hugo templates
+# Hugo-Tpl - Syntax highlighting for Hugo templates
 
 [![license](https://badgen.net/badge/license/MIT/blue)](LICENSE)
 
-> This is the README for the **Hugo-Html** variant of the suite.\
+> This is the README for the **Hugo-Tpl** variant of the suite.\
 > there are some other variants. Check out our [repository README](https://github.com/irkode/highlightjs-hugo) for details.
 
 A language grammar to highlight [Hugo][]'s templating language with [Highlight.js][].
 
 - [CSS class reference](css-class-reference.md)
 
-![preview](hugo-html.png)
+![preview](hugo-tpl.png)
 
 ## Requirements
 
@@ -33,7 +33,7 @@ Load the module after loading `highlight.js`.
 ```html
 <script type="text/javascript" src="/path/to/highlight.min.js"></script>
 <!->
-<script type="text/javascript" src="/path/to/hugo-html.min.js"></script>
+<script type="text/javascript" src="/path/to/hugo-tpl.min.js"></script>
 <script type="text/javascript">
   hljs.highlightAll();
 </script>
@@ -50,7 +50,7 @@ The module has not been published to any CDN right now. Download the latest work
 ```html
 <script
    type="text/javascript"
-   src="https://unpkg.com/highlightjs-hugo-html@0.1.0/dist/hugo-html.min.js"
+   src="https://unpkg.com/highlightjs-hugo-tpl@0.1.0/dist/hugo-tpl.min.js"
 ></script>
 ```
 
@@ -65,18 +65,18 @@ If you're using Node / Webpack / Rollup / Browserify, etc, simply require the la
 
 ```javascript
 var hljs = require("highlight.js");
-var hljsHugo = require("hugo-html");
-hljs.registerLanguage("hugo-html", hljsHugo);
+var hljsHugo = require("hugo-tpl");
+hljs.registerLanguage("hugo-tpl", hljsHugo);
 hljs.highlightAll();
 ```
 
 ### Example code
 
-Enclose your code in `<pre><code>` tags and at best set the language with `class="hugo-html"`.
+Enclose your code in `<pre><code>` tags and at best set the language with `class="hugo-tpl"`.
 If you want to rely on auto detection, read the section about that below.
 
 
-Instead of `hugo-html` you can use the defined aliases: `hugo-html`.
+Instead of `hugo-tpl` you can use the defined aliases: `hugo-html`, `hugo-text`.
 
 
 ```html
@@ -128,4 +128,4 @@ This package is released under the MIT License. See [LICENSE](LICENSE) file for 
 [highlightjs-hugo]: https://github.com/irkode/highlightjs-hugo
 [Highlight.js]: https://highlightjs.org/
 [Hugo]: https://gohugo.io/
-[dist folder]: https://github.com/irkode/highlightjs-hugo/blob/main/dist/hugo-html/dist/
+[dist folder]: https://github.com/irkode/highlightjs-hugo/blob/main/dist/hugo-tpl/dist/
