@@ -75,4 +75,4 @@ jobs:
           tag_name: ${{ env.TAG_NAME }}
           body: |
             Things changed with release:
-          files: ${{ github.workspace }}/dist/*
+          files: ${{ github.workspace }}/work/*

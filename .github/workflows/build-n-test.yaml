@@ -42,6 +42,7 @@ jobs:
 
     steps:
       - name: Get Trigger
+        id: get_trigger
         run: |
           # Fail on any error
           $ErrorActionPreference = "Stop"
@@ -51,6 +52,7 @@ jobs:
           $head_commit = "${{ github.event.head_commit }}"
 
           $TriggeredBy = ""
+          $hasTag = "no"
 
           if ($event -eq "pull_request") {
               $TriggeredBy = "pr"
@@ -58,6 +60,7 @@ jobs:
               if ($ref_type -eq "branch") {
                   $TriggeredBy = "commit"
               } elseif ($ref_type -eq "tag") {
+                  $hasTag = "yes"
                   if (![string]::IsNullOrEmpty($head_commit)) {
                       $TriggeredBy = "taggedcommit"
                   } else {
@@ -75,9 +78,11 @@ jobs:
           Write-Host "  event_name  = $event"
           Write-Host "  ref_type    = $ref_type"
           Write-Host "  head_commit = $($head_commit -ne '' ? 'present' : 'null')"
+          Write-Host "  hasTag      = $hasTag"
           Write-Host "  TriggeredBy = $TriggeredBy"
 
           echo "TRIGGERED_BY=$TriggeredBy" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
+          echo "has_tag=$hasTag" | Out-File -FilePath $Env:GITHUB_OUTPUT -Encoding utf8 -Append
 
       - name: Checkout highlightjs-hugo repository
         uses: actions/checkout@v6
@@ -188,42 +193,44 @@ jobs:
           $PluginTargetFolder = "${{ env.HIGHLIGHTJS_EXTRA_DIR }}/plugins/highlightjs"
           ./build/build-highlightjs-plugin.ps1 -Verbose $PluginSourceFolder $PluginTargetFolder -ErrorAction Stop
 
-      # - name: Publish to distribution folder
-      #   run: |
-      #     Remove-Item -Recurse -Force ${{ env.DISTRIBUTION_DIR }}/*
-      #     Get-ChildItem -Directory ${{ env.HIGHLIGHTJS_EXTRA_DIR }} | Copy-Item -Recurse -Destination ${{ env.DISTRIBUTION_DIR }}
-      #     "==== STATUS ===================" | Out-Host
-      #     git status dist
+      - name: Publish to distribution folder
+        if: ${{ steps.get_trigger.outputs.has_tag.status == 'yes' }}
+        run: |
+          Remove-Item -Recurse -Force ${{ env.DISTRIBUTION_DIR }}/*
+          Get-ChildItem -Directory ${{ env.HIGHLIGHTJS_EXTRA_DIR }} | Copy-Item -Recurse -Destination ${{ env.DISTRIBUTION_DIR }}
+          "==== STATUS ===================" | Out-Host
+          git status dist
 
-      # - name: Publish build results
-      #   working-directory: ${{ env.DISTRIBUTION_DIR }}
-      #   run: |
-      #     $sha = ${env:GITHUB_SHA}
-      #     $shortSha = $sha.Substring(0,7)
-      #     "COMMIT ID: $shortSha" | Out-Host
-      #     git config user.name "github-actions[bot]"
-      #     git config user.email "github-actions[bot]@users.noreply.github.com"
-      #     "==== DIST_DIR ===================" | Out-Host
-      #     "==== $(Get-Location)" | Out-Host
-      #     "------------------------------------" | Out-Host
-      #     git status .
-      #     "==== RELEASE_DIR ===================" | Out-Host
-      #     $changed = $false
-      #     git diff --quiet .
-      #     $changed = $LASTEXITCODE -ne 0
-      #     if (-Not $changed) {
-      #       git diff --cached --quiet .
-      #       $changed = $LASTEXITCODE -ne 0
-      #     }
-      #     if (-Not $changed) {
-      #       $changed = (git ls-files --others --exclude-standard).Count -ne 0
-      #     }
-      #     if ($changed) {
-      #       $message = "ci(build): Update dist folder based on [$shortSha]"
-      #       Write-Host $message
-      #       git add .
-      #       git commit -m $message
-      #       git push origin main
-      #     } else {
-      #       Write-Host "No distribution file change: Nothing to commit"
-      #     }
+      - name: Publish build results
+        if: ${{ steps.get_trigger.outputs.has_tag.status == 'yes' }}
+        working-directory: ${{ env.DISTRIBUTION_DIR }}
+        run: |
+          $sha = ${env:GITHUB_SHA}
+          $shortSha = $sha.Substring(0,7)
+          "COMMIT ID: $shortSha" | Out-Host
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          "==== DIST_DIR ===================" | Out-Host
+          "==== $(Get-Location)" | Out-Host
+          "------------------------------------" | Out-Host
+          git status .
+          "==== RELEASE_DIR ===================" | Out-Host
+          $changed = $false
+          git diff --quiet .
+          $changed = $LASTEXITCODE -ne 0
+          if (-Not $changed) {
+            git diff --cached --quiet .
+            $changed = $LASTEXITCODE -ne 0
+          }
+          if (-Not $changed) {
+            $changed = (git ls-files --others --exclude-standard).Count -ne 0
+          }
+          if ($changed) {
+            $message = "ci(build): Update dist folder based on [$shortSha]"
+            Write-Host $message
+            git add .
+            git commit -m $message
+            git push origin main
+          } else {
+            Write-Host "No distribution file change: Nothing to commit"
+          }
