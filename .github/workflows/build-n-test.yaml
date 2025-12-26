@@ -194,7 +194,7 @@ jobs:
           ./build/build-highlightjs-plugin.ps1 -Verbose $PluginSourceFolder $PluginTargetFolder -ErrorAction Stop
 
       - name: Publish to distribution folder
-        if: ${{ steps.get_trigger.outputs.has_tag.status == 'yes' }}
+        if: ${{ steps.get_trigger.outputs.has_tag == 'yes' }}
         run: |
           Remove-Item -Recurse -Force ${{ env.DISTRIBUTION_DIR }}/*
           Get-ChildItem -Directory ${{ env.HIGHLIGHTJS_EXTRA_DIR }} | Copy-Item -Recurse -Destination ${{ env.DISTRIBUTION_DIR }}
@@ -202,7 +202,7 @@ jobs:
           git status dist
 
       - name: Publish build results
-        if: ${{ steps.get_trigger.outputs.has_tag.status == 'yes' }}
+        if: ${{ steps.get_trigger.outputs.has_tag == 'yes' }}
         working-directory: ${{ env.DISTRIBUTION_DIR }}
         run: |
           $sha = ${env:GITHUB_SHA}
