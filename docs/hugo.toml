@@ -1,0 +1,78 @@
+baseurl                        = "https://irkode.github.io/highlightjs-hugo/"
+title                          = "Advanced syntax highlighting for HuGo templates"
+theme                          = "picolino"
+defaultContentLanguageInSubdir = false
+defaultContentLanguage         = 'en'
+LanguageCode                   = 'en-us'
+disableKinds                   = ['rss', 'sitemap', 'taxonomy', 'term']
+disablePathToLower             = true
+
+[permalinks]
+  [permalinks.page]
+    dist = '/site/:sections/:slug'
+
+[params]
+  author     = "Irkode <irkode@rikode.de>"
+  webroot    = "https://irkode.github.io/highlightjs-hugo"
+  reporoot   = "https://github.com/irkode/"
+  repository = "https://github.com/irkode/highlightjs-hugo"
+  releases   = "https://github.com/irkode/highlightjs-hugo/releases/latest"
+  blobs      = "https://github.com/irkode/highlightjs-hugo/blob/main"
+  category   = "templates"
+  license    = "MIT"
+
+# used to generate Github README.md files
+[outputFormats]
+[outputFormats.github]
+  mediaType      = 'text/markdown'
+  baseName       = "README"
+  isPlainText    = true
+  permalinkable  = true
+  notAlternative = true
+
+[outputs]
+  home = ['html', 'github']
+  page = ['html', 'github']
+
+[menus]
+  [[menus.main]]
+    name    = 'Home'
+    pageRef = '/'
+    weight  = 10
+
+  [[menus.main]]
+    name   = 'Standard Plugins'
+    weight = 20
+  [[menus.main]]
+    name    = 'Hugo-Html'
+    pageRef = '/dist/hugo-html'
+    parent  = 'Standard Plugins'
+    weight  = 21
+  [[menus.main]]
+    name    = 'Hugo-Text'
+    pageRef = '/dist/hugo-text'
+    parent  = 'Standard Plugins'
+    weight  = 22
+  [[menus.main]]
+    name    = 'Hugo-Tpl'
+    pageRef = 'dist/hugo-tpl'
+    parent  = 'Standard Plugins'
+    weight  = 22
+
+  [[menus.main]]
+    name   = 'Special Plugins'
+    weight = 30
+  [[menus.main]]
+    name    = 'Discourse'
+    pageRef = 'dist/plugins/discourse'
+    parent  = 'Special Plugins'
+    weight  = 31
+  [[menus.main]]
+    name    = 'Highlight.JS'
+    pageRef = 'dist/plugins/highlightjs'
+    parent  = 'Special Plugins'
+    weight  = 32
+
+[module.hugoVersion]
+  extended = false
+  min      = '0.153.4.0'

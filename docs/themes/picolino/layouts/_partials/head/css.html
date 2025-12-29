@@ -1,0 +1,13 @@
+{{ range slice "css/pico.jade.min-2.1.1.css" "css/pico-custom.css" }}
+  {{- with resources.Get (path.Join "site" .) }}
+    {{- if hugo.IsDevelopment }}
+      <link rel="stylesheet" href="{{ .RelPermalink }}">
+    {{- else }}
+      {{- with . | minify | fingerprint }}
+        <link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous">
+      {{- end }}
+    {{- end }}
+    {{- else }}
+      {{- errorf "CSS: failed to load: %s" .}}
+  {{- end }}
+{{- end }}

@@ -1,4 +1,6 @@
-# Advanced syntax highlighting for HuGo templates
++++
+Title = "Highlight.js HuGo - Syntax grammar plugins for Highlight.js"
++++
 
 Have you ever wondered why highlighted Hugo templates seem to be styled randomly in our [Hugo
 Discourse Forum][].
@@ -9,7 +11,7 @@ code block contents.
 
 It could look so nice:
 
-![](docs/static/site/highlightjs-hugo.png "Highlighting preview")
+![](/docs/static/highlightjs-hugo.png "Highlighting preview")
 
 ## Overview
 
@@ -28,17 +30,7 @@ These plugins follow the standard
 Just drop the code in the `extra` folder and do
 [build and test](https://highlightjs.readthedocs.io/en/latest/building-testing.html#building). Ready
 to use plugins are available in the `dist` subfolder.
-
-- [Hugo-Html](dist/hugo-html/README.md)
-
-  Surrounding TEXT is highlighted using the standard highlight.js XML grammar.
-- [Hugo-Text](dist/hugo-text/README.md)
-
-  Surrounding TEXT is not highlighted.
-- [Hugo-Tpl](dist/hugo-tpl/README.md)
-
-  Surrounding text is highlighted using [Highlight.js][] standard XML grammar.
-This plugin defines <code>hugo-html</code> and <code>hugo-text</code> as aliases, which allows to remove the highlighting of the surrounding HTML by adding CSS rules.
+{{< list-regular-pages "dist" >}}
 
 ## Special plugins
 
@@ -49,14 +41,7 @@ are about 50% in size compared to separately include both.
 You have used them as-is. To be clear, they cannot be used in a custom highlight.js build. They have
 been build based on the highlight.js build results and patched after. There's no aliasing here, just
 two languages, no CSS tricks neccessary.
-
-- [Hugo Plugin for Discourse](dist/plugins/discourse/README.md)
-
-  Downsized variant as a standalone plugin &ndash; bundling <em>hugo_html</em> and <em>hugo-text</em> and packed
-for direct use in a Discourse theme component.
-- [Hugo Plugin for Highlight.js](dist/plugins/highlightjs/README.md)
-
-  Downsized variant as a standalone plugin &ndash; bundling <em>hugo_html</em> and <em>hugo-text</em>.
+{{< list-regular-pages "plugins" >}}
 
 ## Download
 

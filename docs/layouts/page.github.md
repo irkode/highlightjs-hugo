@@ -1,0 +1,2 @@
+# {{ site.Title }}
+{{ .RenderShortcodes -}}

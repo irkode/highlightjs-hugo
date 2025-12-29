@@ -76,7 +76,7 @@ We divide Go/Hugo keywords into the following standard scopes.
 
 ## Submodes
 
-_highlighjs-hugo-html_ uses the [Highlight.js][] builtin `xml` for highlighting HTML as subLanguage. See thier documentation for scopes used.
+_highlighjs-hugo-html_ uses the [Highlight.js][] builtin `xml` for highlighting HTML as subLanguage. See their documentation for scopes used.
 
 [Highlight.js]: https://highlightjs.readthedocs.io/
 

@@ -1,0 +1,17 @@
+{{- $page := cond (.IsNamedParams) (.Get "path") (.Get 0) }}
+{{- with $page }}
+  {{- $page = site.GetPage $page }}
+{{- else }}
+  {{ $page := .Page }}
+{{- end }}
+{{- with $page }}
+  <ul>
+    {{- range .Page.RegularPages }}
+      <li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></h2>
+        <p>
+          {{ .Description | .RenderString}}
+        </p>
+      </li>
+    {{- end }}
+  </ul>
+{{- end }}

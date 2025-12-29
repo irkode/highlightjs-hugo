@@ -1,3 +1,5 @@
 /build/hugen/public
 /build/hugen/.hugo_build.lock
 /work
+/site
+/docs/public
