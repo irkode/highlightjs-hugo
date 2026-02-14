@@ -7,5 +7,4 @@ continued on the next lines
 
 even with a blank line inside and a template {{ false }}
 
- */ -}}</span><span class="language-xml">
-</span>
+ */ -}}</span>

@@ -1,9 +1,7 @@
 /*
-Language: Hugo-Html
-Requires: xml.js
-
+Language: Hugo-Embed
 Author: Irkode <irkode@rikode.de>
-Description: Syntax highlighting for Hugo-Html templates.
+Description: Syntax highlighting for Hugo-Embed templates.
 Website: https://irkode.github.io/highlightjs-hugo/
 Category: template
 License: MIT
@@ -13,8 +11,8 @@ export default function (hljs) {
 
   const languageDefinition = {
     case_insensitive: false, 
-    name: 'Hugo-Html',
-    subLanguage: 'xml',
+    name: 'Hugo-Embed',
+    disableAutodetect: true,
     contains: H4HGRAMMAR_mainContains
   };
   return languageDefinition;

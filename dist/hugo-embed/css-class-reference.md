@@ -1,4 +1,4 @@
-# Hugo-Tpl - Class reference
+# Hugo-Embed - Class reference
 
 ## Core modes used
 

@@ -1,18 +1,15 @@
-# Highlight.js Hugo - Highlight.js Plugin (dual mode)
+# Hugo-Embed - Syntax highlighting for Hugo templates
 
 [![license](https://badgen.net/badge/license/MIT/blue)](LICENSE)
 
-> This is the README for the _downsized_ Highlight.js variant of the suite.
-> For more details have a look at our [repository README](https://github.com/irkode/highlightjs-hugo).
+> This is the README for the **Hugo-Embed** variant of the suite.\
+> there are some other variants. Check out our [repository README](https://github.com/irkode/highlightjs-hugo) for details.
 
 A language grammar to highlight [Hugo][]'s templating language with [Highlight.js][].
 
-Including both modules - [hugo-text][] and [hugo-html][] results in larger Javascript footprint. Highlight.js
-does not support reusing language components between different plugins.
+- [CSS class reference](css-class-reference.md)
 
-To overcome this, we created a custom plugin which is close to 50% in size, supporting `text`and `html`templates.
-
-![preview](plugins.png)
+![preview](hugo-embed.png)
 
 ## Requirements
 
@@ -20,9 +17,10 @@ The module has been implemented using [Highlight.js][] version 11.11.1. It will 
 
 ## Download
 
-The module has not been published to any CDN right now. You will have to clone or download the stuff you need.
-- latest version from the [dist folder][]
-- a released package from our [releases page](https://github.com/irkode/highlightjs-hugo/releases/latest).
+The module has not been published to any CDN right now., you will have to clone or download the stuff you need.
+
+- tagged versions are pushed to the dist folder of our repo [dist folder][]
+- release packages can be downloaded from our [releases page](https://github.com/irkode/highlightjs-hugo/releases/latest) per module.
 
 ## Usage
 
@@ -30,28 +28,29 @@ Include the `highlight.js` library in your webpage or Node app, then load this m
 
 ### Static website or simple usage
 
-Load the module after loading `highlight.js`. Take the minified version from `dist` directory.
+Load the module after loading `highlight.js`.
 
 ```html
 <script type="text/javascript" src="/path/to/highlight.min.js"></script>
 <!->
-<script type="text/javascript" src="/path/to/hugo-highlightjs-plugin.js"></script>
+<script type="text/javascript" src="/path/to/hugo-embed.min.js"></script>
 <script type="text/javascript">
   hljs.highlightAll();
 </script>
 ```
 
 <!-- TODO: publish to a CDN
+
 ### Using a CDN
 
-The module has not been published to any CDN right now. just download it from the dist folder
+The module has not been published to any CDN right now. Download the latest working build from the [dist folder][] or a release package from our [released page](https://github.com/irkode/highlightjs-hugo/releases/latest).
 
 ### Using directly from the UNPKG CDN
 
 ```html
 <script
    type="text/javascript"
-   src="https://unpkg.com/highlightjs-hugo-highlightjs-plugin@0.1.0/dist/hugo-highlightjs-plugin.min.js"
+   src="https://unpkg.com/highlightjs-hugo-embed@0.1.0/dist/hugo-embed.min.js"
 ></script>
 ```
 
@@ -60,30 +59,31 @@ The module has not been published to any CDN right now. just download it from th
 
 ### With Node or another build system
 
-> I suppose these instructions from the docs won't work for this patched plugin.
-> In fact _this_ customized_ plugin is only tested visually in the browser.
+> The Node stuff is untested and straight from some other highlight.js module!!!
 
-If you're using Node / Webpack / Rollup / Browserify, etc, simply require the language module, then register it with
-`highlight.js`.
+If you're using Node / Webpack / Rollup / Browserify, etc, simply require the language module, then register it with `highlight.js`.
 
 ```javascript
 var hljs = require("highlight.js");
-var hljsHugo = require("hugo-highlightjs-plugin.js");
-/* guess the registration is done when importing the plugin */
-/* hljs.registerLanguage("???", hljs-???); */
+var hljsHugo = require("hugo-embed");
+hljs.registerLanguage("hugo-embed", hljsHugo);
 hljs.highlightAll();
 ```
 
 ### Example code
 
-Enclose your code in `<pre><code>` tags and at best set the language with `class="hugo-(html|text)"`. If you want to rely on
-auto detection, read the section about that below.
+Enclose your code in `<pre><code>` tags and at best set the language with `class="hugo-embed"`.
+If you want to rely on auto detection, read the section about that below.
+
+
 
 ```html
 <pre><code class="hugo-html">
 <title>{{.Title}}</title>
 </code></pre>
 ```
+
+## A word on auto detection
 
 _Handlebars_ and _Go templates_ (used by [Hugo][]) have similar template tags. Without additional
 relevance settings Hugo modules will loose most of the time. We use the following relevance settings
@@ -98,14 +98,14 @@ auto-detection. To be on the safe side specify the language you want for every c
 - Functions in the _hugo_ namespace get relevance = 10 (e.g. hugo.IsDevelopment)
 
 - The following _Handlebars_ opening template tags are set too _invalid_ for hugo: `{{#`, `{{>`, `{{!--`, `{{!`
- 
+
   `IgnoreIllegals` default value is `false` since version 11. So this stops highlighting with the hugo module.
 
 ## Build your own
 
-This is a post build patched plugin that merges _hugo-html_ and _hugo-text_ into one plugin using the same keyword table.
-
-It cannot in any way build with a standard _Highlight.js_ build.
+The module works with the standard [Highlight.js][] custom build system. Copy needed folders from your download or -- if
+you cloned our repo -- to the highlight.js extra directory. Check out the [Highlight.js][] documentation for more
+details.
 
 ## License
 
@@ -126,4 +126,4 @@ This package is released under the MIT License. See [LICENSE](LICENSE) file for 
 [highlightjs-hugo]: https://github.com/irkode/highlightjs-hugo
 [Highlight.js]: https://highlightjs.org/
 [Hugo]: https://gohugo.io/
-[dist folder]: https://github.com/irkode/highlightjs-hugo/blob/main/dist/plugins/dist/highlightjs
+[dist folder]: https://github.com/irkode/highlightjs-hugo/blob/main/dist/hugo-embed/dist/

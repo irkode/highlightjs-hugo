@@ -1,4 +1,4 @@
-built_in:
+BUILTINS:
 - absLangURL
 - absURL
 - add
@@ -32,9 +32,7 @@ built_in:
 - first
 - float
 - ge
-- getCSV
 - getenv
-- getJSON
 - group
 - gt
 - hasPrefix
@@ -47,6 +45,7 @@ built_in:
 - i18n
 - in
 - index
+- inner
 - int
 - intersect
 - isset
@@ -124,7 +123,7 @@ built_in:
 - warnidf
 - where
 - xxhash
-function:
+FUNCTIONS:
 - cast.ToFloat
 - cast.ToInt
 - cast.ToString
@@ -173,8 +172,6 @@ function:
 - css.Sass
 - css.TailwindCSS
 - css.Unquoted
-- data.GetCSV
-- data.GetJSON
 - debug.Dump
 - debug.Timer
 - debug.VisualizeSpaces
@@ -289,7 +286,11 @@ function:
 - path.Ext
 - path.Join
 - path.Split
+- reflect.IsImageResource
 - reflect.IsMap
+- reflect.IsPage
+- reflect.IsResource
+- reflect.IsSite
 - reflect.IsSlice
 - resources.Babel
 - resources.ByType
@@ -345,6 +346,7 @@ function:
 - templates.Current
 - templates.Defer
 - templates.Exists
+- templates.Inner
 - time.AsTime
 - time.Duration
 - time.Format
@@ -377,7 +379,7 @@ function:
 - urls.RelRef
 - urls.RelURL
 - urls.URLize
-keyword:
+KEYWORDS:
 - block
 - break
 - continue
@@ -390,7 +392,7 @@ keyword:
 - template
 - try
 - with
-literal:
+LITERALS:
 - 'false'
 - nil
 - 'true'

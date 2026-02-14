@@ -76,8 +76,6 @@ Enclose your code in `<pre><code>` tags and at best set the language with `class
 If you want to rely on auto detection, read the section about that below.
 
 
-Instead of `hugo-text` you can use the defined aliases: `hugo-text`.
-
 
 ```html
 <pre><code class="hugo-html">
