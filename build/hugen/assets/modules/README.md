@@ -110,6 +110,8 @@ The module works with the standard [Highlight.js][] custom build system. Copy ne
 you cloned our repo -- to the highlight.js extra directory. Check out the [Highlight.js][] documentation for more
 details.
 
+> You will need hugo-lib for all of the modules!
+
 ## License
 
 This package is released under the MIT License. See [LICENSE](LICENSE) file for details.

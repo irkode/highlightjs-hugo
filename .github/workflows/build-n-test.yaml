@@ -179,19 +179,19 @@ jobs:
       - name: Build CDN plugins Highlight.js
         working-directory: ${{ env.HIGHLIGHTJS_DIR }}
         run: |
-          node ./tools/build.js -t cdn hugo-tpl hugo-html hugo-text
+          node ./tools/build.js -t cdn hugo-embed hugo-html hugo-text
 
-      - name: Build Discourse plugin
-        run: |
-          $PluginSourceFolder = "${{ env.HIGHLIGHTJS_EXTRA_DIR }}/hugo-text/dist"
-          $PluginTargetFolder = "${{ env.HIGHLIGHTJS_EXTRA_DIR }}/plugins/discourse"
-          ./build/build-discourse-plugin.ps1 -Verbose $PluginSourceFolder $PluginTargetFolder -ErrorAction Stop
+      # - name: Build Discourse plugin
+      #   run: |
+      #     $PluginSourceFolder = "${{ env.HIGHLIGHTJS_EXTRA_DIR }}/hugo-text/dist"
+      #     $PluginTargetFolder = "${{ env.HIGHLIGHTJS_EXTRA_DIR }}/plugins/discourse"
+      #     ./build/build-discourse-plugin.ps1 -Verbose $PluginSourceFolder $PluginTargetFolder -ErrorAction Stop
 
-      - name: Build Highlight.js plugin
-        run: |
-          $PluginSourceFolder = "${{ env.HIGHLIGHTJS_EXTRA_DIR }}/hugo-html/dist"
-          $PluginTargetFolder = "${{ env.HIGHLIGHTJS_EXTRA_DIR }}/plugins/highlightjs"
-          ./build/build-highlightjs-plugin.ps1 -Verbose $PluginSourceFolder $PluginTargetFolder -ErrorAction Stop
+      # - name: Build Highlight.js plugin
+      #   run: |
+      #     $PluginSourceFolder = "${{ env.HIGHLIGHTJS_EXTRA_DIR }}/hugo-html/dist"
+      #     $PluginTargetFolder = "${{ env.HIGHLIGHTJS_EXTRA_DIR }}/plugins/highlightjs"
+      #     ./build/build-highlightjs-plugin.ps1 -Verbose $PluginSourceFolder $PluginTargetFolder -ErrorAction Stop
 
       - name: Publish to distribution folder
         if: ${{ steps.get_trigger.outputs.has_tag == 'yes' }}

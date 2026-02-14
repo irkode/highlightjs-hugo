@@ -1,0 +1,67 @@
+name: Report repo update parameters
+on:
+  push:
+    branches:
+      - "**"
+    tags:
+      - "**"
+  pull_request:
+    branches:
+      - "**"
+  workflow_dispatch:
+
+jobs:
+  diagnostics:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - name: Checkout REPO
+        uses: actions/checkout@v4
+        with:
+          submodules: "true"
+          fetch-depth: 0
+
+      - name: Print high-level context
+        run: |
+          Write-Host "event_name = $($env:GITHUB_EVENT_NAME)"
+          Write-Host "ref        = $($env:GITHUB_REF)"
+          Write-Host "ref_type   = $($env:GITHUB_REF_TYPE)"
+          Write-Host "sha        = $($env:GITHUB_SHA)"
+          Write-Host "actor      = $($env:GITHUB_ACTOR)"
+          Write-Host "repository = $($env:GITHUB_REPOSITORY)"
+
+      - name: Print push-specific fields
+        if: ${{ github.event_name == 'push' }}
+        run: |
+          $eventJson = Get-Content -Raw $Env:GITHUB_EVENT_PATH | ConvertFrom-Json
+          Write-Host "created       = $($eventJson.created)"
+          Write-Host "deleted       = $($eventJson.deleted)"
+          Write-Host "forced        = $($eventJson.forced)"
+          Write-Host "before        = $($eventJson.before)"
+          Write-Host "after         = $($eventJson.after)"
+          Write-Host "head_commit   = $($eventJson.head_commit -ne $null ? 'present' : 'null')"
+          Write-Host "commits_count = $($eventJson.commits.Count)"
+
+      - name: Print pull_request-specific fields
+        if: ${{ github.event_name == 'pull_request' }}
+        run: |
+          $eventJson = Get-Content -Raw $Env:GITHUB_EVENT_PATH | ConvertFrom-Json
+          Write-Host "action      = $($eventJson.action)"
+          Write-Host "pr_number   = $($eventJson.pull_request.number)"
+          Write-Host "base_branch = $($eventJson.pull_request.base.ref)"
+          Write-Host "head_branch = $($eventJson.pull_request.head.ref)"
+          Write-Host "merge_sha   = $($eventJson.pull_request.merge_commit_sha)"
+
+      - name: Dump full event payload
+        run: |
+          $payload = Get-Content -Raw $Env:GITHUB_EVENT_PATH
+          $payload | Out-File "$Env:GITHUB_WORKSPACE\event-payload.json" -Encoding utf8
+          Write-Host "Full payload saved to event-payload.json"
+
+      - name: Upload event payload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: github-event-payload
+          path: ${{ github.workspace }}\event-payload.json
