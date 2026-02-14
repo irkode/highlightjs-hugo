@@ -26,7 +26,7 @@ disableKinds = ['rss', 'sitemap', 'taxonomy', 'term']
 
 # we generate javascript files for the data structures needed by plugins
 [outputFormats.js]
-  baseName       = "src/languages/lib/keywords"
+  baseName       = "hugo-keywords"
   isHTML         = false
   isPlainText    = true
   mediaType      = "text/javascript"

@@ -7,7 +7,7 @@ param(
     'BuildHighlightJSPlugin',
     'CloneHighlightJS',
     'DeveloperBuild',
-    'GenerateHugoModules',
+    'GenerateHugoGrammars',
     'UpdateHugoDocs',
     'Distribute',
     'updateHugoDocs',
@@ -28,7 +28,7 @@ param(
     'BuildHighlightJSPlugin',
     'CloneHighlightJS',
     'DeveloperBuild',
-    'GenerateHugoModules',
+    'GenerateHugoGrammars',
     'UpdateHugoDocs',
     'Distribute',
     'ShowStatus',
@@ -42,7 +42,7 @@ $ProgressPreference = 'SilentlyContinue'
 if ($PSBoundParameters.Keys -notcontains 'Steps') {
   $Steps = @(
     'updateHugoDocs', 'cloneHighlightJS',
-    'generateHugoModules',
+    'GenerateHugoGrammars',
     'buildHighlightJS', 'buildDiscoursePlugin', 'buildHighlightJSPlugin',
     'developerBuild'
   )

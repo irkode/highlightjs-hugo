@@ -5,7 +5,7 @@
 -}}
 {{- $tpl := templates.Current.Name }}
 {{- $pagePath := .Path }}
-{{- warnf "TPL  %s - %s" $pagePath $tpl }}
+{{- warnf "XX TPL  %s - %s" $pagePath $tpl }}
 
 {{- $dataLang := .Params.hljs.keywords }}
 
@@ -15,10 +15,10 @@
 
 {{- /* generate keyword base patterns for the action root modes */ -}}
 {{- range $regexName, $regexWords := index $dataKeywords "patterns" }}
-  {{- printf "export const re_%s = /%s/;\n" $regexName (delimit $regexWords "|") }}
+  {{- printf "export const H4HBASE_%s_REGEX = /%s/;\n" $regexName (delimit $regexWords "|") }}
 {{- end }}
 
-{{- /* generate exports for keyword lists and keyword regex */ -}} 
+{{- /* generate exports for keyword lists and keyword regex */ -}}
 {{- range $scope, $words := $keywords }}
   {{- range index $dataKeywords.generate $scope }}
     {{- if eq "kw" . }}
@@ -26,14 +26,11 @@
       {{- range $words }}
         {{- $wordsWithRelevance = $wordsWithRelevance  | append (printf "'%s'" (cond (hasPrefix . "hugo.") (add . "|10") .)) }}
       {{- end }}
-      {{- $const := add "kw_" (upper $scope) }}
-      {{- printf "export const %s = [%s];\n" $const (delimit $wordsWithRelevance ",") }}
+      {{- printf "export const H4HBASE_%s = [%s];\n" $scope (delimit $wordsWithRelevance ",") }}
     {{- else if eq "re" . }}
-      {{- $const := add "re_" (upper $scope) }}
-      {{- printf "export const %s = /\\b(%s)\\b/;\n" $const (replace (delimit $words "|") "." `\.`) }}
+      {{- printf "export const H4HBASE_%s_REGEX = /\\b(%s)\\b/;\n" $scope (replace (delimit $words "|") "." `\.`) }}
       {{- /* we create a grouped regex variant for functions namespace.function */}}
-      {{- if eq "function" $scope }}
-        {{- $const = add "re_g_" (upper $scope) }}
+      {{- if eq "FUNCTIONS" $scope }}
         {{- $pad := newScratch }}
         {{- range $words }}
           {{- $splittedWord := split . "." }}
@@ -49,13 +46,9 @@
         {{- range $ns, $names := $pad.Values }}
           {{- $groups = $groups | append (printf "%s\\.(?:%s)" $ns (delimit $names "|")) }}
         {{- end }}
-        {{- printf "export const %s = /\\b(%s)\\b/;\n" $const (delimit $groups "|")}}
+        {{- printf "export const H4HBASE_%s_REGEX_GROUPED = /\\b(%s)\\b/;\n" $scope (delimit $groups "|")}}
       {{- end }}
-      {{- /* $pad.SetInMap "js" $const (printf "export const %s = /\\b(%s)\\b/;" $const (replace (delimit $words "|") "." `\.`)) */ -}}
     {{- end }}
   {{- end }}
 {{- end }}
-
-{{- /* generate scope definitions that use the above */ -}}
-
 {{- /* remove all trailing whitespace */ -}}

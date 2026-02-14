@@ -38,11 +38,11 @@
       {{- if in $fixedWords $name }}
         {{- continue }}
       {{- end }}
-      {{- $scope := "built_in" }}
+      {{- $scope := "BUILTINS" }}
       {{- if eq $p.Parent.LinkTitle "go template" }}
-        {{- $scope = "keyword" }}
+        {{- $scope = "KEYWORDS" }}
       {{- else if strings.Contains $name "." }}
-        {{- $scope = "function"}}
+        {{- $scope = "FUNCTIONS"}}
       {{- end }}
 
       {{- $len := len $name | string }}

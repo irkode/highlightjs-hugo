@@ -15,8 +15,9 @@ function buildHighlightJS {
         try { exec npm run test-markup }
         catch { if (-not $IgnoreMarkupErrors) { throw $_ } }
       }
-      exec node tools/build.js hugo-tpl hugo-html hugo-text -t cdn
+      exec node tools/build.js hugo-embed hugo-html hugo-text -t cdn
     }
+    [void](Test-File $HighlightJsExtraDir "hugo-embed\dist\hugo-embed.min.js")
     [void](Test-File $HighlightJsExtraDir "hugo-html\dist\hugo-html.min.js")
     [void](Test-File $HighlightJsExtraDir "hugo-text\dist\hugo-text.min.js")
   } catch {
@@ -31,6 +32,7 @@ function buildHighlightJS {
 function buildDiscoursePlugin {
   [CmdLetBinding()]
   param()
+  Write-Warning "DISABLED: buildDiscoursePlugin"; return
   try {
     Set-Location $startCWD
     $PluginSourceFolder = Test-Folder $HighlightJsExtraDir "hugo-text\dist"
@@ -48,6 +50,7 @@ function buildDiscoursePlugin {
 function buildHighlightJSPlugin {
   [CmdLetBinding()]
   param()
+  Write-Warning "DISABLED: buildHighlightJSPlugin"; return
   try {
     Set-Location $startCWD
     $PluginSourceFolder = Test-Folder $HighlightJsExtraDir "hugo-html\dist"
@@ -145,7 +148,7 @@ cssOptions.forEach(css => {
     }
     [void](Test-File $WorkDir developer.html)
     Set-Location $HighlightJsDir
-    exec node tools/build.js -t browser hugo-tpl hugo-html hugo-text xml
+    exec node tools/build.js -t browser hugo-embed hugo-html hugo-text xml
 
   } catch {
     throw $_
@@ -153,7 +156,7 @@ cssOptions.forEach(css => {
     Set-Location $startCWD
   }
 }
-function generateHugoModules {
+function generateHugoGrammars {
   [CmdLetBinding()]
   param()
   try {
@@ -163,6 +166,7 @@ function generateHugoModules {
       Set-Location $HugoGenDir
       exec hugo -d $HighlightJsExtraDir --cleanDestinationDir
     }
+    [void](Test-File $HighlightJsExtraDir "hugo-embed\src\languages\hugo-embed.js")
     [void](Test-File $HighlightJsExtraDir "hugo-html\src\languages\hugo-html.js")
     [void](Test-File $HighlightJsExtraDir "hugo-text\src\languages\hugo-text.js")
   } catch {

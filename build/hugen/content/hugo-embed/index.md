@@ -4,7 +4,6 @@ outputs = ['HTML', 'JS', 'YAML']
 [params.hljs]
   groupedRegex = false
   keywords = "hugo"
-  language = "hugo-html"
-  requires = "xml.js"
-  subLanguages = "'xml'"
+  language = "hugo-embed"
+  disableAutodetect = true
 +++
