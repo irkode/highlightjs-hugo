@@ -190,6 +190,7 @@ FUNCTIONS:
 - hash.XxHash
 - hugo.BuildDate
 - hugo.CommitHash
+- hugo.Data
 - hugo.Deps
 - hugo.Environment
 - hugo.Generator
@@ -200,6 +201,7 @@ FUNCTIONS:
 - hugo.IsMultilingual
 - hugo.IsProduction
 - hugo.IsServer
+- hugo.Sites
 - hugo.Store
 - hugo.Version
 - hugo.WorkingDir

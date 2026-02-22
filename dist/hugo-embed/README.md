@@ -86,9 +86,9 @@ If you want to rely on auto detection, read the section about that below.
 ## A word on auto detection
 
 _Handlebars_ and _Go templates_ (used by [Hugo][]) have similar template tags. Without additional
-relevance settings Hugo modules will loose most of the time. We use the following relevance settings
-to beat _Handlebars_ auto-detection but doing our best to make it possible to have both modules
-loaded at the same time. Importing `hugo-text` and `hugo-html` plugins may result in undetermined
+relevance settings Hugo grammars will loose most of the time. We use the following relevance settings
+to beat _Handlebars_ auto-detection -- doing our best to make it possible to have both grammars
+loaded at the same time. Importing both `hugo-text` and `hugo-html` may result in undetermined
 auto-detection. To be on the safe side specify the language you want for every code block.
 
 - Go template comments get relevance = 10.
@@ -106,6 +106,8 @@ auto-detection. To be on the safe side specify the language you want for every c
 The module works with the standard [Highlight.js][] custom build system. Copy needed folders from your download or -- if
 you cloned our repo -- to the highlight.js extra directory. Check out the [Highlight.js][] documentation for more
 details.
+
+> You will need hugo-lib for all of the hugo grammars!
 
 ## License
 

@@ -1,5 +1,7 @@
-/*! `hugo-html` grammar compiled for Highlight.js 11.11.1 */
-(()=>{var e=(()=>{"use strict";function e(e){
+import { apiInitializer } from "discourse/lib/api";
+export default apiInitializer((api) => {
+        /*! `hugo-html` grammar compiled for Highlight.js 11.11.1 */
+var e=(()=>{"use strict";function e(e){
 return e?"string"==typeof e?e:e.source:null}function t(...t){
 return t.map((t=>e(t))).join("")}const a={begin:"\\\\[\\s\\S]",relevance:0},s={
 scope:"string",begin:"'",end:"'",illegal:"\\n",contains:[a]},n={scope:"string",
@@ -41,4 +43,6 @@ contains:m},{begin:[r,/\s*/,/break|continue|else|end/],beginScope:{
 1:"template-tag",3:"keyword"},end:[o],endScope:{1:"template-tag"}},{begin:[r],
 beginScope:{1:"template-tag"},end:[o],endScope:{1:"template-tag"},contains:m}]
 ;return e=>({case_insensitive:!1,name:"Hugo-Html",subLanguage:"xml",contains:u})
-})();hljs.registerLanguage("hugo-html",e)})();
+})()
+  api.registerHighlightJSLanguage("hugo-html", e);
+});

@@ -1,12 +1,14 @@
-/*! `hugo-html` grammar compiled for Highlight.js 11.11.1 */
-(()=>{var e=(()=>{"use strict";function e(e){
+import { apiInitializer } from "discourse/lib/api";
+export default apiInitializer((api) => {
+        /*! `hugo-text` grammar compiled for Highlight.js 11.11.1 */
+var e=(()=>{"use strict";function e(e){
 return e?"string"==typeof e?e:e.source:null}function t(...t){
-return t.map((t=>e(t))).join("")}const a={begin:"\\\\[\\s\\S]",relevance:0},s={
-scope:"string",begin:"'",end:"'",illegal:"\\n",contains:[a]},n={scope:"string",
-begin:'"',end:'"',illegal:"\\n",contains:[a]},i=(a,s,n={})=>{
-const i=((e,...t)=>{const a=Object.create(null);for(const t in e)a[t]=e[t]
-;return t.forEach((e=>{for(const t in e)a[t]=e[t]})),a})({scope:"comment",
-begin:a,end:s,contains:[]},n);i.contains.push({scope:"doctag",
+return t.map((t=>e(t))).join("")}const s={begin:"\\\\[\\s\\S]",relevance:0},a={
+scope:"string",begin:"'",end:"'",illegal:"\\n",contains:[s]},n={scope:"string",
+begin:'"',end:'"',illegal:"\\n",contains:[s]},i=(s,a,n={})=>{
+const i=((e,...t)=>{const s=Object.create(null);for(const t in e)s[t]=e[t]
+;return t.forEach((e=>{for(const t in e)s[t]=e[t]})),s})({scope:"comment",
+begin:s,end:a,contains:[]},n);i.contains.push({scope:"doctag",
 begin:"[ ]*(?=(TODO|FIXME|NOTE|BUG|OPTIMIZE|HACK|XXX):)",
 end:/(TODO|FIXME|NOTE|BUG|OPTIMIZE|HACK|XXX):/,excludeBegin:!0,relevance:0})
 ;const r=function(...t){return"("+((e=>{const t=e[e.length-1]
@@ -20,7 +22,7 @@ begin:[/\./,/\w+/],beginScope:{1:"property",2:"title.function.invoke"}},{
 begin:[/\w+/],beginScope:{1:"title.function.invoke"}}],contains:[{
 scope:"property",match:/(\.\w+)+/}]},c={begin:[/\(/],beginScope:{1:"punctuation"
 },end:[/\)/],endScope:{1:"punctuation"}},m=[{scope:"number",
-begin:"\\b\\d+(\\.\\d+)?",relevance:0},n,s,{scope:"string.raw",match:/`[^`]*`/,
+begin:"\\b\\d+(\\.\\d+)?",relevance:0},n,a,{scope:"string.raw",match:/`[^`]*`/,
 keywords:[]},{
 begin:/\b(cast\.(?:ToString|ToFloat|ToInt)|collections\.(?:Complement|Dictionary|NewScratch|Intersect|Delimit|KeyVals|Querify|Reverse|Shuffle|SymDiff|Append|After|Apply|First|Group|Index|IsSet|Merge|Slice|Union|Where|Last|Sort|Uniq|Seq|In|D)|compare\.(?:Conditional|Default|Eq|Ge|Gt|Le|Lt|Ne)|crypto\.(?:FNV32a|SHA256|HMAC|SHA1|MD5)|css\.(?:TailwindCSS|Unquoted|PostCSS|Quoted|Sass)|debug\.(?:VisualizeSpaces|Timer|Dump)|diagrams\.(?:Goat)|encoding\.(?:Base64Decode|Base64Encode|Jsonify)|fmt\.(?:Erroridf|Println|Warnidf|Errorf|Printf|Print|Warnf)|hash\.(?:FNV32a|XxHash)|hugo\.(?:IsMultilingual|IsDevelopment|IsProduction|Environment|IsMultihost|CommitHash|IsExtended|WorkingDir|BuildDate|Generator|GoVersion|IsServer|Version|Sites|Store|Data|Deps)|images\.(?:ColorBalance|GaussianBlur|UnsharpMask|AutoOrient|Brightness|Saturation|Grayscale|Colorize|Contrast|Pixelate|Opacity|Overlay|Padding|Process|Sigmoid|Config|Dither|Filter|Invert|Gamma|Sepia|Mask|Text|Hue|QR)|inflect\.(?:Singularize|Pluralize|Humanize)|js\.(?:Babel|Batch|Build)|lang\.(?:FormatNumberCustom|FormatAccounting|FormatCurrency|FormatPercent|FormatNumber|Translate|Merge)|math\.(?:ToDegrees|ToRadians|MaxInt64|Counter|ModBool|Product|Atan2|Floor|Round|Acos|Asin|Atan|Ceil|Rand|Sqrt|Abs|Add|Cos|Div|Log|Max|Min|Mod|Mul|Pow|Sin|Sub|Sum|Tan|Pi)|openapi3\.(?:Unmarshal)|os\.(?:FileExists|ReadFile|ReadDir|Getenv|Stat)|partials\.(?:IncludeCached|Include)|path\.(?:BaseName|Clean|Split|Base|Join|Dir|Ext)|reflect\.(?:IsImageResource|IsResource|IsSlice|IsPage|IsSite|IsMap)|resources\.(?:ExecuteAsTemplate|Fingerprint|PostProcess|FromString|GetRemote|GetMatch|PostCSS|ByType|Concat|Minify|Babel|Match|ToCSS|Copy|Get)|safe\.(?:HTMLAttr|JSStr|HTML|CSS|URL|JS)|strings\.(?:ContainsNonSpace|FindRESubmatch|ContainsAny|SliceString|CountRunes|CountWords|FirstUpper|TrimPrefix|TrimSuffix|HasPrefix|HasSuffix|ReplaceRE|RuneCount|TrimRight|TrimSpace|Contains|TrimLeft|Truncate|Replace|ToLower|ToUpper|FindRE|Repeat|Substr|Chomp|Count|Split|Title|Diff|Trim)|templates\.(?:Current|Exists|Defer|Inner)|time\.(?:ParseDuration|Duration|AsTime|Format|Now|In)|transform\.(?:HighlightCodeBlock|HTMLToMarkdown|CanHighlight|HTMLUnescape|PortableText|Markdownify|HTMLEscape|Highlight|Remarshal|Unmarshal|XMLEscape|Plainify|Emojify|ToMath)|urls\.(?:PathUnescape|AbsLangURL|PathEscape|RelLangURL|Anchorize|JoinPath|AbsURL|RelRef|RelURL|URLize|Parse|Ref))\b/,
 keywords:{$pattern:/\w+\.\w+/,
@@ -40,5 +42,7 @@ beginScope:{1:"template-tag",3:"keyword"},end:[o],endScope:{1:"template-tag"},
 contains:m},{begin:[r,/\s*/,/break|continue|else|end/],beginScope:{
 1:"template-tag",3:"keyword"},end:[o],endScope:{1:"template-tag"}},{begin:[r],
 beginScope:{1:"template-tag"},end:[o],endScope:{1:"template-tag"},contains:m}]
-;return e=>({case_insensitive:!1,name:"Hugo-Html",subLanguage:"xml",contains:u})
-})();hljs.registerLanguage("hugo-html",e)})();
+;return e=>({case_insensitive:!1,name:"Hugo-Text",contains:u})})()
+
+  api.registerHighlightJSLanguage("hugo-text", e);
+});
