@@ -4,12 +4,11 @@ param(
   [Parameter(Mandatory = $false)][ValidateSet(
     'BuildHighlightJS',
     'BuildDiscoursePlugin',
-    'BuildHighlightJSPlugin',
     'CloneHighlightJS',
     'DeveloperBuild',
     'GenerateHugoGrammars',
     'UpdateHugoDocs',
-    'Distribute',
+    'distributeHighLightJSBuildResults',
     'updateHugoDocs',
     'ShowStatus',
     'TestHighlightJS'
@@ -25,12 +24,11 @@ param(
   [Parameter(Mandatory = $false)][ValidateSet(
     'BuildHighlightJS',
     'BuildDiscoursePlugin',
-    'BuildHighlightJSPlugin',
     'CloneHighlightJS',
     'DeveloperBuild',
     'GenerateHugoGrammars',
     'UpdateHugoDocs',
-    'Distribute',
+    'DistributeHighLightJSBuildResults',
     'ShowStatus',
     'updateHugoDocs'
   )][string[]]$Steps
@@ -41,10 +39,10 @@ $ErrorActionPreference = 'Stop'
 $ProgressPreference = 'SilentlyContinue'
 if ($PSBoundParameters.Keys -notcontains 'Steps') {
   $Steps = @(
-    'updateHugoDocs', 'cloneHighlightJS',
+    'UpdateHugoDocs', 'CloneHighlightJS',
     'GenerateHugoGrammars',
-    'buildHighlightJS', 'buildDiscoursePlugin', 'buildHighlightJSPlugin',
-    'developerBuild'
+    'BuildHighlightJS', 'DistributeHighLightJSBuildResults', 'BuildDiscoursePlugin',
+    'DeveloperBuild'
   )
 }
 if ($PSBoundParameters.Keys -contains 'Skip') {

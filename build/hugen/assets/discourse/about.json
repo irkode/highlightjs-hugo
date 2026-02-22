@@ -1,0 +1,15 @@
+{{- $lang := .page.Params.hljs.language -}}
+{
+  "name": "{{ $lang }}",
+  "component": true,
+  "license_url": "{{ site.Params.licenseURL }}",
+  "about_url": "{{ site.Params.webroot }}",
+  "authors": "{{ site.Params.author }}",
+  "theme_version": null,
+  "minimum_discourse_version": null,
+  "maximum_discourse_version": null,
+  "assets": {},
+  "color_schemes": {},
+  "modifiers": {},
+  "learn_more": "https://meta.discourse.org/t/beginners-guide-to-using-discourse-themes/91966"
+}

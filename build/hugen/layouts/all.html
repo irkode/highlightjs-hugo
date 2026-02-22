@@ -3,4 +3,7 @@
 
   Hugo won't create any outputs for templates producing an empty string.
 */ -}}
+{{- $tpl := templates.Current.Name }}
+{{- $pagePath := .Path }}
+{{- warnf "ALL(HTML)  %s - %s" $pagePath $tpl }}
 {{- /* remove all trailing whitespace */ -}}

@@ -1,0 +1,9 @@
+{{- $tpl := templates.Current.Name }}
+{{- $pagePath := .Path }}
+{{- warnf "SEC(HTML)  %s - %s" $pagePath $tpl }}
+{{- if .Params.createLicenseFile }}
+  {{- partial "create-and-publish" (dict "base" "common" "source" "LICENSE" "page" $) }}
+{{- end }}
+{{- partial "create-and-publish" (dict "base" "discourse" "source" "README.md" "page" $) }}
+{{- partial "copy-and-publish" (dict "base" "common" "source" "plugins.png" "page" $) }}
+{{- /* remove all trailing whitespace */ -}}

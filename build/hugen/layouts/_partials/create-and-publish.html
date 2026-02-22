@@ -28,6 +28,7 @@
 {{- $source := add $base "/" .source }}
 {{- /* calculate relative target path from current page */ -}}
 {{- $target := add $page.Path "/" (or $.target $.source) }}
+{{- $target = $target | replaceRE `^/grammars` "" }}
 
 {{- /* merge page parameters with additional arguments passed */ -}}
 {{- $params := (dict "page" $page "site" site) }}

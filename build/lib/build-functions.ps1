@@ -32,33 +32,16 @@ function buildHighlightJS {
 function buildDiscoursePlugin {
   [CmdLetBinding()]
   param()
-  Write-Warning "DISABLED: buildDiscoursePlugin"; return
+  # Write-Warning "DISABLED: buildDiscoursePlugin"; return
   try {
     Set-Location $startCWD
-    $PluginSourceFolder = Test-Folder $HighlightJsExtraDir "hugo-text\dist"
-    $PluginTargetFolder = Test-Folder $HighlightJsExtraDir "plugins\discourse"
-    & "$ScriptsDir\build-discourse-plugin.ps1" $PluginSourceFolder $PluginTargetFolder
-    [void](Test-File $PluginTargetFolder "hugo-discourse-plugin.js")
+    $PluginTargetFolder = Test-Folder -Create "$DistributionDir"
+    Set-Location $HugoGenDir
+    exec hugo -d $PluginTargetFolder --renderSegments discourse
+    [void](Test-File $PluginTargetFolder "discourse/hugo-html/about.json")
+    [void](Test-File $PluginTargetFolder "discourse/hugo-text/about.json")
   } catch {
     Write-Error "Generation of Discourse Plugin failed" -ErrorAction Continue
-    throw $_
-  } finally {
-    Set-Location $startCWD
-  }
-}
-
-function buildHighlightJSPlugin {
-  [CmdLetBinding()]
-  param()
-  Write-Warning "DISABLED: buildHighlightJSPlugin"; return
-  try {
-    Set-Location $startCWD
-    $PluginSourceFolder = Test-Folder $HighlightJsExtraDir "hugo-html\dist"
-    $PluginTargetFolder = Test-Folder $HighlightJsExtraDir "plugins\highlightjs"
-    & "$ScriptsDir\build-highlightjs-plugin.ps1" $PluginSourceFolder $PluginTargetFolder
-    [void](Test-File $PluginTargetFolder "hugo-highlightjs-plugin.js")
-  } catch {
-    Write-Error "Generation of HighlighJS Plugin failed" -ErrorAction Continue
     throw $_
   } finally {
     Set-Location $startCWD
@@ -79,7 +62,7 @@ function cloneHighlightJS {
         Write-Warning "HighlightJS: keep current clone. To fresh up remove $HighLightJsDir"
       }
     }
-    [void](Test-Folder $HighlightJsExtraDir)
+    [void](Test-Folder $HighlightJsDir)
     $needsInstall = -not (Test-Path (Join-Path -Path $HighlightJsDir -ChildPath "node_modules"))
     if ($NeedsInstall -or ($Force -contains 'SetupHighlightJS')) {
       Set-Location $HighlightJsDir
@@ -161,22 +144,37 @@ function generateHugoGrammars {
   param()
   try {
     if ($Skip -contains 'GenerateModules') {
-      Write-Verbose "HugoModules: Generate Highlight.JS plugins to $HighlightJsExtraDir"
+      Write-Verbose "HugoModules: Generate Highlight.js grammars to $HighlightJsExtraDir"
     } else {
       Set-Location $HugoGenDir
-      exec hugo -d $HighlightJsExtraDir --cleanDestinationDir
+      exec hugo -d $HighlightJsExtraDir --cleanDestinationDir --renderSegments grammars
     }
     [void](Test-File $HighlightJsExtraDir "hugo-embed\src\languages\hugo-embed.js")
+    [void](Test-File $HighlightJsExtraDir "hugo-lib\hugo-grammar.js")
+    [void](Test-File $HighlightJsExtraDir "hugo-lib\hugo-keywords.js")
     [void](Test-File $HighlightJsExtraDir "hugo-html\src\languages\hugo-html.js")
     [void](Test-File $HighlightJsExtraDir "hugo-text\src\languages\hugo-text.js")
   } catch {
-    Write-Error "HugoModules: generate Highlight.JS modules failed" -ErrorAction Continue
+    Write-Error "HugoModules: generate Highlight.js grammars failed" -ErrorAction Continue
     throw "$_"
   } finally {
     Set-Location $startCWD
   }
 }
 
+function distributeHighLightJSBuildResults {
+  [CmdLetBinding()]
+  param()
+  try {
+    Set-Location $HugoGenDir
+    exec hugo -d $DistributionDir --renderSegments dist
+  } catch {
+    Write-Error "$_`Distribution of HighlightJS Build Results to $DistributionDir failed" -ErrorAction Continue
+    throw "$_"
+  } finally {
+    Set-Location $startCWD
+  }
+}
 function distribute {
   [CmdLetBinding()]
   param()
@@ -219,10 +217,13 @@ function updateHugoDocs {
       Write-Verbose "HugoDocs: update submodule: $HugoDocsDir"
       Set-Location $ProjectRoot
       exec git submodule update --remote hugoDocs
+      $current = exec git submodule status --cached hugoDocs
       $updated = exec git submodule status hugoDocs
+      if ($current -ne $updated) {
+        Write-Warning "HugoDocs submodule changed: [ $current ] => [ $updated ]"
+      }
       if ($updated -match '^\+') {
-        Write-Warning "HugoDocs submodule updated, verify keywords!"
-        exec git add .\hugoDocs
+        Write-Warning "HugoDocs submodule updated verify keywords after generation!"
       }
     }
     [void](Test-Folder $HugoDocsDir "content/en/functions")

@@ -28,12 +28,13 @@
   {{- with resources.Get $source }}
     {{- $resources = slice . }}
   {{- else }}
-    {{- warnf "OK   %-25s[ %-20s ]: no resource found at %s " $tpl $pagePath $source }}
+    {{- warnf "WARN %-25s[ %-20s ]: no resource found at %s " $tpl $pagePath $source }}
   {{- end }}
 {{- end -}}
 {{- range $r := $resources }}
   {{- /* calculate relative target path from current page */ -}}
   {{- $target := $r.Name | replaceRE $basePattern $page.Path }}
+  {{- $target = $target | replaceRE `^/grammars` "" }}
   {{- with $r | resources.Copy $target }}
     {{- $noop := .RelPermalink }}
     {{- warnf "OK   %-25s[ %-20s ]: copy resource 'assets%s' to '%s'" $tpl $pagePath $r.Name $target -}}

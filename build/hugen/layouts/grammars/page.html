@@ -1,0 +1,27 @@
+{{- $tpl := templates.Current.Name }}
+{{- $pagePath := .Path }}
+{{- warnf "PAG(HTML)  %s - %s" $pagePath $tpl }}
+
+{{- if .Params.createLicenseFile }}
+  {{- partial "create-and-publish" (dict "base" "common" "source" "LICENSE" "page" $) }}
+{{- end }}
+
+{{- /* create reference documents */}}
+{{- range slice "css-class-reference.md" "package.json" "README.md" "src/styles/debug-hugo.css"}}
+  {{- partial "create-and-publish" (dict "base" "grammars" "source" . "page" $) }}
+{{- end }}
+{{- /* copy page resources */ -}}
+{{- range slice (add .Params.hljs.language ".png") }}
+  {{- partial "copy-and-publish" (dict "base" "grammars" "source" . "page" $) }}
+{{- end }}
+
+{{- /* create the language javascript module based on keyword definition */}}
+{{- $javascript := partial "get-javascript" $ }}
+{{- $target := add "src/languages/" .Params.hljs.language ".js" }}
+{{- partial "create-and-publish" (dict "base" "grammars" "source" "src/languages/language.js" "target" $target "page" $ "params" $javascript) }}
+
+{{- /* copy the test cases and styles unchanged */}}
+{{- range slice "test" }}
+  {{- partial "copy-and-publish" (dict "base" "grammars" "dir" true "source" . "page" $) }}
+{{- end }}
+{{- /* remove all trailing whitespace */ -}}

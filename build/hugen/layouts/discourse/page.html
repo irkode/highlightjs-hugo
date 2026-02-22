@@ -1,0 +1,9 @@
+{{- $tpl := templates.Current.Name }}
+{{- $pagePath := .Path }}
+{{- warnf "PAG(HTML)  %s - %s == %s" $pagePath $tpl .Params.hljs.language}}
+
+{{- /* create reference documents */}}
+{{- range slice "about.json" "javascripts/discourse/api-initializers/theme-initializer.gjs"}}
+  {{- partial "create-and-publish" (dict "base" "discourse" "source" . "page" $) }}
+{{- end }}
+{{- /* remove all trailing whitespace */ -}}

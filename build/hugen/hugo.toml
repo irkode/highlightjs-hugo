@@ -1,7 +1,7 @@
 language = "en-us"
 
 baseurl = "https://irkode.github.io/highlightjs-hugo"
-title   = "Generate Highlight.js Javascript modules for Go/Hugo templates"
+title   = "Generate Highlight.js Javascript grammars for Go/Hugo templates"
 
 #disableAliases = true
 disableKinds = ['rss', 'sitemap', 'taxonomy', 'term']
@@ -15,6 +15,13 @@ disableKinds = ['rss', 'sitemap', 'taxonomy', 'term']
   blobs      = "https://github.com/irkode/highlightjs-hugo/blob/main"
   category   = "templates"
   license    = "MIT"
+  licenseURL = "https://github.com/irkode/highlightjs-hugo/blob/main/LICENSE"
+
+[permalinks]
+  [permalinks.page]
+    grammars = '/:contentbasename'
+  [permalinks.section]
+    grammars = '/'
 
 # we generate yaml files containing keywords
 [outputFormats.yaml]
@@ -32,20 +39,32 @@ disableKinds = ['rss', 'sitemap', 'taxonomy', 'term']
   mediaType      = "text/javascript"
   notAlternative = true
 
-[[cascade]]
-  # don't render/publish stuff in /functions imported from hugoDocs
-  [cascade.build]
-    list             = 'always'
-    publishResources = false
-    render           = 'never'
-  [cascade.target]
-    path = '{/functions,/functions/**}'
+[segments]
+  [segments.grammars]
+    [[segments.grammars.includes]]
+      path = '{/grammars,/grammars/**}'
+  [segments.discourse]
+    [[segments.discourse.includes]]
+      path = '{/discourse,/discourse/**}'
+  [segments.dist]
+    [[segments.dist.includes]]
+      path = '{/dist,/dist/**}'
 
 [module]
-  # import function part of the documentation
+  # make sure we do not loose our own files when remounting stuff
+  [[module.mounts]]
+    source = 'assets'
+    target = 'assets'
   [[module.mounts]]
     source = 'content'
     target = 'content'
+
+  # mount results of Highlight.js build to assets
+  [[module.mounts]]
+    source = '../../work/highlight.js/extra/'
+    target = 'assets/dist'
+    files = ['hugo*/**']
+  # import function part of the documentation
   [[module.mounts]]
     source = "../../hugoDocs/content/en/functions"
     target = "content/functions"
@@ -56,3 +75,14 @@ disableKinds = ['rss', 'sitemap', 'taxonomy', 'term']
   [[module.mounts]]
     source = "../../hugoDocs/layouts/_shortcodes"
     target = "layouts/_shortcodes"
+
+### all below is just for being able to scan hugoDocs for keywords without warnings
+###
+[[cascade]]
+  # don't render/publish stuff in /functions imported from hugoDocs
+  [cascade.build]
+    list             = 'always'
+    publishResources = false
+    render           = 'never'
+  [cascade.target]
+    path = '{/functions,/functions/**}'

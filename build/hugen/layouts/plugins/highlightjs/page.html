@@ -1,9 +1,0 @@
-{{- $tpl := templates.Current.Name }}
-{{- $pagePath := .Path }}
-{{- warnf "TPL  %s - %s" $pagePath $tpl }}
-{{- /* copy page resources */ -}}
-{{- range slice "plugins.png" }}
-  {{- partial "copy-and-publish" (dict "base" "common" "source" . "dir" false "page" $) }}
-{{- end }}
-{{- partial "create-and-publish" (dict "base" "plugins/highlightjs" "source" "README.md" "dir" false "page" $) }}
-{{- /* remove all trailing whitespace */ -}}

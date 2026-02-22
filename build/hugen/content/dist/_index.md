@@ -1,0 +1,4 @@
++++
+[params]
+  createLicenseFile = true
++++

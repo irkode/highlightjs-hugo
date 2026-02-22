@@ -1,0 +1,10 @@
+{{- $tpl := templates.Current.Name }}
+{{- $pagePath := .Path }}
+{{- warnf "SEC(HTML)  %s - %s" $pagePath $tpl }}
+
+{{- range resources.Match "dist/**"}}
+  {{- with resources.Copy (. | replaceRE `^/dist/` "" ) . }}
+    {{- .Publish }}
+  {{- end }}
+{{- end }}
+{{- /* remove all trailing whitespace */ -}}
