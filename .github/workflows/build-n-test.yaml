@@ -143,7 +143,7 @@ jobs:
           ./build/versions-check-installed.ps1 -Verbose -VersionConfigFile .versions.json
 
       # SETUP Highlight.js (clone, npm ci - cache - save folder path)
-      - name: Cache Highlight.js clone and dependencies
+      - name: Restore Highlight.js clone and dependencies
         id: cache-highlightjs
         uses: actions/cache/restore@v5
         with:
@@ -166,10 +166,10 @@ jobs:
           path: ${{ env.HIGHLIGHTJS_DIR }}
           key: highlightjs-${{ runner.os }}-${{ env.HIGHLIGHTJS_VERSION }}
 
-      - name: Generate Custom Modules
+      - name: Generate Highlight.js grammars
         working-directory: ./build/hugen
         run: |
-          & hugo.exe -d ${{ env.HIGHLIGHTJS_EXTRA_DIR }}
+          & hugo.exe -d ${{ env.HIGHLIGHTJS_EXTRA_DIR }} --cleanDestinationDir --renderSegments grammars
 
       - name: Build and Test Highlight.js
         working-directory: ${{ env.HIGHLIGHTJS_DIR }}
@@ -181,25 +181,15 @@ jobs:
         run: |
           node ./tools/build.js -t cdn hugo-embed hugo-html hugo-text
 
-      # - name: Build Discourse plugin
-      #   run: |
-      #     $PluginSourceFolder = "${{ env.HIGHLIGHTJS_EXTRA_DIR }}/hugo-text/dist"
-      #     $PluginTargetFolder = "${{ env.HIGHLIGHTJS_EXTRA_DIR }}/plugins/discourse"
-      #     ./build/build-discourse-plugin.ps1 -Verbose $PluginSourceFolder $PluginTargetFolder -ErrorAction Stop
-
-      # - name: Build Highlight.js plugin
-      #   run: |
-      #     $PluginSourceFolder = "${{ env.HIGHLIGHTJS_EXTRA_DIR }}/hugo-html/dist"
-      #     $PluginTargetFolder = "${{ env.HIGHLIGHTJS_EXTRA_DIR }}/plugins/highlightjs"
-      #     ./build/build-highlightjs-plugin.ps1 -Verbose $PluginSourceFolder $PluginTargetFolder -ErrorAction Stop
-
-      - name: Publish to distribution folder
-        if: ${{ steps.get_trigger.outputs.has_tag == 'yes' }}
+      - name: Copy Build results to dist folder
+        working-directory: ./build/hugen
         run: |
-          Remove-Item -Recurse -Force ${{ env.DISTRIBUTION_DIR }}/*
-          Get-ChildItem -Directory ${{ env.HIGHLIGHTJS_EXTRA_DIR }} | Copy-Item -Recurse -Destination ${{ env.DISTRIBUTION_DIR }}
-          "==== STATUS ===================" | Out-Host
-          git status dist
+          & hugo -d ${{ env.DISTRIBUTION_DIR }} --renderSegments dist
+
+      - name: Build Discourse THeme Components
+        working-directory: ./build/hugen
+        run: |
+          & hugo -d ${{ env.DISTRIBUTION_DIR }} --renderSegments discourse
 
       - name: Publish build results
         if: ${{ steps.get_trigger.outputs.has_tag == 'yes' }}
