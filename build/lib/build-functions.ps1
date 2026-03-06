@@ -35,11 +35,11 @@ function buildDiscoursePlugin {
   # Write-Warning "DISABLED: buildDiscoursePlugin"; return
   try {
     Set-Location $startCWD
-    $DiscoursePluginTargetFolder = Test-Folder -Create $ProjectRoot "dist"
+    $DistributionDir = Test-Folder -Create $ProjectRoot "release-branch"
     Set-Location $HugoGenDir
-    exec hugo -d $DiscoursePluginTargetFolder --renderSegments discourse
-    [void](Test-File $DiscoursePluginTargetFolder "discourse/hugo-html/discourse/about.json")
-    [void](Test-File $DiscoursePluginTargetFolder "discourse/hugo-text/discourse/about.json")
+    exec hugo -d $DistributionDir --renderSegments discourse
+    [void](Test-File $DistributionDir "discourse/hugo-html/discourse/about.json")
+    [void](Test-File $DistributionDir "discourse/hugo-text/discourse/about.json")
   } catch {
     Write-Error "Generation of Discourse Plugin failed" -ErrorAction Continue
     throw $_
@@ -68,8 +68,8 @@ function cloneHighlightJS {
       Set-Location $HighlightJsDir
       exec npm install --save-dev
       if ($LASTEXITCODE) { throw $_ }
-      exec npm audit fix
-      if ($LASTEXITCODE) { throw $_ }
+      # exec npm audit fix
+      # if ($LASTEXITCODE) { throw $_ }
     }
     [void](Test-Folder $HighLightJsDir\node_modules)
   } catch {
@@ -143,11 +143,11 @@ function distributeHighLightJSBuildResults {
   param()
   try {
     Set-Location $startCWD
-    $HighlightJsTargetFolder = Test-Folder -Create $ProjectRoot "dist"
+    $DistributionDir = Test-Folder -Create $ProjectRoot "release-branch"
     Set-Location $HugoGenDir
-    exec hugo -d $HighlightJsTargetFolder --renderSegments distribute
+    exec hugo -d $DistributionDir --renderSegments distribute
   } catch {
-    Write-Error "$_`Distribution of HighlightJS Build Results to $HighlightJsTargetFolder failed" -ErrorAction Continue
+    Write-Error "$_`Distribution of HighlightJS Build Results to $DistributionDir failed" -ErrorAction Continue
     throw "$_"
   } finally {
     Set-Location $startCWD
