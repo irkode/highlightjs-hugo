@@ -1,0 +1,146 @@
+language = "en-us"
+baseurl = "https://irkode.github.io/highlightjs-hugo"
+title   = "Generate Highlight.js Javascript grammars for Go/Hugo templates"
+disableKinds = ['rss', 'sitemap', 'taxonomy', 'term']
+
+# for github README's
+disablePathToLower = true
+
+[params]
+  author     = "Irkode <irkode@rikode.de>"
+  webroot    = "https://irkode.github.io/highlightjs-hugo"
+  reporoot   = "https://github.com/irkode/"
+  repository = "https://github.com/irkode/highlightjs-hugo"
+  releases   = "https://github.com/irkode/highlightjs-hugo/releases/latest"
+  blobs      = "https://github.com/irkode/highlightjs-hugo/blob/main"
+  category   = "templates"
+  license    = "MIT"
+  licenseURL = "https://github.com/irkode/highlightjs-hugo/blob/main/LICENSE"
+
+[permalinks]
+  [permalinks.page]
+    grammars = '/:sections[1]/:contentbasename'
+    discourse = '/:sections/:contentbasename'
+  [permalinks.section]
+    grammars = '/:sections[1]'
+    discourse = '/:section'
+
+# used to generate Github README.md files
+[outputFormats.markdown]
+  mediaType      = 'text/markdown'
+  isPlainText    = true
+  permalinkable  = true
+  notAlternative = true
+  ugly = true
+
+# we generate yaml files containing keywords
+[outputFormats.yaml]
+  baseName       = "keywords"
+  isHTML         = false
+  isPlainText    = true
+  mediaType      = "application/yaml"
+  notAlternative = true
+
+# we generate javascript files for the data structures needed by plugins
+[outputFormats.js]
+  baseName       = "hugo-keywords"
+  isHTML         = false
+  isPlainText    = true
+  mediaType      = "text/javascript"
+  notAlternative = true
+
+[segments]
+  [segments.grammars]
+    [[segments.grammars.includes]]
+      path = '{/grammars,/grammars/**}'
+  [segments.discourse]
+    [[segments.discourse.includes]]
+      path = '{/discourse,/discourse/**}'
+  [segments.distribute]
+    [[segments.distribute.includes]]
+      path = '{/highlightjs,/highlightjs/**}'
+
+[module]
+  # make sure we do not loose our own files when remounting stuff
+  [[module.mounts]]
+    source = 'assets'
+    target = 'assets'
+  [[module.mounts]]
+    source = 'content'
+    target = 'content'
+  [[module.mounts]]
+    source = "src/common"
+    target = "content/grammars/hugo-embed"
+  [[module.mounts]]
+    source = "src/grammars"
+    target = "content/grammars/hugo-embed"
+  [[module.mounts]]
+    source = "src/common"
+    target = "content/grammars/hugo-html"
+  [[module.mounts]]
+    source = "src/grammars"
+    target = "content/grammars/hugo-html"
+  [[module.mounts]]
+    source = "src/common"
+    target = "content/grammars/hugo-text"
+  [[module.mounts]]
+    source = "src/grammars"
+    target = "content/grammars/hugo-text"
+  [[module.mounts]]
+    source = "src/common"
+    target = "content/discourse"
+[[module.mounts]]
+    source = "src/common"
+    target = "content/discourse"
+
+  # mount results of Highlight.js build to assets
+  [[module.mounts]]
+    source = '../../work/highlight.js/extra/'
+    target = 'assets/highlightjs/'
+    files = ['hugo-{html,text,lib}/**']
+  # import function part of the documentation
+  [[module.imports]]
+    ignoreConfig = true
+    ignoreImports = true
+    path = 'github.com/gohugoio/hugoDocs'
+    version = 'master'
+   [[module.imports.mounts]]
+      source = "content/en/functions"
+      target = "content/functions-latest"
+      # [module.imports.mounts.sites.matrix]
+      #   versions = 'master'
+   [[module.imports.mounts]]
+      source = "layouts/_shortcodes"
+      target = "layouts/latest/_shortcodes"
+      # [module.imports.mounts.sites.matrix]
+      #   versions = 'master'
+  [[module.imports]]
+    ignoreConfig = true
+    ignoreImports = true
+    path = 'github.com/gohugoio/hugoDocs'
+    version = '291ffc3f6bbfc43d218748c729a1c4b3f996ed6a'
+   [[module.imports.mounts]]
+      source = "content/en/functions"
+      target = "content/functions"
+   [[module.imports.mounts]]
+      source = "layouts/_shortcodes"
+      target = "layouts/_shortcodes"
+
+  # don't fail on missing shortcodes
+  # [[module.mounts]]
+  #   source = 'layouts'
+  #   target = 'layouts'
+  # [[module.mounts]]
+  #   source = "../../hugoDocs/layouts/_shortcodes"
+  #   target = "layouts/_shortcodes"
+
+### all below is just for being able to scan hugoDocs for keywords without warnings
+###
+# don't render/publish stuff in /functions imported from hugoDocs
+# [[cascade]]
+#   [cascade.build]
+#     list             = 'always'
+#     publishResources = false
+#     render           = 'never'
+#   [cascade.target]
+#     path = '{/functions,/functions/**}'

@@ -1,0 +1,16 @@
+{{ hugo.Generator }}
+{{ hugo.Generator.a.b.c }}
+{{ hugo.Store }}
+{{ hugo.Store.Set.b.c }}
+{{ .Page }}
+{{ .Page.Pages }}
+{{ .1 "hello" }}
+{{ .site.b.c }}
+{{ . }}
+{{ $var }}
+{{ $x.Page }}
+{{ $x.Page.Pages }}
+{{ $var. }}
+{{ $var.site.b.c }}
+{{ hugoStore.Set.b.c }}
+{{ hugo_Store.Set.b.c }}

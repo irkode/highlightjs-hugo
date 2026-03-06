@@ -1,0 +1,231 @@
+# This is prepared for building on windows and linux either as matrix or single run
+# as of now the ONLY_EXTRA is not considered on linux runner
+# It looks like the `npm run test-markup` on linux is not properly enumerating the extra modules
+# dunno if this is node/npm problem or the implementation of the Highlight.js build scripts or mine
+name: Build and Test
+
+on:
+  push:
+    branches:
+      - "main"
+    tags:
+      - "**"
+  pull_request:
+    branches:
+      - main"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-deploy-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: pwsh
+    env:
+      # Versions are loaded from '.versions after checkout' and pushed to $ENV
+      # GO_VERSION:
+      # HUGO_VERSION:
+      # NODE_VERSION:
+      # HIGHLIGHTJS_VERSION:
+      ONLY_EXTRA: true
+      WORK_DIR: ${{ github.workspace }}/work
+      HIGHLIGHTJS_DIR: ${{ github.workspace }}/work/highlight.js
+      HIGHLIGHTJS_EXTRA_DIR: ${{ github.workspace }}/work/highlight.js/extra
+      DISTRIBUTION_DIR: ${{ github.workspace }}/dist
+
+    steps:
+      - name: Get Trigger
+        id: get_trigger
+        run: |
+          # Fail on any error
+          $ErrorActionPreference = "Stop"
+
+          $event = "${{ github.event_name }}"
+          $ref_type = "${{ github.ref_type }}"
+          $head_commit = "${{ github.event.head_commit }}"
+
+          $TriggeredBy = ""
+          $hasTag = "no"
+
+          if ($event -eq "pull_request") {
+              $TriggeredBy = "pr"
+          } elseif ($event -eq "push") {
+              if ($ref_type -eq "branch") {
+                  $TriggeredBy = "commit"
+              } elseif ($ref_type -eq "tag") {
+                  $hasTag = "yes"
+                  if (![string]::IsNullOrEmpty($head_commit)) {
+                      $TriggeredBy = "taggedcommit"
+                  } else {
+                      $TriggeredBy = "tag"
+                  }
+              }
+          }
+
+          if ($TriggeredBy -notin @("commit","pr","tag","taggedcommit")) {
+            Write-Error "ERROR: Unrecognized trigger classification"
+            exit 1
+          }
+
+          # Optional debug
+          Write-Host "  event_name  = $event"
+          Write-Host "  ref_type    = $ref_type"
+          Write-Host "  head_commit = $($head_commit -ne '' ? 'present' : 'null')"
+          Write-Host "  hasTag      = $hasTag"
+          Write-Host "  TriggeredBy = $TriggeredBy"
+
+          echo "TRIGGERED_BY=$TriggeredBy" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
+          echo "has_tag=$hasTag" | Out-File -FilePath $Env:GITHUB_OUTPUT -Encoding utf8 -Append
+
+      - name: Checkout highlightjs-hugo repository
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          submodules: "true"
+          fetch-depth: 0
+          # token: ${{ secrets.PUBLISH_TOKEN }}
+
+      - name: Set Tool Versions
+        run: |
+          ./build/versions-set-wanted.ps1 -Verbose .versions.json
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+          cache-dependency-path: .node.package.json
+
+      - name: Setup Go
+        uses: actions/setup-go@v6
+        with:
+          go-version: "${{ env.GO_VERSION }}"
+          cache: true
+
+      - name: Cache Hugo binary
+        id: cache-hugo
+        uses: actions/cache/restore@v5
+        with:
+          path: ${{ github.workspace }}/work/bin
+          key: hugo-${{ runner.os }}-${{ env.HUGO_VERSION }}
+
+      - name: Download Hugo if not cached (Windows)
+        if: steps.cache-hugo.outputs.cache-hit != 'true'
+        run: |
+          $url = "https://github.com/gohugoio/hugo/releases/download/v${env:HUGO_VERSION}/hugo_extended_${env:HUGO_VERSION}_windows-amd64.zip"
+          Write-Host "Downloading Hugo from $url to ${{ github.workspace }}/work/bin"
+          [void](New-Item -ItemType Directory -Force -Path ${{ github.workspace }}/work/bin)
+          $archiveName = "hugo.zip"
+          Invoke-WebRequest -Uri $url -OutFile $archiveName
+          Expand-Archive -Path $archiveName -DestinationPath ${{ github.workspace }}/work/bin -Force
+          Remove-Item $archiveName
+
+      - name: Save Hugo Cache
+        if: steps.cache-hugo.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v5
+        with:
+          path: ${{ github.workspace }}/work/bin
+          key: hugo-${{ runner.os }}-${{ env.HUGO_VERSION }}
+
+      - name: Add Hugo to Path
+        run: |
+          "${{ github.workspace }}/work/bin/" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+
+      - name: Check Versions
+        run: |
+          ./build/versions-check-installed.ps1 -Verbose -VersionConfigFile .versions.json
+
+      # SETUP Highlight.js (clone, npm ci - cache - save folder path)
+      - name: Restore Highlight.js clone and dependencies
+        id: cache-highlightjs
+        uses: actions/cache/restore@v5
+        with:
+          path: ${{ env.HIGHLIGHTJS_DIR }}
+          key: highlightjs-${{ runner.os }}-${{ env.HIGHLIGHTJS_VERSION }}
+
+      - name: Clone and Setup Highlight.js
+        if: steps.cache-highlightjs.outputs.cache-hit != 'true'
+        run: |
+          git clone --branch ${{ env.HIGHLIGHTJS_VERSION }} --depth 1 https://github.com/highlightjs/highlight.js.git "${{ env.HIGHLIGHTJS_DIR }}"
+          cd "${{ env.HIGHLIGHTJS_DIR }}"
+          npm ci
+          npm audit fix
+          Write-Host "Highlight.js version folder ready at: ${env:HIGHLIGHTJS_DIR}"
+
+      - name: Cache Highlight.js clone and dependencies
+        if: steps.cache-highlightjs.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v5
+        with:
+          path: ${{ env.HIGHLIGHTJS_DIR }}
+          key: highlightjs-${{ runner.os }}-${{ env.HIGHLIGHTJS_VERSION }}
+
+      - name: Generate Highlight.js grammars
+        working-directory: ./build/hugen
+        run: |
+          & hugo.exe -d ${{ env.HIGHLIGHTJS_EXTRA_DIR }} --cleanDestinationDir --renderSegments grammars
+
+      - name: Build and Test Highlight.js
+        working-directory: ${{ env.HIGHLIGHTJS_DIR }}
+        run: |
+          npm run build_and_test
+
+      - name: Build CDN plugins Highlight.js
+        working-directory: ${{ env.HIGHLIGHTJS_DIR }}
+        run: |
+          node ./tools/build.js -t cdn hugo-embed hugo-html hugo-text
+
+      - name: Copy Build results to dist folder
+        working-directory: ./build/hugen
+        run: |
+          & hugo -d ${{ env.DISTRIBUTION_DIR }} --renderSegments dist
+
+      - name: Build Discourse Theme Components
+        working-directory: ./build/hugen
+        run: |
+          & hugo -d ${{ env.DISTRIBUTION_DIR }} --renderSegments discourse
+
+      - name: Clone highlightjs-hugo-templates
+        working-directory: ${{ env.WORK_DIR }}
+        run:
+          git clone https://github.com/irkode/highlightjs-hugo-templates.git
+
+      - name: Publish build results
+        if: ${{ steps.get_trigger.outputs.has_tag == 'yes' }}
+        working-directory: ${{ env.DISTRIBUTION_DIR }}
+        run: |
+          $sha = ${env:GITHUB_SHA}
+          $shortSha = $sha.Substring(0,7)
+          "COMMIT ID: $shortSha" | Out-Host
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          "==== DIST_DIR ===================" | Out-Host
+          "==== $(Get-Location)" | Out-Host
+          "------------------------------------" | Out-Host
+          git status .
+          "==== RELEASE_DIR ===================" | Out-Host
+          $changed = $false
+          git diff --quiet .
+          $changed = $LASTEXITCODE -ne 0
+          if (-Not $changed) {
+            git diff --cached --quiet .
+            $changed = $LASTEXITCODE -ne 0
+          }
+          if (-Not $changed) {
+            $changed = (git ls-files --others --exclude-standard).Count -ne 0
+          }
+          if ($changed) {
+            $message = "ci(build): Update dist folder based on [$shortSha]"
+            Write-Host $message
+            git add .
+            git commit -m $message
+            git push origin main
+          } else {
+            Write-Host "No distribution file change: Nothing to commit"
+          }
