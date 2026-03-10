@@ -1,0 +1,45 @@
+{{- $tpl := replace (templates.Current.Name) "_partials/" "" }}
+{{- /*
+  copy items from $source to the page without any processing
+  Parameters:
+
+  .source:  the path of the source template relative to the assets/templates folder
+  .base:    if set the lookup folder is changed to assets/$base
+  .dir:     if set to a truthy value copies the complete folder content (recursively)
+            if not set or falsy copies the given file only
+  .page:    The Page object for which this is rendered.
+
+*/ -}}
+{{- if not $.page }}
+  {{- errorf "FAIL %-25s: missing 'page' parameter" $tpl }}
+{{- end }}
+{{- if not $.source }}
+  {{- errorf "FAIL %-25s: missing 'source' parameter" $tpl }}
+{{- end }}
+{{- $page := .page }}
+{{- $pagePath := $page.Path }}
+{{- $base := or .base "templates" }}
+{{- $basePattern := add `^\/` $base }}
+{{- $source := add $base "/" .source }}
+{{- $resources := slice }}
+{{- if .dir }}
+  {{- $resources = resources.Match (add $source "/**") }}
+{{- else }}
+  {{- with resources.Get $source }}
+    {{- $resources = slice . }}
+  {{- else }}
+    {{- warnf "WARN %-25s[ %-20s ]: no resource found at %s " $tpl $pagePath $source }}
+  {{- end }}
+{{- end -}}
+{{- range $r := $resources }}
+  {{- /* calculate relative target path from current page */ -}}
+  {{- $target := $r.Name | replaceRE $basePattern $page.Path }}
+  {{- $target = $target | replaceRE `^/grammars` "" }}
+  {{- with $r | resources.Copy $target }}
+    {{- $noop := .RelPermalink }}
+    {{- warnf "OK   %-25s[ %-20s ]: copy resource 'assets%s' to '%s'" $tpl $pagePath $r.Name $target -}}
+  {{- else }}
+    {{- errorf "FAIL %-25s[ %-20s ]: copy resource 'assets/%s' to '%s'" $tpl $pagePath $r.Name $target }}
+  {{- end }}
+{{- end }}
+{{- /* remove all trailing whitespace */ -}}
