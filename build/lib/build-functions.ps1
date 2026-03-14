@@ -35,7 +35,7 @@ function buildDiscoursePlugin {
   # Write-Warning "DISABLED: buildDiscoursePlugin"; return
   try {
     Set-Location $startCWD
-    $DistributionDir = Test-Folder -Create $ProjectRoot "release-branch"
+    $DistributionDir = Test-Folder -Create $ProjectRoot "release"
     Set-Location $HugoGenDir
     exec hugo -d $DistributionDir --renderSegments discourse
     [void](Test-File $DistributionDir "discourse/hugo-html/discourse/about.json")
@@ -143,7 +143,7 @@ function distributeHighLightJSBuildResults {
   param()
   try {
     Set-Location $startCWD
-    $DistributionDir = Test-Folder -Create $ProjectRoot "release-branch"
+    $DistributionDir = Test-Folder -Create $ProjectRoot "release"
     Set-Location $HugoGenDir
     exec hugo -d $DistributionDir --renderSegments distribute
   } catch {
