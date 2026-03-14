@@ -6,7 +6,7 @@
   {{- range resources.Match "discourse/**" }}
     {{- warnf "Execute: %s - %s" $lang . }}
     {{- with resources.ExecuteAsTemplate (printf "discourse/%s/%s" $lang .Name) (dict "lang" $lang) . }}
-      {{- .Publish }}
+      {{- $noop := .Publish }}
     {{- end }}
 {{- end }}
 {{- end }}
