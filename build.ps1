@@ -27,7 +27,8 @@ param(
     'GenerateHugoGrammars',
     'DistributeHighLightJSBuildResults',
     'ShowStatus'
-  )][string[]]$Steps
+  )][string[]]$Steps,
+  [string[]]$OnlyLanguages = @('hugo-embed', 'hugo-html', 'hugo-text')
 )
 
 $startCWD = Get-Location

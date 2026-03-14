@@ -8,14 +8,14 @@ function buildHighlightJS {
       Set-Location $HighlightJsDir
       $EnvOnlyExtra = $ENV:ONLY_EXTRA
       if ($OnlyExtra -eq 'true') { $ENV:ONLY_EXTRA = 'true' } else { $ENV:ONLY_EXTRA = $Null }
-      exec npm run build
+      exec node ./tools/build.js -t node @OnlyLanguages
       if ($Skip -contains 'TestHighlightJS') {
         Write-Verbose "Skip Highlight.js tests"
       } else {
         try { exec npm run test-markup }
         catch { if (-not $IgnoreMarkupErrors) { throw $_ } }
       }
-      exec node tools/build.js hugo-embed hugo-html hugo-text -t cdn
+      exec node tools/build.js -t cdn @OnlyLanguages
     }
     [void](Test-File $HighlightJsExtraDir "hugo-embed\dist\hugo-embed.min.js")
     [void](Test-File $HighlightJsExtraDir "hugo-html\dist\hugo-html.min.js")
@@ -24,8 +24,8 @@ function buildHighlightJS {
     Write-Error "build Highlight.JS modules failed" -ErrorAction Continue
     throw $_
   } finally {
-    Set-Location $startCWD
     $ENV:ONLY_EXTRA = $EnvOnlyExtra
+    Set-Location $startCWD
   }
 }
 
