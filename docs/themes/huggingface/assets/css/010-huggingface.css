@@ -67,7 +67,7 @@ body > .full-bleed {
   grid-template-columns: auto 1fr auto;
   align-items: center;
   gap: 1rem;
-  padding: 1rem 1.5rem;
+  padding: 0 1.5rem;
 }
 
 .site-header {
@@ -75,6 +75,7 @@ body > .full-bleed {
   position: sticky;
   top: 0;
   z-index: 10;
+  line-height: 0;
 }
 
 .site-footer {
@@ -83,10 +84,11 @@ body > .full-bleed {
   font-size: 0.875rem;
   position: sticky;
   bottom: 0;
+  line-height: 1.5;
 }
 
 .site-main {
-  padding: 3rem 0;
+  padding: 0.5rem;
   /* align-self: start prevents <main> from stretching its
      content to fill the 1fr row — the row still expands,
      but the content starts at the top of it */
