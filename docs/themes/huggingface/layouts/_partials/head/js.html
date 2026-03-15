@@ -1,0 +1,5 @@
+{{- warnf "call %s" templates.Current.Name }}
+{{- with resources.Get "js/theme-toggle.js" }}
+  {{- warnf "adding javascript: %s" . }}
+  <script src="{{ .RelPermalink }}"></script>
+{{- end }}

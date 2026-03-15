@@ -1,4 +1,6 @@
 /build/hugen/public
 /build/hugen/.hugo_build.lock
-/work
+/docs/public
 /release
+/work
+**/.hugo_build.lock

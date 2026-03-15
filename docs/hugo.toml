@@ -1,0 +1,5 @@
+baseURL      = "https://irkode.github.com/highlightjs-hugo/"
+languageCode = 'en-US'
+title        = "Highlight 4 Hugo - Advanced syntax highlighting for Hugo templates"
+disableKinds = ['rss', 'sitemap', 'taxonomy', 'term']
+theme        = "huggingface"

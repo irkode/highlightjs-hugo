@@ -1,0 +1,5 @@
+{{- warnf "call %s" templates.Current.Name }}
+{{- range resources.Match "css/0*.css" }}
+  <link rel="stylesheet" href="{{ .RelPermalink }}" />
+  {{- warnf "adding style: %s" . }}
+{{- end }}
