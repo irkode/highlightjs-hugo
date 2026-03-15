@@ -1,14 +1,8 @@
 /* default dark mode */
-html #github-mark {
-  content: url("http://localhost:1313/highlightjs-hugo/img/github-mark-white.png");
-}
 #theme-toggle {
   content: url("http://localhost:1313/highlightjs-hugo/img/dark-mode.svg");
 }
 html[data-theme="light"] {
-  #github-mark {
-    content: url("http://localhost:1313/highlightjs-hugo/img/github-mark.png");
-  }
   #theme-toggle {
     content: url("http://localhost:1313/highlightjs-hugo/img/light-mode.svg");
   }
@@ -21,9 +15,6 @@ html:not([data-theme]) #theme-toggle {
 @media (prefers-color-scheme: light) {
   html:not([data-theme]),
   html[data-theme="light"] {
-    #github-mark {
-      content: url("http://localhost:1313/highlightjs-hugo/img/github-mark.png");
-    }
   }
   html:not([data-theme]) {
     #theme-toggle {
@@ -43,9 +34,6 @@ html:not([data-theme]) #theme-toggle {
 }
 
 html[data-theme="light"] {
-  #github-mark {
-    content: url("http://localhost:1313/highlightjs-hugo/img/github-mark.png");
-  }
   #theme-toggle {
     content: url("http://localhost:1313/highlightjs-hugo/img/light-mode.svg");
   }
