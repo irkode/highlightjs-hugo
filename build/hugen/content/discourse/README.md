@@ -1,16 +1,10 @@
 # Highlight.js Hugo - Discourse highlighting plugins for Hugo templates
 
-Every time a read a [Discourse topic](https://discourse.gohugo.io/) I wondered about the random
-look of highlighted template code. The answer is dead simple: Discourse uses [Highlight.js][] which
-has no support for Go and Hugo templates.
+This are the [Discourse][] plugins for our Hugo syntax highlighting modules
 
-To get highlighting, we first needed [Highlight.js][] grammars for Hugo templates.
+We wrap the highlighting components in a _Discourse theme component_ - the easiest point to start.
 
-Discourse provides some "extension points" where you can add your own functionality. The easiest I came up was a _Theme component_ where you can add some piece of javascript to a _Theme_.
-
-And here we are: Two Discourse theme components based on our [Highlight.js][] grammars, adding support for _text_ and _html_ sources.
-
-This is a brief overview of the Discourse plugins. Please check out the grammars documentation for details about `hugo-text` and `hugo-html`
+This is a brief overview of the Discourse plugins. For details on the grammars, check the documentation for these.
 
 ![preview](plugins.png)
 
@@ -20,7 +14,7 @@ The plugins are provided AS-IS and only tested with the below dev installation o
 
 If these don't work for you, we're most likely not able to support.
 
-- totally bare with anything around Discourse (just an end user). The complete Discourse knowledge is shown within the plugin.
+- totally bare with anything around Discourse (just an end user). Our full _Discourse_ knowledge is shown within the plugin.
 
 ## Discourse Requirements
 
@@ -28,15 +22,14 @@ Actually No idea - Here's how we installed a development version:
 
 * Windows 11 Professional
 * WSL2 - Ubuntu 22.04
-* Installed using This guide: [Install a DEV Environment on Windows 11](https://meta.discourse.org/t/guide-to-setting-up-discourse-development-environment-windows-11/282227)
-
+* Installed using this guide: [Install a DEV Environment on Windows 11](https://meta.discourse.org/t/guide-to-setting-up-discourse-development-environment-windows-11/282227)
   resulting in a runnable developer installation version 3.6.0.beta3-latest (end Oct 2025)
 
 * Add Theme Component [add language using theme component](https://meta.discourse.org/t/install-a-new-language-for-highlight-js-via-a-theme-component/292480)
   to add the plugin
 
 * [API mentioned here](https://meta.discourse.org/t/install-a-new-language-for-highlight-js-via-a-theme-component/292480).
-  That's a post from Jan 2019, so I expect most Instances will support it.
+  That's a post from Jan 2019, so we expect most Instances will support it.
 
 ### Use as Theme component
 
@@ -45,10 +38,10 @@ We provide ready to use _Discourse Plugins_ to be used as -Theme Components_
 Installation:
 * you must have Highlight.js configured in your Instance
 * create a new _Theme Component_
-* either upload the zip from the our [releases page]({{ .site.Params.releases}})
+* either upload the zip from the our [Releases][] page.
   or
-* copy paste the content of our the `theme-initializer.gjs` to the JS section of your _Theme component_.
-* if you want to style the special classes provided. Add your classes to the CSS section.
+* copy paste the content of the `theme-initializer.gjs` to the JS section of your _Theme component_.
+* To style the custom scopes add your stylesheet to the CSS section.
 
 ## License
 
@@ -68,4 +61,5 @@ This package is released under the MIT License. See [LICENSE](LICENSE) file for 
 
 [Highlight.js]: https://highlightjs.org/
 [Hugo]: https://gohugo.io/
+[Releases]: https://github.com/irkode/highlightjs-hugo/releases/latest
 [highlightjs-hugo]: {{ site.Params.repository }}
