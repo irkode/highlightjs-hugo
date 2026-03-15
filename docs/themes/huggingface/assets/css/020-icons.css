@@ -1,14 +1,22 @@
-/* default dark mode */
+/* default dark mode (preferred-data-scheme=dark) */
 #theme-toggle {
   content: url("http://localhost:1313/highlightjs-hugo/img/dark-mode.svg");
+}
+#github-mark {
+  content: url("http://localhost:1313/highlightjs-hugo/img/github-mark-white.svg");
 }
 html[data-theme="light"] {
   #theme-toggle {
     content: url("http://localhost:1313/highlightjs-hugo/img/light-mode.svg");
   }
+  #github-mark {
+    content: url("http://localhost:1313/highlightjs-hugo/img/github-mark.svg");
+  }
 }
-html:not([data-theme]) #theme-toggle {
-  content: url("http://localhost:1313/highlightjs-hugo/img/auto-mode.svg");
+html:not([data-theme]) {
+  #theme-toggle {
+    content: url("http://localhost:1313/highlightjs-hugo/img/auto-mode.svg");
+  }
 }
 
 /* light mode icons */
@@ -20,21 +28,24 @@ html:not([data-theme]) #theme-toggle {
     #theme-toggle {
       content: url("http://localhost:1313/highlightjs-hugo/img/auto-mode.svg");
     }
+    #github-mark {
+      content: url("http://localhost:1313/highlightjs-hugo/img/github-mark.svg");
+    }
   }
   html[data-theme="light"] {
     #theme-toggle {
       content: url("http://localhost:1313/highlightjs-hugo/img/light-mode.svg");
+    }
+    #github-mark {
+      content: url("http://localhost:1313/highlightjs-hugo/img/github-mark.svg");
     }
   }
   html[data-theme="dark"] {
     #theme-toggle {
       content: url("http://localhost:1313/highlightjs-hugo/img/dark-mode.svg");
     }
-  }
-}
-
-html[data-theme="light"] {
-  #theme-toggle {
-    content: url("http://localhost:1313/highlightjs-hugo/img/light-mode.svg");
+    #github-mark {
+      content: url("http://localhost:1313/highlightjs-hugo/img/github-mark-white.svg");
+    }
   }
 }
