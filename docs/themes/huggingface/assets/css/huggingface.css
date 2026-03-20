@@ -1,0 +1,4 @@
+/* @import url("https://cdn.jsdelivr.net/npm/the-new-css-reset/css/reset.min.css"); */
+@import "huggingface/000-color-scheme.css";
+@import "huggingface/010-core.css";
+@import "huggingface/020-icons.css";

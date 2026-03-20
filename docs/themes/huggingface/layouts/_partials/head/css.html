@@ -1,5 +1,14 @@
-{{- warnf "call %s" templates.Current.Name }}
-{{- range resources.Match "css/0*.css" }}
-  <link rel="stylesheet" href="{{ .RelPermalink }}" />
-  {{- warnf "adding style: %s" . }}
+{{- with resources.Get "css/huggingface.css" | css.Build }}
+  <link rel="stylesheet" href="{{ .RelPermalink }}">
 {{- end }}
+{{- /*
+  {{- with resources.Get "css/huggingface.css" | css.Build }}
+  {{- if hugo.IsDevelopment }}
+    <link rel="stylesheet" href="{{ .RelPermalink }}">
+  {{- else }}
+    {{- with . | fingerprint }}
+      <link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous">
+    {{- end }}
+  {{- end }}
+{{- end }}
+*/ -}}

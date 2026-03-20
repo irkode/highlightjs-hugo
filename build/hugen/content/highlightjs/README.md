@@ -1,4 +1,4 @@
-# Highlightjs Hugo Templates - Hugo Syntaxhighlighting for Highlight.js and Discourse
+# Highlight 4 Hugo - Advanced syntax highlighting for Hugo templates
 
 Highlight Hugo templates using Highlight.js also available as a Discourse Theme Component
 
@@ -6,13 +6,15 @@ Highlight Hugo templates using Highlight.js also available as a Discourse Theme 
 
 This is the release repository of [highlightjs-hugo][].
 
-For details check out each grammars README or consult our [documentation site](https://irkode.github.com/highlightjs-hugo/)
+For details check out each grammars README or consult our
+[documentation site](https://irkode.github.com/highlightjs-hugo/)
 
 ## Provided Grammars
 
 - [hugo-html](hugo-html/)
 
-  Highlight template code using our plugin and style surrounding HTML using [Highlight.js][] standard _xml_
+  Highlight template code using our plugin and style surrounding HTML using [Highlight.js][]
+  standard _xml_
 
 - [hugo-text](hugo-text/)
 
@@ -37,11 +39,13 @@ For details check out each grammars README or consult our [documentation site](h
 
 ## Download
 
-The grammars have not been published to any CDN right now. You will have to clone or download the stuff you need.
+The grammars have not been published to any CDN right now. You will have to clone or download the
+stuff you need.
 
 - latest version of the grammars in the respective dist folders.
-- a released package from our [releases page](https://github.com/irkode/highlightjs-hugo/releases/latest).
-  Just grab the Highlight.js grammar or Discourse plugin you need
+- a released package from our
+  [releases page](https://github.com/irkode/highlightjs-hugo/releases/latest). Just grab the
+  Highlight.js grammar or Discourse plugin you need
 
 ## Usage and Build
 
@@ -52,7 +56,8 @@ Please refer to the respective modules README.md.
 Never say never, but currently it's our working playground so it's nothing where one could do stable
 contributions right now.
 
-If you find a bug, have a question or an idea, please use the _source repositories_ [Issue tracker][].
+If you find a bug, have a question or an idea, please use the _source repositories_ [Issue
+tracker][].
 
 ## License
 
@@ -66,7 +71,8 @@ This package is released under the MIT License. See [LICENSE](LICENSE) file for 
 
 - [highlightjs-hugo][] : The source and documentation repository
 
-- [Highlight.js][] : The Internet's favorite JavaScript syntax highlighter supporting Node.js and the web
+- [Highlight.js][] : The Internet's favorite JavaScript syntax highlighter supporting Node.js and
+  the web
 - [Hugo][] : The world’s fastest framework for building websites
 - [Go HTML template](https://pkg.go.dev/html/template) : Go's html template package
 - [Go TEXT template](https://pkg.go.dev/text/template) : Go's text template package

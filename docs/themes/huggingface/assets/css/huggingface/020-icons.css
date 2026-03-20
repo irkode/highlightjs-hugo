@@ -1,0 +1,55 @@
+/* default dark mode (preferred-data-scheme=dark) */
+#theme-toggle {
+  content: url("/img/dark-mode.svg");
+  width: 48px;
+  height: 48px;
+}
+#github-mark {
+  content: url("/img/github-mark-white.svg");
+  width: 46px;
+  height: 46px;
+}
+html[data-theme="light"] {
+  #theme-toggle {
+    content: url("/img/light-mode.svg");
+  }
+  #github-mark {
+    content: url("/img/github-mark.svg");
+  }
+}
+html:not([data-theme]) {
+  #theme-toggle {
+    content: url("/img/auto-mode.svg");
+  }
+}
+
+/* light mode icons */
+@media (prefers-color-scheme: light) {
+  html:not([data-theme]),
+  html[data-theme="light"] {
+  }
+  html:not([data-theme]) {
+    #theme-toggle {
+      content: url("/img/auto-mode.svg");
+    }
+    #github-mark {
+      content: url("/img/github-mark.svg");
+    }
+  }
+  html[data-theme="light"] {
+    #theme-toggle {
+      content: url("/img/light-mode.svg");
+    }
+    #github-mark {
+      content: url("/img/github-mark.svg");
+    }
+  }
+  html[data-theme="dark"] {
+    #theme-toggle {
+      content: url("/img/dark-mode.svg");
+    }
+    #github-mark {
+      content: url("/img/github-mark-white.svg");
+    }
+  }
+}
