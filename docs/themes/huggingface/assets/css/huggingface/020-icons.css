@@ -6,8 +6,8 @@
 }
 #github-mark {
   content: url("/img/github-mark-white.svg");
-  width: 46px;
-  height: 46px;
+  width: 42px;
+  height: 42px;
 }
 html[data-theme="light"] {
   #theme-toggle {

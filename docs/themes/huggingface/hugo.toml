@@ -1,20 +1,24 @@
+[params]
+  [params.huggingface]
+    browserLocalStorageKey = "huggingface-data-theme"
+
 [menus]
   [[menus.main]]
-    name = 'Home'
+    name    = 'Home'
     pageRef = '/'
-    weight = 10
+    weight  = 10
 
   [[menus.main]]
-    name = 'Posts'
+    name    = 'Posts'
     pageRef = '/posts'
-    weight = 20
+    weight  = 20
 
   [[menus.main]]
-    name = 'Tags'
+    name    = 'Tags'
     pageRef = '/tags'
-    weight = 30
+    weight  = 30
 
 [module]
   [module.hugoVersion]
     extended = false
-    min = '0.146.0'
+    min      = '0.146.0'
