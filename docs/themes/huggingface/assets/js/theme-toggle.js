@@ -1,10 +1,13 @@
 const themeToggle = {
   // Config
-  localStorageKey: "huggingface-data-theme",
+  storageKey: "huggingface-data-theme",
+  firstClick: true,
 
   // Init
-  init() {
-    document.getElementById("theme-toggle")?.addEventListener("click", (event) => {
+  init(key) {
+    if (key) { this.storageKey = key }
+    this.firstClick = true
+    document.getElementById("theme-toggle-icon")?.addEventListener("click", (event) => {
       event.preventDefault();
       this.toggleTheme();
     }, false);
@@ -12,15 +15,15 @@ const themeToggle = {
 
   toggleTheme() {
     const preferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? "dark" : "light";
-    const saved = window.localStorage?.getItem(this.localStorageKey) || null
-    const current = document.documentElement.dataset?.theme || null
-    if ((saved || current) && (!current || current === preferred)) {
-      window.localStorage?.removeItem(this.localStorageKey);
-      document.documentElement.removeAttribute("data-theme");
-    } else {
-      var next = saved || current ? preferred : (preferred === "dark" ? "light" : "dark");
-      window.localStorage?.setItem(this.localStorageKey, next);
-      document.documentElement.dataset.theme = next;
-    }
+    const current = document.documentElement.dataset?.theme || 'auto'
+    var next = 'auto';
+    if (current === 'auto') { next = preferred === 'dark' ? 'light' : 'dark' }
+    else if (this.firstClick) {
+      next = current === 'dark' ? 'light' : 'dark';
+      this.firstClick = false
+    } else if (preferred === current) { next = 'auto' }
+    else { next = preferred }
+    window.localStorage?.setItem(this.storageKey, next);
+    document.documentElement.dataset.theme = next;
   }
 };

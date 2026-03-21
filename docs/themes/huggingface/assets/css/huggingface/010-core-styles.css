@@ -31,12 +31,17 @@ h6 {
   overflow-wrap: break-word;
   margin-bottom: calc(0.25em + 0.25rem);
 }
+h1 {
+  color: var(--heading);
+}
+
 h2,
 h3,
 h4,
 h5,
 h6 {
   margin-top: calc(0.5em + 0.5rem);
+  color: var(--heading);
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -104,7 +109,7 @@ body > * {
   top: 0;
   z-index: 10;
   line-height: 0;
-  padding: 5px;
+  padding: 4px;
 }
 .header-right {
   display: flex;
@@ -127,4 +132,8 @@ body > * {
      content to fill the 1fr row — the row still expands,
      but the content starts at the top of it */
   align-self: start;
+}
+
+#theme-toggle-checkbox {
+  /* display: none; */
 }

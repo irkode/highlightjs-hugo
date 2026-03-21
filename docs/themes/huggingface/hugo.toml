@@ -1,7 +1,7 @@
 [params]
   [params.huggingface]
-    browserLocalStorageKey = "huggingface-data-theme"
-
+    jsThemeToggle = false
+    storageKey    = "huggingface-data-theme"
 [menus]
   [[menus.main]]
     name    = 'Home'

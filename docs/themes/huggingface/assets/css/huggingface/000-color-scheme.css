@@ -1,58 +1,61 @@
-/*
- * dark mode is primary
- *
- * we support prefer-color-scheme and custom dark/light setting
- */
 :root {
+  /* themes preferred color scheme is dark */
   color-scheme: dark light;
-  --sans-font:
-    -apple-system, BlinkMacSystemFont, "Avenir Next", Avenir, "Nimbus Sans L", Roboto, "Noto Sans",
-    "Segoe UI", Arial, Helvetica, "Helvetica Neue", sans-serif;
-  --mono-font: Consolas, Menlo, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
-  --standard-border-radius: 5px;
-  --border-width: 1px;
-  --marked: #fd3;
-  --heading: rgb(0, 209, 178);
-  /* --heading: #008080; Bulma primary */
+  /* dark colors */
+  --dark-accent: #ffb300;
+  --dark-accent-bg: #2b2b2b;
+  --dark-accent-hover: #ffe099;
+  --dark-accent-text: #212121;
+  --dark-bg: #212121;
+  --dark-code: #f06292;
+  --dark-disabled: #111;
+  --dark-heading: rgb(0, 209, 178);
+  --dark-marked: #fd3;
+  --dark-preformatted: #ccc;
+  --dark-text: #dcdcdc;
+  --dark-text-bright: #ababab;
 
-  /* these are subject change for light scheme */
-  --bg: #212121;
-  --accent-bg: #2b2b2b;
-  --text: #dcdcdc;
-  --text-light: #ababab;
-  --accent: #ffb300;
-  --accent-hover: #ffe099;
-  --accent-text: var(--bg);
-  --code: #f06292;
-  --preformatted: #ccc;
-  --disabled: #111;
+  /* light colors */
+  --light-accent: #014d4e;
+  --light-accent-bg: #f5f7ff;
+  --light-accent-hover: #007373;
+  --light-accent-text: #fff;
+  --light-bg: #fff;
+  --light-code: #d81b60;
+  --light-disabled: #efefef;
+  --light-heading: #043f3f;
+  --light-preformatted: #ccc;
+  --light-marked: #fd3;
+  --light-text: #212121;
+  --light-text-bright: #585858;
+
+  /* set colors based on preferred color scheme */
+  --accent: light-dark(var(--light-accent), var(--dark-accent));
+  --accent-bg: light-dark(var(--light-accent-bg), var(--dark-accent-bg));
+  --accent-hover: light-dark(var(--light-accent-hover), var(--dark-accent-hover));
+  --accent-text: light-dark(var(--light-accent-text), var(--dark-accent-text));
+  --bg: light-dark(var(--light-bg), var(--dark-bg));
+  --code: light-dark(var(--light-code), var(--dark-code));
+  --disabled: light-dark(var(--light-disabled), var(--dark-disabled));
+  --heading: light-dark(var(--light-heading), var(--dark-heading));
+  --marked: light-dark(var(--light-marked), var(--dark-marked));
+  --preformatted: light-dark(var(--light-preformatted), var(--dark-preformatted));
+  --text: light-dark(var(--light-text), var(--dark-text));
+  --text-bright: light-dark(var(--light-text-bright), var(--dark-text-bright));
+
+  /* These depend on the colors */
+  --dark-github-mark: url("img/github-mark-white.svg");
+  --light-github-mark: url("img/github-mark.svg");
+  --auto-mode-icon: url("img/auto-mode.svg");
+  --dark-mode-icon: url("img/dark-mode.svg");
+  --light-mode-icon: url("img/light-mode.svg");
+
+  --github-mark: var(--dark-github-mark);
+  --theme-toggle-icon: var(--dark-mode-icon);
 }
-
 @media (prefers-color-scheme: light) {
-  html:not([data-theme="dark"]),
-  html[data-theme="light"] {
-    --bg: #fff;
-    --accent-bg: #f5f7ff;
-    --text: #212121;
-    --text-light: #585858;
-    --accent: #014d4e;
-    --accent-hover: #007373;
-    --accent-text: var(--bg);
-    --code: #d81b60;
-    --preformatted: #ccc;
-    --disabled: #efefef;
+  :root {
+    --github-mark: var(--light-github-mark);
+    --theme-toggle-icon: var(--light-mode-icon);
   }
-}
-
-html[data-theme="light"] {
-  --bg: #fff;
-  --accent-bg: #f5f7ff;
-  --text: #212121;
-  --text-light: #585858;
-  --accent: #014d4e;
-  --accent-hover: #007373;
-  --accent-text: var(--bg);
-  --code: #d81b60;
-  --preformatted: #ccc;
-  --disabled: #efefef;
 }

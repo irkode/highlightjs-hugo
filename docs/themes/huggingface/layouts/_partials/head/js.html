@@ -1,5 +1,7 @@
 {{- warnf "call %s" templates.Current.Name }}
-{{- with resources.Get "js/theme-toggle.js" }}
-  {{- warnf "adding javascript: %s" . }}
-  <script src="{{ .RelPermalink }}"></script>
+{{- if .Page.Param "huggingFace.jsThemeToggle" }}
+  <script>
+  document.documentElement.dataset.theme =
+    window.localStorage?.getItem({{ site.Params.huggingface.storageKey }}) || "auto";
+  </script>
 {{- end }}

@@ -2,21 +2,17 @@
 <html lang="{{ site.Language.LanguageCode }}" dir="{{ or site.Language.LanguageDirection `ltr` }}">
   <head>
     {{- partial "head.html" . }}
-    <script>
-      // initialize data-theme from store if set, otherwise using preferred
-      const saved = window.localStorage?.getItem({{ site.Params.huggingface.browserLocalStorageKey }}) || null;
-      if (saved) {
-        document.documentElement.dataset.theme = saved;
-      }
-    </script>
   </head>
   <body>
+    <input type="checkbox" id="theme-toggle-cb" style="display: none !important" />
     <header class="site-header">
       <div class="header-left">Logo</div>
       <nav class="header-center">Navigation</nav>
       <div class="header-right">
-        <img id="github-mark" width="48px" height="48px" />
-        <img id="theme-toggle" width="48px" height="48px" />
+        <img id="github-mark" width="40px" height="40px" />
+        <label for="theme-toggle-cb" id="theme-toggle">
+          <img id="theme-toggle-icon" width="48px" height="48px" />
+        </label>
       </div>
     </header>
 
@@ -27,12 +23,10 @@
     <footer class="site-footer">
       <div class="footer-left"><p>left</p></div>
       <div class="footer-center">
-        {{- partial "footer.html" . }}
+        {{- partialCached "footer/center.html" . }}
       </div>
       <div class="footer-right"><p>right</p></div>
     </footer>
-    <script>
-      themeToggle.init();
-    </script>
+    {{- partialCached "footer/js.html" . }}
   </body>
 </html>
