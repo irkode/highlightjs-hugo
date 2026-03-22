@@ -107,7 +107,8 @@ discourse plugins.
 Take it as a nifty showcase to use Hugo as a generic templating and publishing engine -- beyond web
 sites.
 
-If you want to dig in, you'll find the site source at [build\hugen](build\hugen)
+If you want to dig in, you can find that here
+[](https://github.com/irkode/highlightjs-hugo/tree/main/build/hugen)
 
 ## License
 
@@ -128,7 +129,7 @@ This package is released under the MIT License. See [LICENSE](LICENSE) file for 
 - [Go TEXT template](https://pkg.go.dev/text/template) : Go's text template package
 
 [highlightjs-hugo]: https://github.com/irkode/highlightjs-hugo/
-[Documentation]: https://irkode.github.com/highlightjs-hugo/
+[Documentation]: https://irkode.github.io/highlightjs-hugo/
 [Issue tracker]: https://github.com/irkode/highlightjs-hugo/issues
 [Highlight.js]: https://highlightjs.org/
 [Hugo]: https://gohugo.io/

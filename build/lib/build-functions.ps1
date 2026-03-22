@@ -32,7 +32,6 @@ function buildHighlightJS {
 function buildDiscoursePlugin {
   [CmdLetBinding()]
   param()
-  # Write-Warning "DISABLED: buildDiscoursePlugin"; return
   try {
     Set-Location $startCWD
     $DistributionDir = Test-Folder -Create $ProjectRoot "release"
@@ -43,6 +42,19 @@ function buildDiscoursePlugin {
   } catch {
     Write-Error "Generation of Discourse Plugin failed" -ErrorAction Continue
     throw $_
+  } finally {
+    Set-Location $startCWD
+  }
+}
+function buildDocs {
+  [CmdLetBinding()]
+  param()
+  try {
+    Set-Location $DocsDir
+    exec hugo build
+  } catch {
+    Write-Error "$_`Building Documentation from $DocsDir failed" -ErrorAction Continue
+    throw "$_"
   } finally {
     Set-Location $startCWD
   }

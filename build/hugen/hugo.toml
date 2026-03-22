@@ -1,6 +1,6 @@
-language = "en-us"
-baseurl = "https://irkode.github.io/highlightjs-hugo"
-title   = "Generate Highlight.js Javascript grammars for Go/Hugo templates"
+language     = "en-us"
+baseurl      = "https://irkode.github.io/highlightjs-hugo"
+title        = "Generate Highlight.js Javascript grammars for Go/Hugo templates"
 disableKinds = ['rss', 'sitemap', 'taxonomy', 'term']
 
 # for github README's
@@ -19,10 +19,10 @@ disablePathToLower = true
 
 [permalinks]
   [permalinks.page]
-    grammars = '/:sections[1]/:contentbasename'
+    grammars  = '/:sections[1]/:contentbasename'
     discourse = '/:sections/:contentbasename'
   [permalinks.section]
-    grammars = '/:sections[1]'
+    grammars  = '/:sections[1]'
     discourse = '/:section'
 
 # used to generate Github README.md files
@@ -31,7 +31,7 @@ disablePathToLower = true
   isPlainText    = true
   permalinkable  = true
   notAlternative = true
-  ugly = true
+  ugly           = true
 
 # we generate yaml files containing keywords
 [outputFormats.yaml]
@@ -89,7 +89,7 @@ disablePathToLower = true
   [[module.mounts]]
     source = "src/common"
     target = "content/discourse"
-[[module.mounts]]
+  [[module.mounts]]
     source = "src/common"
     target = "content/discourse"
 
@@ -97,50 +97,31 @@ disablePathToLower = true
   [[module.mounts]]
     source = '../../work/highlight.js/extra/'
     target = 'assets/highlightjs/'
-    files = ['hugo-{html,text,lib}/**']
+    files  = ['hugo-{html,text,lib}/**']
   # import function part of the documentation
   [[module.imports]]
-    ignoreConfig = true
+    ignoreConfig  = true
     ignoreImports = true
-    path = 'github.com/gohugoio/hugoDocs'
-    version = 'master'
-   [[module.imports.mounts]]
+    path          = 'github.com/gohugoio/hugoDocs'
+    version       = 'master'
+    [[module.imports.mounts]]
       source = "content/en/functions"
       target = "content/functions-latest"
-      # [module.imports.mounts.sites.matrix]
-      #   versions = 'master'
-   [[module.imports.mounts]]
+    [[module.imports.mounts]]
       source = "layouts/_shortcodes"
       target = "layouts/latest/_shortcodes"
-      # [module.imports.mounts.sites.matrix]
-      #   versions = 'master'
   [[module.imports]]
-    ignoreConfig = true
+    ignoreConfig  = true
     ignoreImports = true
-    path = 'github.com/gohugoio/hugoDocs'
-    version = '291ffc3f6bbfc43d218748c729a1c4b3f996ed6a'
-   [[module.imports.mounts]]
+    path          = 'github.com/gohugoio/hugoDocs'
+    version       = '291ffc3f6bbfc43d218748c729a1c4b3f996ed6a'
+    [[module.imports.mounts]]
       source = "content/en/functions"
       target = "content/functions"
-   [[module.imports.mounts]]
+    [[module.imports.mounts]]
       source = "layouts/_shortcodes"
       target = "layouts/_shortcodes"
 
-  # don't fail on missing shortcodes
-  # [[module.mounts]]
-  #   source = 'layouts'
-  #   target = 'layouts'
-  # [[module.mounts]]
-  #   source = "../../hugoDocs/layouts/_shortcodes"
-  #   target = "layouts/_shortcodes"
-
-### all below is just for being able to scan hugoDocs for keywords without warnings
-###
-# don't render/publish stuff in /functions imported from hugoDocs
-# [[cascade]]
-#   [cascade.build]
-#     list             = 'always'
-#     publishResources = false
-#     render           = 'never'
-#   [cascade.target]
-#     path = '{/functions,/functions/**}'
+  [module.hugoVersion]
+    extended = true
+    min      = '0.159.0'

@@ -1,12 +1,15 @@
 +++
 +++
+
 {{- $lang := .hljs.language -}}
+
 # {{ title $lang }} - Syntax highlighting for Hugo templates
 
 [![license](https://badgen.net/badge/license/MIT/blue)](LICENSE)
 
 > This is the README for the **{{ title $lang }}** variant of the suite.\
-> there are some other variants. Check out our [repository README]({{ site.Params.repository }}) for details.
+> there are some other variants. Check out our [repository README]({{ site.Params.repository }}) for
+> details.
 
 A language grammar to highlight [Hugo][]'s templating language with [Highlight.js][].
 
@@ -16,14 +19,17 @@ A language grammar to highlight [Hugo][]'s templating language with [Highlight.j
 
 ## Requirements
 
-The module has been implemented using [Highlight.js][] version 11.11.1. It will most likely not work with an older version.
+The module has been implemented using [Highlight.js][] version 11.11.1. It will most likely not work
+with an older version.
 
 ## Download
 
-The module has not been published to any CDN right now., you will have to clone or download the stuff you need.
+The module has not been published to any CDN right now., you will have to clone or download the
+stuff you need.
 
 - tagged versions are pushed to the dist folder of our repo [dist folder][]
-- release packages can be downloaded from our [releases page]({{ .site.Params.releases}}) per module.
+- release packages can be downloaded from our [releases page]({{ .site.Params.releases}}) per
+  module.
 
 ## Usage
 
@@ -35,36 +41,38 @@ Load the module after loading `highlight.js`.
 
 ```html
 <script type="text/javascript" src="/path/to/highlight.min.js"></script>
-<!->
 <script type="text/javascript" src="/path/to/{{$lang}}.min.js"></script>
 <script type="text/javascript">
   hljs.highlightAll();
 </script>
 ```
 
-<!-- TODO: publish to a CDN
+<!-- TODO: publish to a CDN -->
 
 ### Using a CDN
 
-The module has not been published to any CDN right now. Download the latest working build from the [dist folder][] or a release package from our [released page]({{ .site.Params.releases}}).
+The module has not been published to any CDN right now. Download the latest working build from the
+[dist folder][] or a release package from our [released page]({{ .site.Params.releases}}).
 
+<!--
 ### Using directly from the UNPKG CDN
 
 ```html
 <script
-   type="text/javascript"
-   src="https://unpkg.com/highlightjs-{{$lang}}@0.1.0/dist/{{$lang}}.min.js"
+  type="text/javascript"
+  src="https://unpkg.com/highlightjs-{{$lang}}@0.1.0/dist/{{$lang}}.min.js"
 ></script>
 ```
 
--  More info: <https://unpkg.com>
+- More info: <https://unpkg.com>
 -->
 
 ### With Node or another build system
 
-> The Node stuff is untested and straight from some other highlight.js module!!!
+> The Node stuff is untested, just an adapted copy from some other highlight.js module!!!
 
-If you're using Node / Webpack / Rollup / Browserify, etc, simply require the language module, then register it with `highlight.js`.
+If you're using Node / Webpack / Rollup / Browserify, etc, simply require the language module, then
+register it with `highlight.js`.
 
 ```javascript
 var hljs = require("highlight.js");
@@ -75,12 +83,11 @@ hljs.highlightAll();
 
 ### Example code
 
-Enclose your code in `<pre><code>` tags and at best set the language with `class="{{$lang}}"`.
-If you want to rely on auto detection, read the section about that below.
+Enclose your code in `<pre><code>` tags and at best set the language with `class="{{$lang}}"`. If
+you want to rely on auto detection, read the section about that below.
 
-{{ with .page.Params.hljs.aliases }}
-Instead of `{{$lang}}` you can use the defined aliases: `{{ delimit . "`, `" }}`.
-{{ end }}
+{{ with .page.Params.hljs.aliases }} Instead of `{{$lang}}` you can use the defined aliases:
+`{{ delimit . "`, `" }}`. {{ end }}
 
 ```html
 <pre><code class="hugo-html">
@@ -91,26 +98,29 @@ Instead of `{{$lang}}` you can use the defined aliases: `{{ delimit . "`, `" }}`
 ## A word on auto detection
 
 _Handlebars_ and _Go templates_ (used by [Hugo][]) have similar template tags. Without additional
-relevance settings Hugo grammars will loose most of the time. We use the following relevance settings
-to beat _Handlebars_ auto-detection -- doing our best to make it possible to have both grammars
-loaded at the same time. Importing both `hugo-text` and `hugo-html` may result in undetermined
-auto-detection. To be on the safe side specify the language you want for every code block.
+relevance settings Hugo grammars will loose most of the time. We use the following relevance
+settings to beat _Handlebars_ auto-detection -- doing our best to make it possible to have both
+grammars loaded at the same time. Importing both `hugo-text` and `hugo-html` may result in
+undetermined auto-detection. To be on the safe side specify the language you want for every code
+block.
 
 - Go template comments get relevance = 10.
 
-  comments start with {{ "`{{/*` or `{{- /*` and end with `*/}}` or `*/ -}}`" }}
+  comments start with `{{/*` or `{{- /*` and end with `*/}}`or`\*/ -}}`
 
 - Functions in the _hugo_ namespace get relevance = 10 (e.g. hugo.IsDevelopment)
 
-- The following _Handlebars_ opening template tags are set too _invalid_ for hugo: {{ "`{{#`, `{{>`, `{{!--`, `{{!`" }}
+- The following _Handlebars_ opening template tags are set too _invalid_ for hugo:
+  {{ "`{{#`, `{{>`, `{{!--`, `{{!`" }}
 
-  `IgnoreIllegals` default value is `false` since version 11. So this stops highlighting with the hugo module.
+  `IgnoreIllegals` default value is `false` since version 11. So this stops highlighting with the
+  hugo module.
 
 ## Build your own
 
-The module works with the standard [Highlight.js][] custom build system. Copy needed folders from your download or -- if
-you cloned our repo -- to the highlight.js extra directory. Check out the [Highlight.js][] documentation for more
-details.
+The module works with the standard [Highlight.js][] custom build system. Copy needed folders from
+your download or -- if you cloned our repo -- to the highlight.js extra directory. Check out the
+[Highlight.js][] documentation for more details.
 
 > You will need hugo-lib for all of the hugo grammars!
 
@@ -125,7 +135,8 @@ This package is released under the MIT License. See [LICENSE](LICENSE) file for 
 ## Links
 
 - [highlightjs-hugo][] : The main repository with additional grammars and plugins. Have a look
-- [Highlight.js][] : The Internet's favorite JavaScript syntax highlighter supporting Node.js and the web
+- [Highlight.js][] : The Internet's favorite JavaScript syntax highlighter supporting Node.js and
+  the web
 - [Hugo][] : The world’s fastest framework for building websites
 - [Go HTML template](https://pkg.go.dev/html/template) : Go's html template package
 - [Go TEXT template](https://pkg.go.dev/text/template) : Go's text template package

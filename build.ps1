@@ -20,6 +20,7 @@ param(
   # publish to Distribution folder
   [Parameter(Mandatory = $false)][Alias('Dist')][switch]$Distribute,
   [Parameter(Mandatory = $false)][ValidateSet(
+    'BuildDocs',
     'BuildHighlightJS',
     'BuildDiscoursePlugin',
     'CloneHighlightJS',
@@ -39,6 +40,7 @@ if ($PSBoundParameters.Keys -notcontains 'Steps') {
     'CloneHighlightJS',
     'GenerateHugoGrammars',
     'BuildHighlightJS', 'DistributeHighLightJSBuildResults', 'BuildDiscoursePlugin',
+    'BuildDocs',
     'DeveloperBuild'
   )
 }
@@ -54,6 +56,7 @@ try {
     Import-Module (Join-Path -Path $ScriptsDir -ChildPath "lib/build-functions.ps1")
     $ProjectRoot = Test-Folder $PSScriptRoot
     $WorkDir = Test-Folder -Create $ProjectRoot "work"
+    $DocsDir = Test-Folder -Create $ProjectRoot "docs"
     $HugoGenDir = Test-Folder $ScriptsDir "hugen"
 
     $HighlightJsDir = Join-Path $WorkDir "highlight.js"

@@ -1,18 +1,48 @@
-baseURL      = "https://irkode.github.com/highlightjs-hugo/"
+baseURL      = "https://irkode.github.io/highlightjs-hugo/"
 languageCode = 'en-US'
 title        = "Highlight 4 Hugo - Advanced syntax highlighting for Hugo templates"
 disableKinds = ['rss', 'sitemap', 'taxonomy', 'term']
 theme        = "huggingface"
 
 [module]
+  # github READMEs
   [[module.mounts]]
     source = "../README.md"
     target = "content/_index.md"
   [[module.mounts]]
     source = ".."
     target = "content"
-    files  = ['*.png']
+    files  = ['*.png', 'LICENSE']
+
+  # releases
+  [[module.mounts]]
+    source = "../release"
+    target = "content"
+    files  = ["! **/README.md", '**/*.md', '**/*.png']
+  [[module.mounts]]
+    source = "../release/discourse/README.md"
+    target = "content/discourse/_index.md"
+  [[module.mounts]]
+    source = "../release/highlightjs/README.md"
+    target = "content/highlightjs/_index.md"
+  [[module.mounts]]
+    source = "../release/highlightjs/hugo-html/README.md"
+    target = "content/highlightjs/hugo-html/_index.md"
+  [[module.mounts]]
+    source = "../release/highlightjs/hugo-text/README.md"
+    target = "content/highlightjs/hugo-html/_index.md"
+  [[module.mounts]]
+    source = ".."
+    target = "content"
+    files  = ['*.png', 'LICENSE']
+
+  # excludes
   [[module.mounts]]
     source = "static"
     target = "static"
     files  = ['! .keep']
+
+# https://gohugo.io/host-and-deploy/host-on-github-pages/#step-2
+[caches]
+  [caches.images]
+    dir = ':cacheDir/images'

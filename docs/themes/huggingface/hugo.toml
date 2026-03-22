@@ -1,6 +1,6 @@
 [params]
   [params.huggingface]
-    jsThemeToggle = false
+    jsThemeToggle = true
     storageKey    = "huggingface-data-theme"
 [menus]
   [[menus.main]]
@@ -21,4 +21,4 @@
 [module]
   [module.hugoVersion]
     extended = false
-    min      = '0.146.0'
+    min      = '0.159.0'
