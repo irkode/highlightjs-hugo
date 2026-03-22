@@ -1,8 +1,8 @@
 # Highlight 4 Hugo - Advanced syntax highlighting for Hugo templates
 
 Did you ever wonder why hugo templates seem to be randomly highlighted in [Discourse][]. The answer
-is dead simple: _Discourse_ uses [Highlight.js][] for syntax highlighting and this does not support
-Go and Hugo templates.
+is dead simple: _Discourse_ uses [Highlight.js][] for syntax highlighting which does does not
+support Go and Hugo templates.
 
 It could look so nice
 
@@ -57,13 +57,11 @@ We are on Windows 11 Professional. Could be working for unix like systems, but t
 Have a look at our CI workflow script for the bare commands on a GitHub Ubuntu runner.
 
 - Components that have to be there
-
   - Go 1.25.5
   - Hugo 0.157.0
   - Node 22.14.0
 
 - Components automatically provided
-
   - _Highlight.js_ 11.11.1
   - hugoDocs (as a hugo module)
 
