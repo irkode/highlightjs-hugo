@@ -1,0 +1,22 @@
+{
+  "version": "0.2",
+  "ignorePaths": [],
+  "dictionaryDefinitions": [
+    {
+      "name": "project-words",
+      "path": ".cspell-project.txt",
+      "description": "Words used in this project",
+      "addWords": true
+    },
+    {
+      "name": "hugo",
+      "path": "~/.hugo/cspell-hugo.txt",
+      "description": "Words used with Hugo coding",
+      "addWords": true
+    }
+  ],
+  "dictionaries": [],
+  "words": [],
+  "ignoreWords": [],
+  "import": []
+}

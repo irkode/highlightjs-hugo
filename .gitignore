@@ -1,4 +1,7 @@
-/build/hugen/public
-/build/hugen/.hugo_build.lock
-/work
-/release
+/build/hugen/public/
+/docs/public/
+/node_modules/
+/release/
+/work/
+**/.hugo_build.lock
+/.ignored/

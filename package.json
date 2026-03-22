@@ -1,1 +1,11 @@
-{"engines": {"node": "22.14.0"}}
+{
+  "engines": {
+    "node": "22.14.0"
+  },
+  "devDependencies": {
+    "cspell": "^9.7.0",
+    "prettier": "^3.8.1",
+    "prettier-plugin-go-template": "^0.0.15",
+    "prettier-plugin-toml": "^2.0.6"
+  }
+}

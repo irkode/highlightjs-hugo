@@ -1,0 +1,26 @@
+<svg viewBox="0 0 100 100" width="100" height="100" xmlns="http://www.w3.org/2000/svg">
+  <!-- Sun core -->
+  <circle cx="50" cy="50" r="25" fill="#ffc83d"></circle>
+
+  <!-- Define a single ray -->
+  <defs>
+    <line id="lightray" x1="0" y1="0" x2="0" y2="13" stroke="#ffc83d" stroke-width="4" stroke-linecap="round"></line>
+  </defs>
+
+  <!-- Use rays at different positions and rotations -->
+  <g transform="translate(50,50)">
+    <!-- Vertical rays -->
+    <use href="#lightray" transform="rotate(0) translate(0,-42)"></use>
+    <use href="#lightray" transform="rotate(180) translate(0,-42)"></use>
+
+    <!-- Horizontal rays -->
+    <use href="#lightray" transform="rotate(90) translate(0,-42)"></use>
+    <use href="#lightray" transform="rotate(270) translate(0,-42)"></use>
+
+    <!-- Diagonal rays -->
+    <use href="#lightray" transform="rotate(45) translate(0,-42)"></use>
+    <use href="#lightray" transform="rotate(225) translate(0,-42)"></use>
+    <use href="#lightray" transform="rotate(135) translate(0,-42)"></use>
+    <use href="#lightray" transform="rotate(315) translate(0,-42)"></use>
+  </g>
+</svg>

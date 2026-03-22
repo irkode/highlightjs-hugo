@@ -1,0 +1,7 @@
+{{- warnf "call %s" templates.Current.Name }}
+{{- if .Page.Param "huggingFace.jsThemeToggle" }}
+  <script>
+  document.documentElement.dataset.theme =
+    window.localStorage?.getItem({{ site.Params.huggingface.storageKey }}) || "auto";
+  </script>
+{{- end }}
