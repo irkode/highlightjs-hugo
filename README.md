@@ -39,11 +39,11 @@ out our [Documentation][]
 
 ## Build
 
-For normal usecases see _Download_ above.
+For standard use cases see _Download_ above.
 
 ### Custom Highlight.js build
 
-To build your own customized _Highlight.js_ installation grab the source artifact and playe it in
+To build your own customized _Highlight.js_ installation grab the source artifact and place it in
 the extra folder. of your _Highlight.js_ clone. Now you can build that just as any other
 _Highlight.js_ grammar.
 

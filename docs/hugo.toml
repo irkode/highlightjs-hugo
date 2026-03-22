@@ -12,3 +12,7 @@ theme        = "huggingface"
     source = ".."
     target = "content"
     files  = ['*.png']
+  [[module.mounts]]
+    source = "static"
+    target = "static"
+    files  = ['! .keep']
