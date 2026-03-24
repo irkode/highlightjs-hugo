@@ -299,7 +299,8 @@ jobs:
         shell: bash
         run: |
           cd release/discourse
-          zip -r ../../hugo-discourse-${{ env.RELEASE_TAG }}.zip .
+          zip -r ../../discourse-hugo-html-${{ env.RELEASE_TAG }}.zip hugo-html
+          zip -r ../../discourse-hugo-text-${{ env.RELEASE_TAG }}.zip hugo-text
           cd ../highlightjs
           zip -r ../../highlightjs-hugo-${{ env.RELEASE_TAG }}.zip .
           cp hugo-html/dist/hugo-html.min.js ../../hugo-html-${{ env.RELEASE_TAG }}.min.js
@@ -313,10 +314,11 @@ jobs:
           draft: true
           body_path: release_notes.md
           files: |
-            hugo-discourse-${{ env.RELEASE_TAG }}.zip
+            discourse-hugo-html-${{ env.RELEASE_TAG }}.zip hugo-html
+            discourse-hugo-text-${{ env.RELEASE_TAG }}.zip
             highlightjs-hugo-${{ env.RELEASE_TAG }}.zip
             hugo-html-${{ env.RELEASE_TAG }}.min.js
-            hugo-text-${{ env.RELEASE_TAG }}.min.js
+            release/highlightjshugo-text-${{ env.RELEASE_TAG }}.min.js
 
   docs:
     runs-on: ubuntu-latest
