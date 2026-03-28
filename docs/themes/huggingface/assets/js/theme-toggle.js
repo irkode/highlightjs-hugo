@@ -9,6 +9,7 @@ const themeToggle = {
       this.storageKey = key;
     }
     this.firstClick = true;
+    window.localStorage?.setItem(this.storageKey, document.documentElement.dataset?.theme || "auto");
     document.getElementById("theme-toggle-icon")?.addEventListener(
       "click",
       (event) => {
