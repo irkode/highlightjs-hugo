@@ -1,12 +1,13 @@
 language     = "en-us"
 baseurl      = "https://irkode.github.io/highlightjs-hugo"
-title        = "Generate Highlight.js Javascript grammars for Go/Hugo templates"
+title        = "Highght 4 Hugo"
 disableKinds = ['rss', 'sitemap', 'taxonomy', 'term']
 
 # for github README's
 disablePathToLower = true
 
 [params]
+  subTitle   = "Advanced syntax highlighting for Hugo templates"
   author     = "Irkode <irkode@rikode.de>"
   webroot    = "https://irkode.github.io/highlightjs-hugo"
   reporoot   = "https://github.com/irkode/"
@@ -68,6 +69,20 @@ disablePathToLower = true
   [[module.mounts]]
     source = 'content'
     target = 'content'
+  [[module.mounts]]
+    source = "../../docs/content/discourse/_index.md"
+    target = "content/discourse/README.md"
+  [[module.mounts]]
+    source = "../../docs/assets"
+    target = "content/discourse/"
+    files  = ['highlightjs-hugo.png']
+  [[module.mounts]]
+    source = "../../docs/content/highlightjs/_index.md"
+    target = "content/highlightjs/README.md"
+  [[module.mounts]]
+    source = "../../docs/assets"
+    target = "content/highlightjs/"
+    files  = ['highlightjs-hugo.png']
   [[module.mounts]]
     source = "src/common"
     target = "content/grammars/hugo-embed"

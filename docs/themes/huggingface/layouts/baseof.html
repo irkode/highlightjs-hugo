@@ -7,7 +7,7 @@
     <input type="checkbox" id="theme-toggle-cb" style="display: none !important" />
     <header class="site-header">
       <div class="header-left">Logo</div>
-      <nav class="header-center">Navigation</nav>
+      <nav class="header-center">{{ partial "navigation/menu.html" (dict "menuID" "sectionMenu" "page" .) }}</nav>
       <div class="header-right">
         <img id="github-mark" width="40px" height="40px" />
         <label for="theme-toggle-cb" id="theme-toggle">
