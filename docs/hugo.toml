@@ -1,8 +1,14 @@
 baseURL      = "https://irkode.github.io/highlightjs-hugo/"
 languageCode = 'en-US'
-title        = "Highlight 4 Hugo - Advanced syntax highlighting for Hugo templates"
+title        = "Highlight 4 Hugo"
+description  = "Advanced syntax highlighting for Hugo templates"
 disableKinds = ['rss', 'sitemap', 'taxonomy', 'term']
 theme        = "huggingface"
+
+sectionPagesMenu = 'sectionMenu'
+
+[markup.goldmark.renderHooks.image]
+  enableDefault = true
 
 [module]
   # github READMEs
@@ -16,21 +22,14 @@ theme        = "huggingface"
 
   # releases
   [[module.mounts]]
-    source = "../release"
+    source = "content"
     target = "content"
-    files  = ["! **/README.md", '**/*.md', '**/*.png']
-  [[module.mounts]]
-    source = "../release/discourse/README.md"
-    target = "content/discourse/_index.md"
-  [[module.mounts]]
-    source = "../release/highlightjs/README.md"
-    target = "content/highlightjs/_index.md"
   [[module.mounts]]
     source = "../release/highlightjs/hugo-html/README.md"
     target = "content/highlightjs/hugo-html/_index.md"
   [[module.mounts]]
     source = "../release/highlightjs/hugo-text/README.md"
-    target = "content/highlightjs/hugo-html/_index.md"
+    target = "content/highlightjs/hugo-text/_index.md"
   [[module.mounts]]
     source = ".."
     target = "content"

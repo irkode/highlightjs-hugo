@@ -1,13 +1,17 @@
-# Highlight 4 Hugo - Advanced syntax highlighting for Hugo templates
++++
+title = "HighlightJS"
+weight = "20"
++++
+# Highlight 4 Hugo - Highlight.JS plugins for Hugo templates
 
 Highlight Hugo templates using Highlight.js also available as a Discourse Theme Component
 
-![preview](plugins.png)
+![preview](highlightjs-hugo.png)
 
 This is the release repository of [highlightjs-hugo][].
 
 For details check out each grammars README or consult our
-[documentation site](https://irkode.github.com/highlightjs-hugo/)
+[Documentation][]
 
 ## Provided Grammars
 
@@ -78,6 +82,9 @@ This package is released under the MIT License. See [LICENSE](LICENSE) file for 
 - [Go TEXT template](https://pkg.go.dev/text/template) : Go's text template package
 
 [highlightjs-hugo]: https://github.com/irkode/highlightjs-hugo/
+[Documentation]: https://irkode.github.io/highlightjs-hugo/
 [Issue tracker]: https://github.com/irkode/highlightjs-hugo/issues
 [Highlight.js]: https://highlightjs.org/
 [Hugo]: https://gohugo.io/
+[Discourse]: https://discourse.gohugo.io/
+[Releases]: https://github.com/irkode/highlightjs-hugo/releases/latest
