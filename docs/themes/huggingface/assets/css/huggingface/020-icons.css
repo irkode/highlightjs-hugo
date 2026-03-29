@@ -5,6 +5,9 @@
 #theme-toggle-icon {
   content: var(--theme-toggle-icon);
 }
+#site-logo {
+  content: var(--site-logo-icon);
+}
 /* CSS only switcher — no data-theme means no JS */
 html:not([data-theme]):has(#theme-toggle-cb:checked) {
   color-scheme: light;

@@ -10,4 +10,5 @@
   --mono-font: Consolas, Menlo, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
   --standard-border-radius: 5px;
   --border-width: 1px;
+  --site-logo-icon: url("img/site-logo.svg");
 }
