@@ -8,7 +8,7 @@ theme        = "huggingface"
 sectionPagesMenu = 'sectionMenu'
 
 [markup.goldmark.renderHooks.image]
-  enableDefault = true
+  useEmbedded = "fallback"
 
 [module]
   # github READMEs

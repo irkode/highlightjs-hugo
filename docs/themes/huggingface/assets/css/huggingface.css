@@ -2,4 +2,5 @@
 @import "huggingface/000-color-scheme.css";
 @import "huggingface/000-root-vars.css";
 @import "huggingface/010-core-styles.css";
+@import "huggingface/020-menu.css";
 @import "huggingface/020-icons.css";

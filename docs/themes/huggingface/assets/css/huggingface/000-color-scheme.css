@@ -11,6 +11,7 @@
   --dark-disabled: #111;
   --dark-heading: rgb(0, 209, 178);
   --dark-marked: #fd3;
+  --dark-menu-button-bg: rgb(0, 209, 178);
   --dark-preformatted: #ccc;
   --dark-text: #dcdcdc;
   --dark-text-bright: #ababab;
@@ -24,8 +25,9 @@
   --light-code: #d81b60;
   --light-disabled: #efefef;
   --light-heading: #043f3f;
-  --light-preformatted: #ccc;
   --light-marked: #fd3;
+  --light-menu-button-bg: #043f3f;
+  --light-preformatted: #ccc;
   --light-text: #212121;
   --light-text-bright: #585858;
 
@@ -39,23 +41,17 @@
   --disabled: light-dark(var(--light-disabled), var(--dark-disabled));
   --heading: light-dark(var(--light-heading), var(--dark-heading));
   --marked: light-dark(var(--light-marked), var(--dark-marked));
+  --menu-button-bg: light-dark(var(--light-menu-button-bg), var(--dark-menu-button-bg));
   --preformatted: light-dark(var(--light-preformatted), var(--dark-preformatted));
   --text: light-dark(var(--light-text), var(--dark-text));
   --text-bright: light-dark(var(--light-text-bright), var(--dark-text-bright));
 
+  --auto-mode-icon: url("img/auto-mode.svg");
+
   /* These depend on the colors */
   --dark-github-mark: url("img/github-mark-white.svg");
-  --light-github-mark: url("img/github-mark.svg");
-  --auto-mode-icon: url("img/auto-mode.svg");
   --dark-mode-icon: url("img/dark-mode.svg");
-  --light-mode-icon: url("img/light-mode.svg");
 
-  --github-mark: var(--dark-github-mark);
-  --theme-toggle-icon: var(--dark-mode-icon);
-}
-@media (prefers-color-scheme: light) {
-  :root {
-    --github-mark: var(--light-github-mark);
-    --theme-toggle-icon: var(--light-mode-icon);
-  }
+  --light-github-mark: url("img/github-mark.svg");
+  --light-mode-icon: url("img/light-mode.svg");
 }

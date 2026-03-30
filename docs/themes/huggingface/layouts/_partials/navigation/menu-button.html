@@ -1,0 +1,38 @@
+{{- $page := .page -}}
+{{- with .entry -}}
+  {{- $href := "" -}}
+  {{- if and .PageRef .URL -}}
+    {{- errorf "menu-button: entry %q has both PageRef and URL set. Define only one." .Identifier -}}
+  {{- else if .PageRef -}}
+    {{- $href = $page.RelPermalink -}}
+  {{- else if .URL -}}
+    {{- $href = .URL -}}
+  {{- else -}}
+    {{- errorf "menu-button: entry %q has neither PageRef nor URL set." .Identifier -}}
+  {{- end -}}
+
+  {{- $class := "menu-button" -}}
+  {{- $ariaCurrent := "" -}}
+  {{- if $page.IsMenuCurrent .Menu . -}}
+    {{- $class = "menu-button menu-button--active" -}}
+    {{- $ariaCurrent = "page" -}}
+  {{- else if $page.HasMenuCurrent .Menu . -}}
+    {{- $class = "menu-button menu-button--ancestor" -}}
+    {{- $ariaCurrent = "true" -}}
+  {{- end -}}
+
+  {{- $name := .Name -}}
+  {{- with .Identifier -}}
+    {{- with T . -}}
+      {{- $name = . -}}
+    {{- end -}}
+  {{- end -}}
+
+
+  <a
+    href="{{ $href }}"
+    class="{{ $class }}"
+    {{- with $ariaCurrent }}aria-current="{{ . }}"{{ end -}}
+    >{{ $name }}</a
+  >
+{{- end -}}

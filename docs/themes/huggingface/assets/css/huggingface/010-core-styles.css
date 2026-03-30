@@ -1,4 +1,6 @@
 /* --- Reset & base (inspired by https://www.joshwcomeau.com/css/custom-css-reset/) */
+:root {
+}
 
 *,
 *::before,
@@ -6,6 +8,8 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  border-width: var(border-width);
+  border-radius: var(--border-radius);
 }
 *:not(dialog) {
   margin: 0;
@@ -74,13 +78,15 @@ ul {
   fill leftover viewport height, pushing the footer down.
 */
 body {
-  font-family: var(--sans-font);
-  background-color: var(--accent-bg);
-  color: var(--text);
   display: grid;
   grid-template-columns: 1fr min(1280px, 90%) 1fr;
   grid-template-rows: auto 1fr auto;
   min-height: 100dvh;
+
+  /* defaults */
+  font-family: var(--sans-font);
+  background-color: var(--accent-bg);
+  color: var(--text);
 }
 
 /* Every direct child sits in the centre column by default */
@@ -115,6 +121,10 @@ body > * {
   display: flex;
   align-items: center;
 }
+.header-center {
+  display: flex;
+  align-items: center;
+}
 
 .site-footer {
   border-top: var(--border-width) solid var(--text-light);
@@ -132,8 +142,4 @@ body > * {
      content to fill the 1fr row — the row still expands,
      but the content starts at the top of it */
   align-self: start;
-}
-
-#theme-toggle-checkbox {
-  /* display: none; */
 }
