@@ -2,7 +2,8 @@
 title = "HighlightJS"
 weight = "20"
 +++
-# Highlight 4 Hugo - Highlight.JS plugins for Hugo templates
+
+# Highlight 4 Hugo - Highlight.js components
 
 Highlight Hugo templates using Highlight.js also available as a Discourse Theme Component
 
@@ -10,8 +11,7 @@ Highlight Hugo templates using Highlight.js also available as a Discourse Theme 
 
 This is the release repository of [highlightjs-hugo][].
 
-For details check out each grammars README or consult our
-[Documentation][]
+For details check out each grammars README or consult our [Documentation][]
 
 ## Provided Grammars
 

@@ -1,8 +1,8 @@
 # Highlight 4 Hugo - Advanced syntax highlighting for Hugo templates
 
 Did you ever wonder why hugo templates seem to be randomly highlighted in [Discourse][]. The answer
-is dead simple: _Discourse_ uses [Highlight.js][] for syntax highlighting which does does not
-support Go and Hugo templates.
+is dead simple: _Discourse_ uses [Highlight.js][] for syntax highlighting which does not support Go
+and Hugo templates.
 
 It could look so nice
 
@@ -43,10 +43,12 @@ For standard use cases see _Download_ above.
 
 ### Custom Highlight.js build
 
-To build your own customized _Highlight.js_ installation grab the _highlightjs-hugo_ artifact and place it in
-the extra folder of your _Highlight.js_ clone. Build that just as any other _Highlight.js_ grammar or a customized build.
+To build your own customized _Highlight.js_ installation grab the _highlightjs-hugo_ artifact and
+place it in the extra folder of your _Highlight.js_ clone. Build that just as any other
+_Highlight.js_ grammar or a customized build.
 
-With a customized build, we add the _Hugo_ keyword tables to the _Highlight.js_ core so these will get packed only once. The result is an unpacked saving of 10KB for the final engine.
+With a customized build, we add the _Hugo_ keyword tables to the _Highlight.js_ core so these will
+get packed only once. The result is an unpacked saving of 10KB for the final engine.
 
 ### Build our sources
 

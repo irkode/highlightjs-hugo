@@ -21,7 +21,7 @@ function buildHighlightJS {
     [void](Test-File $HighlightJsExtraDir "hugo-html\dist\hugo-html.min.js")
     [void](Test-File $HighlightJsExtraDir "hugo-text\dist\hugo-text.min.js")
   } catch {
-    Write-Error "build Highlight.JS modules failed" -ErrorAction Continue
+    Write-Error "build Highlight.js modules failed" -ErrorAction Continue
     throw $_
   } finally {
     $ENV:ONLY_EXTRA = $EnvOnlyExtra
