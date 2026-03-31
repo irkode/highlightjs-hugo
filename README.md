@@ -17,8 +17,7 @@ To achieve that, we implemented
 
 Both supporting the full set of Hugo's template keywords, built-in functions and aliases.
 
-> Grab plugins from our [Releases](https://github.com/irkode/highlightjs-hugo/releases/latest). Read
-> more in our [Documentation][].
+> Grab plugins from our [Releases][] page or read more in the [Documentation][].
 
 ## Provided plugins
 
@@ -60,11 +59,11 @@ We are on Windows 11 Professional. Could be working for unix like systems, but t
 Have a look at our CI workflow script for the bare commands on a GitHub Ubuntu runner.
 
 - Components that have to be there
-  - Go 1.25.5
-  - Hugo 0.157.0
-  - Node 22.14.0
+  - Hugo - 159.1+
+  - Go 1.26.1+
+  - Node 22.14.0 (highlight.js requirement)
 
-- Components automatically provided
+- Components automatically provided by the build scripts
   - _Highlight.js_ 11.11.1
   - hugoDocs (as a hugo module)
 
@@ -76,9 +75,9 @@ Have a look at our CI workflow script for the bare commands on a GitHub Ubuntu r
   .\build.ps1 -Verbose
   ```
 
-- grab the results from [Releases][] page.
+- grab the results from `release` folder
 
-The Powershell script provides the common `Get-Help`.
+The Powershell script provides a `Get-Help`.
 
 Be aware that that is in no way a general purpose build script. It just provides shorthands for our
 local development process. For special _Highlight.js_ build configurations you will need to directly
@@ -96,7 +95,7 @@ Use the [Issue tracker][] for reporting bugs, asking question or raise ideas.
 Hugo is a powerful templating engine, and we utilize it to generate and assemble our grammars and
 discourse plugins.
 
-- fetch function names from hugoDocs pages
+- fetch function and aliases from hugoDocs
 - generate keyword tables for the plugins
 - generate the hugo-lib module (grammar and keyword Javascript module)
 - generate Javascript code and supplementary files
@@ -105,7 +104,7 @@ discourse plugins.
 - create source structure for our release assets
 - generate Discourse plugins based on the build results
 
-- and ofc for the standard use case - generate the documentation site
+- and ofc for the standard use case - the documentation pages
 
 Take it as a nifty showcase to use Hugo as a generic templating and publishing engine -- beyond web
 sites.
@@ -117,7 +116,7 @@ If you want to dig in, you can find that here
 
 This package is released under the MIT License. See [LICENSE](LICENSE) file for details.
 
-### Author & Maintainer
+## Author & Maintainer
 
 - Irkode <irkode@rikode.de>
 
@@ -130,3 +129,11 @@ This package is released under the MIT License. See [LICENSE](LICENSE) file for 
 - [Hugo][] : The world’s fastest framework for building websites
 - [Go HTML template](https://pkg.go.dev/html/template) : Go's html template package
 - [Go TEXT template](https://pkg.go.dev/text/template) : Go's text template package
+
+[highlightjs-hugo]: https://github.com/irkode/highlightjs-hugo/
+[Documentation]: https://irkode.github.io/highlightjs-hugo/
+[Issue tracker]: https://github.com/irkode/highlightjs-hugo/issues
+[Highlight.js]: https://highlightjs.org/
+[Hugo]: https://gohugo.io/
+[Discourse]: https://discourse.gohugo.io/
+[Releases]: https://github.com/irkode/highlightjs-hugo/releases/latest
