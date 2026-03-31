@@ -21,6 +21,10 @@ html:not([data-theme]):has(#theme-toggle-cb:checked) {
     --github-mark: var(--dark-github-mark);
     --theme-toggle-icon: var(--dark-mode-icon);
   }
+  html[data-theme="auto"] {
+    color-scheme: light;
+    --github-mark: var(--light-github-mark);
+  }
 }
 
 /* JS switcher */
@@ -40,8 +44,4 @@ html[data-theme="auto"] {
   color-scheme: dark;
   --github-mark: var(--dark-github-mark);
   --theme-toggle-icon: var(--auto-mode-icon);
-  @media (prefers-color-scheme: light) {
-    color-scheme: light;
-    --github-mark: var(--light-github-mark);
-  }
 }

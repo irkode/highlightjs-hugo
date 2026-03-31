@@ -1,0 +1,34 @@
+@media (max-width: 399px) {
+  /* Collapse the left/right body gutters to a few px */
+  body {
+    grid-template-columns: 4px 1fr 4px;
+  }
+  /* These will reduce size and gaps for elements
+   unused at the moment, cause it seems the query already scales well
+  */
+
+  /* Tighter header shell */
+  .site-header {
+    padding: 2px;
+    gap: 0.4rem;
+  }
+
+  /* Shrink nav buttons */
+  .menu-button {
+    padding: 0.2em 0.55em;
+    font-size: 0.8rem;
+    letter-spacing: 0;
+    margin-inline-end: 3px;
+  }
+
+  /* Right-side controls (theme toggle, github, etc.) */
+  .header-right {
+    gap: 0.3rem;
+  }
+
+  /* If the site logo is an image, cap its height */
+  #site-logo {
+    height: 28px;
+    width: auto;
+  }
+}

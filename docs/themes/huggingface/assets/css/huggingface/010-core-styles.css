@@ -17,6 +17,12 @@
 * {
   line-height: calc(1em + 0.5rem);
 }
+pre,
+code {
+  overflow-x: auto;
+  max-width: 100%;
+  white-space: pre; /* keeps code formatting but scrolls horizontally */
+}
 img,
 picture,
 video,
@@ -134,9 +140,6 @@ body > * {
   position: sticky;
   bottom: 0;
   line-height: 1.5;
-  .footer-center p {
-    text-align: center;
-  }
 }
 
 .site-main {

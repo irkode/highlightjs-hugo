@@ -1,4 +1,6 @@
-{{- with resources.Get "css/huggingface.css" | css.Build }}
+{{- $target := slice "chrome115" "edge115" "firefox116" "ios16.4" "opera101" "safari16.4" }}
+{{- $opts := dict "target" $target }}
+{{- with resources.Get "css/huggingface.css" | css.Build $opts }}
   <link rel="stylesheet" href="{{ .RelPermalink }}" />
 {{- end }}
 {{- /*

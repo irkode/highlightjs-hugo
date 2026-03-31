@@ -13,14 +13,6 @@
   --menu-shadow--ancestor-hover: 0 0 8px 1px
     color-mix(in srgb, var(--menu-button-bg) 70%, transparent);
 }
-/* ── nav container ─────────────────────────────────────────────────────── */
-/* .header-center is a flex *item* inside the site header — gap must go on
-   the parent flex container, which we don't own. Spacing is handled via
-   margin-inline-end on the buttons instead. */
-.header-center {
-  display: flex;
-  align-items: center;
-}
 
 /* ── base button ───────────────────────────────────────────────────────── */
 .menu-button {
