@@ -11,9 +11,9 @@
           <img id="site-logo" width="48px" height="48px" alt="Logo" />
         </a>
       </div>
-      <nav class="header-center">
-        {{ partial "navigation/menu.html" (dict "menuID" "sectionMenu" "page" .) }}
-      </nav>
+      <div class="header-center">
+        {{ partial "navigation/menu.html" (dict "menuID" "main" "page" .) }}
+      </div>
       <div class="header-right">
         <img id="github-mark" width="40px" height="40px" />
         <label for="theme-toggle-cb" id="theme-toggle">
@@ -27,11 +27,7 @@
     </main>
 
     <footer class="site-footer">
-      <div class="footer-left"><p>left</p></div>
-      <div class="footer-center">
-        {{- partialCached "footer/center.html" . }}
-      </div>
-      <div class="footer-right"><p>right</p></div>
+      <p>Copyright {{ now.Year }}. All rights reserved.</p>
     </footer>
     {{- partialCached "footer/js.html" . }}
   </body>

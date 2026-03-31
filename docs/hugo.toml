@@ -5,8 +5,6 @@ description  = "Advanced syntax highlighting for Hugo templates"
 disableKinds = ['rss', 'sitemap', 'taxonomy', 'term']
 theme        = "huggingface"
 
-sectionPagesMenu = 'sectionMenu'
-
 [markup.goldmark.renderHooks.image]
   useEmbedded = "fallback"
 

@@ -1,9 +1,9 @@
 +++
-title = "HighlightJS"
+title = "Highlight.js"
 weight = "20"
 +++
 
-# Highlight 4 Hugo - Highlight.js components
+# Highlight.js components
 
 Highlight Hugo templates using Highlight.js also available as a Discourse Theme Component
 

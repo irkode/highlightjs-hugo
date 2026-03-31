@@ -2,7 +2,8 @@
 title = "Discourse"
 weight = "10"
 +++
-# Highlight 4 Hugo - Discourse components
+
+# Discourse components
 
 These are the [Discourse][] plugins for our Hugo syntax highlighting modules
 

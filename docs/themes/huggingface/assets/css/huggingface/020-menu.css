@@ -97,3 +97,73 @@
   box-shadow: var(--menu-shadow--ancestor-hover);
   outline: none;
 }
+
+/* ── submenu container ─────────────────────────────────────────────────── */
+/* positioned relative to the wrapper that holds the trigger + nav together */
+#main-menu {
+  display: flex; /* keep buttons in a row */
+  align-items: center;
+}
+
+.menu-item {
+  position: relative; /* anchor for its own submenu */
+}
+
+.submenu {
+  /* position flush below the trigger button, left-aligned to it */
+  position: absolute;
+  top: 100%;
+  left: 0;
+
+  /* hide by default */
+  display: none;
+
+  /* layout: stack child buttons vertically */
+  flex-direction: column;
+  min-width: max-content;
+
+  /* accent-colored container */
+  background-color: var(--accent-bg);
+  border: 1.5px solid var(--menu-button-bg);
+  box-shadow: var(--menu-shadow--hover);
+
+  /* sit above page content */
+  z-index: 100;
+}
+
+/* ── show submenu on trigger hover or focus-within ─────────────────────── */
+/* the <a> and its following <nav> are siblings inside #main-menu           */
+.menu-button:hover + .submenu,
+.menu-button:focus-visible + .submenu,
+.submenu:hover,
+.submenu:focus-within {
+  display: flex;
+}
+
+/* ── submenu buttons ────────────────────────────────────────────────────── */
+.submenu .menu-button {
+  /* full width, left-aligned text */
+  display: flex;
+  width: 100%;
+  margin-inline-end: 0;
+
+  /* no border between siblings — container border is enough */
+  border: none;
+  border-bottom: 1px solid color-mix(in srgb, var(--menu-button-bg) 25%, transparent);
+  box-shadow: none;
+}
+
+.submenu .menu-button:last-child {
+  border-bottom: none;
+}
+
+.submenu .menu-button:hover,
+.submenu .menu-button:focus-visible {
+  box-shadow: none;
+}
+
+.menu-button--active {
+  color: var(--menu-button-bg);
+  background-color: color-mix(in srgb, var(--menu-button-bg) 15%, transparent);
+  border-color: var(--menu-button-bg);
+}

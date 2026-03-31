@@ -1,0 +1,18 @@
+[[main]]
+  name    = 'Discourse'
+  pageRef = '/discourse'
+  weight  = 10
+[[main]]
+  name    = 'Highlight.js'
+  pageRef = '/highlightjs'
+  weight  = 20
+[[main]]
+  name    = 'Hugo-Html'
+  pageRef = '/highlightjs/hugo-html'
+  Parent  = "Highlight.js"
+  weight  = 20
+[[main]]
+  name    = 'Hugo-Text'
+  pageRef = '/highlightjs/hugo-text'
+  Parent  = "Highlight.js"
+  weight  = 20
