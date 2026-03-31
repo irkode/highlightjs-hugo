@@ -9,10 +9,6 @@ Highlight Hugo templates using Highlight.js also available as a Discourse Theme 
 
 ![preview](highlightjs-hugo.png)
 
-This is the release repository of [highlightjs-hugo][].
-
-For details check out each grammars README or consult our [Documentation][]
-
 ## Provided Grammars
 
 - [hugo-html](hugo-html/)
@@ -30,16 +26,6 @@ For details check out each grammars README or consult our [Documentation][]
 
   The shared library containing the grammar and keyword definitions. Needed to build on your own.
   Having that outside of the grammars results in just one copy if you use both grammars.
-
-## Discourse Theme Components
-
-- [Discourse hugo-html](discourse/hugo-html/)
-
-  Theme Component for Hugo HTML templates.
-
-- [Discourse hugo-text](discourse/hugo-text/)
-
-  Theme Component for Hugo TEXT templates.
 
 ## Download
 

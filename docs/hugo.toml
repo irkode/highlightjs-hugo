@@ -7,6 +7,8 @@ theme        = "huggingface"
 
 [markup.goldmark.renderHooks.image]
   useEmbedded = "fallback"
+[markup.goldmark.renderHooks.link]
+  useEmbedded = "fallback"
 
 [module]
   # github READMEs
@@ -29,9 +31,16 @@ theme        = "huggingface"
     source = "../release/highlightjs/hugo-text/README.md"
     target = "content/highlightjs/hugo-text/_index.md"
   [[module.mounts]]
+    source = "../build/hugen/src/grammars/css-class-reference.md"
+    target = "content/highlightjs/css-class-reference/index.md"
+  [[module.mounts]]
+    source = "../release"
+    target = "content"
+    files  = ["**/*.png", "**/LICENSE"]
+  [[module.mounts]]
     source = ".."
     target = "content"
-    files  = ['*.png', 'LICENSE']
+    files  = ["*.png", "LICENSE"]
 
   # excludes
   [[module.mounts]]

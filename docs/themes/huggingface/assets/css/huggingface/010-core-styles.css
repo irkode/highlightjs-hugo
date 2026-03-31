@@ -54,7 +54,8 @@ h6 {
   }
 }
 /* fix for user engine style sheet (Chrome) */
-ul {
+ul,
+ol {
   margin-block-end: 1em;
   margin-block-start: 1em;
   padding-inline-start: 1.5em;

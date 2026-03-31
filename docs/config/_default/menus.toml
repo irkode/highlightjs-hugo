@@ -10,9 +10,14 @@
   name    = 'Hugo-Html'
   pageRef = '/highlightjs/hugo-html'
   Parent  = "Highlight.js"
-  weight  = 20
+  weight  = 10
 [[main]]
   name    = 'Hugo-Text'
   pageRef = '/highlightjs/hugo-text'
   Parent  = "Highlight.js"
   weight  = 20
+[[main]]
+  name    = 'CSS Classes'
+  pageRef = '/highlightjs/css-class-reference'
+  Parent  = "Highlight.js"
+  weight  = 30

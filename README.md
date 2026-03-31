@@ -1,4 +1,4 @@
-# Highlight 4 Hugo - Advanced syntax highlighting for Hugo templates
+# Advanced syntax highlighting for HuGo templates
 
 Did you ever wonder why hugo templates seem to be randomly highlighted in [Discourse][]. The answer
 is dead simple: _Discourse_ uses [Highlight.js][] for syntax highlighting which does not support Go
@@ -130,11 +130,3 @@ This package is released under the MIT License. See [LICENSE](LICENSE) file for 
 - [Hugo][] : The world’s fastest framework for building websites
 - [Go HTML template](https://pkg.go.dev/html/template) : Go's html template package
 - [Go TEXT template](https://pkg.go.dev/text/template) : Go's text template package
-
-[highlightjs-hugo]: https://github.com/irkode/highlightjs-hugo/
-[Documentation]: https://irkode.github.io/highlightjs-hugo/
-[Issue tracker]: https://github.com/irkode/highlightjs-hugo/issues
-[Highlight.js]: https://highlightjs.org/
-[Hugo]: https://gohugo.io/
-[Discourse]: https://discourse.gohugo.io/
-[Releases]: https://github.com/irkode/highlightjs-hugo/releases/latest

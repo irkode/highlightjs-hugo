@@ -23,6 +23,22 @@ If these don't work for you, we're most likely not able to support.
 - totally bare with anything around Discourse (just an end user). Our full _Discourse_ knowledge is
   shown within the plugin.
 
+## Discourse theme components
+
+We provide ready to use _Discourse theme components_ to load into your Instance.
+
+Installation:
+
+- you must have Highlight.js configured in your Instance
+- create a new _Theme Component_
+- either grab the zip from the our [Releases][] page and import.
+
+  or
+
+- download the above zip and just copy the content of the `theme-initializer.gjs` to the JS section
+  of your _Theme component_.
+- To style the custom scopes add your stylesheet to the CSS section.
+
 ## Discourse Requirements
 
 Actually No idea - Here's how we installed a development version:
@@ -39,22 +55,6 @@ Actually No idea - Here's how we installed a development version:
 
 - [API mentioned here](https://meta.discourse.org/t/install-a-new-language-for-highlight-js-via-a-theme-component/292480).
   That's a post from Jan 2019, so we expect most Instances will support it.
-
-### Use as Theme component
-
-We provide ready to use _Discourse Plugins_ to be used as -Theme Components\_
-
-Installation:
-
-- you must have Highlight.js configured in your Instance
-- create a new _Theme Component_
-- either grab the zip from the our [Releases][] page and import.
-
-  or
-
-- download the above zip and just copy the content of the `theme-initializer.gjs` to the JS section
-  of your _Theme component_.
-- To style the custom scopes add your stylesheet to the CSS section.
 
 ## License
 

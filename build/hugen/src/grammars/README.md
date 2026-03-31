@@ -3,13 +3,9 @@
 
 {{- $lang := .hljs.language -}}
 
-# {{ title $lang }} - Syntax highlighting for Hugo templates
+# Highlight {{ title $lang }} templates
 
 [![license](https://badgen.net/badge/license/MIT/blue)](LICENSE)
-
-> This is the README for the **{{ title $lang }}** variant of the suite.\
-> there are some other variants. Check out our [repository README]({{ site.Params.repository }}) for
-> details.
 
 A language grammar to highlight [Hugo][]'s templating language with [Highlight.js][].
 
@@ -27,9 +23,7 @@ with an older version.
 The module has not been published to any CDN right now., you will have to clone or download the
 stuff you need.
 
-- tagged versions are pushed to the dist folder of our repo [dist folder][]
-- release packages can be downloaded from our [releases page]({{ .site.Params.releases}}) per
-  module.
+- release packages can be downloaded from our [Releases] page.
 
 ## Usage
 
@@ -51,8 +45,8 @@ Load the module after loading `highlight.js`.
 
 ### Using a CDN
 
-The module has not been published to any CDN right now. Download the latest working build from the
-[dist folder][] or a release package from our [released page]({{ .site.Params.releases}}).
+The module has not been published to any CDN right now. But you may pick a module from our
+[Releases][] page.
 
 <!--
 ### Using directly from the UNPKG CDN
@@ -118,11 +112,11 @@ block.
 
 ## Build your own
 
-The module works with the standard [Highlight.js][] custom build system. Copy needed folders from
+The module works with the standard [Highlight.js][] extra build system. Copy needed folders from
 your download or -- if you cloned our repo -- to the highlight.js extra directory. Check out the
 [Highlight.js][] documentation for more details.
 
-> You will need hugo-lib for all of the hugo grammars!
+> NOTE: You will need hugo-lib for all of the hugo grammars!
 
 ## License
 
@@ -141,7 +135,10 @@ This package is released under the MIT License. See [LICENSE](LICENSE) file for 
 - [Go HTML template](https://pkg.go.dev/html/template) : Go's html template package
 - [Go TEXT template](https://pkg.go.dev/text/template) : Go's text template package
 
-[highlightjs-hugo]: {{ site.Params.repository }}
+[highlightjs-hugo]: https://github.com/irkode/highlightjs-hugo/
+[Documentation]: https://irkode.github.io/highlightjs-hugo/
+[Issue tracker]: https://github.com/irkode/highlightjs-hugo/issues
 [Highlight.js]: https://highlightjs.org/
 [Hugo]: https://gohugo.io/
-[dist folder]: {{ site.Params.blobs }}/dist/{{$lang}}/dist/
+[Discourse]: https://discourse.gohugo.io/
+[Releases]: https://github.com/irkode/highlightjs-hugo/releases/latest
