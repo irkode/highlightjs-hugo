@@ -1,6 +1,7 @@
-/* @import url("https://cdn.jsdelivr.net/npm/the-new-css-reset/css/reset.min.css"); */
-@import "huggingface/000-color-scheme.css";
+/* heavily co-authored by https://claude.ai/chat/ */
+@import "huggingface/000-chroma.css";
 @import "huggingface/000-root-vars.css";
+@import "huggingface/000-color-scheme.css";
 @import "huggingface/010-core-styles.css";
 @import "huggingface/020-menu.css";
 @import "huggingface/020-icons.css";

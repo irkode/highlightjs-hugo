@@ -1,6 +1,8 @@
-/* --- Reset & base (inspired by https://www.joshwcomeau.com/css/custom-css-reset/) */
-:root {
-}
+/* -- Reset & base
+  ---   inspired by:
+  ---     https://www.joshwcomeau.com/css/custom-css-reset/
+  ---     https://elad2412.github.io/the-new-css-reset/
+*/
 
 *,
 *::before,
@@ -8,7 +10,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  border-width: var(border-width);
+  border-width: var(--border-width);
   border-radius: var(--border-radius);
 }
 *:not(dialog) {
@@ -17,12 +19,21 @@
 * {
   line-height: calc(1em + 0.5rem);
 }
+/* Chroma: fix for wide code blocks on smaller displays */
 pre,
 code {
   overflow-x: auto;
   max-width: 100%;
-  white-space: pre; /* keeps code formatting but scrolls horizontally */
+  white-space: pre;
 }
+.chroma .line {
+  display: contents;
+}
+/* fix for pre elements in a list */
+/* li {
+  min-width: 0;
+} */
+
 img,
 picture,
 video,
@@ -149,4 +160,6 @@ body > * {
      content to fill the 1fr row — the row still expands,
      but the content starts at the top of it */
   align-self: start;
-}
+  overflow-x: hidden;  /* or clip */
+  min-width: 0;
+}}

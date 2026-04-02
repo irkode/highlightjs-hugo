@@ -5,10 +5,14 @@ description  = "Advanced syntax highlighting for Hugo templates"
 disableKinds = ['rss', 'sitemap', 'taxonomy', 'term']
 theme        = "huggingface"
 
-[markup.goldmark.renderHooks.image]
-  useEmbedded = "fallback"
-[markup.goldmark.renderHooks.link]
-  useEmbedded = "fallback"
+[markup]
+  [markup.highlight]
+    noClasses = false
+    lineNos   = false
+  [markup.goldmark.renderHooks.image]
+    useEmbedded = "fallback"
+  [markup.goldmark.renderHooks.link]
+    useEmbedded = "fallback"
 
 [module]
   # github READMEs
