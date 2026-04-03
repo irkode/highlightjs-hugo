@@ -6,6 +6,7 @@
     "cspell": "^9.7.0",
     "prettier": "^3.8.1",
     "prettier-plugin-go-template": "^0.0.15",
-    "prettier-plugin-toml": "^2.0.6"
+    "prettier-plugin-toml": "^2.0.6",
+    "svgo": "^4.0.1"
   }
 }
