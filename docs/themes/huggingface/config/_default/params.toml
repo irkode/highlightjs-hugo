@@ -1,4 +1,3 @@
 [huggingface]
-  jsThemeToggle = true
   storageKey    = "huggingface-data-theme"
   siteLogo = "img/huggingface-logo-48x48.png"

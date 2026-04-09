@@ -1,12 +1,10 @@
 {{- warnf "call %s" templates.Current.Name }}
-{{- if site.Params.huggingface.jsThemeToggle }}
-  {{- with resources.Get "js/theme-toggle.js" }}
-    {{- warnf "load %s" . }}
-    <script src="{{ .RelPermalink }}"></script>
-  {{- else }}
-    {{- warnf "JS not found: %s" . }}
-  {{- end }}
-  <script>
-    themeToggle.init({{ site.Params.huggingface.storageKey }});
-  </script>
+{{- with resources.Get "js/theme-toggle.js" }}
+  {{- warnf "load %s" . }}
+  <script src="{{ .RelPermalink }}"></script>
+{{- else }}
+  {{- warnf "JS not found: %s" . }}
 {{- end }}
+<script>
+  themeToggle.init({{ site.Params.huggingface.storageKey }});
+</script>

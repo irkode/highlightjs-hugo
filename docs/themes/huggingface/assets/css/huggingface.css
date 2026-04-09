@@ -3,11 +3,7 @@
 @import "huggingface/000-chroma.css";
 @import "huggingface/000-colors.css";
 @import "huggingface/000-root-vars.css";
-{{- if site.Params.huggingFace.jsThemeToggle }}
-  @import "huggingface/005-js-theme-toggle.css";
-{{- else }}
-  @import "huggingface/005-css-theme-toggle.css";
-{{- end }}
+@import "huggingface/005-theme-toggle.css";
 @import "huggingface/010-core-styles.css";
 @import "huggingface/020-menu.css";
 @import "huggingface/040-media.css";

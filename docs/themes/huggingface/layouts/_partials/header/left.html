@@ -1,9 +1,0 @@
-
-{{- with default "img/huggingface-logo-48x48.png" site.Params.huggingface.siteLogo }}
-  {{- with resources.Get . }}
-    {{- warnf "logo: %s" . }}
-    <a href="{{ absURL "" }}">
-      <img src="{{ .RelPermalink }}" id="site-logo" width="48px" height="48px" alt="Logo" />
-    </a>
-  {{- end }}
-{{- end }}
