@@ -1,0 +1,18 @@
+html:has(#theme-toggle-checkbox:checked) {
+  color-scheme: dark;
+  --github-mark: var(--dark-github-mark);
+  --theme-toggle-icon: var(--dark-mode-icon);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --github-mark: var(--dark-github-mark);
+    --theme-toggle-icon: var(--dark-mode-icon);
+  }
+  html:has(#theme-toggle-checkbox:checked) {
+    color-scheme: light;
+    --github-mark: var(--light-github-mark);
+    --theme-toggle-icon: var(--light-mode-icon);
+  }
+}

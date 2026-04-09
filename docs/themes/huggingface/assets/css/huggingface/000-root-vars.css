@@ -11,6 +11,14 @@
   --border-width: 0.25em;
   --border-radius: 0.5em;
 
-  /* has to display good in dark and light mode */
-  --site-logo-icon: url("img/site-logo.svg");
+  --auto-mode-icon: url("img/auto-mode.svg");
+
+  /* Changes with the selected scheme */
+  --dark-github-mark: url("img/github-mark-white.svg");
+  --dark-mode-icon: url("img/dark-mode.svg");
+  --theme-toggle-icon: var(--light-mode-icon);
+
+  --light-github-mark: url("img/github-mark.svg");
+  --light-mode-icon: url("img/light-mode.svg");
+  --github-mark: var(--light-github-mark);
 }

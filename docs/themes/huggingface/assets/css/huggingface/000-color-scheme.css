@@ -1,6 +1,5 @@
 :root {
-  /* themes preferred color scheme is dark */
-  color-scheme: dark light;
+  color-scheme: light dark;
   /* dark colors */
   --dark-accent: #ffb300;
   --dark-accent-bg: #2b2b2b;
@@ -31,7 +30,7 @@
   --light-text: #212121;
   --light-text-bright: #585858;
 
-  /* set colors based on preferred color scheme */
+  /* set colors based active color scheme */
   --accent: light-dark(var(--light-accent), var(--dark-accent));
   --accent-bg: light-dark(var(--light-accent-bg), var(--dark-accent-bg));
   --accent-hover: light-dark(var(--light-accent-hover), var(--dark-accent-hover));
@@ -45,13 +44,4 @@
   --preformatted: light-dark(var(--light-preformatted), var(--dark-preformatted));
   --text: light-dark(var(--light-text), var(--dark-text));
   --text-bright: light-dark(var(--light-text-bright), var(--dark-text-bright));
-
-  --auto-mode-icon: url("img/auto-mode.svg");
-
-  /* These depend on the colors */
-  --dark-github-mark: url("img/github-mark-white.svg");
-  --dark-mode-icon: url("img/dark-mode.svg");
-
-  --light-github-mark: url("img/github-mark.svg");
-  --light-mode-icon: url("img/light-mode.svg");
 }

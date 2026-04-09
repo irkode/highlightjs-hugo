@@ -1,26 +1,20 @@
 <!doctype html>
 <html lang="{{ site.Language.LanguageCode }}" dir="{{ or site.Language.LanguageDirection `ltr` }}">
   <head>
-    {{- partial "head.html" . }}
+    {{- partialCached "head.html" . }}
   </head>
   <body>
-    <input type="checkbox" id="theme-toggle-cb" style="display: none !important" />
+    <input type="checkbox" id="theme-toggle-checkbox" /> 
+    <!-- style="display: none !important" /> -->
     <header class="site-header">
       <div class="header-left">
-        <a href="{{ absURL "" }}">
-          <img id="site-logo" width="36px" height="36px" alt="Logo" />
-        </a>
+        {{- partialCached "header/left.html" . }}
       </div>
       <div class="header-center">
-        <a href="{{ absURL "" }}">
-          {{- partial "navigation/menu.html" (dict "menuID" "main" "page" .) -}}
-          </a>
+        {{- partial "header/menu.html" (dict "menuID" "main" "page" .) -}}
       </div>
       <div class="header-right">
-        <img id="github-mark" width="36px" height="36px" />
-        <label for="theme-toggle-cb" id="theme-toggle">
-          <img id="theme-toggle-icon" width="36px" height="36px" />
-        </label>
+        {{- partialCached "header/right.html" . }}
       </div>
     </header>
 
