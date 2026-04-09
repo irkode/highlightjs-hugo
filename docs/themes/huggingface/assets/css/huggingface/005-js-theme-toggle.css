@@ -1,3 +1,31 @@
 :root {
-  --js-switcher: 'true';
+  --js-switcher: "true";
+}
+/* JS switcher */
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --github-mark: var(--dark-github-mark);
+  --theme-toggle-icon: var(--dark-mode-icon);
+}
+
+html[data-theme="light"] {
+  color-scheme: light;
+  --github-mark: var(--light-github-mark);
+  --theme-toggle-icon: var(--light-mode-icon);
+}
+
+html:not([data-theme]),
+html[data-theme="auto"] {
+  color-scheme: light;
+  --github-mark: var(--light-github-mark);
+  --theme-toggle-icon: var(--auto-mode-icon);
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]),
+  html[data-theme="auto"] {
+    color-scheme: dark;
+    --github-mark: var(--dark-github-mark);
+    --theme-toggle-icon: var(--auto-mode-icon);
+  }
 }

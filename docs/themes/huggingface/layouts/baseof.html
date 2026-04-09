@@ -4,7 +4,9 @@
     {{- partialCached "head.html" . }}
   </head>
   <body>
-    <input type="checkbox" id="theme-toggle-checkbox" /> 
+    {{- if not site.Params.huggingFace.jsThemeToggle }}
+      <input type="checkbox" id="theme-toggle-checkbox" />
+    {{- end }}
     <!-- style="display: none !important" /> -->
     <header class="site-header">
       <div class="header-left">
@@ -25,6 +27,6 @@
     <footer class="site-footer">
       <p>Copyright {{ now.Year }}. All rights reserved.</p>
     </footer>
-    {{- partialCached "footer/js.html" . }}
+    {{- partialCached "body/js.html" . }}
   </body>
 </html>

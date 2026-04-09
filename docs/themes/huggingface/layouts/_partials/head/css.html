@@ -12,5 +12,6 @@
   {{- else }}
       {{- warnf "executeAsTemplate for %s failed" . }}
   {{- end }}
-    {{- warnf "CSS not found: css/huggingface.css" }}
+{{- else }}
+  {{- warnf "CSS not found: css/huggingface.css" }}
 {{- end }}
