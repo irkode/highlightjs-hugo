@@ -6,27 +6,25 @@
   --dark-accent-hover: #ffe099;
   --dark-accent-text: #212121;
   --dark-bg: #212121;
-  --dark-code: #f06292;
   --dark-disabled: #111;
   --dark-heading: rgb(0, 209, 178);
   --dark-marked: #fd3;
   --dark-menu-button-bg: rgb(0, 209, 178);
-  --dark-preformatted: #ccc;
+  --dark-code-inline-bg: #5f5f5f;
   --dark-text: #dcdcdc;
   --dark-text-bright: #ababab;
 
   /* light colors */
   --light-accent: #014d4e;
-  --light-accent-bg: #f5f7ff;
+  --light-accent-bg: #fff;
   --light-accent-hover: #007373;
   --light-accent-text: #fff;
-  --light-bg: #fff;
-  --light-code: #d81b60;
+  --light-bg: #f5f7ff;
   --light-disabled: #efefef;
   --light-heading: #043f3f;
   --light-marked: #fd3;
   --light-menu-button-bg: #043f3f;
-  --light-preformatted: #ccc;
+  --light-code-inline-bg: #e1e1e1;
   --light-text: #212121;
   --light-text-bright: #585858;
 
@@ -36,12 +34,11 @@
   --accent-hover: light-dark(var(--light-accent-hover), var(--dark-accent-hover));
   --accent-text: light-dark(var(--light-accent-text), var(--dark-accent-text));
   --bg: light-dark(var(--light-bg), var(--dark-bg));
-  --code: light-dark(var(--light-code), var(--dark-code));
   --disabled: light-dark(var(--light-disabled), var(--dark-disabled));
   --heading: light-dark(var(--light-heading), var(--dark-heading));
   --marked: light-dark(var(--light-marked), var(--dark-marked));
   --menu-button-bg: light-dark(var(--light-menu-button-bg), var(--dark-menu-button-bg));
-  --preformatted: light-dark(var(--light-preformatted), var(--dark-preformatted));
+  --code-inline-bg: light-dark(var(--light-code-inline-bg), var(--dark-code-inline-bg));
   --text: light-dark(var(--light-text), var(--dark-text));
   --text-bright: light-dark(var(--light-text-bright), var(--dark-text-bright));
 }

@@ -5,11 +5,9 @@
  */
 :root {
   --sans-font:
-    -apple-system, BlinkMacSystemFont, "Avenir Next", Avenir, "Nimbus Sans L", Roboto, "Noto Sans",
+    "Avenir Next", Avenir, "Nimbus Sans L", Roboto, "Noto Sans",
     "Segoe UI", Arial, Helvetica, "Helvetica Neue", sans-serif;
   --mono-font: Consolas, Menlo, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
-  --border-width: 0.25em;
-  --border-radius: 0.5em;
 
   --auto-mode-icon: url("img/auto-mode.svg");
 

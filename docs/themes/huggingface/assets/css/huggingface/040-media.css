@@ -28,7 +28,7 @@
 
   /* If the site logo is an image, cap its height */
   #site-logo {
-    height: 48px;
+    height: 40px;
     width: auto;
   }
 }

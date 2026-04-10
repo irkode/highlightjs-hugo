@@ -1,10 +1,17 @@
 baseURL      = "https://irkode.github.io/highlightjs-hugo/"
-languageCode = 'en-US'
+locale       = 'en-US'
 title        = "Highlight 4 Hugo"
 description  = "Advanced syntax highlighting for Hugo templates"
 disableKinds = ['rss', 'sitemap', 'taxonomy', 'term']
 theme        = "huggingface"
 
+[build]
+  noJSConfigInAssets = true
+  [build.buildStats]
+    enable = false
+  [[build.cachebusters]]
+    source = 'DISABLED'
+    target = 'DISABLED'
 [markup]
   [markup.highlight]
     noClasses = false
@@ -51,8 +58,3 @@ theme        = "huggingface"
     source = "static"
     target = "static"
     files  = ['! .keep']
-
-# https://gohugo.io/host-and-deploy/host-on-github-pages/#step-2
-[caches]
-  [caches.images]
-    dir = ':cacheDir/images'

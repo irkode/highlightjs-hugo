@@ -8,24 +8,26 @@ It could look so nice
 
 ![preview](highlightjs-hugo.png)
 
-## Introduction
-
-To achieve that, we implemented
+To improve that we implemented
 
 - _Highlight.js_ grammars
 - _Discourse_ theme components.
 
 Both supporting the full set of Hugo's template keywords, built-in functions and aliases.
 
-> Grab plugins from our [Releases][] page or read more in the [Documentation][].
+Read more details in our [Documentation][].
 
 ## Provided plugins
 
-Each module is available in two variants:
+Currently we provide the following components
 
-- HTML - Uses the standard _XML_ grammar for highlighting surrounding Html code.
+* Highlight.js
 
-- TEXT - This will keep surrounding text unstyled.
+  Two grammars for [Hugo][]'s _Text_ and _HTML_ templates with auto detection[^1] and full keyword support.
+
+* Discourse
+
+  Two theme components utilizing the above _Text_ and _HTML_ grammars.
 
 ## Download
 
@@ -129,6 +131,8 @@ This package is released under the MIT License. See [LICENSE](LICENSE) file for 
 - [Hugo][] : The world’s fastest framework for building websites
 - [Go HTML template](https://pkg.go.dev/html/template) : Go's html template package
 - [Go TEXT template](https://pkg.go.dev/text/template) : Go's text template package
+
+[^1]: Check out details here:  [A word on auto detection](https://irkode.github.io/highlightjs-hugo/highlightjs/hugo-html#a-word-on-auto-detection)
 
 [highlightjs-hugo]: https://github.com/irkode/highlightjs-hugo/
 [Documentation]: https://irkode.github.io/highlightjs-hugo/

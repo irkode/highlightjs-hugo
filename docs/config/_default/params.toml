@@ -1,2 +1,5 @@
+[h4h]
+  repository = "https://github.com/irkode/highlightjs-hugo/"
+
 [huggingface]
   siteLogo = "img/site-logo.png"

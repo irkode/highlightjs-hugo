@@ -1,6 +1,5 @@
 +++
 title = "Discourse"
-weight = "10"
 +++
 
 # Discourse components

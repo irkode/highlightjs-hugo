@@ -11,7 +11,6 @@
   margin: 0;
   padding: 0;
   border-width: var(--border-width);
-  border-radius: var(--border-radius);
 }
 *:not(dialog) {
   margin: 0;
@@ -20,19 +19,21 @@
   line-height: calc(1em + 0.5rem);
 }
 /* Chroma: fix for wide code blocks on smaller displays */
-pre,
-code {
+pre, code, pre code {
   overflow-x: auto;
   max-width: 100%;
   white-space: pre;
+  font-family: var(--mono-font);
+  padding: 0 0.1em;
+  border-width: 0px;
+}
+/* inline code tags */
+code:not(pre code) {
+  background-color: var(--code-inline-bg);
 }
 .chroma .line {
   display: contents;
 }
-/* fix for pre elements in a list */
-/* li {
-  min-width: 0;
-} */
 
 img,
 picture,

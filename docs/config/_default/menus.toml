@@ -21,3 +21,7 @@
   pageRef = '/highlightjs/css-class-reference'
   Parent  = "Highlight.js"
   weight  = 30
+[[main]]
+  name    = 'Examples'
+  url = '/examples'
+  weight  = 30

@@ -1,6 +1,5 @@
 +++
 title = "Highlight.js"
-weight = "20"
 +++
 
 # Highlight.js components

@@ -1,7 +1,8 @@
 <!doctype html>
-<html lang="{{ site.Language.LanguageCode }}" dir="{{ or site.Language.LanguageDirection `ltr` }}">
+<html lang="{{ site.Language.Locale }}" dir="{{ or site.Language.Direction `ltr` }}">
   <head>
     {{- partialCached "head.html" . }}
+    <title>{{- if .IsHome }}{{- site.Title }}{{- else }}{{- printf "%s | %s" .Title site.Title }}{{- end }}</title>
   </head>
   <body>
     <input type="checkbox" id="theme-toggle-checkbox" style="display: none !important" />
@@ -19,7 +20,9 @@
         {{- partial "header/menu.html" (dict "menuID" "main" "page" .) -}}
       </div>
       <div class="header-right">
-        <img id="github-mark" width="40px" height="40px" />
+        {{- with site.Params.h4h.repository }}
+          <a href="{{ . }}"><img id="github-mark" width="40px" height="40px" /></a>
+        {{- end }}
         <label for="theme-toggle-checkbox" id="theme-toggle-label">
           <img id="theme-toggle-icon" width="40px" height="40px" />
         </label>
@@ -33,6 +36,5 @@
     <footer class="site-footer">
       <p>Copyright {{ now.Year }}. All rights reserved.</p>
     </footer>
-    {{- partialCached "body/js.html" . }}
   </body>
 </html>
