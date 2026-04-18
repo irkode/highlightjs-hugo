@@ -1,7 +1,7 @@
 html:not([data-theme]) {
-    color-scheme: light;
-    --github-mark: var(--light-github-mark);
-    --theme-toggle-icon: var(--light-mode-icon);
+  color-scheme: light;
+  --github-mark: var(--light-github-mark);
+  --theme-toggle-icon: var(--light-mode-icon);
 }
 
 html:not([data-theme]):has(#theme-toggle-checkbox:checked) {

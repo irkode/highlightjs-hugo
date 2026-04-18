@@ -5,8 +5,8 @@
  */
 :root {
   --sans-font:
-    "Avenir Next", Avenir, "Nimbus Sans L", Roboto, "Noto Sans",
-    "Segoe UI", Arial, Helvetica, "Helvetica Neue", sans-serif;
+    "Avenir Next", Avenir, "Nimbus Sans L", Roboto, "Noto Sans", "Segoe UI", Arial, Helvetica,
+    "Helvetica Neue", sans-serif;
   --mono-font: Consolas, Menlo, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
 
   --auto-mode-icon: url("img/auto-mode.svg");

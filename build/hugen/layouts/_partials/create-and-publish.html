@@ -16,10 +16,10 @@
 
 */ -}}
 {{- if not $.page }}
-  {{- errorf "%-25s: missing 'page' parameter" $tpl }}
+	{{- errorf "%-25s: missing 'page' parameter" $tpl }}
 {{- end }}
 {{- if not $.source }}
-  {{- errorf "%-25s: missing 'source' parameter" $tpl }}
+	{{- errorf "%-25s: missing 'source' parameter" $tpl }}
 {{- end }}
 
 {{- $page := .page }}
@@ -33,25 +33,25 @@
 {{- /* merge page parameters with additional arguments passed */ -}}
 {{- $params := (dict "page" $page "site" site) }}
 {{- with $.params }}
-  {{- $params = merge $params . }}
+	{{- $params = merge $params . }}
 {{- end }}
 
 {{- with resources.Get $source }}
-  {{- with resources.FromString $target .Content }}
-    {{- with $gen := resources.ExecuteAsTemplate $target $params . }}
-      {{- if .Content | findRE `(?s)<no value>` }}
-        {{- warnf "WARN %-25s[ %-20s ]: unreplaced parameter: '%s' -> '%s'" $tpl $pagePath $source $target }}
-        {{- warnf "WARN ----\n%s\nWARN ----" (debug.Dump $params) }}
-      {{- end }}
-      {{- .Publish }}
-      {{- warnf "OK   %-25s[ %-20s ]: published '%s' -> '%s'" $tpl $pagePath $source $target}}
-    {{- else }}
-      {{- errorf "FAIL %-25s[ %-20s ]: ExecuteAsTemplate failed for '%s'" $tpl $pagePath $source }}
-    {{- end }}
-  {{- else }}
-    {{- errorf "FAIL %-25s[ %-20s ]: FromString failed for '%s'" $tpl $pagePath $source }}
-  {{- end }}
+	{{- with resources.FromString $target .Content }}
+		{{- with $gen := resources.ExecuteAsTemplate $target $params . }}
+			{{- if .Content | findRE `(?s)<no value>` }}
+				{{- warnf "WARN %-25s[ %-20s ]: unreplaced parameter: '%s' -> '%s'" $tpl $pagePath $source $target }}
+				{{- warnf "WARN ----\n%s\nWARN ----" (debug.Dump $params) }}
+			{{- end }}
+			{{- .Publish }}
+			{{- warnf "OK   %-25s[ %-20s ]: published '%s' -> '%s'" $tpl $pagePath $source $target }}
+		{{- else }}
+			{{- errorf "FAIL %-25s[ %-20s ]: ExecuteAsTemplate failed for '%s'" $tpl $pagePath $source }}
+		{{- end }}
+	{{- else }}
+		{{- errorf "FAIL %-25s[ %-20s ]: FromString failed for '%s'" $tpl $pagePath $source }}
+	{{- end }}
 {{- else }}
-  {{- errorf "FAIL %-25s[ %-20s ]: missing source at '/%s/%s'" $tpl $pagePath $base $source }}
+	{{- errorf "FAIL %-25s[ %-20s ]: missing source at '/%s/%s'" $tpl $pagePath $base $source }}
 {{- end }}
 {{- /* remove all trailing whitespace */ -}}

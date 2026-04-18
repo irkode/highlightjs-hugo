@@ -1,47 +1,54 @@
 {
-  "plugins": ["prettier-plugin-go-template", "prettier-plugin-toml"],
-  "endOfLine": "lf",
-  "printWidth": 100,
-  "tabWidth": 2,
-  "overrides": [
-    {
-      "files": [".code-workspace", ".prettierrc"],
-      "options": {
-        "parser": "json",
-        "semi": true
+   "plugins": ["prettier-plugin-go-template", "prettier-plugin-toml"],
+   "endOfLine": "lf",
+   "printWidth": 100,
+   "tabWidth": 3,
+   "overrides": [
+      {
+         "files": [".code-workspace", ".prettierrc"],
+         "options": {
+            "parser": "json",
+            "semi": true
+         }
+      },
+      {
+         "files": [
+            "*.gotmpl",
+            "**/layouts/**/*.markdown",
+            "**/layouts/**/*.html}",
+            "**/layouts/**/*.js",
+            "**/assets/templates/**/*.*"
+         ],
+         "options": {
+            "parser": "go-template"
+         }
+      },
+      {
+         "files": ["*.html"],
+         "options": {
+            "parser": "go-template"
+         }
+      },
+      {
+         "files": ["*.md"],
+         "options": {
+            "parser": "markdown",
+            "proseWrap": "always",
+            "tabWidth": 3
+         }
+      },
+      {
+         "files": ["*.toml"],
+         "options": {
+            "parser": "toml",
+            "alignEntries": true,
+            "alignComments": true,
+            "indentEntries": true,
+            "indentTables": true
+         }
+      },
+      {
+         "files": ["*.yaml", "*.yml"]
       }
-    },
-    {
-      "files": ["*.gotmpl", "**/layouts/**/**.", "**/assets/templates/**/*.*"],
-      "options": {
-        "parser": "go-template"
-      }
-    },
-    {
-      "files": ["*.html"],
-      "options": {
-        "parser": "go-template"
-      }
-    },
-    {
-      "files": "*.md",
-      "options": {
-        "parser": "markdown",
-        "proseWrap": "always"
-      }
-    },
-    {
-      "files": ["*.toml"],
-      "options": {
-        "parser": "toml",
-        "alignEntries": true,
-        "alignComments": true,
-        "indentEntries": true,
-        "indentTables": true
-      }
-    },
-    {
-      "files": ["*.yaml", "*.yml"]
-    }
-  ]
+   ]
 }

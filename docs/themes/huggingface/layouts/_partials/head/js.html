@@ -1,17 +1,17 @@
 {{- warnf "call %s" templates.Current.Name }}
 {{- $storageKey := default "huggingface-data-theme" site.Params.huggingface.storageKey }}
 <script>
-document.documentElement.dataset.theme =
-  window.localStorage?.getItem({{ $storageKey }}) || "auto";
+	document.documentElement.dataset.theme =
+	window.localStorage?.getItem({{ $storageKey }}) || "auto";
 </script>
 {{- $params := dict "storageKey" $storageKey }}
 {{- with resources.Get "js/theme-toggle.js" }}
-  {{- with . | js.Build (dict "params" (dict "storageKey" $storageKey)) }}
-    {{- warnf "load %s" . }}
-    <script type="module" src="{{ .RelPermalink }}"></script>
-  {{- else }}
-    {{- warnf "js.Build failed for %s" . }}
-  {{- end }}
+	{{- with . | js.Build (dict "params" (dict "storageKey" $storageKey)) }}
+		{{- warnf "load %s" . }}
+		<script type="module" src="{{ .RelPermalink }}"></script>
+	{{- else }}
+		{{- warnf "js.Build failed for %s" . }}
+	{{- end }}
 {{- else }}
-  {{- warnf "JS not found: js/theme-toggle.js" . }}
+	{{- warnf "JS not found: js/theme-toggle.js" . }}
 {{- end }}

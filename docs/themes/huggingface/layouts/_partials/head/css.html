@@ -1,18 +1,18 @@
 {{- $opts := dict
-  "targetPath" "/css/huggingface.css"
-  "loaders" (dict ".svg" "dataurl")
+	"targetPath" "/css/huggingface.css"
+	"loaders" (dict ".svg" "dataurl")
 }}
 
 {{- with resources.Get "css/huggingface.css" }}
-  {{- with resources.ExecuteAsTemplate "css/intermediate.css" $ . }}
-    {{- with . | css.Build $opts }}
-      <link rel="stylesheet" href="{{ .RelPermalink }}" />
-    {{- else }}
-      {{- warnf "css.Build for %s failed" . }}
-    {{- end }}
-  {{- else }}
-    {{- warnf "executeAsTemplate for %s failed" . }}
-  {{- end }}
+	{{- with resources.ExecuteAsTemplate "css/intermediate.css" $ . }}
+		{{- with . | css.Build $opts }}
+			<link rel="stylesheet" href="{{ .RelPermalink }}" />
+		{{- else }}
+			{{- warnf "css.Build for %s failed" . }}
+		{{- end }}
+	{{- else }}
+		{{- warnf "executeAsTemplate for %s failed" . }}
+	{{- end }}
 {{- else }}
-  {{- warnf "CSS not found: css/huggingface.css" }}
+	{{- warnf "CSS not found: css/huggingface.css" }}
 {{- end }}

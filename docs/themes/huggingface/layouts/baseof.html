@@ -1,52 +1,52 @@
 <!doctype html>
 <html lang="{{ site.Language.Locale }}" dir="{{ or site.Language.Direction `ltr` }}">
-  <head>
-    {{- partialCached "head.html" . }}
-    <title>
-      {{- if .IsHome }}
-        {{- site.Title }}
-      {{- else }}
-        {{- printf "%s | %s" .Title site.Title }}
-      {{- end }}
-    </title>
-  </head>
-  <body>
-    <input type="checkbox" id="theme-toggle-checkbox" style="display: none !important" />
-    <header class="site-header">
-      <div class="header-left">
-        {{- with default "img/huggingface-logo-48x48.png" site.Params.huggingface.siteLogo }}
-          {{- with resources.Get . }}
-            <a href="{{ absURL "" }}">
-              <img src="{{ .RelPermalink }}" id="site-logo" class="header-icon" alt="Logo" />
-            </a>
-          {{- end }}
-        {{- end }}
-      </div>
-      <div class="header-center">
-        <input type="checkbox" id="burger-toggle" />
-        <label for="burger-toggle" id="burger-label">
-          <span></span>
-          <span></span>
-          <span></span>
-        </label>
-        {{- partial "header/menu.html" (dict "menuID" "main" "page" .) -}}
-      </div>
-      <div class="header-right">
-        {{- with site.Params.h4h.repository }}
-          <a href="{{ . }}"><img id="github-mark" class="header-icon" /></a>
-        {{- end }}
-        <label for="theme-toggle-checkbox" id="theme-toggle-label">
-          <img id="theme-toggle-icon" class="header-icon" />
-        </label>
-      </div>
-    </header>
+	<head>
+		{{- partialCached "head.html" . }}
+		<title>
+			{{- if .IsHome }}
+				{{- site.Title }}
+			{{- else }}
+				{{- printf "%s | %s" .Title site.Title }}
+			{{- end }}
+		</title>
+	</head>
+	<body>
+		<input type="checkbox" id="theme-toggle-checkbox" style="display: none !important" />
+		<header class="site-header">
+			<div class="header-left">
+				{{- with default "img/huggingface-logo-48x48.png" site.Params.huggingface.siteLogo }}
+					{{- with resources.Get . }}
+						<a href="{{ absURL "" }}">
+							<img src="{{ .RelPermalink }}" id="site-logo" class="header-icon" alt="Logo" />
+						</a>
+					{{- end }}
+				{{- end }}
+			</div>
+			<div class="header-center">
+				<input type="checkbox" id="burger-toggle" />
+				<label for="burger-toggle" id="burger-label">
+					<span></span>
+					<span></span>
+					<span></span>
+				</label>
+				{{- partial "header/menu.html" (dict "menuID" "main" "page" .) -}}
+			</div>
+			<div class="header-right">
+				{{- with site.Params.h4h.repository }}
+					<a href="{{ . }}"><img id="github-mark" class="header-icon" /></a>
+				{{- end }}
+				<label for="theme-toggle-checkbox" id="theme-toggle-label">
+					<img id="theme-toggle-icon" class="header-icon" />
+				</label>
+			</div>
+		</header>
 
-    <main class="site-main">
-      {{- block "main" . }}{{- end }}
-    </main>
+		<main class="site-main">
+			{{- block "main" . }}{{- end }}
+		</main>
 
-    <footer class="site-footer">
-      <p>Copyright {{ now.Year }}. All rights reserved.</p>
-    </footer>
-  </body>
+		<footer class="site-footer">
+			<p>Copyright {{ now.Year }}. All rights reserved.</p>
+		</footer>
+	</body>
 </html>

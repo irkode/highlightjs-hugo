@@ -1,45 +1,44 @@
 {{- $menuID := .menuID }}
 {{- $page := .page }}
 {{- with index site.Menus $menuID }}
-  <nav id="main-menu" aria-label="Main">
-    {{- partial "inline/menu/walk.html" (dict "page" $page "menuEntries" . ) }}
-  </nav>
+	<nav id="main-menu" aria-label="Main">
+		{{- partial "inline/menu/walk.html" (dict "page" $page "menuEntries" .) }}
+	</nav>
 {{- end }}
 
 {{- define "_partials/inline/menu/walk.html" }}
-  {{- $page := .page }}
-  {{- range  .menuEntries }}
-    <div class="menu-item">
-      {{- $attrs := dict "href" .URL }}
-      {{- if $page.IsMenuCurrent .Menu . }}
-        {{- $attrs = merge $attrs (dict "class" "menu-button menu-button--active" "aria-current" "page") }}
-      {{- else if $page.HasMenuCurrent .Menu . }}
-        {{- $attrs = merge $attrs (dict "class" "menu-button menu-button--ancestor" "aria-current" "true") }}
-      {{- else }}
-        {{- $attrs = merge $attrs (dict "class" "menu-button") }}
-      {{- end }}
-      {{- $name := .Name }}
-      {{- with .Identifier }}
-        {{- with T . }}
-          {{- $name = . }}
-        {{- end }}
-      {{- end }}
-      {{- if .HasChildren }}
-        {{- $attrs = merge $attrs (dict "aria-haspopup" "true" "aria-controls" (add "submenu-" $name )) }}
-      {{- end }}
-      <a
-        {{- range $k, $v := $attrs }}
-          {{- with $v }}
-            {{- printf " %s=%q" $k $v | safeHTMLAttr }}
-          {{- end }}
-        {{- end -}}
-        >{{ $name }}</a
-      >
-      {{- with .Children }}
-        <nav class="submenu" id="submenu-{{ $name }}" aria-label="{{ $name }}">
-          {{- partial "inline/menu/walk.html" (dict "page" $page "menuEntries" .) }}
-        </nav>
-      {{- end }}
-    </div>
-  {{- end }}
+{{- $page := .page }}
+{{- range .menuEntries }}
+	<div class="menu-item">
+		{{- $attrs := dict "href" .URL }}
+		{{- if $page.IsMenuCurrent .Menu . }}
+			{{- $attrs = merge $attrs (dict "class" "menu-button menu-button--active" "aria-current" "page") }}
+		{{- else if $page.HasMenuCurrent .Menu . }}
+			{{- $attrs = merge $attrs (dict "class" "menu-button menu-button--ancestor" "aria-current" "true") }}
+		{{- else }}
+			{{- $attrs = merge $attrs (dict "class" "menu-button") }}
+		{{- end }}
+		{{- $name := .Name }}
+		{{- with .Identifier }}
+			{{- with T . }}
+				{{- $name = . }}
+			{{- end }}
+		{{- end }}
+		{{- if .HasChildren }}
+			{{- $attrs = merge $attrs (dict "aria-haspopup" "true" "aria-controls" (add "submenu-" $name)) }}
+		{{- end }}
+		<a
+			{{- range $k, $v := $attrs }}
+				{{- with $v }}
+				{{- printf " %s=%q" $k $v | safeHTMLAttr }}
+				{{- end }}
+			{{- end -}}>{{ $name }}</a
+		>
+		{{- with .Children }}
+			<nav class="submenu" id="submenu-{{ $name }}" aria-label="{{ $name }}">
+				{{- partial "inline/menu/walk.html" (dict "page" $page "menuEntries" .) }}
+			</nav>
+		{{- end }}
+	</div>
+{{- end }}
 {{- end }}

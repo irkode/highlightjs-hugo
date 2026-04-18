@@ -11,10 +11,10 @@
 
 */ -}}
 {{- if not $.page }}
-  {{- errorf "FAIL %-25s: missing 'page' parameter" $tpl }}
+	{{- errorf "FAIL %-25s: missing 'page' parameter" $tpl }}
 {{- end }}
 {{- if not $.source }}
-  {{- errorf "FAIL %-25s: missing 'source' parameter" $tpl }}
+	{{- errorf "FAIL %-25s: missing 'source' parameter" $tpl }}
 {{- end }}
 {{- $page := .page }}
 {{- $pagePath := $page.Path }}
@@ -23,23 +23,23 @@
 {{- $source := add $base "/" .source }}
 {{- $resources := slice }}
 {{- if .dir }}
-  {{- $resources = resources.Match (add $source "/**") }}
+	{{- $resources = resources.Match (add $source "/**") }}
 {{- else }}
-  {{- with resources.Get $source }}
-    {{- $resources = slice . }}
-  {{- else }}
-    {{- warnf "WARN %-25s[ %-20s ]: no resource found at %s " $tpl $pagePath $source }}
-  {{- end }}
+	{{- with resources.Get $source }}
+		{{- $resources = slice . }}
+	{{- else }}
+		{{- warnf "WARN %-25s[ %-20s ]: no resource found at %s " $tpl $pagePath $source }}
+	{{- end }}
 {{- end -}}
 {{- range $r := $resources }}
-  {{- /* calculate relative target path from current page */ -}}
-  {{- $target := $r.Name | replaceRE $basePattern $page.Path }}
-  {{- $target = $target | replaceRE `^/grammars` "" }}
-  {{- with $r | resources.Copy $target }}
-    {{- $noop := .RelPermalink }}
-    {{- warnf "OK   %-25s[ %-20s ]: copy resource 'assets%s' to '%s'" $tpl $pagePath $r.Name $target -}}
-  {{- else }}
-    {{- errorf "FAIL %-25s[ %-20s ]: copy resource 'assets/%s' to '%s'" $tpl $pagePath $r.Name $target }}
-  {{- end }}
+	{{- /* calculate relative target path from current page */ -}}
+	{{- $target := $r.Name | replaceRE $basePattern $page.Path }}
+	{{- $target = $target | replaceRE `^/grammars` "" }}
+	{{- with $r | resources.Copy $target }}
+		{{- $noop := .RelPermalink }}
+		{{- warnf "OK   %-25s[ %-20s ]: copy resource 'assets%s' to '%s'" $tpl $pagePath $r.Name $target -}}
+	{{- else }}
+		{{- errorf "FAIL %-25s[ %-20s ]: copy resource 'assets/%s' to '%s'" $tpl $pagePath $r.Name $target }}
+	{{- end }}
 {{- end }}
 {{- /* remove all trailing whitespace */ -}}
