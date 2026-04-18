@@ -104,7 +104,7 @@ block.
 
 - Functions in the _hugo_ namespace get relevance = 10 (e.g. hugo.IsDevelopment)
 
-- The following _Handlebars_ opening template tags are set too _invalid_ for hugo:
+- The following _Handlebars_ opening template tags are set to _invalid_ for hugo:
   {{ "`{{#`, `{{>`, `{{!--`, `{{!`" }}
 
   `IgnoreIllegals` default value is `false` since version 11. So this stops highlighting with the

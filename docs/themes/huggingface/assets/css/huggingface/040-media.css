@@ -1,19 +1,13 @@
-@media (max-width: 399px) {
-  /* Collapse the left/right body gutters to a few px */
+@media (max-width: 580px) {
   body {
     grid-template-columns: 4px 1fr 4px;
   }
-  /* These will reduce size and gaps for elements
-   unused at the moment, cause it seems the query already scales well
-  */
 
-  /* Tighter header shell */
   .site-header {
     padding: 2px;
     gap: 0.4rem;
   }
 
-  /* Shrink nav buttons */
   .menu-button {
     padding: 0.2em 0.55em;
     font-size: 0.8rem;
@@ -21,14 +15,60 @@
     margin-inline-end: 3px;
   }
 
-  /* Right-side controls (theme toggle, github, etc.) */
   .header-right {
     gap: 0.3rem;
   }
 
-  /* If the site logo is an image, cap its height */
-  #site-logo {
-    height: 40px;
-    width: auto;
+  .header-left {
+    gap: 0.3rem;
+  }
+
+  /* show burger label */
+  #burger-label {
+    display: flex;
+  }
+
+  /* hide main menu by default, position below header-center */
+  #main-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    flex-direction: column;
+    background-color: var(--accent-bg);
+    border: 1.5px solid var(--menu-button-bg);
+    box-shadow: var(--menu-shadow--hover);
+    z-index: 200;
+    min-width: max-content;
+  }
+
+  /* open main menu when burger is checked */
+  .header-center:has(#burger-toggle:checked) #main-menu {
+    display: flex;
+  }
+
+  /* main menu items full width */
+  #main-menu > .menu-item > .menu-button {
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
+    margin-inline-end: 0;
+    border: none;
+    text-align: left;
+    border-bottom: 1px solid color-mix(in srgb, var(--menu-button-bg) 25%, transparent);
+    box-shadow: none;
+  }
+  #main-menu > .menu-item {
+    width: 100%;
+  }
+
+  #main-menu > .menu-item:last-child > .menu-button {
+    border-bottom: none;
+  }
+
+  /* submenus open to the right */
+  .submenu {
+    top: 0;
+    left: 100%;
   }
 }
