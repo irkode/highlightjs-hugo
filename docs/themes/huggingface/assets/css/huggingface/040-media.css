@@ -61,6 +61,10 @@
   #main-menu > .menu-item {
     width: 100%;
   }
+  /* mobile: arrow right */
+  .menu-item:has(.submenu) > .menu-button::after {
+    content: " ▸";
+  }
 
   #main-menu > .menu-item:last-child > .menu-button {
     border-bottom: none;

@@ -101,6 +101,10 @@
   position: relative; /* anchor for its own submenu */
 }
 
+/* desktop: arrow down */
+.menu-item:has(.submenu) > .menu-button::after {
+  content: " ▾";
+}
 .submenu {
   /* position flush below the trigger button, left-aligned to it */
   position: absolute;
