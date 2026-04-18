@@ -63,6 +63,12 @@ h6 {
   margin-top: calc(0.5em + 0.5rem);
   color: var(--heading);
 }
+#license::after {
+  content: var(--icon-license);
+  display: inline-block;
+  vertical-align: middle;
+  margin-inline-start: 0.5em;
+}
 @media (prefers-reduced-motion: no-preference) {
   html {
     interpolate-size: allow-keywords;

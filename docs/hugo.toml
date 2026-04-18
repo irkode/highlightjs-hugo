@@ -6,55 +6,24 @@ disableKinds = ['rss', 'sitemap', 'taxonomy', 'term']
 theme        = "huggingface"
 
 [build]
-  noJSConfigInAssets = true
-  [build.buildStats]
-    enable = false
-  [[build.cachebusters]]
-    source = 'DISABLED'
-    target = 'DISABLED'
+   noJSConfigInAssets = true
+   [build.buildStats]
+      enable = false
+   [[build.cachebusters]]
+      source = 'DISABLED'
+      target = 'DISABLED'
 [markup]
-  [markup.highlight]
-    noClasses = false
-    lineNos   = false
-  [markup.goldmark.renderHooks.image]
-    useEmbedded = "fallback"
-  [markup.goldmark.renderHooks.link]
-    useEmbedded = "fallback"
+   [markup.highlight]
+      noClasses = false
+      lineNos   = false
+   [markup.goldmark.renderHooks.image]
+      useEmbedded = "always"
+   [markup.goldmark.renderHooks.link]
+      useEmbedded = "always"
 
 [module]
-  # github READMEs
-  [[module.mounts]]
-    source = "../README.md"
-    target = "content/_index.md"
-  [[module.mounts]]
-    source = ".."
-    target = "content"
-    files  = ['*.png', 'LICENSE']
-
-  # releases
-  [[module.mounts]]
-    source = "content"
-    target = "content"
-  [[module.mounts]]
-    source = "../release/highlightjs/hugo-html/README.md"
-    target = "content/highlightjs/hugo-html/_index.md"
-  [[module.mounts]]
-    source = "../release/highlightjs/hugo-text/README.md"
-    target = "content/highlightjs/hugo-text/_index.md"
-  [[module.mounts]]
-    source = "../build/hugen/src/grammars/css-class-reference.md"
-    target = "content/highlightjs/css-class-reference/index.md"
-  [[module.mounts]]
-    source = "../release"
-    target = "content"
-    files  = ["**/*.png", "**/LICENSE"]
-  [[module.mounts]]
-    source = ".."
-    target = "content"
-    files  = ["*.png", "LICENSE"]
-
-  # excludes
-  [[module.mounts]]
-    source = "static"
-    target = "static"
-    files  = ['! .keep']
+   # excludes
+   [[module.mounts]]
+      source = "static"
+      target = "static"
+      files  = ['! .keep']

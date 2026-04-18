@@ -1,7 +1,5 @@
 +++
 [cascade]
-[params]
-  createLicenseFile = true
 [cascade.params.hljs]
   groupedRegex = false
   keywords = "hugo"

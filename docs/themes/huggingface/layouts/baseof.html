@@ -6,7 +6,7 @@
 			{{- if .IsHome }}
 				{{- site.Title }}
 			{{- else }}
-				{{- printf "%s | %s" .Title site.Title }}
+				{{- printf "%s | %s" (or .Title $.Title) site.Title }}
 			{{- end }}
 		</title>
 	</head>

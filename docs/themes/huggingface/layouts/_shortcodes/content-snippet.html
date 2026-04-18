@@ -1,0 +1,18 @@
+{{- /*
+Include a markdown snippet to a page and render it
+
+Usage: {{% include "path/to/snippet.md" %}}
+
+The path is relative to content/_snippets
+
+*/ -}}
+{{- with .Get 0 }}
+  {{- with site.GetPage (add "/_snippets/" .) }}
+   {{- .RenderShortcodes }}
+  {{- else }}
+   {{- errorf "Shortcode [ %s ] snippet [ %s ] not found at [ %s ]" $.Name . $.Position }}
+  {{- end }}
+{{- else }}
+   {{- errorf "Shortcode [ %s ]: snippet [ %s ] not found at [ %s ]" $.Name . $.Position }}
+{{- end }}
+{{- /**/ -}}

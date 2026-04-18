@@ -3,7 +3,7 @@ baseurl      = "https://irkode.github.io/highlightjs-hugo"
 title        = "Highght 4 Hugo"
 disableKinds = ['rss', 'sitemap', 'taxonomy', 'term']
 
-# for github README's
+# for github README and LICENSE files
 disablePathToLower = true
 
 [params]
@@ -28,10 +28,10 @@ disablePathToLower = true
 
 # used to generate Github README.md files
 [outputFormats.markdown]
-  mediaType      = 'text/markdown'
   isPlainText    = true
   permalinkable  = true
   notAlternative = true
+  mediaType      = 'text/markdown'
   ugly           = true
 
 # we generate yaml files containing keywords
@@ -62,57 +62,71 @@ disablePathToLower = true
       path = '{/highlightjs,/highlightjs/**}'
 
 [module]
-  # make sure we do not loose our own files when remounting stuff
   [[module.mounts]]
     source = 'assets'
     target = 'assets'
   [[module.mounts]]
+    source = '../../docs/assets/_snippets'
+    target = 'assets/_snippets'
+
+  [[module.mounts]]
+    source = 'layouts'
+    target = 'layouts'
+  [[module.mounts]]
+    source = '../../docs/themes/huggingface/layouts/_shortcodes'
+    target = 'layouts/_shortcodes'
+
+  [[module.mounts]]
     source = 'content'
     target = 'content'
   [[module.mounts]]
-    source = "../../docs/content/discourse/_index.md"
-    target = "content/discourse/README.md"
+    source = '../../docs/content/_snippets'
+    target = 'content/_snippets'
+#   [[module.mounts]]
+#     source = "../../docs/content/discourse/_index.md"
+#     target = "content/discourse/README.md"
   [[module.mounts]]
     source = "../../docs/assets"
     target = "content/discourse/"
     files  = ['highlightjs-hugo.png']
-  [[module.mounts]]
-    source = "../../docs/content/highlightjs/_index.md"
-    target = "content/highlightjs/README.md"
+#   [[module.mounts]]
+#     source = "../../docs/content/highlightjs/_index.md"
+#     target = "content/highlightjs/README.md"
   [[module.mounts]]
     source = "../../docs/assets"
     target = "content/highlightjs/"
     files  = ['highlightjs-hugo.png']
+
+  # mount from docs
   [[module.mounts]]
-    source = "src/common"
-    target = "content/grammars/hugo-embed"
+    source = "../../docs/content/_snippets/license.md"
+    target = "content/discourse/LICENSE"
+  [[module.mounts]]
+    source = "../../docs/content/_snippets/license.md"
+    target = "content/grammars/hugo-html/LICENSE"
+  [[module.mounts]]
+    source = "../../docs/content/_snippets/license.md"
+    target = "content/grammars/hugo-text/LICENSE"
+  [[module.mounts]]
+    source = "../../docs/content/highlightjs/hugo-css-class-reference.md"
+    target = "content/grammars/hugo-html/hugo-css-class-reference.md"
+  [[module.mounts]]
+    source = "../../docs/content/highlightjs/hugo-css-class-reference.md"
+    target = "content/grammars/hugo-text/hugo-css-class-reference.md"
+
   [[module.mounts]]
     source = "src/grammars"
-    target = "content/grammars/hugo-embed"
-  [[module.mounts]]
-    source = "src/common"
-    target = "content/grammars/hugo-html"
-  [[module.mounts]]
-    source = "src/grammars"
-    target = "content/grammars/hugo-html"
-  [[module.mounts]]
-    source = "src/common"
     target = "content/grammars/hugo-text"
   [[module.mounts]]
     source = "src/grammars"
-    target = "content/grammars/hugo-text"
-  [[module.mounts]]
-    source = "src/common"
-    target = "content/discourse"
-  [[module.mounts]]
-    source = "src/common"
-    target = "content/discourse"
+    target = "content/grammars/hugo-html"
 
   # mount results of Highlight.js build to assets
   [[module.mounts]]
     source = '../../work/highlight.js/extra/'
     target = 'assets/highlightjs/'
     files  = ['hugo-{html,text,lib}/**']
+  
   # import function part of the documentation
   [[module.imports]]
     ignoreConfig  = true
@@ -139,4 +153,4 @@ disablePathToLower = true
 
   [module.hugoVersion]
     extended = true
-    min      = '0.159.0'
+    min      = '0.160.1'

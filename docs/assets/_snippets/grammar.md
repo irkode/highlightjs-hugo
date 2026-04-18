@@ -1,17 +1,13 @@
-+++
-+++
-
-{{- $lang := .hljs.language -}}
+{{- $lang := .Params.hljs.language -}}
+{{- $aliases := .Params.hljs.aliases -}}
 
 # Highlight {{ title $lang }} templates
 
-[![license](https://badgen.net/badge/license/MIT/blue)](LICENSE)
-
 A language grammar to highlight [Hugo][]'s templating language with [Highlight.js][].
 
-- [CSS class reference](css-class-reference.md)
+- [CSS class reference](hugo-css-class-reference)
 
-![preview]({{ $lang }}.png)
+![preview]({{ add $lang ".png" }})
 
 ## Requirements
 
@@ -37,11 +33,9 @@ Load the module after loading `highlight.js`.
 <script type="text/javascript" src="/path/to/highlight.min.js"></script>
 <script type="text/javascript" src="/path/to/{{$lang}}.min.js"></script>
 <script type="text/javascript">
-  hljs.highlightAll();
+   hljs.highlightAll();
 </script>
 ```
-
-<!-- TODO: publish to a CDN -->
 
 ### Using a CDN
 
@@ -80,8 +74,8 @@ hljs.highlightAll();
 Enclose your code in `<pre><code>` tags and at best set the language with `class="{{$lang}}"`. If
 you want to rely on auto detection, read the section about that below.
 
-{{ with .page.Params.hljs.aliases }} Instead of `{{$lang}}` you can use the defined aliases:
-`{{ delimit . "`, `" }}`. {{ end }}
+{{ with .Params.aliases }} {{ printf "Instead of `%s` you can use the defined aliases: %s." $lang
+(delimit . "`, `" ) }} {{ end }}
 
 ```html
 <pre><code class="hugo-html">
@@ -100,45 +94,18 @@ block.
 
 - Go template comments get relevance = 10.
 
-  comments start with `{{/*` or `{{- /*` and end with `*/}}`or`\*/ -}}`
+   comments start with {{ printf "`{{/*` or `{{- /*`" }} and end with `*/}}` or `\*/ -}}`
 
 - Functions in the _hugo_ namespace get relevance = 10 (e.g. hugo.IsDevelopment)
 
 - The following _Handlebars_ opening template tags are set to _invalid_ for hugo:
   {{ "`{{#`, `{{>`, `{{!--`, `{{!`" }}
 
-  `IgnoreIllegals` default value is `false` since version 11. So this stops highlighting with the
-  hugo module.
+   `IgnoreIllegals` default value is `false` since version 11. So this stops highlighting with the
+   hugo module.
 
 ## Build your own
 
-The module works with the standard [Highlight.js][] extra build system. Copy needed folders from
-your download or -- if you cloned our repo -- to the highlight.js extra directory. Check out the
+The module works with the standard [Highlight.js][] extra build system. Download the grammar source
+from our [Releases][] page and copy it to the `highlight.js/extra` directory. Check out the
 [Highlight.js][] documentation for more details.
-
-> NOTE: You will need hugo-lib for all of the hugo grammars!
-
-## License
-
-This package is released under the MIT License. See [LICENSE](LICENSE) file for details.
-
-### Author & Maintainer
-
-- Irkode <irkode@rikode.de>
-
-## Links
-
-- [highlightjs-hugo][] : The main repository with additional grammars and plugins. Have a look
-- [Highlight.js][] : The Internet's favorite JavaScript syntax highlighter supporting Node.js and
-  the web
-- [Hugo][] : The world’s fastest framework for building websites
-- [Go HTML template](https://pkg.go.dev/html/template) : Go's html template package
-- [Go TEXT template](https://pkg.go.dev/text/template) : Go's text template package
-
-[highlightjs-hugo]: https://github.com/irkode/highlightjs-hugo/
-[Documentation]: https://irkode.github.io/highlightjs-hugo/
-[Issue tracker]: https://github.com/irkode/highlightjs-hugo/issues
-[Highlight.js]: https://highlightjs.org/
-[Hugo]: https://gohugo.io/
-[Discourse]: https://discourse.gohugo.io/
-[Releases]: https://github.com/irkode/highlightjs-hugo/releases/latest

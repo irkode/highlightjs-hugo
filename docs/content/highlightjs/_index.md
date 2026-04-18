@@ -6,25 +6,25 @@ title = "Highlight.js"
 
 Highlight Hugo templates using Highlight.js also available as a Discourse Theme Component
 
-![preview](highlightjs-hugo.png)
+![preview](img/highlightjs-hugo.png)
 
 ## Provided Grammars
 
 - [hugo-html](hugo-html/)
 
-  Highlight template code using our plugin and style surrounding HTML using [Highlight.js][]
-  standard _xml_
+   Highlight template code using our plugin and style surrounding HTML using [Highlight.js][]
+   standard _XML_ grammar.
 
 - [hugo-text](hugo-text/)
 
-  Highlight template code using our plugin and just dump out surrounding text unstyled.
+   Highlight template code using our plugin and just dump out surrounding text unstyled.
 
 ## Library files
 
 - [hugo-lib](hugo-lib/)
 
-  The shared library containing the grammar and keyword definitions. Needed to build on your own.
-  Having that outside of the grammars results in just one copy if you use both grammars.
+   The shared library containing the grammar and keyword definitions. Needed to build on your own.
+   Having that outside of the grammars results in just one copy if you use both grammars.
 
 ## Download
 
@@ -48,28 +48,8 @@ contributions right now.
 If you find a bug, have a question or an idea, please use the _source repositories_ [Issue
 tracker][].
 
-## License
+{{% content-snippet "license-file.md" %}}
 
-This package is released under the MIT License. See [LICENSE](LICENSE) file for details.
+{{% content-snippet "authors.md" %}}
 
-### Author & Maintainer
-
-- Irkode <irkode@rikode.de>
-
-## Links
-
-- [highlightjs-hugo][] : The source and documentation repository
-
-- [Highlight.js][] : The Internet's favorite JavaScript syntax highlighter supporting Node.js and
-  the web
-- [Hugo][] : The world’s fastest framework for building websites
-- [Go HTML template](https://pkg.go.dev/html/template) : Go's html template package
-- [Go TEXT template](https://pkg.go.dev/text/template) : Go's text template package
-
-[highlightjs-hugo]: https://github.com/irkode/highlightjs-hugo/
-[Documentation]: https://irkode.github.io/highlightjs-hugo/
-[Issue tracker]: https://github.com/irkode/highlightjs-hugo/issues
-[Highlight.js]: https://highlightjs.org/
-[Hugo]: https://gohugo.io/
-[Discourse]: https://discourse.gohugo.io/
-[Releases]: https://github.com/irkode/highlightjs-hugo/releases/latest
+{{% content-snippet "links.md" %}}

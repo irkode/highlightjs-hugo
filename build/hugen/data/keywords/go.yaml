@@ -1,5 +1,5 @@
 patterns:
-  PIPELINE_KEYWORDS:
+  KEYWORDS_PIPELINE:
     - block
     - define
     - else\swith
@@ -10,14 +10,14 @@ patterns:
     - try
     - with
     - if
-  STANDALONE_KEYWORDS:
+  KEYWORDS_STANDALONE:
     - break
     - continue
     - else
     - end
 
 scopes:
-  built_in:
+  BUILTINS:
     - urlquery
     - println
     - printf
@@ -37,13 +37,13 @@ scopes:
     - lt
     - ne
     - or
-  literal:
+  LITERALS:
     - "false"
     - nil
     - "true"
 
 generate:
-  literal: ['kw']
-  built_in: ['kw']
-  function: []
-  keyword:  []
+  LITERALS: ['kw']
+  BUILTINS: ['kw']
+  FUNCTIONS: []
+  KEYWORDS:  []
