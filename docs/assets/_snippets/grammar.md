@@ -1,5 +1,5 @@
-{{- $lang := .Params.hljs.language -}}
-{{- $aliases := .Params.hljs.aliases -}}
+{{- $lang := .Params.h4h.language -}}
+{{- $aliases := .Params.h4h.aliases -}}
 
 # Highlight {{ title $lang }} templates
 

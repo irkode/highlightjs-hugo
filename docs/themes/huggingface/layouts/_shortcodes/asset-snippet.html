@@ -9,7 +9,7 @@ The path is relative to content/_snippets
 {{- $page := .Page }}
 {{- with .Get 0 }}
 	{{- with resources.Get (add "/_snippets/" .) }}
-		{{- with resources.ExecuteAsTemplate (path.Join "/dummy" $page.Path $page.Params.hljs.language) $page . }}
+		{{- with resources.ExecuteAsTemplate (path.Join "/dummy" $page.Path $page.Params.h4h.language) $page . }}
 			{{- .Content | htmlUnescape | safeHTML }}
 		{{- end }}
 	{{- else }}

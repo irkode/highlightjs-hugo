@@ -1,7 +1,7 @@
 +++
 outputs = ['JS']
 
-[params.hljs]
+[params.h4h]
   keywords = "hugo"
   version = "functions"
 +++

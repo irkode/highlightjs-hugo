@@ -5,7 +5,7 @@
 {{- $tpl := templates.Current.Name }}
 {{- $pagePath := .Path }}
 {{- warnf "PAG(YAML)  %s - %s" $pagePath $tpl }}
-{{- $keywords := partialCached "get-keywords.html" .Params.hljs .Params.hljs }}
+{{- $keywords := partialCached "get-keywords.html" .Params.h4h .Params.h4h }}
 {{- $yaml := dict }}
 {{- range $kw, $words := $keywords }}
   {{- $yaml = merge $yaml (dict $kw ($words | sort)) }}

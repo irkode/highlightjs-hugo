@@ -1,5 +1,5 @@
 +++
-[params.hljs]
+[params.h4h]
    language = 'hugo-html'
 +++
 {{< asset-snippet "grammar.md" >}}

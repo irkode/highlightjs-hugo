@@ -9,6 +9,6 @@
 
 {{- /* create the language javascript module based on keyword definition */}}
 {{- $javascript := partial "get-javascript" $ }}
-{{- $target := add "src/languages/" .Params.hljs.language ".js" }}
+{{- $target := add "src/languages/" .Params.h4h.language ".js" }}
 {{- partial "create-and-publish" (dict "base" "grammars" "source" "src/languages/language.js" "target" $target "page" $ "params" $javascript) }}
 {{- /* remove all trailing whitespace */ -}}

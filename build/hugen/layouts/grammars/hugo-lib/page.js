@@ -8,9 +8,9 @@
 {{- warnf "PAG( JS )  %s - %s" $pagePath $tpl }}
 
 
-{{- $dataLang := .Params.hljs.keywords }}
+{{- $dataLang := .Params.h4h.keywords }}
 
-{{- $keywords := partialCached "get-keywords.html" .Params.hljs .Params.hljs }}
+{{- $keywords := partialCached "get-keywords.html" .Params.h4h .Params.h4h }}
 
 {{- $dataKeywords := index site.Data.keywords $dataLang }}
 

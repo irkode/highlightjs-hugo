@@ -1,6 +1,6 @@
 +++
 title = 'Hugo-Html'
-[params.hljs]
+[params.h4h]
    language = 'hugo-html'
 +++
 
