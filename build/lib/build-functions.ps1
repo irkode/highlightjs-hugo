@@ -142,8 +142,10 @@ cssOptions.forEach(css => {
     }
     [void](Test-File $WorkDir developer.html)
     Set-Location $HighlightJsDir
-    exec node tools/build.js -t browser hugo-embed hugo-html hugo-text xml
-
+    exec node tools/build.js -t browser hugo-html hugo-text xml
+    [void](Test-File $HighlightJsDir "build\highlight.min.js")
+    $DistributionDir = Test-Folder -Create $ProjectRoot "release\highlightjs-hugo"
+    Copy-Item (Join-Path $HighlightJsDir "build\highlight.min.js") (Join-Path $ProjectRoot "release\highlightjs-hugo\highlight-hugo.min.js")
   } catch {
     throw $_
   } finally {

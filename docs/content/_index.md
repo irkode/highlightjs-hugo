@@ -70,7 +70,7 @@ Have a look at our CI workflow script for the bare commands on a GitHub Ubuntu r
 
    ```powershell
    git clone https://github.com/irkode/highlightjs-hugo/ highlightjs-hugo
-   set-location highlightjs-hugo
+   Set-Location highlightjs-hugo
    .\build.ps1 -Verbose
    ```
 

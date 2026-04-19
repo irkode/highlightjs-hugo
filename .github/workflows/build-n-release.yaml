@@ -185,6 +185,12 @@ jobs:
         run: |
           hugo -d ${{ env.DISTRIBUTION_DIR }} --renderSegments discourse
 
+      - name: Build highlight-hugo engine
+        working-directory: ${{ env.HIGHLIGHTJS_DIR }}
+        run: |
+          node ./tools/build.js -t browser hugo-html hugo-text xml
+          Copy-Item  (Join-Path ${{ env.HIGHLIGHTJS_DIR }} "build/highlight.min.js") (Join-Path ${{ env.DISTRIBUTION_DIR }} "highlight-hugo.min.js")
+
       - name: Upload build artifact
         uses: actions/upload-artifact@v7
         with:
@@ -305,6 +311,8 @@ jobs:
           zip -r ../../highlightjs-hugo-${{ env.RELEASE_TAG }}.zip .
           cp hugo-html/dist/hugo-html.min.js ../../hugo-html-${{ env.RELEASE_TAG }}.min.js
           cp hugo-text/dist/hugo-text.min.js ../../hugo-text-${{ env.RELEASE_TAG }}.min.js
+          cd ..
+          cp highlight-hugo.min.js ../highlight-hugo-${{ env.RELEASE_TAG }}.min.js
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
@@ -319,6 +327,7 @@ jobs:
             highlightjs-hugo-${{ env.RELEASE_TAG }}.zip
             hugo-html-${{ env.RELEASE_TAG }}.min.js
             hugo-text-${{ env.RELEASE_TAG }}.min.js
+            highlight-hugo-${{ env.RELEASE_TAG }}.min.js
 
   docs:
     runs-on: ubuntu-latest
