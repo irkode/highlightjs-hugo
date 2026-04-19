@@ -120,6 +120,9 @@ disablePathToLower = true
   [[module.mounts]]
     source = "src/grammars"
     target = "content/grammars/hugo-html"
+  [[module.mounts]]
+    source = "src/grammars"
+    target = "content/grammars/hugo-embed"
 
   # mount results of Highlight.js build to assets
   [[module.mounts]]

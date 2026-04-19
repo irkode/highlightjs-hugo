@@ -1,6 +1,6 @@
 {{- $tpl := templates.Current.Name }}
 {{- $pagePath := .Path }}
-{{- warnf "PAG(GRAMMAR)  %s - %s\n%s" $pagePath $tpl (debug.Dump .Params) }}
+{{- warnf "PAG(GRAMMAR)  %s - %s" $pagePath $tpl}}
 
 {{- with .File }}
    {{- with .BaseFileName }}
