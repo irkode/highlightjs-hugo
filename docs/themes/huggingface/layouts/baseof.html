@@ -11,7 +11,6 @@
 		</title>
 	</head>
 	<body>
-		<input type="checkbox" id="theme-toggle-checkbox" style="display: none !important" />
 		<header class="site-header">
 			<div class="header-left">
 				{{- with default "img/huggingface-logo-48x48.png" site.Params.huggingface.siteLogo }}
@@ -35,9 +34,7 @@
 				{{- with site.Params.h4h.repository }}
 					<a href="{{ . }}"><img id="github-mark" class="header-icon" /></a>
 				{{- end }}
-				<label for="theme-toggle-checkbox" id="theme-toggle-label">
-					<img id="theme-toggle-icon" class="header-icon" />
-				</label>
+				<img id="theme-toggle-icon" class="header-icon" />
 			</div>
 		</header>
 
