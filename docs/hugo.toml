@@ -1,9 +1,11 @@
-baseURL      = "https://irkode.github.io/highlightjs-hugo/"
-locale       = 'en-US'
-title        = "Highlight 4 Hugo"
-description  = "Advanced syntax highlighting for Hugo templates"
-disableKinds = ['rss', 'sitemap', 'taxonomy', 'term']
-theme        = "huggingface"
+baseURL = "https://irkode.github.io/highlightjs-hugo/"
+locale  = 'en-US'
+title   = "Highlight 4 Hugo"
+
+description   = "Advanced syntax highlighting for Hugo templates"
+disableKinds  = ['rss', 'sitemap', 'taxonomy', 'term']
+enableGitInfo = true
+theme         = "huggingface"
 
 [build]
    noJSConfigInAssets = true
