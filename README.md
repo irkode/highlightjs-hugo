@@ -15,7 +15,7 @@ To improve that we implemented
 
 Both supporting the full set of Hugo's template keywords, built-in functions and aliases.
 
-Read more details in our [Documentation][].
+Read more details in our [Documentation][] or directly pick them from our [Releases][] page.
 
 ## Provided plugins
 
@@ -23,7 +23,9 @@ Currently we provide the following components
 
 * Highlight.js
 
-  Two grammars for [Hugo][]'s _Text_ and _HTML_ templates with auto detection[^1] and full keyword support.
+  Two grammars for [Hugo][]'s _Text_ and _HTML_ templates with auto detection[^2] and full keyword support.
+
+  Additionally we provide a ready to use _browser build_ with only our grammars[^2].
 
 * Discourse
 
@@ -61,7 +63,7 @@ We are on Windows 11 Professional. Could be working for unix like systems, but t
 Have a look at our CI workflow script for the bare commands on a GitHub Ubuntu runner.
 
 - Components that have to be there
-  - Hugo - 159.1+
+  - Hugo - 0.160.1+
   - Go 1.26.1+
   - Node 22.14.0 (highlight.js requirement)
 
@@ -132,8 +134,6 @@ This package is released under the MIT License. See [LICENSE](LICENSE) file for 
 - [Go HTML template](https://pkg.go.dev/html/template) : Go's html template package
 - [Go TEXT template](https://pkg.go.dev/text/template) : Go's text template package
 
-[^1]: Check out details here:  [A word on auto detection](https://irkode.github.io/highlightjs-hugo/highlightjs/hugo-html#a-word-on-auto-detection)
-
 [highlightjs-hugo]: https://github.com/irkode/highlightjs-hugo/
 [Documentation]: https://irkode.github.io/highlightjs-hugo/
 [Issue tracker]: https://github.com/irkode/highlightjs-hugo/issues
@@ -141,3 +141,6 @@ This package is released under the MIT License. See [LICENSE](LICENSE) file for 
 [Hugo]: https://gohugo.io/
 [Discourse]: https://discourse.gohugo.io/
 [Releases]: https://github.com/irkode/highlightjs-hugo/releases/latest
+
+[^1]: and _XML_ cause that's needed for _Hugo-Html_
+[^2]: Check out details here:  [A word on auto detection](https://irkode.github.io/highlightjs-hugo/highlightjs/hugo-html#a-word-on-auto-detection)

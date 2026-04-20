@@ -36,7 +36,7 @@ for them.
 
 - `template-tag`
 
-  Used for opening and closing template tags. {{ printf "`{{` `{{-` `-}}` `}}`" }}
+  Used for opening and closing template tags. `{{`, `{{-`, `-}}`, `}}`
 
 - `template-variable`
 
@@ -85,13 +85,13 @@ We divide Go/Hugo keywords into the following standard scopes.
 
   For Go as documented in [Go Template-Text Predefined template functions](https://pkg.go.dev/text/)
 
-> HINT: We generate the Keywords for Hugo at build time using the recent version of the docs. Means
-> highlighting old code won't detect ancient keywords/buildtins.all keywords. The Go template
-> keywords are handcrafted from the docs. Hupefull thts a complete fetch.
+> HINT: We generate the Keywords for Hugo at build time using a recent version of the docs. Means
+> highlighting old code won't detect ancient keywords/buildtins. The Go template
+> keywords are handcrafted from the docs. Hopefully that's a complete fetch.
 
 ## Submodes
 
-_highlighjs-hugo-html_ uses [Highlight.js][]'s _XML_ grammar for highlighting HTML as subLanguage.
+_hugo-html_ uses [Highlight.js][]'s _XML_ grammar for highlighting HTML as subLanguage.
 Check the official documentation for scopes used.
 
 [Highlight.js]: https://highlightjs.readthedocs.io/

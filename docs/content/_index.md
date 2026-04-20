@@ -15,6 +15,8 @@ To improve that we implemented
 
 Both supporting the full set of Hugo's template keywords, built-in functions and aliases.
 
+Read more details in our [Documentation][] or directly pick them from our [Releases][] page.
+
 ## Provided plugins
 
 Currently we provide the following components
@@ -23,6 +25,8 @@ Currently we provide the following components
 
    Two grammars for _Hugo_'s [Hugo Html](/highlightjs/hugo-html) and
    [Hugo Text](/highlightjs/hugo-text) templates with auto detection[^1] and full keyword support.
+
+   Additionally we provide a ready to use _browser build_ with only our grammars[^2].
 
 - Discourse
 
@@ -116,3 +120,6 @@ If you want to dig in, you can find that here
 {{% content-snippet "authors.md" %}}
 
 {{% content-snippet "links.md" %}}
+
+[^1]: and _XML_ cause that's needed for _Hugo-Html_
+[^2]: Check out details here:  [A word on auto detection](https://irkode.github.io/highlightjs-hugo/highlightjs/hugo-html#a-word-on-auto-detection)
