@@ -1,0 +1,28 @@
+# Runs on every push to main.
+# Opens (or updates) a Release Please PR that proposes the next semver bump
+# based on conventional commits since the last release.
+# Merging that PR creates the tag → triggers build-n-release.yaml.
+name: Release Please
+
+on:
+   push:
+      branches:
+         - "main"
+
+permissions:
+   contents: write # to create tags and update CHANGELOG.md
+   issues: write
+   pull-requests: write # to open and update the Release Please PR
+
+jobs:
+   release-please:
+      runs-on: ubuntu-latest
+      steps:
+         - uses: googleapis/release-please-action@v5
+           id: release
+           with:
+              release-type: simple
+              token: ${{ secrets.GITHUB_TOKEN }}
+              config-file: .release-please-config.json
+              # Optional: keep a CHANGELOG.md up to date in the repo root
+              # changelog-path: CHANGELOG.md
