@@ -12,325 +12,310 @@
 name: Build and Release
 
 on:
-  push:
-    branches:
-      - "main"
-    tags:
-      - "v*.*.*"
-  workflow_dispatch:
-    inputs:
-      release_tag:
-        description: "Tag to release (e.g. v0.0.1) - leave empty to just build"
-        required: false
-        type: string
+   push:
+      branches:
+         - "main"
+      tags:
+         - "v*.*.*"
+   workflow_dispatch:
+      inputs:
+         release_tag:
+            description: "Tag to release (e.g. v0.0.1) - leave empty to just build"
+            required: false
+            type: string
 
 permissions:
-  contents: write
+   contents: write
 
 concurrency:
-  group: build-deploy-${{ github.ref }}
-  cancel-in-progress: false
+   group: build-deploy-${{ github.ref }}
+   cancel-in-progress: false
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: pwsh
-    env:
-      # Versions are loaded from '.versions after checkout' and pushed to $ENV
-      # GO_VERSION:
-      # HUGO_VERSION:
-      # NODE_VERSION:
-      # HIGHLIGHTJS_VERSION:
-      WORK_DIR: ${{ github.workspace }}/work
-      HUGO_CACHEDIR: ${{ github.workspace }}/work/hugo-cache
-      HIGHLIGHTJS_DIR: ${{ github.workspace }}/work/highlight.js
-      HIGHLIGHTJS_EXTRA_DIR: ${{ github.workspace }}/work/highlight.js/extra
-      DISTRIBUTION_DIR: ${{ github.workspace }}/release
-      ONLY_LANGUAGES: hugo-embed hugo-html hugo-text
-      TZ: Europe/Berlin
+   build:
+      runs-on: ubuntu-latest
+      defaults:
+         run:
+            shell: pwsh
+      env:
+         # Versions are loaded from '.versions after checkout' and pushed to $ENV
+         # GO_VERSION:
+         # HUGO_VERSION:
+         # NODE_VERSION:
+         # HIGHLIGHTJS_VERSION:
+         WORK_DIR: ${{ github.workspace }}/work
+         HUGO_CACHEDIR: ${{ github.workspace }}/work/hugo-cache
+         HIGHLIGHTJS_DIR: ${{ github.workspace }}/work/highlight.js
+         HIGHLIGHTJS_EXTRA_DIR: ${{ github.workspace }}/work/highlight.js/extra
+         DISTRIBUTION_DIR: ${{ github.workspace }}/release
+         ONLY_LANGUAGES: hugo-embed hugo-html hugo-text
+         TZ: Europe/Berlin
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
+      steps:
+         - name: Checkout
+           uses: actions/checkout@v6
+           with:
+              fetch-depth: 0
 
-      - name: Set Tool Versions
-        run: |
-          ./build/versions-set-wanted.ps1 -Verbose .versions.json
+         - name: Set Tool Versions
+           run: |
+              ./build/versions-set-wanted.ps1 -Verbose .versions.json
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: "npm"
-          cache-dependency-path: .node.package.json
+         - name: Setup Node.js
+           uses: actions/setup-node@v6
+           with:
+              node-version: ${{ env.NODE_VERSION }}
+              cache: "npm"
+              cache-dependency-path: .node.package.json
 
-      - name: Setup Go
-        uses: actions/setup-go@v6
-        with:
-          go-version: "${{ env.GO_VERSION }}"
-          cache: true
-          cache-dependency-path: |
-            build/hugen/go.sum
-            build/hugen/hugo.direct.sum
+         - name: Setup Go
+           uses: actions/setup-go@v6
+           with:
+              go-version: "${{ env.GO_VERSION }}"
+              cache: true
+              cache-dependency-path: |
+                 build/hugen/go.sum
+                 build/hugen/hugo.direct.sum
 
-      - name: Restore Cache - Hugo binary
-        id: cache-hugo-bin
-        uses: actions/cache/restore@v5
-        with:
-          path: ${{ github.workspace }}/work/bin
-          key: hugo-bin-${{ runner.os }}-${{ env.HUGO_VERSION }}
+         - name: Restore Cache - Hugo binary
+           id: cache-hugo-bin
+           uses: actions/cache/restore@v5
+           with:
+              path: ${{ github.workspace }}/work/bin
+              key: hugo-bin-${{ runner.os }}-${{ env.HUGO_VERSION }}
 
-      - name: Download Hugo
-        if: steps.cache-hugo-bin.outputs.cache-hit != 'true'
-        run: |
-          $url = "https://github.com/gohugoio/hugo/releases/download/v${env:HUGO_VERSION}/hugo_extended_${env:HUGO_VERSION}_linux-amd64.tar.gz"
-          Write-Host "Downloading Hugo from $url to ${{ github.workspace }}/work/bin"
-          [void](New-Item -ItemType Directory -Force -Path "${{ github.workspace }}/work/bin")
-          Invoke-WebRequest -Uri $url -OutFile hugo.tar.gz
-          tar -xzf hugo.tar.gz -C "${{ github.workspace }}/work/bin" hugo
-          Remove-Item hugo.tar.gz
+         - name: Download Hugo
+           if: steps.cache-hugo-bin.outputs.cache-hit != 'true'
+           run: |
+              $url = "https://github.com/gohugoio/hugo/releases/download/v${env:HUGO_VERSION}/hugo_extended_${env:HUGO_VERSION}_linux-amd64.tar.gz"
+              Write-Host "Downloading Hugo from $url to ${{ github.workspace }}/work/bin"
+              [void](New-Item -ItemType Directory -Force -Path "${{ github.workspace }}/work/bin")
+              Invoke-WebRequest -Uri $url -OutFile hugo.tar.gz
+              tar -xzf hugo.tar.gz -C "${{ github.workspace }}/work/bin" hugo
+              Remove-Item hugo.tar.gz
 
-      - name: Save Cache - Hugo binary
-        if: steps.cache-hugo-bin.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v5
-        with:
-          path: ${{ github.workspace }}/work/bin
-          key: hugo-bin-${{ runner.os }}-${{ env.HUGO_VERSION }}
+         - name: Save Cache - Hugo binary
+           if: steps.cache-hugo-bin.outputs.cache-hit != 'true'
+           uses: actions/cache/save@v5
+           with:
+              path: ${{ github.workspace }}/work/bin
+              key: hugo-bin-${{ runner.os }}-${{ env.HUGO_VERSION }}
 
-      - name: Add Hugo to Path
-        run: |
-          "${{ github.workspace }}/work/bin/" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+         - name: Add Hugo to Path
+           run: |
+              "${{ github.workspace }}/work/bin/" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
-      - name: Check Versions
-        run: |
-          ./build/versions-check-installed.ps1 -Verbose -VersionConfigFile .versions.json
+         - name: Check Versions
+           run: |
+              ./build/versions-check-installed.ps1 -Verbose -VersionConfigFile .versions.json
 
-      - name: Restore Cache - Hugo modules
-        id: cache-hugo-mod
-        uses: actions/cache/restore@v5
-        with:
-          path: ${{ env.HUGO_CACHEDIR }}
-          key: hugo-mod-${{ runner.os }}-${{ env.HUGO_VERSION }}
+         - name: Restore Cache - Hugo modules
+           id: cache-hugo-mod
+           uses: actions/cache/restore@v5
+           with:
+              path: ${{ env.HUGO_CACHEDIR }}
+              key: hugo-mod-${{ runner.os }}-${{ env.HUGO_VERSION }}
 
-      - name: Install Hugo modules
-        if: steps.cache-hugo-mod.outputs.cache-hit != 'true'
-        working-directory: ./build/hugen
-        run: |
-          hugo mod get
+         - name: Install Hugo modules
+           if: steps.cache-hugo-mod.outputs.cache-hit != 'true'
+           working-directory: ./build/hugen
+           run: |
+              hugo mod get
 
-      - name: Save Cache - Hugo modules
-        if: steps.cache-hugo-mod.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v5
-        with:
-          path: ${{ env.HUGO_CACHEDIR }}
-          key: hugo-mod-${{ runner.os }}-${{ env.HUGO_VERSION }}
+         - name: Save Cache - Hugo modules
+           if: steps.cache-hugo-mod.outputs.cache-hit != 'true'
+           uses: actions/cache/save@v5
+           with:
+              path: ${{ env.HUGO_CACHEDIR }}
+              key: hugo-mod-${{ runner.os }}-${{ env.HUGO_VERSION }}
 
-      - name: Restore Cache - Highlight.js
-        id: cache-highlightjs
-        uses: actions/cache/restore@v5
-        with:
-          path: ${{ env.HIGHLIGHTJS_DIR }}
-          key: highlightjs-${{ runner.os }}-${{ env.HIGHLIGHTJS_VERSION }}
+         - name: Restore Cache - Highlight.js
+           id: cache-highlightjs
+           uses: actions/cache/restore@v5
+           with:
+              path: ${{ env.HIGHLIGHTJS_DIR }}
+              key: highlightjs-${{ runner.os }}-${{ env.HIGHLIGHTJS_VERSION }}
 
-      - name: Clone and Setup Highlight.js
-        if: steps.cache-highlightjs.outputs.cache-hit != 'true'
-        run: |
-          git clone --branch ${{ env.HIGHLIGHTJS_VERSION }} --depth 1 https://github.com/highlightjs/highlight.js.git "${{ env.HIGHLIGHTJS_DIR }}"
-          Set-Location "${{ env.HIGHLIGHTJS_DIR }}"
-          npm ci
-          Write-Host "Highlight.js version folder ready at: ${env:HIGHLIGHTJS_DIR}"
+         - name: Clone and Setup Highlight.js
+           if: steps.cache-highlightjs.outputs.cache-hit != 'true'
+           run: |
+              git clone --branch ${{ env.HIGHLIGHTJS_VERSION }} --depth 1 https://github.com/highlightjs/highlight.js.git "${{ env.HIGHLIGHTJS_DIR }}"
+              Set-Location "${{ env.HIGHLIGHTJS_DIR }}"
+              npm ci
+              Write-Host "Highlight.js version folder ready at: ${env:HIGHLIGHTJS_DIR}"
 
-      - name: Save Cache - Highlight.js
-        if: steps.cache-highlightjs.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v5
-        with:
-          path: ${{ env.HIGHLIGHTJS_DIR }}
-          key: highlightjs-${{ runner.os }}-${{ env.HIGHLIGHTJS_VERSION }}
+         - name: Save Cache - Highlight.js
+           if: steps.cache-highlightjs.outputs.cache-hit != 'true'
+           uses: actions/cache/save@v5
+           with:
+              path: ${{ env.HIGHLIGHTJS_DIR }}
+              key: highlightjs-${{ runner.os }}-${{ env.HIGHLIGHTJS_VERSION }}
 
-      - name: Generate Highlight.js grammars
-        working-directory: ./build/hugen
-        run: |
-          hugo -d ${{ env.HIGHLIGHTJS_EXTRA_DIR }} --cleanDestinationDir --renderSegments grammars
+         - name: Generate Highlight.js grammars
+           working-directory: ./build/hugen
+           run: |
+              hugo -d ${{ env.HIGHLIGHTJS_EXTRA_DIR }} --cleanDestinationDir --renderSegments grammars
 
-      # On windows this builds only the listed grammars
-      # here we get also the common ones - sick
-      - name: Build Highlight.js Hugo grammars
-        working-directory: ${{ env.HIGHLIGHTJS_DIR }}
-        run: |
-          node ./tools/build.js -t node ($ENV:ONLY_LANGUAGES -split '\s+')
+         # On windows this builds only the listed grammars
+         # here we get also the common ones - sick
+         - name: Build Highlight.js Hugo grammars
+           working-directory: ${{ env.HIGHLIGHTJS_DIR }}
+           run: |
+              node ./tools/build.js -t node ($ENV:ONLY_LANGUAGES -split '\s+')
 
-      # It looks like the `npm run test-markup` on linux does not handle ONLY_EXTRA correctly when
-      # enumerating our test files -> it actually ignores all
-      # dunno if this is node/npm problem or the implementation of the Highlight.js build scripts or mine
-      #
-      # WORKAROUND: copy all tests to highlight.js test folder and use $ENV:ONLY_LANGUAGES to set test scope
-      - name: Test Highlight.js Hugo markup
-        working-directory: ${{ env.HIGHLIGHTJS_DIR }}
-        run: |
-          foreach ($g in ($ENV:ONLY_LANGUAGES -split '\s+')) {
-            foreach ($t in @('detect', 'markup')) {
-              mkdir "test/$t/$g"
-              cp -R extra/$g/test/$t/* test/$t/$g
-            }
-          }
-          npm run test-markup
-
-      - name: Build CDN plugins Highlight.js
-        working-directory: ${{ env.HIGHLIGHTJS_DIR }}
-        run: |
-          node ./tools/build.js -t cdn ($ENV:ONLY_LANGUAGES -split '\s+')
-
-      - name: Copy Build results to dist folder
-        working-directory: ./build/hugen
-        run: |
-          hugo -d ${{ env.DISTRIBUTION_DIR }} --renderSegments distribute
-
-      - name: Build Discourse Theme Components
-        working-directory: ./build/hugen
-        run: |
-          hugo -d ${{ env.DISTRIBUTION_DIR }} --renderSegments discourse
-
-      - name: Build highlight-hugo engine
-        working-directory: ${{ env.HIGHLIGHTJS_DIR }}
-        run: |
-          node ./tools/build.js -t browser hugo-html hugo-text xml
-          Copy-Item  (Join-Path ${{ env.HIGHLIGHTJS_DIR }} "build/highlight.min.js") (Join-Path ${{ env.DISTRIBUTION_DIR }} "highlight-hugo.min.js")
-
-      - name: Upload build artifact
-        uses: actions/upload-artifact@v7
-        with:
-          name: release
-          path: release/
-          retention-days: 7
-
-      - name: Set Hugo version params for docs
-        shell: bash
-        run: |
-          TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "unreleased")
-          echo "HUGO_PARAMS_TAG=$TAG" >> $GITHUB_ENV
-          echo "HUGO_PARAMS_TAGDATE=$(git log -1 --format='%ci' $TAG 2>/dev/null || echo '')" >> $GITHUB_ENV
-
-      - name: Cache restore
-        id: cache-restore
-        uses: actions/cache/restore@v5
-        with:
-          path: ${{ runner.temp }}/hugo_cache
-          key: hugo-${{ github.run_id }}
-          restore-keys: hugo-
-
-      - name: Setup Pages
-        id: pages
-        uses: actions/configure-pages@v6
-
-      - name: Build the site
-        working-directory: ./docs
-        run: |
-          hugo build --gc --minify --baseURL "${{ steps.pages.outputs.base_url }}/" --cacheDir "${{ runner.temp }}/hugo_cache"
-
-      - name: Cache save
-        id: cache-save
-        uses: actions/cache/save@v5
-        with:
-          path: ${{ runner.temp }}/hugo_cache
-          key: ${{ steps.cache-restore.outputs.cache-primary-key }}
-
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v4
-        with:
-          path: docs/public
-
-  release:
-    runs-on: ubuntu-latest
-    needs: build
-    # Runs when a vX.Y.Z tag is pushed (by Release Please merging its PR)
-    # or manually via workflow_dispatch with a tag specified
-    if: startsWith(github.ref, 'refs/tags/v') || (github.event_name == 'workflow_dispatch' && inputs.release_tag != '')
-    env:
-      RELEASE_TAG: ${{ inputs.release_tag || github.ref_name }}
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-
-      - name: Delete previous draft releases with same major.minor
-        uses: actions/github-script@v8
-        with:
-          script: |
-            const tag = '${{ env.RELEASE_TAG }}';
-            const match = tag.match(/^v(\d+)\.(\d+)\.\d+$/);
-            if (!match) { console.log('No semver tag, skipping cleanup.'); return; }
-            const prefix = `v${match[1]}.${match[2]}.`;
-
-            const releases = await github.rest.repos.listReleases({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              per_page: 100
-            });
-
-            for (const release of releases.data) {
-              // Only delete drafts — leave pre-releases frozen
-              if (release.draft && !release.prerelease && release.tag_name.startsWith(prefix) && release.tag_name !== tag) {
-                console.log(`Deleting draft release: ${release.tag_name}`);
-                await github.rest.repos.deleteRelease({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  release_id: release.id
-                });
+         # It looks like the `npm run test-markup` on linux does not handle ONLY_EXTRA correctly when
+         # enumerating our test files -> it actually ignores all
+         # dunno if this is node/npm problem or the implementation of the Highlight.js build scripts or mine
+         #
+         # WORKAROUND: copy all tests to highlight.js test folder and use $ENV:ONLY_LANGUAGES to set test scope
+         - name: Test Highlight.js Hugo markup
+           working-directory: ${{ env.HIGHLIGHTJS_DIR }}
+           run: |
+              foreach ($g in ($ENV:ONLY_LANGUAGES -split '\s+')) {
+                foreach ($t in @('detect', 'markup')) {
+                  mkdir "test/$t/$g"
+                  cp -R extra/$g/test/$t/* test/$t/$g
+                }
               }
-            }
+              npm run test-markup
 
-      - name: Download build artifact
-        uses: actions/download-artifact@v8
-        with:
-          name: release
-          path: release/
+         - name: Build CDN plugins Highlight.js
+           working-directory: ${{ env.HIGHLIGHTJS_DIR }}
+           run: |
+              node ./tools/build.js -t cdn ($ENV:ONLY_LANGUAGES -split '\s+')
 
-      - name: Create release assets
-        shell: bash
-        run: |
-          cd release/discourse
-          zip -r ../../discourse-hugo-html-${{ env.RELEASE_TAG }}.zip hugo-html
-          zip -r ../../discourse-hugo-text-${{ env.RELEASE_TAG }}.zip hugo-text
-          cd ../highlightjs
-          zip -r ../../highlightjs-hugo-${{ env.RELEASE_TAG }}.zip .
-          cp hugo-html/dist/hugo-html.min.js ../../hugo-html-${{ env.RELEASE_TAG }}.min.js
-          cp hugo-text/dist/hugo-text.min.js ../../hugo-text-${{ env.RELEASE_TAG }}.min.js
-          cd ..
-          cp highlight-hugo.min.js ../highlight-hugo-${{ env.RELEASE_TAG }}.min.js
+         - name: Copy Build results to dist folder
+           working-directory: ./build/hugen
+           run: |
+              hugo -d ${{ env.DISTRIBUTION_DIR }} --renderSegments distribute
 
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: ${{ env.RELEASE_TAG }}
-          name: ${{ env.RELEASE_TAG }}
-          draft: true
-          # Release Please generates CHANGELOG.md — use it as release notes
-          body_path: CHANGELOG.md
-          files: |
-            discourse-hugo-html-${{ env.RELEASE_TAG }}.zip
-            discourse-hugo-text-${{ env.RELEASE_TAG }}.zip
-            highlightjs-hugo-${{ env.RELEASE_TAG }}.zip
-            hugo-html-${{ env.RELEASE_TAG }}.min.js
-            hugo-text-${{ env.RELEASE_TAG }}.min.js
-            highlight-hugo-${{ env.RELEASE_TAG }}.min.js
+         - name: Build Discourse Theme Components
+           working-directory: ./build/hugen
+           run: |
+              hugo -d ${{ env.DISTRIBUTION_DIR }} --renderSegments discourse
 
-  docs:
-    runs-on: ubuntu-latest
-    needs: build
-    permissions:
-      contents: read
-      pages: write
-      id-token: write
-    concurrency:
-      group: pages
-      cancel-in-progress: false
+         - name: Build highlight-hugo engine
+           working-directory: ${{ env.HIGHLIGHTJS_DIR }}
+           run: |
+              node ./tools/build.js -t browser hugo-html hugo-text xml
+              Copy-Item  (Join-Path ${{ env.HIGHLIGHTJS_DIR }} "build/highlight.min.js") (Join-Path ${{ env.DISTRIBUTION_DIR }} "highlight-hugo.min.js")
 
-    steps:
-      - name: Deploy to GitHub Pages
-        uses: actions/deploy-pages@v5
+         - name: Upload build artifact
+           uses: actions/upload-artifact@v7
+           with:
+              name: release
+              path: release/
+              retention-days: 7
+
+         - name: Set Hugo version params for docs
+           shell: bash
+           run: |
+              TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "unreleased")
+              echo "HUGO_PARAMS_TAG=$TAG" >> $GITHUB_ENV
+              echo "HUGO_PARAMS_TAGDATE=$(git log -1 --format='%ci' $TAG 2>/dev/null || echo '')" >> $GITHUB_ENV
+
+         - name: Setup Pages
+           id: pages
+           uses: actions/configure-pages@v6
+
+         - name: Build the site
+           working-directory: ./docs
+           run: |
+              hugo build --gc --minify --baseURL "${{ steps.pages.outputs.base_url }}/" --cacheDir "${{ runner.temp }}/hugo_cache"
+
+         - name: Upload Pages artifact
+           uses: actions/upload-pages-artifact@v4
+           with:
+              path: docs/public
+
+   release:
+      runs-on: ubuntu-latest
+      needs: build
+      # Runs when a vX.Y.Z tag is pushed (by Release Please merging its PR)
+      # or manually via workflow_dispatch with a tag specified
+      if: startsWith(github.ref, 'refs/tags/v') || (github.event_name == 'workflow_dispatch' && inputs.release_tag != '')
+      env:
+         RELEASE_TAG: ${{ inputs.release_tag || github.ref_name }}
+
+      steps:
+         - name: Checkout repository
+           uses: actions/checkout@v6
+           with:
+              fetch-depth: 0
+
+         - name: Delete previous draft releases with same major.minor
+           uses: actions/github-script@v8
+           with:
+              script: |
+                 const tag = '${{ env.RELEASE_TAG }}';
+                 const match = tag.match(/^v(\d+)\.(\d+)\.\d+$/);
+                 if (!match) { console.log('No semver tag, skipping cleanup.'); return; }
+                 const prefix = `v${match[1]}.${match[2]}.`;
+
+                 const releases = await github.rest.repos.listReleases({
+                   owner: context.repo.owner,
+                   repo: context.repo.repo,
+                   per_page: 100
+                 });
+
+                 for (const release of releases.data) {
+                   // Only delete drafts — leave pre-releases frozen
+                   if (release.draft && !release.prerelease && release.tag_name.startsWith(prefix) && release.tag_name !== tag) {
+                     console.log(`Deleting draft release: ${release.tag_name}`);
+                     await github.rest.repos.deleteRelease({
+                       owner: context.repo.owner,
+                       repo: context.repo.repo,
+                       release_id: release.id
+                     });
+                   }
+                 }
+
+         - name: Download build artifact
+           uses: actions/download-artifact@v8
+           with:
+              name: release
+              path: release/
+
+         - name: Create release assets
+           shell: bash
+           run: |
+              cd release/discourse
+              zip -r ../../discourse-hugo-html-${{ env.RELEASE_TAG }}.zip hugo-html
+              zip -r ../../discourse-hugo-text-${{ env.RELEASE_TAG }}.zip hugo-text
+              cd ../highlightjs
+              zip -r ../../highlightjs-hugo-${{ env.RELEASE_TAG }}.zip .
+              cp hugo-html/dist/hugo-html.min.js ../../hugo-html-${{ env.RELEASE_TAG }}.min.js
+              cp hugo-text/dist/hugo-text.min.js ../../hugo-text-${{ env.RELEASE_TAG }}.min.js
+              cd ..
+              cp highlight-hugo.min.js ../highlight-hugo-${{ env.RELEASE_TAG }}.min.js
+
+         - name: Create GitHub Release
+           uses: softprops/action-gh-release@v2
+           with:
+              tag_name: ${{ env.RELEASE_TAG }}
+              name: ${{ env.RELEASE_TAG }}
+              draft: true
+              # Release Please generates CHANGELOG.md — use it as release notes
+              body_path: CHANGELOG.md
+              files: |
+                 discourse-hugo-html-${{ env.RELEASE_TAG }}.zip
+                 discourse-hugo-text-${{ env.RELEASE_TAG }}.zip
+                 highlightjs-hugo-${{ env.RELEASE_TAG }}.zip
+                 hugo-html-${{ env.RELEASE_TAG }}.min.js
+                 hugo-text-${{ env.RELEASE_TAG }}.min.js
+                 highlight-hugo-${{ env.RELEASE_TAG }}.min.js
+
+   docs:
+      runs-on: ubuntu-latest
+      needs: build
+      permissions:
+         contents: read
+         pages: write
+         id-token: write
+      concurrency:
+         group: pages
+         cancel-in-progress: false
+
+      steps:
+         - name: Deploy to GitHub Pages
+           uses: actions/deploy-pages@v5
