@@ -12,7 +12,7 @@
 
 {{- $keywords := partialCached "get-keywords.html" .Params.h4h .Params.h4h }}
 
-{{- $dataKeywords := index site.Data.keywords $dataLang }}
+{{- $dataKeywords := index hugo.Data.keywords $dataLang }}
 
 {{- /* generate keyword base patterns for the action root modes */ -}}
 {{- range $regexName, $regexWords := index $dataKeywords "patterns" }}
