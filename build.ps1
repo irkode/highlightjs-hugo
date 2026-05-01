@@ -7,7 +7,6 @@ param(
     'CloneHighlightJS',
     'DeveloperBuild',
     'GenerateHugoGrammars',
-    'distributeHighLightJSBuildResults',
     'ShowStatus',
     'TestHighlightJS'
   )][string[]]$Skip,
@@ -17,8 +16,6 @@ param(
   [Parameter(Mandatory = $false)][ValiDateSet('true', 'false')][string]$OnlyExtra = 'true',
   # Proceed regardless of test failures
   [Parameter(Mandatory = $false)][switch]$IgnoreMarkupErrors,
-  # publish to Distribution folder
-  [Parameter(Mandatory = $false)][Alias('Dist')][switch]$Distribute,
   [Parameter(Mandatory = $false)][ValidateSet(
     'BuildDocs',
     'BuildHighlightJS',
@@ -26,8 +23,8 @@ param(
     'CloneHighlightJS',
     'DeveloperBuild',
     'GenerateHugoGrammars',
-    'DistributeHighLightJSBuildResults',
-    'ShowStatus'
+    'ShowStatus',
+    'TestHighlightJS'
   )][string[]]$Steps,
   [string[]]$OnlyLanguages = @('hugo-embed', 'hugo-html', 'hugo-text')
 )
@@ -39,15 +36,16 @@ if ($PSBoundParameters.Keys -notcontains 'Steps') {
   $Steps = @(
     'CloneHighlightJS',
     'GenerateHugoGrammars',
-    'BuildHighlightJS', 'DistributeHighLightJSBuildResults', 'BuildDiscoursePlugin',
-    'BuildDocs',
-    'DeveloperBuild'
+    'TestHighlightJS',
+    'BuildHighlightJS'
+    'BuildDiscoursePlugin'#,
+#    'BuildDocs',
+#    'DeveloperBuild'
   )
 }
 if ($PSBoundParameters.Keys -contains 'Skip') {
   $Steps = $steps | Where-Object { $Skip -notcontains $_ }
 }
-if ($Distribute) { $Steps += 'distribute' }
 
 try {
   try {
@@ -58,6 +56,8 @@ try {
     $WorkDir = Test-Folder -Create $ProjectRoot "work"
     $DocsDir = Test-Folder -Create $ProjectRoot "docs"
     $HugoGenDir = Test-Folder $ScriptsDir "hugen"
+    $HugenDir = Test-Folder $ProjectRoot "hugen"
+    $DistributionDir = Test-Folder -Create $ProjectRoot "release"
 
     $HighlightJsDir = Join-Path $WorkDir "highlight.js"
     $HighlightJsExtraDir = Join-Path $HighlightJsDir "extra"

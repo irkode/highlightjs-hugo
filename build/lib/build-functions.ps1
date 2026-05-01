@@ -1,46 +1,68 @@
-function buildHighlightJS {
-  [CmdLetBinding()]
-  param()
-  try {
-    if ($Skip -contains 'BuildHighlightJS') {
-      Write-Verbose "Skip Highlight.js build"
-    } else {
-      Set-Location $HighlightJsDir
-      $EnvOnlyExtra = $ENV:ONLY_EXTRA
-      if ($OnlyExtra -eq 'true') { $ENV:ONLY_EXTRA = 'true' } else { $ENV:ONLY_EXTRA = $Null }
-      exec node ./tools/build.js -t node @OnlyLanguages
-      if ($Skip -contains 'TestHighlightJS') {
-        Write-Verbose "Skip Highlight.js tests"
-      } else {
-        try { exec npm run test-markup }
-        catch { if (-not $IgnoreMarkupErrors) { throw $_ } }
+function testHighlightJS {
+   [CmdLetBinding()]
+   param()
+   $Step = "Test Highlight.js"
+   Set-Location $HighlightJsDir
+   $EnvOnlyExtra = $ENV:ONLY_EXTRA
+   if ($OnlyExtra -eq 'true') { $ENV:ONLY_EXTRA = 'true' } else { $ENV:ONLY_EXTRA = $Null }
+   if ($Skip -contains 'TestHighlightJS') {
+      Write-Verbose "SKIP: $Step"
+   } else {
+      Write-Verbose "EXEC: $Step"
+      try {
+         exec node ./tools/build.js -t node @OnlyLanguages
+         exec npm run test-markup
+      } catch {
+         if (-not $IgnoreMarkupErrors) { throw $_ }
+      } finally {
+         $ENV:ONLY_EXTRA = $EnvOnlyExtra
+         Set-Location $startCWD
       }
-      exec node tools/build.js -t cdn @OnlyLanguages
-    }
-    [void](Test-File $HighlightJsExtraDir "hugo-embed\dist\hugo-embed.min.js")
-    [void](Test-File $HighlightJsExtraDir "hugo-html\dist\hugo-html.min.js")
-    [void](Test-File $HighlightJsExtraDir "hugo-text\dist\hugo-text.min.js")
-  } catch {
-    Write-Error "build Highlight.js modules failed" -ErrorAction Continue
-    throw $_
-  } finally {
-    $ENV:ONLY_EXTRA = $EnvOnlyExtra
-    Set-Location $startCWD
-  }
+   }
+}
+function buildHighlightJS {
+   [CmdLetBinding()]
+   param()
+   $Step = "Build Highlight.js"
+   Set-Location $HighlightJsDir
+   $EnvOnlyExtra = $ENV:ONLY_EXTRA
+   if ($OnlyExtra -eq 'true') { $ENV:ONLY_EXTRA = 'true' } else { $ENV:ONLY_EXTRA = $Null }
+   if ($Skip -contains 'BuildHighlightJS') {
+      Write-Verbose "SKIP: $Step"
+   } else  {
+      Write-Verbose "EXEC: $Step"
+      try {
+         exec node tools/build.js -t cdn @OnlyLanguages
+         [void](Test-File $HighlightJsExtraDir "hugo-embed\dist\hugo-embed.min.js")
+         [void](Test-File $HighlightJsExtraDir "hugo-html\dist\hugo-html.min.js")
+         [void](Test-File $HighlightJsExtraDir "hugo-text\dist\hugo-text.min.js")
+         $HighlightJsTargetDir = (Join-Path $DistributionDir "highlightjs")
+         Test-Folder -Create $highlightJsTargetDir
+         Copy-Item -Recurse $HighlightJsExtraDir/* $HighlightJsTargetDir -Exclude .keep
+         exec node tools/build.js -t browser hugo-html hugo-text xml
+         Copy-Item "build/highlight.min.js" (Join-Path $DistributionDir "highlight-hugo.min.js")
+      } catch {
+         Write-Error "FAIL: $Step failed" -ErrorAction Continue
+         throw $_
+      } finally {
+         $ENV:ONLY_EXTRA = $EnvOnlyExtra
+         Set-Location $startCWD
+      }
+   }
 }
 
 function buildDiscoursePlugin {
   [CmdLetBinding()]
   param()
+  $Step = "Generate Discourse Plugin"
   try {
-    Set-Location $startCWD
     $DistributionDir = Test-Folder -Create $ProjectRoot "release"
     Set-Location $HugoGenDir
     exec hugo -d $DistributionDir --renderSegments discourse
     [void](Test-File $DistributionDir "discourse/hugo-html/discourse/about.json")
     [void](Test-File $DistributionDir "discourse/hugo-text/discourse/about.json")
   } catch {
-    Write-Error "Generation of Discourse Plugin failed" -ErrorAction Continue
+    Write-Error "FAIL: $Step" -ErrorAction Continue
     throw $_
   } finally {
     Set-Location $startCWD
@@ -49,11 +71,12 @@ function buildDiscoursePlugin {
 function buildDocs {
   [CmdLetBinding()]
   param()
+  $Step = "Generate Documentation"
   try {
     Set-Location $DocsDir
     exec hugo build
   } catch {
-    Write-Error "$_`Building Documentation from $DocsDir failed" -ErrorAction Continue
+    Write-Error "FAIL: $Step" -ErrorAction Continue
     throw "$_"
   } finally {
     Set-Location $startCWD
@@ -63,10 +86,12 @@ function buildDocs {
 function cloneHighlightJS {
   [CmdLetBinding()]
   param()
+  $Step = "Clone HighlightJS to $HighLightJsDir"
   try {
     if ($Skip -contains 'CloneHighlightJS') {
-      Write-Verbose "HighlightJS: clone ...SKIPPED"
+      Write-Verbose "SKIP: $Step"
     } else {
+      Write-Verbose "CALL: $Step"
       Set-Location $WorkDir
       if (-not (Test-Path $HighlightJsDir -PathType Container)) {
         exec git clone --single-branch --depth 1 "-b" ${ENV:HIGHLIGHTJS_VERSION} https://github.com/highlightjs/highlight.js.git
@@ -85,7 +110,7 @@ function cloneHighlightJS {
     }
     [void](Test-Folder $HighLightJsDir\node_modules)
   } catch {
-    Write-Error "$_`nHighlightJS: clone and setup failed" -ErrorAction Continue
+    Write-Error "FAIL: $Step" -ErrorAction Continue
     throw $_
     throw
   } finally {
@@ -171,20 +196,24 @@ function distributeHighLightJSBuildResults {
 function generateHugoGrammars {
   [CmdLetBinding()]
   param()
+  $Step = "Generate Highlight.js grammars to $HighlightJsExtraDir"
   try {
-    if ($Skip -contains 'GenerateModules') {
-      Write-Verbose "HugoModules: Generate Highlight.js grammars to $HighlightJsExtraDir"
+    if ($Skip -contains 'generateHugoGrammars') {
+      Write-Verbose "SKIP: $Step"
     } else {
-      Set-Location $HugoGenDir
-      exec hugo -d $HighlightJsExtraDir --cleanDestinationDir --renderSegments grammars
+      Write-Verbose "CALL: $Step"
+      Set-Location (Join-Path $HugenDir "grammars")
+      exec hugo -d $HighlightJsExtraDir --cleanDestinationDir
     }
+    [void](Test-File $HighlightJsExtraDir "h4h-lib\go\grammar.js")
+    [void](Test-File $HighlightJsExtraDir "h4h-lib\go\keywords.js")
+    [void](Test-File $HighlightJsExtraDir "h4h-lib\hugo\grammar.js")
+    [void](Test-File $HighlightJsExtraDir "h4h-lib\hugo\keywords.js")
     [void](Test-File $HighlightJsExtraDir "hugo-embed\src\languages\hugo-embed.js")
-    [void](Test-File $HighlightJsExtraDir "hugo-lib\hugo-grammar.js")
-    [void](Test-File $HighlightJsExtraDir "hugo-lib\hugo-keywords.js")
     [void](Test-File $HighlightJsExtraDir "hugo-html\src\languages\hugo-html.js")
     [void](Test-File $HighlightJsExtraDir "hugo-text\src\languages\hugo-text.js")
   } catch {
-    Write-Error "HugoModules: generate Highlight.js grammars failed" -ErrorAction Continue
+    Write-Error "FAIL: $Step" -ErrorAction Continue
     throw "$_"
   } finally {
     Set-Location $startCWD
@@ -202,5 +231,4 @@ function showStatus {
   } finally {
     Set-Location $startCWD
   }
-
 }

@@ -20,10 +20,8 @@ disablePathToLower = true
 
 [permalinks]
   [permalinks.page]
-    grammars  = '/:sections[1]/:contentbasename'
     discourse = '/:sections/:contentbasename'
   [permalinks.section]
-    grammars  = '/:sections[1]'
     discourse = '/:section'
 
 # used to generate Github README.md files
@@ -51,9 +49,6 @@ disablePathToLower = true
   notAlternative = true
 
 [segments]
-  [segments.grammars]
-    [[segments.grammars.includes]]
-      path = '{/grammars,/grammars/**}'
   [segments.discourse]
     [[segments.discourse.includes]]
       path = '{/discourse,/discourse/**}'
@@ -65,64 +60,6 @@ disablePathToLower = true
   [[module.mounts]]
     source = 'assets'
     target = 'assets'
-  [[module.mounts]]
-    source = '../../docs/assets/_snippets'
-    target = 'assets/_snippets'
-
-  [[module.mounts]]
-    source = 'layouts'
-    target = 'layouts'
-  [[module.mounts]]
-    source = '../../docs/themes/huggingface/layouts/_shortcodes'
-    target = 'layouts/_shortcodes'
-
-  [[module.mounts]]
-    source = 'content'
-    target = 'content'
-  [[module.mounts]]
-    source = '../../docs/content/_snippets'
-    target = 'content/_snippets'
-#   [[module.mounts]]
-#     source = "../../docs/content/discourse/_index.md"
-#     target = "content/discourse/README.md"
-  [[module.mounts]]
-    source = "../../docs/assets"
-    target = "content/discourse/"
-    files  = ['highlightjs-hugo.png']
-#   [[module.mounts]]
-#     source = "../../docs/content/highlightjs/_index.md"
-#     target = "content/highlightjs/README.md"
-  [[module.mounts]]
-    source = "../../docs/assets"
-    target = "content/highlightjs/"
-    files  = ['highlightjs-hugo.png']
-
-  # mount from docs
-  [[module.mounts]]
-    source = "../../docs/content/_snippets/license.md"
-    target = "content/discourse/LICENSE"
-  [[module.mounts]]
-    source = "../../docs/content/_snippets/license.md"
-    target = "content/grammars/hugo-html/LICENSE"
-  [[module.mounts]]
-    source = "../../docs/content/_snippets/license.md"
-    target = "content/grammars/hugo-text/LICENSE"
-  [[module.mounts]]
-    source = "../../docs/content/highlightjs/hugo-css-class-reference.md"
-    target = "content/grammars/hugo-html/hugo-css-class-reference.md"
-  [[module.mounts]]
-    source = "../../docs/content/highlightjs/hugo-css-class-reference.md"
-    target = "content/grammars/hugo-text/hugo-css-class-reference.md"
-
-  [[module.mounts]]
-    source = "src/grammars"
-    target = "content/grammars/hugo-text"
-  [[module.mounts]]
-    source = "src/grammars"
-    target = "content/grammars/hugo-html"
-  [[module.mounts]]
-    source = "src/grammars"
-    target = "content/grammars/hugo-embed"
 
   # mount results of Highlight.js build to assets
   [[module.mounts]]
