@@ -1,0 +1,22 @@
+{{- $tpl := templates.Current.Name }}
+{{- $pagePath := .Path }}
+{{- $idx := math.Counter }}
+{{- warnf "[%04d][ %-20s ] : %s" $idx $tpl .Section }}
+{{- range $res := resources.Match "discourse/**" }}
+	{{- warnf "[%04d][ %-20s ] : %s" $idx "executeAsTemplate" $res }}
+	{{- with $res.Content | resources.FromString $res }}
+
+		{{- with . | resources.ExecuteAsTemplate (path.Join "/" $.Section $res) $ }}
+			{{- .Publish }}
+		{{- end }}
+	{{- end }}
+{{- end }}
+
+{{- range $res := resources.Match "*" }}
+	{{- with $res.Content | resources.FromString $res }}
+		{{- with . | resources.ExecuteAsTemplate (path.Join $.Section $res) $ }}
+			{{- .Publish }}
+		{{- end }}
+	{{- end }}
+{{- end }}
+{{- /**/ -}}
