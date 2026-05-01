@@ -29,3 +29,7 @@ theme         = "huggingface"
       source = "static"
       target = "static"
       files  = ['! .keep']
+
+   [module.hugoVersion]
+      extended = false
+      min      = '0.161.1'
