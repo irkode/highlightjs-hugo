@@ -38,9 +38,9 @@ if ($PSBoundParameters.Keys -notcontains 'Steps') {
     'GenerateHugoGrammars',
     'TestHighlightJS',
     'BuildHighlightJS'
-    'BuildDiscoursePlugin'#,
-#    'BuildDocs',
-#    'DeveloperBuild'
+    'BuildDiscoursePlugin',
+    'BuildDocs',
+    'DeveloperBuild'
   )
 }
 if ($PSBoundParameters.Keys -contains 'Skip') {
