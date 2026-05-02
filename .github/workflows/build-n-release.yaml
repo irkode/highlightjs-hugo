@@ -47,7 +47,9 @@ jobs:
          HUGO_CACHEDIR: ${{ github.workspace }}/work/hugo-cache
          HIGHLIGHTJS_DIR: ${{ github.workspace }}/work/highlight.js
          HIGHLIGHTJS_EXTRA_DIR: ${{ github.workspace }}/work/highlight.js/extra
-         DISTRIBUTION_DIR: ${{ github.workspace }}/release
+         HUGEN_DISCOURSE: ${{ github.workspace }}/hugen/discourse
+         HUGEN_GRAMMARS: ${{ github.workspace }}/hugen/grammars
+         RELEASE_DIR: ${{ github.workspace }}/release
          ONLY_LANGUAGES: hugo-embed hugo-html hugo-text
          TZ: Europe/Berlin
 
@@ -74,8 +76,8 @@ jobs:
               go-version: "${{ env.GO_VERSION }}"
               cache: true
               cache-dependency-path: |
-                 build/hugen/go.sum
-                 build/hugen/hugo.direct.sum
+                 hugen/grammars/go.sum
+                 hugen/grammars/hugo.direct.sum
 
          - name: Restore Cache - Hugo binary
            id: cache-hugo-bin
@@ -109,26 +111,6 @@ jobs:
            run: |
               ./build/versions-check-installed.ps1 -Verbose -VersionConfigFile .versions.json
 
-         - name: Restore Cache - Hugo modules
-           id: cache-hugo-mod
-           uses: actions/cache/restore@v5
-           with:
-              path: ${{ env.HUGO_CACHEDIR }}
-              key: hugo-mod-${{ runner.os }}-${{ env.HUGO_VERSION }}
-
-         - name: Install Hugo modules
-           if: steps.cache-hugo-mod.outputs.cache-hit != 'true'
-           working-directory: ./build/hugen
-           run: |
-              hugo mod get
-
-         - name: Save Cache - Hugo modules
-           if: steps.cache-hugo-mod.outputs.cache-hit != 'true'
-           uses: actions/cache/save@v5
-           with:
-              path: ${{ env.HUGO_CACHEDIR }}
-              key: hugo-mod-${{ runner.os }}-${{ env.HUGO_VERSION }}
-
          - name: Restore Cache - Highlight.js
            id: cache-highlightjs
            uses: actions/cache/restore@v5
@@ -152,9 +134,8 @@ jobs:
               key: highlightjs-${{ runner.os }}-${{ env.HIGHLIGHTJS_VERSION }}
 
          - name: Generate Highlight.js grammars
-           working-directory: ./build/hugen
            run: |
-              hugo -d ${{ env.HIGHLIGHTJS_EXTRA_DIR }} --cleanDestinationDir --renderSegments grammars
+              hugo --source ${{ env.HUGEN_GRAMMARS }} --destination ${{ env.HIGHLIGHTJS_EXTRA_DIR }}
 
          # On windows this builds only the listed grammars
          # here we get also the common ones - sick
@@ -183,22 +164,17 @@ jobs:
            working-directory: ${{ env.HIGHLIGHTJS_DIR }}
            run: |
               node ./tools/build.js -t cdn ($ENV:ONLY_LANGUAGES -split '\s+')
-
-         - name: Copy Build results to dist folder
-           working-directory: ./build/hugen
-           run: |
-              hugo -d ${{ env.DISTRIBUTION_DIR }} --renderSegments distribute
-
-         - name: Build Discourse Theme Components
-           working-directory: ./build/hugen
-           run: |
-              hugo -d ${{ env.DISTRIBUTION_DIR }} --renderSegments discourse
+              Get-ChildItem ${{ env.HIGHLIGHTJS_EXTRA_DIR }} | ForEach-Object { Copy-Item -Recurse $_ -Destination "${{ env.RELEASE_DIR }}/highlightjs/$($_.Name)"        }
 
          - name: Build highlight-hugo engine
            working-directory: ${{ env.HIGHLIGHTJS_DIR }}
            run: |
               node ./tools/build.js -t browser hugo-html hugo-text xml
-              Copy-Item  (Join-Path ${{ env.HIGHLIGHTJS_DIR }} "build/highlight.min.js") (Join-Path ${{ env.DISTRIBUTION_DIR }} "highlight-hugo.min.js")
+              Copy-Item  (Join-Path ${{ env.HIGHLIGHTJS_DIR }} "build/highlight.min.js") (Join-Path ${{ env.RELEASE_DIR }} "highlight-hugo.min.js")
+
+         - name: Build Discourse Theme Components
+           run: |
+              hugo --source ${{ env.HUGEN_DISCOURSE }} --destination ${{ env.RELEASE_DIR}}/discourse
 
          - name: Upload build artifact
            uses: actions/upload-artifact@v7

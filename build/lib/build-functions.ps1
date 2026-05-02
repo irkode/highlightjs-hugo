@@ -41,9 +41,8 @@ function buildHighlightJS {
          $TargetDir = Test-Folder -Clean -Create $ReleaseDir "highlightjs"
          Copy-Item -Recurse $ExtraDir/* $TargetDir -Exclude .keep
 
-         $TargetDir = Test-Folder -Clean -Create $ReleaseDir "highlight-hugo"
          exec node tools/build.js -t browser hugo-html hugo-text xml
-         Copy-Item "build/highlight.min.js" (Join-Path $TargetDir "highlight-hugo.min.js")
+         Copy-Item "build/highlight.min.js" (Join-Path $ReleaseDir "highlight-hugo.min.js")
       } catch {
          Write-Error "FAIL: $Step failed" -ErrorAction Continue
          throw $_
