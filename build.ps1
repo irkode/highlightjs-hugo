@@ -53,14 +53,12 @@ try {
     Import-Module (Join-Path -Path $ScriptsDir -ChildPath "lib/utilities.ps1")
     Import-Module (Join-Path -Path $ScriptsDir -ChildPath "lib/build-functions.ps1")
     $ProjectRoot = Test-Folder $PSScriptRoot
+    $HugenDir = Test-Folder $ProjectRoot "hugen"
     $WorkDir = Test-Folder -Create $ProjectRoot "work"
     $DocsDir = Test-Folder -Create $ProjectRoot "docs"
-    $HugoGenDir = Test-Folder $ScriptsDir "hugen"
-    $HugenDir = Test-Folder $ProjectRoot "hugen"
-    $DistributionDir = Test-Folder -Create $ProjectRoot "release"
+    $ReleaseDir = Test-Folder -Create $ProjectRoot "release"
 
     $HighlightJsDir = Join-Path $WorkDir "highlight.js"
-    $HighlightJsExtraDir = Join-Path $HighlightJsDir "extra"
     Write-Verbose "Starting from: $ProjectRoot"
     Write-Verbose "Working Directory: $WorkDir"
   } catch {

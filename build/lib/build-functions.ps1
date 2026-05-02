@@ -32,15 +32,18 @@ function buildHighlightJS {
    } else {
       Write-Verbose "EXEC: $Step"
       try {
+         $ExtraDir = Test-Folder -Create $HighlightJsDir "extra"
          exec node tools/build.js -t cdn @OnlyLanguages
-         [void](Test-File $HighlightJsExtraDir "hugo-embed\dist\hugo-embed.min.js")
-         [void](Test-File $HighlightJsExtraDir "hugo-html\dist\hugo-html.min.js")
-         [void](Test-File $HighlightJsExtraDir "hugo-text\dist\hugo-text.min.js")
-         $HighlightJsTargetDir = (Join-Path $DistributionDir "highlightjs")
-         Test-Folder -Create $highlightJsTargetDir
-         Copy-Item -Recurse $HighlightJsExtraDir/* $HighlightJsTargetDir -Exclude .keep
+         [void](Test-File $ExtraDir "hugo-embed\dist\hugo-embed.min.js")
+         [void](Test-File $ExtraDir "hugo-html\dist\hugo-html.min.js")
+         [void](Test-File $ExtraDir "hugo-text\dist\hugo-text.min.js")
+
+         $TargetDir = Test-Folder -Clean -Create $ReleaseDir "highlightjs"
+         Copy-Item -Recurse $ExtraDir/* $TargetDir -Exclude .keep
+
+         $TargetDir = Test-Folder -Clean -Create $ReleaseDir "highlight-hugo"
          exec node tools/build.js -t browser hugo-html hugo-text xml
-         Copy-Item "build/highlight.min.js" (Join-Path $DistributionDir "highlight-hugo.min.js")
+         Copy-Item "build/highlight.min.js" (Join-Path $TargetDir "highlight-hugo.min.js")
       } catch {
          Write-Error "FAIL: $Step failed" -ErrorAction Continue
          throw $_
@@ -56,11 +59,11 @@ function buildDiscoursePlugin {
    param()
    $Step = "Generate Discourse Plugin"
    try {
-      $DistributionDir = Test-Folder -Create $ProjectRoot "release"
-      Set-Location (Join-Path $HugenDir "discourse")
-      exec hugo -d (Join-Path $DistributionDir "discourse")
-      [void](Test-File $DistributionDir "discourse/hugo-html/discourse/about.json")
-      [void](Test-File $DistributionDir "discourse/hugo-text/discourse/about.json")
+      $TargetDir = Test-Folder -Create -Clean $ReleaseDir "discourse"
+      $SourceDir = Test-Folder $HugenDir "discourse"
+      exec hugo --source $SourceDir --destination $TargetDir
+      [void](Test-File $TargetDir "hugo-html/discourse/about.json")
+      [void](Test-File $TargetDir "hugo-text/discourse/about.json")
    } catch {
       Write-Error "FAIL: $Step" -ErrorAction Continue
       throw $_
@@ -133,7 +136,7 @@ function developerBuild {
          Write-Verbose "Skip Developer/Test Build"
       } else {
          $StyleTargetFolder = Test-Folder -Path $HighlightJsDir "src/styles"
-         $StyleSourceFile = Test-File -Path $HighlightJsExtraDir "hugo-html/src/styles/debug-hugo.css"
+         $StyleSourceFile = Test-File -Path $HighlightJsDir "extra/hugo-html/src/styles/debug-hugo.css"
          $DeveloperHtmlFile = Test-File -Path $HighlightJsDir "tools/developer.html"
          Write-Verbose "Add custom CSS style and patch developer.html - use it from work/developer.html"
          # add custom debugging style
@@ -166,52 +169,33 @@ cssOptions.forEach(css => {
          ($devhtml -join "`n") | Set-Content -Encoding utf8 -NoNewline (Join-Path $WorkDir developer.html)
       }
       [void](Test-File $WorkDir developer.html)
-      Set-Location $HighlightJsDir
-      exec node tools/build.js -t browser hugo-html hugo-text xml
-      [void](Test-File $HighlightJsDir "build\highlight.min.js")
-      $DistributionDir = Test-Folder -Create $ProjectRoot "release\highlightjs-hugo"
-      Copy-Item (Join-Path $HighlightJsDir "build\highlight.min.js") (Join-Path $ProjectRoot "release\highlightjs-hugo\highlight-hugo.min.js")
    } catch {
       throw $_
    } finally {
       Set-Location $startCWD
    }
 }
-function distributeHighLightJSBuildResults {
-   [CmdLetBinding()]
-   param()
-   try {
-      Set-Location $startCWD
-      $DistributionDir = Test-Folder -Create $ProjectRoot "release"
-      Set-Location $HugoGenDir
-      exec hugo -d $DistributionDir --renderSegments distribute
-   } catch {
-      Write-Error "$_`Distribution of HighlightJS Build Results to $DistributionDir failed" -ErrorAction Continue
-      throw "$_"
-   } finally {
-      Set-Location $startCWD
-   }
-}
-
+# TODO: don't delete foreign folders in extra
 function generateHugoGrammars {
    [CmdLetBinding()]
    param()
-   $Step = "Generate Highlight.js grammars to $HighlightJsExtraDir"
+   $TargetDir = Test-Folder -Create -Clean $HighlightJsDir "extra"
+   $SourceDir = Test-Folder $HugenDir "grammars"
+   $Step = "Generate Highlight.js grammars to $TargetDir"
    try {
       if ($Skip -contains 'generateHugoGrammars') {
          Write-Verbose "SKIP: $Step"
       } else {
          Write-Verbose "CALL: $Step"
-         Set-Location (Join-Path $HugenDir "grammars")
-         exec hugo -d $HighlightJsExtraDir --cleanDestinationDir
+         exec hugo --source $SourceDir --destination $TargetDir
       }
-      [void](Test-File $HighlightJsExtraDir "h4h-lib\go\grammar.js")
-      [void](Test-File $HighlightJsExtraDir "h4h-lib\go\keywords.js")
-      [void](Test-File $HighlightJsExtraDir "h4h-lib\hugo\grammar.js")
-      [void](Test-File $HighlightJsExtraDir "h4h-lib\hugo\keywords.js")
-      [void](Test-File $HighlightJsExtraDir "hugo-embed\src\languages\hugo-embed.js")
-      [void](Test-File $HighlightJsExtraDir "hugo-html\src\languages\hugo-html.js")
-      [void](Test-File $HighlightJsExtraDir "hugo-text\src\languages\hugo-text.js")
+      [void](Test-File $TargetDir "h4h-lib\go\grammar.js")
+      [void](Test-File $TargetDir "h4h-lib\go\keywords.js")
+      [void](Test-File $TargetDir "h4h-lib\hugo\grammar.js")
+      [void](Test-File $TargetDir "h4h-lib\hugo\keywords.js")
+      [void](Test-File $TargetDir "hugo-embed\src\languages\hugo-embed.js")
+      [void](Test-File $TargetDir "hugo-html\src\languages\hugo-html.js")
+      [void](Test-File $TargetDir "hugo-text\src\languages\hugo-text.js")
    } catch {
       Write-Error "FAIL: $Step" -ErrorAction Continue
       throw "$_"
@@ -224,7 +208,7 @@ function showStatus {
    [CmdLetBinding()]
    param()
    try {
-      tree $HighlightJsExtraDir
+      tree (Join-Path $HighlightJsExtraDir "extra")
    } catch {
       Write-Error "Display Changes failed" -ErrorAction Continue
       throw "$_"

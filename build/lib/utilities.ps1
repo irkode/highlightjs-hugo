@@ -43,17 +43,22 @@ function Test-File {
 function Test-Folder {
   [CmdletBinding()]
   param(
-    [Parameter(Mandatory=$true, Position=0)][string]$Path,
+
+    [Parameter(Mandatory=$true, Position=0)][ValidateNotNullOrEmpty()][string]$Path,
     [Parameter(Mandatory=$false, Position=1)][string]$ChildPath = "",
-    [Parameter(Mandatory=$false)][switch]$CreateIfMissing
+    [Parameter(Mandatory=$false)][switch]$Create,
+    [Parameter(Mandatory=$false)][switch]$Clean
 
   )
   try {
     $testPath = if ($ChildPath) {Join-Path $Path $ChildPath} else { $Path }
     Write-Verbose "Test-Folder: $testPath"
-    If ($TestPath) {
+    If ($testPath) {
+      If ($Clean -and (Test-Path $testPath -PathType Container)) {
+         Remove-Item -Recurse $testPath
+      }
       If (-Not (Test-Path $testPath)) {
-        if ($CreateIfMissing) {
+        if ($Create) {
           Write-Verbose "Create Folder: $testPath"
           [void](New-Item -Type Directory $testPath -ErrorAction Stop)
         } else {
@@ -67,7 +72,7 @@ function Test-Folder {
       }
       Write-Error "Path [ $testPath ] is not a folder"
     } else {
-      Write-Error "Path [ $testPath ] may not be empty"
+      Write-Error "Path [ `$testPath ] may not be empty"
       throw "$_"
     }
   } catch {
