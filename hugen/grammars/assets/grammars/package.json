@@ -25,5 +25,5 @@
   "bugs": {
     "url": "{{ site.Params.repository }}/issues"
   },
-  "homepage": "{{ site.Params.webroot }}/"
+  "homepage": "{{ site.Params.webRoot }}/"
 }

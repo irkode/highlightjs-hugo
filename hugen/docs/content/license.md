@@ -1,5 +1,5 @@
 +++
-Title = 'LICENCE'
+Title = 'LICENSE'
 +++
 
 {{% content-snippet "LICENSE.md" %}}

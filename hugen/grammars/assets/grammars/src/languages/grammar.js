@@ -8,7 +8,7 @@ Website: {{ absURL "" }}
 Category: template
 License: {{ site.Params.license }}
 */
-import { H4HGRAMMAR_mainContains } from "../../../h4h-lib/{{- .Params.keywords -}}/grammar.js";
+import { H4H_GRAMMAR_mainContains } from "../../../h4h-lib/{{- .Params.keywords -}}/grammar.js";
 export default function (hljs) {
 
   const languageDefinition = {
@@ -17,7 +17,7 @@ export default function (hljs) {
     {{- with .Params.aliases }}{{- printf "\n    aliases: %s," (jsonify .) }}{{ end }}
     {{- with .Params.disableAutodetect }}{{- printf "\n    disableAutodetect: %s," (jsonify .) }}{{ end }}
     {{- with .Params.subLanguages }}{{- printf "\n    subLanguage: %s," . }}{{ end }}
-    contains: H4HGRAMMAR_mainContains
+    contains: H4H_GRAMMAR_mainContains
   };
   return languageDefinition;
 }

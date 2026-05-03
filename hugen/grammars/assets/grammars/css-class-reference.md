@@ -37,7 +37,7 @@ for them.
 
 - `template-variable`
 
-  Used for template variables starting with a `$` (example `$myvar`)
+  Used for template variables starting with a `$` (example `$myVar`)
 
 - `title.function.invoke` (special)
 
@@ -87,10 +87,10 @@ We divide Go/Hugo keywords into the following standard scopes.
   For Go as documented in [Go Template-Text Predefined template functions](https://pkg.go.dev/text/)
 
 > HINT: We generate the Keywords for Hugo at build time using a recent version of the docs. Means
-> highlighting old code won't detect ancient keywords/buildtins. The Go template
+> highlighting old code won't detect ancient keywords/build_ins. The Go template
 > keywords are handcrafted from the docs. Hopefully that's a complete fetch.
 
-## Submodes
+## Sub modes
 
 _hugo-html_ uses [Highlight.js][]'s _XML_ grammar for highlighting HTML as subLanguage.
 Check the official documentation for scopes used.

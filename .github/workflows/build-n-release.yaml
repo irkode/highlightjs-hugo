@@ -48,7 +48,7 @@ jobs:
          # NODE_VERSION:
          # HIGHLIGHTJS_VERSION:
          WORK_DIR: ${{ github.workspace }}/work
-         HUGO_CACHEDIR: ${{ github.workspace }}/work/hugo-cache
+         HUGO_CACHE_DIR: ${{ github.workspace }}/work/hugo-cache
          HIGHLIGHTJS_DIR: ${{ github.workspace }}/work/highlight.js
          HIGHLIGHTJS_EXTRA_DIR: ${{ github.workspace }}/work/highlight.js/extra
          HUGEN_DISCOURSE: ${{ github.workspace }}/hugen/discourse
@@ -192,7 +192,7 @@ jobs:
            run: |
               TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "unreleased")
               echo "HUGO_PARAMS_TAG=$TAG" >> $GITHUB_ENV
-              echo "HUGO_PARAMS_TAGDATE=$(git log -1 --format='%ci' $TAG 2>/dev/null || echo '')" >> $GITHUB_ENV
+              echo "HUGO_PARAMS_TAG_DATE=$(git log -1 --format='%ci' $TAG 2>/dev/null || echo '')" >> $GITHUB_ENV
 
          - name: Setup Pages
            id: pages

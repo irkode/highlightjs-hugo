@@ -2,7 +2,7 @@
    "name": "{{ .Section }}",
    "component": true,
    "license_url": "{{ site.Params.licenseURL }}",
-   "about_url": "{{ site.Params.webroot }}",
+   "about_url": "{{ site.Params.webRoot }}",
    "authors": "{{ site.Params.author }}",
    "theme_version": null,
    "minimum_discourse_version": null,

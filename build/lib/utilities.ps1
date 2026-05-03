@@ -1,16 +1,16 @@
 function exec {
   Write-Verbose "exec > $($args -join ' ')"
-  $rc = 0; $throwed = $false
+  $rc = 0; $thrown = $false
   try {
     Invoke-Expression ($args -join " ")
-    $rc = $LASTEXITCODE
+    $rc = $LastExitCode
   } catch {
-    $throwed = $_
+    $thrown = $_
   } finally {
-    if ($throwed) {
+    if ($thrown) {
       $line = $MyInvocation.ScriptLineNumber
       $file = Split-Path -Leaf $MyInvocation.ScriptName
-      Write-Error "[${file}:${line}] EXEC throwed: $throwed" -ErrorAction Stop
+      Write-Error "[${file}:${line}] EXEC THROW: $thrown" -ErrorAction Stop
     } elseif ($rc) {
       $line = $MyInvocation.ScriptLineNumber
       $file = Split-Path -Leaf $MyInvocation.ScriptName

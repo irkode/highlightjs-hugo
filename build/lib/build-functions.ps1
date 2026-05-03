@@ -105,9 +105,9 @@ function cloneHighlightJS {
       if ($NeedsInstall -or ($Force -contains 'SetupHighlightJS')) {
          Set-Location $HighlightJsDir
          exec npm install --save-dev
-         if ($LASTEXITCODE) { throw $_ }
+         if ($LastExitCode) { throw $_ }
          # exec npm audit fix
-         # if ($LASTEXITCODE) { throw $_ }
+         # if ($LastExitCode) { throw $_ }
       }
       [void](Test-Folder $HighLightJsDir\node_modules)
    } catch {
@@ -155,16 +155,16 @@ cssOptions.forEach(css => {
 
          $JsOptions | Set-Content -Encoding utf8 -NoNewline (Join-Path $WorkDir style-options.js)
 
-         $devhtml = Get-Content -Raw -Encoding utf8 $DeveloperHtmlFile
-         $devhtml = $devhtml -replace '(?s)(<select class="theme">.*?</select>)', '$1<script src="style-options.js"></script>'
-         $devhtml = $devhtml.Replace(
+         $DevHtmlPage = Get-Content -Raw -Encoding utf8 $DeveloperHtmlFile
+         $DevHtmlPage = $DevHtmlPage -replace '(?s)(<select class="theme">.*?</select>)', '$1<script src="style-options.js"></script>'
+         $DevHtmlPage = $DevHtmlPage.Replace(
             "../src/styles/", "highlight.js/src/styles/").Replace(
             "../build/", "highlight.js/build/").Replace(
             "vendor/", "highlight.js/tools/vendor/").Replace(
             'default.css"', 'debug-hugo.css"').Replace(
             "'default.css'", "'debug-hugo.css'"
          )
-         ($devhtml -join "`n") | Set-Content -Encoding utf8 -NoNewline (Join-Path $WorkDir developer.html)
+         ($DevHtmlPage -join "`n") | Set-Content -Encoding utf8 -NoNewline (Join-Path $WorkDir developer.html)
       }
       [void](Test-File $WorkDir developer.html)
    } catch {

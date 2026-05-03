@@ -12,14 +12,14 @@ disablePathToLower = true
 [params]
    subTitle   = "Advanced syntax highlighting for Hugo templates"
    author     = "Irkode <irkode@rikode.de>"
-   webroot    = "https://irkode.github.io/highlightjs-hugo"
-   reporoot   = "https://github.com/irkode/"
+   webRoot    = "https://irkode.github.io/highlightjs-hugo"
+   repoRoot   = "https://github.com/irkode/"
    repository = "https://github.com/irkode/highlightjs-hugo"
    releases   = "https://github.com/irkode/highlightjs-hugo/releases/latest"
    blobs      = "https://github.com/irkode/highlightjs-hugo/blob/main"
    category   = "templates"
    license    = "MIT"
-   licstart   = 2026
+   licStart   = 2026
    licenseURL = "https://github.com/irkode/highlightjs-hugo/blob/main/LICENSE"
 
 # we generate javascript files for the data structures needed by plugins

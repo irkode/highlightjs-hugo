@@ -1,7 +1,7 @@
 MIT License
 
 {{- $date := time.Now.Year }}
-{{ with $start := site.Params.Licstart }}
+{{ with $start := site.Params.LicStart }}
    {{- $date = cond (eq $start $date) $start (printf "%d-%d" $start $date) }}
 {{- end }}
 Copyright (c) {{ $date }} {{ site.Params.Author }}
