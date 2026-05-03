@@ -6,9 +6,13 @@
 {{- $tpl := templates.Current.Name }}
 {{- $pagePath := .Path }}
 {{- $idx := math.Counter }}
+{{- with .Params.keywords }}
+   {{- warnf "[%04d][ %-20s ] : %s :: %s" $idx $tpl $pagePath . }}
+{{- else  }}
+   {{- warnf "[%04d][ %-20s ] : %s" $idx $tpl $pagePath }}
+{{- end }}
 
 {{- $lang := .Params.keywords }}
-{{- warnf "[%04d][ %-20s ] : %s :: %s" $idx $tpl $pagePath $lang}}
 
 {{- $keywords := partialCached "get-keywords.html" $lang $lang }}
 {{- warnf  "DONE" }}

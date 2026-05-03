@@ -1,3 +1,11 @@
+{{- $tpl := templates.Current.Name }}
+{{- $pagePath := .Path }}
+{{- $idx := math.Counter }}
+{{- with .Params.keywords }}
+   {{- warnf "[%04d][ %-20s ] : %s :: %s" $idx $tpl $pagePath . }}
+{{- else  }}
+   {{- warnf "[%04d][ %-20s ] : %s" $idx $tpl $pagePath }}
+{{- end }}
 <!doctype html>
 <html lang="{{ site.Language.Locale }}" dir="{{ or site.Language.Direction `ltr` }}">
 	<head>

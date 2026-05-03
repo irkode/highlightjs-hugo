@@ -1,9 +1,13 @@
+{{- $tpl := templates.Current.Name }}
+{{- $idx := math.Counter }}
+{{- warnf "[%04d][ %-20s ] : %s " $idx $tpl .Path }}
 {{- $opts := dict
 	"targetPath" "/css/huggingface.css"
 	"loaders" (dict ".svg" "dataurl")
 }}
 
 {{- with resources.Get "css/huggingface.css" }}
+   {{- warnf "[%04d][ %-20s ] : %s :: LOAD %s" $idx $tpl $.Path .}}
 	{{- with resources.ExecuteAsTemplate "css/intermediate.css" $ . }}
 		{{- with . | css.Build $opts }}
 			<link rel="stylesheet" href="{{ .RelPermalink }}" />

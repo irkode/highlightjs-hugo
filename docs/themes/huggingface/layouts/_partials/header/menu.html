@@ -1,3 +1,6 @@
+{{- $tpl := templates.Current.Name }}
+{{- $idx := math.Counter }}
+{{- warnf "[%04d][ %-20s ] : %s " $idx $tpl .page.Path }}
 {{- $menuID := .menuID }}
 {{- $page := .page }}
 {{- with index site.Menus $menuID }}

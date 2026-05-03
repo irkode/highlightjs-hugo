@@ -1,9 +1,13 @@
 {{- $tpl := templates.Current.Name }}
 {{- $pagePath := .Path }}
 {{- $idx := math.Counter }}
-{{- warnf "[%04d][ %-20s ] : %s" $idx $tpl .Section }}
+{{- with .Params.keywords }}
+   {{- warnf "[%04d][ %-20s ] : %s :: %s" $idx $tpl $pagePath . }}
+{{- else  }}
+   {{- warnf "[%04d][ %-20s ] : %s" $idx $tpl $pagePath }}
+{{- end }}
 {{- range $res := resources.Match "grammars/**" }}
-   {{- warnf "[%04d][ %-20s ] : %s" $idx "executeAsTemplate" $res }}
+   {{- warnf "[%04d][ %-20s ] : %s :: %s" $idx "executeAsTemplate" page.Path $res }}
    {{- with $res.Content | resources.FromString $res }}
       {{- with . | resources.ExecuteAsTemplate ($res | replaceRE "grammars?" $.Section) $ }}
          {{- .Publish }}
@@ -12,6 +16,7 @@
 {{- end }}
 
 {{- range $res := resources.Match "*" }}
+   {{- warnf "[%04d][ %-20s ] : %s :: %s" $idx "executeAsTemplate" page.Path $res }}
    {{- with $res.Content | resources.FromString $res }}
       {{- with . | resources.ExecuteAsTemplate (path.Join $.Section $res) $ }}
          {{- .Publish }}

@@ -1,4 +1,6 @@
-{{- warnf "EXEC %s for %s" templates.Current.Name . }}
+{{- $tpl := templates.Current.Name }}
+{{- $idx := math.Counter }}
+{{- warnf "[%04d][ %-20s ] : %s :: %s" $idx $tpl page.Path . }}
 
 {{- /* load keyword definition of given language */ -}}
 {{- $lang := . }}
