@@ -14,6 +14,10 @@ permissions:
    issues: write
    pull-requests: write # to open and update the Release Please PR
 
+# TODO: remove planned after 2nd June 2026 (v24 will be default)
+env:
+   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
    release-please:
       runs-on: ubuntu-latest

@@ -31,6 +31,10 @@ concurrency:
    group: build-deploy-${{ github.ref }}
    cancel-in-progress: false
 
+# TODO: remove planned after 2nd June 2026 (v24 will be default)
+env:
+   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
    build:
       runs-on: ubuntu-latest
@@ -200,7 +204,7 @@ jobs:
               hugo build --gc --minify --baseURL "${{ steps.pages.outputs.base_url }}/" --cacheDir "${{ runner.temp }}/hugo_cache"
 
          - name: Upload Pages artifact
-           uses: actions/upload-pages-artifact@v4
+           uses: actions/upload-pages-artifact@v5
            with:
               path: docs/public
 
@@ -220,7 +224,7 @@ jobs:
               fetch-depth: 0
 
          - name: Delete previous draft releases with same major.minor
-           uses: actions/github-script@v8
+           uses: actions/github-script@v9
            with:
               script: |
                  const tag = '${{ env.RELEASE_TAG }}';
@@ -266,7 +270,7 @@ jobs:
               cp highlight-hugo.min.js ../highlight-hugo-${{ env.RELEASE_TAG }}.min.js
 
          - name: Create GitHub Release
-           uses: softprops/action-gh-release@v2
+           uses: softprops/action-gh-release@v3
            with:
               tag_name: ${{ env.RELEASE_TAG }}
               name: ${{ env.RELEASE_TAG }}
