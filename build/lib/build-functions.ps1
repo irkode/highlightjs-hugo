@@ -75,8 +75,7 @@ function buildDocs {
    param()
    $Step = "Generate Documentation"
    try {
-      Set-Location $DocsDir
-      exec hugo build
+      exec hugo --source $DocsDir build
    } catch {
       Write-Error "FAIL: $Step" -ErrorAction Continue
       throw "$_"

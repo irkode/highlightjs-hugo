@@ -199,14 +199,13 @@ jobs:
            uses: actions/configure-pages@v6
 
          - name: Build the site
-           working-directory: ./docs
            run: |
-              hugo build --gc --minify --baseURL "${{ steps.pages.outputs.base_url }}/" --cacheDir "${{ runner.temp }}/hugo_cache"
+              hugo build --source ./hugen/docs --gc --minify --baseURL "${{ steps.pages.outputs.base_url }}/" --cacheDir "${{ runner.temp }}/hugo_cache"
 
          - name: Upload Pages artifact
            uses: actions/upload-pages-artifact@v5
            with:
-              path: docs/public
+              path: ./hugen/docs/public
 
    release:
       runs-on: ubuntu-latest

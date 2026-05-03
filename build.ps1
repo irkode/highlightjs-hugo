@@ -56,7 +56,7 @@ try {
       $ProjectRoot = Test-Folder $PSScriptRoot
       $HugenDir = Test-Folder $ProjectRoot "hugen"
       $WorkDir = Test-Folder -Create $ProjectRoot "work"
-      $DocsDir = Test-Folder -Create $ProjectRoot "docs"
+      $DocsDir = Test-Folder $HugenDir "docs"
       $ReleaseDir = Test-Folder -Create $ProjectRoot "release"
 
       $HighlightJsDir = Join-Path $WorkDir "highlight.js"
