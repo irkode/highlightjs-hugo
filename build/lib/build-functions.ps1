@@ -39,7 +39,7 @@ function buildHighlightJS {
          [void](Test-File $ExtraDir "hugo-text\dist\hugo-text.min.js")
 
          $TargetDir = Test-Folder -Clean -Create $ReleaseDir "highlightjs"
-         Copy-Item -Recurse $ExtraDir/* $TargetDir -Exclude .keep
+         Get-ChildItem -Directory $ExtraDir | ForEach-Object { Copy-Item -Recurse $_ "$TargetDir/$($_.Name)" }
 
          exec node tools/build.js -t browser hugo-html hugo-text xml
          Copy-Item "build/highlight.min.js" (Join-Path $ReleaseDir "highlight-hugo.min.js")

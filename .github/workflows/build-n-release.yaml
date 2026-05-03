@@ -164,7 +164,7 @@ jobs:
            working-directory: ${{ env.HIGHLIGHTJS_DIR }}
            run: |
               node ./tools/build.js -t cdn ($ENV:ONLY_LANGUAGES -split '\s+')
-              Get-ChildItem ${{ env.HIGHLIGHTJS_EXTRA_DIR }} | ForEach-Object { Copy-Item -Recurse $_ -Destination "${{ env.RELEASE_DIR }}/highlightjs/$($_.Name)"        }
+              Get-ChildItem -Directory ${{ env.HIGHLIGHTJS_EXTRA_DIR }} | ForEach-Object { Copy-Item -Recurse $_ -Destination "${{ env.RELEASE_DIR }}/highlightjs/$($_.Name)" }
 
          - name: Build highlight-hugo engine
            working-directory: ${{ env.HIGHLIGHTJS_DIR }}
