@@ -253,20 +253,26 @@ jobs:
            uses: actions/download-artifact@v8
            with:
               name: release
-              path: release/
+              path: ${{ github.workspace }}/release/
 
          - name: Create release assets
            shell: bash
            run: |
-              cd release/discourse
-              zip -r ../../discourse-hugo-html-${{ env.RELEASE_TAG }}.zip hugo-html
-              zip -r ../../discourse-hugo-text-${{ env.RELEASE_TAG }}.zip hugo-text
-              cd ../highlightjs
-              zip -r ../../highlightjs-hugo-${{ env.RELEASE_TAG }}.zip .
-              cp hugo-html/dist/hugo-html.min.js ../../hugo-html-${{ env.RELEASE_TAG }}.min.js
-              cp hugo-text/dist/hugo-text.min.js ../../hugo-text-${{ env.RELEASE_TAG }}.min.js
-              cd ..
-              cp highlight-hugo.min.js ../highlight-hugo-${{ env.RELEASE_TAG }}.min.js
+              echo "##### ${{ github.workspace }}/release/discourse/hugo-html"
+              cd ${{ github.workspace }}/release/discourse/hugo-html
+              zip -r ${{ github.workspace }}/discourse-hugo-html-${{ env.RELEASE_TAG }}.zip .
+              echo "##### ${{ github.workspace }}/release/discourse/hugo-text"
+              cd ${{ github.workspace }}/release/discourse/hugo-text
+              zip -r ${{ github.workspace }}/discourse-hugo-text-${{ env.RELEASE_TAG }}.zip .
+              echo "##### ${{ github.workspace }}/release/highlightjs"
+              cd ${{ github.workspace }}/release/highlightjs
+              zip -r ${{ github.workspace }}/highlightjs-hugo-${{ env.RELEASE_TAG }}.zip .
+              echo "##### ${{ github.workspace }}/${{ github.workspace }}/release/highlightjs/hugo-html/dist/hugo-html.min.js"
+              cp ${{ github.workspace }}/release/highlightjs/hugo-html/dist/hugo-html.min.js ${{ github.workspace }}/hugo-html-${{ env.RELEASE_TAG }}.min.js
+              echo "##### ${{ github.workspace }}/${{ github.workspace }}/release/highlightjs/hugo-text/dist/hugo-text.min.js"
+              cp ${{ github.workspace }}/release/highlightjs/hugo-text/dist/hugo-text.min.js ${{ github.workspace }}/hugo-text-${{ env.RELEASE_TAG }}.min.js
+              echo "##### ${{ github.workspace }}/release/highlight-hugo.min.js"
+              cp ${{ github.workspace }}/release/highlight-hugo.min.js ${{ github.workspace }}/highlight-hugo-${{ env.RELEASE_TAG }}.min.js
 
          - name: Create GitHub Release
            uses: softprops/action-gh-release@v3
@@ -274,6 +280,7 @@ jobs:
               tag_name: ${{ env.RELEASE_TAG }}
               name: ${{ env.RELEASE_TAG }}
               draft: true
+              fail_on_unmatched_files: true
               # Release Please generates CHANGELOG.md — use it as release notes
               body_path: CHANGELOG.md
               files: |

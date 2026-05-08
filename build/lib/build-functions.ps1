@@ -61,8 +61,10 @@ function buildDiscoursePlugin {
       $TargetDir = Test-Folder -Create -Clean $ReleaseDir "discourse"
       $SourceDir = Test-Folder $HugenDir "discourse"
       exec hugo --source $SourceDir --destination $TargetDir
-      [void](Test-File $TargetDir "hugo-html/discourse/about.json")
-      [void](Test-File $TargetDir "hugo-text/discourse/about.json")
+      [void](Test-File $TargetDir "hugo-html/about.json")
+      [void](Test-File $TargetDir "hugo-html/javascripts/api-initializers/theme-initializer.gjs")
+      [void](Test-File $TargetDir "hugo-text/about.json")
+      [void](Test-File $TargetDir "hugo-text/javascripts/api-initializers/theme-initializer.gjs")
    } catch {
       Write-Error "FAIL: $Step" -ErrorAction Continue
       throw $_

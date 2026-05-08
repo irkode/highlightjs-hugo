@@ -7,19 +7,8 @@
    {{- warnf "[%04d][ %-20s ] : %s" $idx $tpl $pagePath }}
 {{- end }}
 {{- range $res := resources.Match "discourse/**" }}
-	{{- warnf "[%04d][ %-20s ] : %s :: %s" $idx "executeAsTemplate" page.Path $res }}
 	{{- with $res.Content | resources.FromString $res }}
-
-		{{- with . | resources.ExecuteAsTemplate (path.Join "/" $.Section $res) $ }}
-			{{- .Publish }}
-		{{- end }}
-	{{- end }}
-{{- end }}
-
-{{- range $res := resources.Match "*" }}
-	{{- warnf "[%04d][ %-20s ] : %s :: %s" $idx "executeAsTemplate" page.Path $res }}
-	{{- with $res.Content | resources.FromString $res }}
-		{{- with . | resources.ExecuteAsTemplate (path.Join $.Section $res) $ }}
+		{{- with . | resources.ExecuteAsTemplate (replace $res "discourse" $.Section 1) $ }}
 			{{- .Publish }}
 		{{- end }}
 	{{- end }}
