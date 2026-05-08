@@ -2,9 +2,9 @@
 title = "Highlight.js"
 +++
 
-# Highlight.js components
+# Highlight.js Grammars
 
-Highlight Hugo templates using Highlight.js also available as a Discourse Theme Component
+Highlight Hugo templates using Highlight.js also available as [Discourse Theme Components](/discourse).
 
 ![preview](img/highlightjs-hugo.png)
 

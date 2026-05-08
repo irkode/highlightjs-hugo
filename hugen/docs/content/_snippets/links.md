@@ -1,6 +1,7 @@
 ## Links
 
 - [highlightjs-hugo][] : The main repository with additional grammars and plugins. Have a look
+- [Documentation][] : All about Highlight 4 Hugo
 - [Highlight.js][] : The Internet's favorite JavaScript syntax highlighter supporting Node.js and
   the web
 - [Hugo][] : The world’s fastest framework for building websites

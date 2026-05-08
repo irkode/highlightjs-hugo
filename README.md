@@ -21,15 +21,16 @@ Read more details in our [Documentation][] or directly pick them from our [Relea
 
 Currently we provide the following components
 
-* Highlight.js
+- Highlight.js
 
-  Two grammars for [Hugo][]'s _Text_ and _HTML_ templates with auto detection[^2] and full keyword support.
+   Two grammars for [Hugo][]'s _Text_ and _HTML_ templates with auto detection[^1] and full keyword
+   support.
 
-  Additionally we provide a ready to use _browser build_ with only our grammars[^2].
+   Additionally we provide a ready to use _browser build_ with only our grammars[^2].
 
-* Discourse
+- Discourse
 
-  Two theme components utilizing the above _Text_ and _HTML_ grammars.
+   Two theme components utilizing the above _Text_ and _HTML_ grammars.
 
 ## Download
 
@@ -37,12 +38,11 @@ Ready to use modules are available as artifacts on our [Releases][] Page.
 
 ## Usage and documentation
 
-Follow the instructions included in each artifact's `README.md`. To read before downloading, check
-out our [Documentation][]
+Follow the instructions included in each artifact's `README.md` or browse our [Documentation][].
 
-## Build
+## Usage
 
-For standard use cases see _Download_ above.
+For standard use cases just download the provided artifact and follow the instructions.
 
 ### Custom Highlight.js build
 
@@ -53,7 +53,7 @@ _Highlight.js_ grammar or a customized build.
 With a customized build, we add the _Hugo_ keyword tables to the _Highlight.js_ core so these will
 get packed only once. The result is an unpacked saving of 10KB for the final engine.
 
-### Build our sources
+### Build from source
 
 We build our stuff using custom scripts; a combination of powershell, node and _Hugo_. These scripts
 work fine for us. May work for you but no guarantee. Listed Version numbers are the on we use, might
@@ -63,21 +63,21 @@ We are on Windows 11 Professional. Could be working for unix like systems, but t
 Have a look at our CI workflow script for the bare commands on a GitHub Ubuntu runner.
 
 - Components that have to be there
-  - Hugo - 0.160.1+
-  - Go 1.26.1+
-  - Node 22.14.0 (highlight.js requirement)
+   - Hugo - 0.160.1+
+   - Go 1.26.1+
+   - Node 22.14.0 (highlight.js requirement)
 
 - Components automatically provided by the build scripts
-  - _Highlight.js_ 11.11.1
-  - hugoDocs (as a hugo module)
+   - _Highlight.js_ 11.11.1 (as a clone)
+   - hugoDocs (as a hugo module)
 
 - Build all
 
-  ```powershell
-  git clone https://github.com/irkode/highlightjs-hugo/ highlightjs-hugo
-  set-location highlightjs-hugo
-  .\build.ps1 -Verbose
-  ```
+   ```powershell
+   git clone https://github.com/irkode/highlightjs-hugo/ highlightjs-hugo
+   Set-Location highlightjs-hugo
+   .\build.ps1 -Verbose
+   ```
 
 - grab the results from `release` folder
 
@@ -142,5 +142,5 @@ This package is released under the MIT License. See [LICENSE](LICENSE) file for 
 [Discourse]: https://discourse.gohugo.io/
 [Releases]: https://github.com/irkode/highlightjs-hugo/releases/latest
 
-[^1]: and _XML_ cause that's needed for _Hugo-Html_
-[^2]: Check out details here:  [A word on auto detection](https://irkode.github.io/highlightjs-hugo/highlightjs/hugo-html#a-word-on-auto-detection)
+[^1]: Check out details here: [A word on auto detection](https://irkode.github.io/highlightjs-hugo/highlightjs/hugo-html#a-word-on-auto-detection)
+[^2]: and _XML_ cause that's needed for _Hugo-Html_

@@ -26,9 +26,14 @@ theme         = "huggingface"
 [module]
    # excludes
    [[module.mounts]]
-      source = "static"
-      target = "static"
-      files  = ['! .keep']
+      source = "content"
+      target = "content"
+   [[module.mounts]]
+      source = "../../README.md"
+      target = "content/_snippets/README.md"
+   [[module.mounts]]
+      source = "../../highlightjs-hugo.png"
+      target = "static/highlightjs-hugo.png"
 
    [module.hugoVersion]
       extended = false

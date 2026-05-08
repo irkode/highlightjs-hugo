@@ -4,7 +4,7 @@ title = "Discourse"
 
 # Discourse components
 
-We wrap the highlighting components in _Discourse theme components_ - the easiest point to start.
+We wrap our [highlighting components](/highlightjs) in _Discourse theme components_.
 
 This is a brief overview of the Discourse plugins. For details on the grammars, check the
 documentation of the grammars at [Highlight.js components](/highlightjs):
@@ -23,11 +23,7 @@ If these don't work for you, we're most likely not able to support.
 - totally bare with anything around Discourse (just an end user). Our full _Discourse_ knowledge is
   shown within the plugin.
 
-## Discourse theme components
-
-We provide ready to use _Discourse theme components_ to load into your Instance.
-
-Installation:
+## Usage
 
 - you must have Highlight.js configured in your Instance
 - create a new _Theme Component_
