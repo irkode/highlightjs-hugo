@@ -10,7 +10,7 @@
 	{{- warnf "[%04d][ %-20s ] : %s :: %s" $idx "executeAsTemplate" page.Path $res }}
 	{{- with $res.Content | resources.FromString $res }}
 
-		{{- with . | resources.ExecuteAsTemplate (path.Join "/" $.Section $res) $ }}
+		{{- with . | resources.ExecuteAsTemplate (path.Join "/" $.Section (replace $res "discourse/" "")) $ }}
 			{{- .Publish }}
 		{{- end }}
 	{{- end }}

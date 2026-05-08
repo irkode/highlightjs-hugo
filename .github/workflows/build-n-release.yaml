@@ -258,10 +258,11 @@ jobs:
          - name: Create release assets
            shell: bash
            run: |
-              cd release/discourse
-              zip -r ../../discourse-hugo-html-${{ env.RELEASE_TAG }}.zip hugo-html
-              zip -r ../../discourse-hugo-text-${{ env.RELEASE_TAG }}.zip hugo-text
-              cd ../highlightjs
+              cd release/discourse/hugo-html
+              zip -r ../../discourse-hugo-html-${{ env.RELEASE_TAG }}.zip .
+              cd release/discourse/hugo-text
+              zip -r ../discourse-hugo-text-${{ env.RELEASE_TAG }}.zip .
+              cd ../../highlightjs
               zip -r ../../highlightjs-hugo-${{ env.RELEASE_TAG }}.zip .
               cp hugo-html/dist/hugo-html.min.js ../../hugo-html-${{ env.RELEASE_TAG }}.min.js
               cp hugo-text/dist/hugo-text.min.js ../../hugo-text-${{ env.RELEASE_TAG }}.min.js
