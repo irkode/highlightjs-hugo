@@ -40,10 +40,6 @@ Ready to use modules are available as artifacts on our [Releases][] Page.
 
 Follow the instructions included in each artifact's `README.md` or browse our [Documentation][].
 
-## Usage
-
-For standard use cases just download the provided artifact and follow the instructions.
-
 ### Custom Highlight.js build
 
 To build your own customized _Highlight.js_ installation grab the _highlightjs-hugo_ artifact and
@@ -63,7 +59,7 @@ We are on Windows 11 Professional. Could be working for unix like systems, but t
 Have a look at our CI workflow script for the bare commands on a GitHub Ubuntu runner.
 
 - Components that have to be there
-   - Hugo - 0.160.1+
+   - Hugo - 0.161.1+
    - Go 1.26.1+
    - Node 22.14.0 (highlight.js requirement)
 
@@ -118,7 +114,7 @@ If you want to dig in, you can find that here
 
 ## License
 
-This package is released under the MIT License. See [LICENSE](LICENSE) file for details.
+This package is released under the MIT License. See [LICENSE](/LICENSE) file for details.
 
 ## Author & Maintainer
 

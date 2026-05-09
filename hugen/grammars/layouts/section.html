@@ -6,6 +6,8 @@
 {{- else  }}
    {{- warnf "[%04d][ %-20s ] : %s" $idx $tpl $pagePath }}
 {{- end }}
+
+{{- /* Render and Publish grammar templates to current section */ -}}
 {{- range $res := resources.Match "grammars/**" }}
    {{- warnf "[%04d][ %-20s ] : %s :: %s" $idx "executeAsTemplate" page.Path $res }}
    {{- with $res.Content | resources.FromString $res }}
@@ -15,12 +17,11 @@
    {{- end }}
 {{- end }}
 
-{{- range $res := resources.Match "*" }}
-   {{- warnf "[%04d][ %-20s ] : %s :: %s" $idx "executeAsTemplate" page.Path $res }}
-   {{- with $res.Content | resources.FromString $res }}
-      {{- with . | resources.ExecuteAsTemplate (path.Join $.Section $res) $ }}
-         {{- .Publish }}
-      {{- end }}
+{{- /* Render and Publish static content files to current section */ -}}
+{{- range $res := resources.Match "content/**" }}
+   {{- with $res | resources.Copy ( $res | replaceRE "content?" $.Section) }}
+      {{- warnf "[%04d][ %-20s ] : %s :: %s" $idx "Copy&Publish" page.Path . }}
+      {{- .Publish }}
    {{- end }}
 {{- end }}
 {{- /**/ -}}

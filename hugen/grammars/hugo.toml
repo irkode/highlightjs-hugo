@@ -19,7 +19,6 @@ disablePathToLower = true
    blobs      = "https://github.com/irkode/highlightjs-hugo/blob/main"
    category   = "templates"
    license    = "MIT"
-   licStart   = 2026
    licenseURL = "https://github.com/irkode/highlightjs-hugo/blob/main/LICENSE"
 
 # we generate javascript files for the data structures needed by plugins
@@ -41,28 +40,12 @@ disablePathToLower = true
 [module]
    # make sure we do not loose our own files
    [[module.mounts]]
-      source = 'layouts'
-      target = 'layouts'
-   [[module.mounts]]
       source = 'assets'
       target = 'assets'
-   [[module.mounts]]
-      source = 'content'
-      target = 'content'
 
-   # mount page and global resources for grammars
    [[module.mounts]]
-      source = 'common/grammars'
-      target = 'content/hugo-embed'
-   [[module.mounts]]
-      source = 'common/grammars'
-      target = 'content/hugo-html'
-   [[module.mounts]]
-      source = 'common/grammars'
-      target = 'content/hugo-text'
-   [[module.mounts]]
-      source = 'common/README.md'
-      target = 'content/hugo-text/README.md'
+      source = '../../LICENSE'
+      target = 'assets/content/LICENSE'
 
    # import function part of the documentation
    [[module.imports]]

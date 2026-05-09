@@ -13,10 +13,8 @@ disableKinds = ['rss', 'sitemap', 'taxonomy', 'term']
    blobs      = "https://github.com/irkode/highlightjs-hugo/blob/main"
    category   = "templates"
    license    = "MIT"
-   licStart   = 2026
    licenseURL = "https://github.com/irkode/highlightjs-hugo/blob/main/LICENSE"
 
-# mount results of Highlight.js build to assets
 [module]
    [[module.mounts]]
       source = 'assets'
@@ -26,6 +24,9 @@ disableKinds = ['rss', 'sitemap', 'taxonomy', 'term']
       source = '../../release/highlightjs/'
       target = 'assets/highlightjs/'
       files  = ["! **/dist/*.es.min*.js", "! **embed**", "**/dist/*min*.js"]
+   [[module.mounts]]
+      source = "../../LICENSE"
+      target = "assets/discourse/LICENSE"
 
    [module.hugoVersion]
       extended = true

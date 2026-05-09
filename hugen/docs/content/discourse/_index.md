@@ -27,7 +27,7 @@ If these don't work for you, we're most likely not able to support.
 
 - you must have Highlight.js configured in your Instance
 - create a new _Theme Component_
-- either grab the zip from the our [Releases][] page and import.
+- either grab the zip from our [Releases][] page and import.
 
    or
 
@@ -52,7 +52,7 @@ Actually No idea - Here's how we installed a development version:
 - [API mentioned here](https://meta.discourse.org/t/install-a-new-language-for-highlight-js-via-a-theme-component/292480).
   That's a post from Jan 2019, so we expect most Instances will support it.
 
-{{% content-snippet "license-file.md" %}}
+{{% content-snippet "license-link.md" %}}
 
 {{% content-snippet "authors.md" %}}
 

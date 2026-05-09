@@ -32,6 +32,9 @@ theme         = "huggingface"
       source = "../../README.md"
       target = "content/_snippets/README.md"
    [[module.mounts]]
+      source = "../../LICENSE"
+      target = "content/_snippets/license.md"
+   [[module.mounts]]
       source = "../../highlightjs-hugo.png"
       target = "static/highlightjs-hugo.png"
 
