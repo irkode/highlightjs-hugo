@@ -48,7 +48,7 @@ contributions right now.
 If you find a bug, have a question or an idea, please use the _source repositories_ [Issue
 tracker][].
 
-{{% content-snippet "license-link.md" %}}
+{{% content-snippet "license-link-shortcode.md" %}}
 
 {{% content-snippet "authors.md" %}}
 

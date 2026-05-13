@@ -42,7 +42,16 @@ disablePathToLower = true
    [[module.mounts]]
       source = 'assets'
       target = 'assets'
+   [[module.mounts]]
+      source = 'content'
+      target = 'content'
 
+   [[module.mounts]]
+      source = "../_snippets"
+      target = "content/_snippets"
+   [[module.mounts]]
+      source = "../../README.md"
+      target = "content/_snippets/README.md"
    [[module.mounts]]
       source = '../../LICENSE'
       target = 'assets/content/LICENSE'

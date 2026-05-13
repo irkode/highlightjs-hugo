@@ -6,7 +6,7 @@ title = 'Hugo-Text'
 
 {{% asset-snippet "grammar.md" %}}
 
-{{% content-snippet "license-link.md" %}}
+{{% content-snippet "license-link-shortcode.md" %}}
 
 {{% content-snippet "authors.md" %}}
 

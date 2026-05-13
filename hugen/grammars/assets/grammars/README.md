@@ -110,6 +110,6 @@ The module works with the standard [Highlight.js][] extra build system. Download
 from our [Releases][] page and copy it to the `highlight.js/extra` directory. Check out the
 [Highlight.js][] documentation for more details.
 
-{{ partial "include-page.html" "license.md" }}
+{{ partial "include-page.html" "license-link-partial.md" }}
 {{ partial "include-page.html" "authors.md" }}
 {{ partial "include-page.html" "links.md" }}

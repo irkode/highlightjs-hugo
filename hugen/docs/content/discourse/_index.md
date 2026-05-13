@@ -52,7 +52,7 @@ Actually No idea - Here's how we installed a development version:
 - [API mentioned here](https://meta.discourse.org/t/install-a-new-language-for-highlight-js-via-a-theme-component/292480).
   That's a post from Jan 2019, so we expect most Instances will support it.
 
-{{% content-snippet "license-link.md" %}}
+{{% content-snippet "license-link-shortcode.md" %}}
 
 {{% content-snippet "authors.md" %}}
 
