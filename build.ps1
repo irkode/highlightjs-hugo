@@ -22,6 +22,7 @@ param(
       'BuildDiscoursePlugin',
       'CloneHighlightJS',
       'DeveloperBuild',
+      'DocsServer',
       'GenerateHugoGrammars',
       'ShowStatus',
       'TestHighlightJS'

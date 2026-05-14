@@ -85,6 +85,10 @@ function buildDocs {
       Set-Location $startCWD
    }
 }
+function DocsServer {
+   exec hugo --source $DocsDir server
+   exit
+}
 
 function cloneHighlightJS {
    [CmdLetBinding()]
