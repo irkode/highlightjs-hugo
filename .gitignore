@@ -2,5 +2,6 @@
 /release/
 /work/
 **/.hugo_build.lock
-/.ignored/
 **/public/
+**/resources/
+/_keep/
