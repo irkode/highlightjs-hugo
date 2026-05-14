@@ -14,13 +14,25 @@
 {{- range .menuEntries }}
 	<div class="menu-item">
 		{{- $attrs := dict "href" .URL }}
+
+		{{- /* base class depending on active state */}}
+		{{- $class := "menu-button" }}
 		{{- if $page.IsMenuCurrent .Menu . }}
-			{{- $attrs = merge $attrs (dict "class" "menu-button menu-button--active" "aria-current" "page") }}
-		{{- else if $page.HasMenuCurrent .Menu . }}
-			{{- $attrs = merge $attrs (dict "class" "menu-button menu-button--ancestor" "aria-current" "true") }}
-		{{- else }}
-			{{- $attrs = merge $attrs (dict "class" "menu-button") }}
+			{{- $class = "menu-button menu-button--active" }}
+			{{- $attrs = merge $attrs (dict "aria-current" "page") }}
+		{{- else if and ($page.HasMenuCurrent .Menu .) (not .Parent) }}
+			{{- /* only apply ancestor to top-level entries, not submenu entries */}}
+			{{- $class = "menu-button menu-button--ancestor" }}
+			{{- $attrs = merge $attrs (dict "aria-current" "true") }}
 		{{- end }}
+
+		{{- /* append overview modifier when name is Overview */}}
+		{{- if eq .Name "Overview" }}
+			{{- $class = printf "%s menu-button--overview" $class }}
+		{{- end }}
+
+		{{- $attrs = merge $attrs (dict "class" $class) }}
+
 		{{- $name := .Name }}
 		{{- with .Identifier }}
 			{{- with T . }}

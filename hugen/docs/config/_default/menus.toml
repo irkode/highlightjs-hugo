@@ -4,15 +4,19 @@
    pageRef = '/discourse'
    weight  = 10
 [[main]]
-   name    = 'Highlight.js'
-   pageRef = '/highlightjs'
-   weight  = 20
+   name   = 'Highlight.js'
+   weight = 20
 [[main]]
-   name   = 'Examples'
-   url    = '/examples'
+   name   = 'Hugo'
    weight = 30
 
 # submenu Highlight.js
+[[main]]
+   identifier = 'Highlightjs_Overview'
+   name       = 'Overview'
+   pageRef    = '/highlightjs'
+   Parent     = "Highlight.js"
+   weight     = 1
 [[main]]
    name    = 'Hugo-Html'
    pageRef = '/highlightjs/hugo-html'
@@ -28,3 +32,11 @@
    pageRef = '/highlightjs/hugo-css-class-reference'
    Parent  = "Highlight.js"
    weight  = 30
+
+# submenu Highlight.js
+[[main]]
+   identifier = 'Hugo_Overview'
+   name       = 'Overview'
+   pageRef    = '/hugo'
+   Parent     = "Hugo"
+   weight     = 1
