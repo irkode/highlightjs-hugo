@@ -1,6 +1,11 @@
 {
   "version": "0.2",
-  "ignorePaths": [ "**/*.svg"],
+  "ignorePaths": [
+   "**/*.svg",
+   "**/*.sum",
+   "/release",
+   "/work"
+   ],
   "dictionaryDefinitions": [
     {
       "name": "all",
@@ -12,12 +17,6 @@
       "name": "hugo",
       "path": "~/.cspell/hugo.txt",
       "description": "Words used with Hugo coding",
-      "addWords": true
-    },
-    {
-      "name": "svg",
-      "path": "~/.cspell/svg.txt",
-      "description": "SVG",
       "addWords": true
     },
     {
