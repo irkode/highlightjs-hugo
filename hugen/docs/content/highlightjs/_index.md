@@ -4,7 +4,8 @@ title = "Highlight.js"
 
 # Highlight.js Grammars
 
-Highlight Hugo templates using Highlight.js also available as [Discourse Theme Components](/discourse).
+Highlight Hugo templates using Highlight.js also available as
+[Discourse Theme Components](/discourse).
 
 ![preview](img/highlightjs-hugo.png)
 
@@ -21,10 +22,14 @@ Highlight Hugo templates using Highlight.js also available as [Discourse Theme C
 
 ## Library files
 
-- [hugo-lib](hugo-lib/)
+- hugo-lib
 
-   The shared library containing the grammar and keyword definitions. Needed to build on your own.
-   Having that outside of the grammars results in just one copy if you use both grammars.
+   The shared library containing the grammar and keyword definitions.
+
+   This one is created based on Hugos keywords and contains the _token, regex_ part of the grammars.
+
+   With this one referenced from outside the grammar a custom Highlight.js build will pack it only
+   once to the core. Saves around 10kB uncompressed in the final engine if both grammars are used.
 
 ## Download
 

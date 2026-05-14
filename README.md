@@ -110,7 +110,7 @@ Take it as a nifty showcase to use Hugo as a generic templating and publishing e
 sites.
 
 If you want to dig in, you can find that here
-[](https://github.com/irkode/highlightjs-hugo/tree/main/build/hugen)
+[](https://github.com/irkode/highlightjs-hugo/tree/main/hugen)
 
 ## License
 
@@ -138,5 +138,8 @@ This package is released under the MIT License. See [LICENSE](/LICENSE) file for
 [Discourse]: https://discourse.gohugo.io/
 [Releases]: https://github.com/irkode/highlightjs-hugo/releases/latest
 
-[^1]: Check out details here: [A word on auto detection](https://irkode.github.io/highlightjs-hugo/highlightjs/hugo-html#a-word-on-auto-detection)
+[^1]:
+    Check out details here:
+    [A word on auto detection](https://irkode.github.io/highlightjs-hugo/highlightjs/hugo-html#a-word-on-auto-detection)
+
 [^2]: and _XML_ cause that's needed for _Hugo-Html_
