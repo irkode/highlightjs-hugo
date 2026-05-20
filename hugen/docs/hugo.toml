@@ -24,7 +24,12 @@ theme         = "huggingface"
       useEmbedded = "always"
 
 [module]
-   # excludes
+   [[module.mounts]]
+      source = "assets"
+      target = "assets"
+   [[module.mounts]]
+      source = "../../release/highlight-hugo.min.js"
+      target = "assets/js/highlight-hugo.min.js"
    [[module.mounts]]
       source = "content"
       target = "content"

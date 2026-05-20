@@ -1,0 +1,58 @@
+/* =============================================================================
+   Shared syntax semantic tokens
+   Source colors extracted from:
+     - discourse-hljs-light.css / discourse-hljs-dark.css
+     - hugodocs-chroma-light.css / hugodocs-chroma-dark.css
+   Consumed by adapter files — never reference these directly in layout/components.
+   ============================================================================= */
+
+:root {
+  /* ── keywords ──────────────────────────────────────────────────────────── */
+  --syntax-keyword:      light-dark(#015692,                  #815ba4);
+  --syntax-keyword-type: light-dark(#445588,                  #fec418);
+  --syntax-keyword-ns:   light-dark(#015692,                  #5bc4bf);
+
+  /* ── names ─────────────────────────────────────────────────────────────── */
+  --syntax-builtin:      light-dark(#999999,                  #999999);
+  --syntax-name-tag:     light-dark(#000080,                  #5bc4bf);
+  --syntax-name-attr:    light-dark(#015692,                  #88aece);  /* discourse */
+  --syntax-name-class:   light-dark(#445588,                  #fec418);
+  --syntax-name-func:    light-dark(#990000,                  #06b6ef);
+  --syntax-name-const:   light-dark(#008080,                  #ef6155);
+  --syntax-name-ns:      light-dark(#555555,                  #fec418);
+  --syntax-name-dec:     light-dark(#555555,                  #5bc4bf);
+  --syntax-attribute:    light-dark(#803378,                  #c59bc1);  /* discourse */
+  --syntax-variable:     light-dark(#54790d,                  #b5bd68);  /* discourse */
+
+  /* ── literals ───────────────────────────────────────────────────────────── */
+  --syntax-string:       light-dark(#54790d,                  #b5bd68);  /* discourse */
+  --syntax-string-regex: light-dark(#808000,                  #48b685);
+  --syntax-string-esc:   light-dark(#bb8844,                  #f99b15);
+  --syntax-number:       light-dark(#009999,                  #f99b15);
+  --syntax-literal:      light-dark(#555555,                  #f99b15);
+
+  /* ── operators & punctuation ────────────────────────────────────────────── */
+  --syntax-operator:     light-dark(#555555,                  #5bc4bf);
+  --syntax-punctuation:  light-dark(#535a60,                  #cccccc);  /* discourse */
+
+  /* ── comments ───────────────────────────────────────────────────────────── */
+  --syntax-comment:      light-dark(rgb(166.6, 166.6, 166.6), rgb(132.6, 132.6, 132.6)); /* discourse exact */
+  --syntax-comment-spec: light-dark(#999999,                  #776e71);
+
+  /* ── diff / generic ─────────────────────────────────────────────────────── */
+  --syntax-addition:     light-dark(#2f6f44,                  #76c490);  /* discourse */
+  --syntax-deletion:     light-dark(#c02d2e,                  #de7176);  /* discourse (light: c02d2e, not 848484) */
+  --syntax-error:        light-dark(#a61717,                  #ef6155);
+  --syntax-title:        light-dark(#b75501,                  #f08d49);  /* discourse */
+  --syntax-subheading:   light-dark(#aaaaaa,                  #5bc4bf);
+  --syntax-output:       light-dark(#888888,                  #888888);
+  --syntax-prompt:       light-dark(#555555,                  #776e71);
+  --syntax-traceback:    light-dark(#aa0000,                  #aa0000);
+  --syntax-whitespace:   light-dark(#bbbbbb,                  #bbbbbb);
+
+  /* ── backgrounds ────────────────────────────────────────────────────────── */
+  --syntax-bg-addition:  light-dark(#ddffdd,                  #ddffdd);
+  --syntax-bg-deletion:  light-dark(#ffdddd,                  #ffdddd);
+  --syntax-bg-error:     light-dark(#e3d2d2,                  #e3d2d2);
+  --syntax-bg-highlight: light-dark(#ffffcc,                  rgb(0, 19, 28)); /* chroma exact */
+}

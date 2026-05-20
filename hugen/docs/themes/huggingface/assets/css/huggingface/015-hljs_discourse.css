@@ -1,0 +1,36 @@
+/* =============================================================================
+   001-styles-hljs_discourse.css
+   highlight.js adapter — Discourse theme
+   Requires: 001-colors-code.css
+   ============================================================================= */
+
+/* pre container gets the background, not the inner code element */
+pre.hljs                   { background-color: var(--code-bg); }
+.hljs                             { background-color: transparent; }
+
+/* keywords */
+.hljs-keyword                     { color: var(--syntax-keyword); }
+.hljs-built_in                    { color: var(--syntax-builtin); }
+
+/* names */
+.hljs-name,
+.hljs-title                       { color: var(--syntax-title); }
+.hljs-attr                        { color: var(--syntax-name-attr); }
+.hljs-attribute                   { color: var(--syntax-attribute); }
+
+/* literals */
+.hljs-string,
+.hljs-symbol                      { color: var(--syntax-string); }
+.hljs-template-variable           { color: var(--syntax-variable); }
+.hljs-template-variable.context_  { background-color: light-dark(#cccccc, #535a60); }
+.hljs-variable                    { color: var(--syntax-variable); }
+
+/* punctuation */
+.hljs-punctuation                 { color: var(--syntax-punctuation); }
+
+/* comments */
+.hljs-comment                     { color: var(--syntax-comment); }
+
+/* diff */
+.hljs-addition                    { color: var(--syntax-addition); }
+.hljs-deletion                    { color: var(--syntax-deletion); }

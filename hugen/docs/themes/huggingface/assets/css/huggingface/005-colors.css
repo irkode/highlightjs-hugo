@@ -1,0 +1,81 @@
+:root {
+  color-scheme: light dark;
+
+  /* ─── private palette tokens ─────────────────────────────────────────────
+   * Consumed only by semantic tokens below.
+   * Never reference --_* directly in components or other files.
+   * ──────────────────────────────────────────────────────────────────────── */
+
+  /* neutrals */
+  --_white:            #fff;
+  --_bg-light:         #f5f7ff;
+  --_disabled-light:   #efefef;
+  --_text-dark:        #212121;
+  --_text-muted-light: #585858;
+
+  --_bg-dark:          #212121;
+  --_surface-dark:     #2b2b2b;
+  --_disabled-dark:    #111;
+  --_text-light:       #dcdcdc;
+  --_text-muted-dark:  #ababab;
+
+  /* accent — teal family */
+  --_accent-light:       #014d4e;
+  --_accent-hover-light: #007373;
+  --_heading-light:      #043f3f;
+
+  --_accent-dark:        #ffb300;
+  --_accent-hover-dark:  #ffe099;
+  --_heading-dark:       rgb(0, 209, 178); /* external theme value */
+
+  /* accent-bg (surface behind accent) */
+  --_accent-bg-light: var(--_white);
+  --_accent-bg-dark:  var(--_surface-dark);
+
+  /* accent-text (text on accent background) */
+  --_accent-text-light: var(--_white);
+  --_accent-text-dark:  var(--_text-dark);
+
+  /* menu button */
+  --_menu-button-light: #043f3f;
+  --_menu-button-dark:  rgb(0, 209, 178); /* external theme value */
+
+  /* highlight / mark */
+  --_marked: #fd3; /* same in both modes */
+
+  /* code */
+  --_code-bg-light:        oklch(98.5% .002 247.839); /* external theme value */
+  --_code-bg-dark:         #000000;
+  --_code-inline-bg-light: #e1e1e1;
+  --_code-inline-bg-dark:  #5f5f5f;
+
+
+  /* ─── semantic tokens ────────────────────────────────────────────────────
+   * These are the only vars components should ever consume.
+   * ──────────────────────────────────────────────────────────────────────── */
+
+  /* surfaces */
+  --bg:         light-dark(var(--_bg-light),       var(--_bg-dark));
+  --accent-bg:  light-dark(var(--_accent-bg-light), var(--_accent-bg-dark));
+  --disabled:   light-dark(var(--_disabled-light),  var(--_disabled-dark));
+
+  /* text */
+  --text:       light-dark(var(--_text-dark),       var(--_text-light));
+  --text-bright: light-dark(var(--_text-muted-light), var(--_text-muted-dark));
+  --heading:    light-dark(var(--_heading-light),   var(--_heading-dark));
+
+  /* accent */
+  --accent:       light-dark(var(--_accent-light),       var(--_accent-dark));
+  --accent-hover: light-dark(var(--_accent-hover-light),  var(--_accent-hover-dark));
+  --accent-text:  light-dark(var(--_accent-text-light),   var(--_accent-text-dark));
+
+  /* interactive */
+  --menu-button-bg: light-dark(var(--_menu-button-light), var(--_menu-button-dark));
+  --marked:         var(--_marked);
+
+  /* code */
+  --code-bg:          light-dark(var(--_code-bg-light),        var(--_code-bg-dark));
+  --code-text:        light-dark(var(--_text-dark),            var(--_text-light));
+  --code-inline-bg:   light-dark(var(--_code-inline-bg-light), var(--_code-inline-bg-dark));
+  --code-inline-text: light-dark(var(--_text-dark),            var(--_text-light));
+}

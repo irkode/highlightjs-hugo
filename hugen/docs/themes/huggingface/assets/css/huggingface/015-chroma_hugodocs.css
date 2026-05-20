@@ -1,0 +1,93 @@
+/* =============================================================================
+   001-styles-chroma_hugodocs.css
+   Chroma adapter — Hugo Docs theme
+   Requires: 001-colors-code.css
+   ============================================================================= */
+
+.chroma { color: var(--code-text); background-color: var(--code-bg); }
+/* each line is wrapped in a span — contents lets bg flow through uninterrupted */
+.chroma .line { display: contents; }
+
+/* ── layout ─────────────────────────────────────────────────────────────── */
+.chroma .lntd    { vertical-align: top; padding: 0; margin: 0; border: 0; }
+.chroma .lntable { border-spacing: 0; padding: 0; margin: 0; border: 0; }
+.chroma .lnt,
+.chroma .ln      { white-space: pre; user-select: none; margin-right: 0.4em; padding: 0 0.4em; color: var(--syntax-prompt); }
+.chroma .line    { display: flex; }
+.chroma .hl      { background-color: var(--syntax-bg-highlight); }
+
+/* ── keywords ───────────────────────────────────────────────────────────── */
+.chroma .k,
+.chroma .kc,
+.chroma .kd,
+.chroma .kp,
+.chroma .kr      { font-weight: bold; color: var(--syntax-keyword); }
+.chroma .kt      { font-weight: bold; color: var(--syntax-keyword-type); }
+.chroma .kn      { font-weight: bold; color: var(--syntax-keyword-ns); }
+
+/* ── names ──────────────────────────────────────────────────────────────── */
+.chroma .nb      { color: var(--syntax-builtin); }
+.chroma .nt      { color: var(--syntax-name-tag); }
+.chroma .na      { color: var(--syntax-name-attr); }
+.chroma .nc      { font-weight: bold; color: var(--syntax-name-class); }
+.chroma .nf,
+.chroma .nx      { font-weight: bold; color: var(--syntax-name-func); }
+.chroma .no      { color: var(--syntax-name-const); }
+.chroma .nn      { color: var(--syntax-name-ns); }
+.chroma .nd      { color: var(--syntax-name-dec); }
+.chroma .ni      { color: var(--syntax-attribute); }
+.chroma .nv      { color: var(--syntax-variable); }
+.chroma .ne      { font-weight: bold; color: var(--syntax-error); }
+
+/* ── literals ───────────────────────────────────────────────────────────── */
+.chroma .s,
+.chroma .s1,
+.chroma .s2,
+.chroma .sb,
+.chroma .sh,
+.chroma .sx,
+.chroma .sa,
+.chroma .dl,
+.chroma .ss      { color: var(--syntax-string); }
+.chroma .sc      { color: var(--syntax-string); }   /* light: bb8844; dark: unstyled — use string */
+.chroma .sd      { color: var(--syntax-comment); }  /* doc string → comment tone */
+.chroma .sr      { color: var(--syntax-string-regex); }
+.chroma .se,
+.chroma .si      { color: var(--syntax-string-esc); }
+.chroma .m,
+.chroma .mb,
+.chroma .mf,
+.chroma .mh,
+.chroma .mi,
+.chroma .il,
+.chroma .mo      { color: var(--syntax-number); }
+.chroma .l       { color: var(--syntax-literal); }
+.chroma .ld      { color: var(--syntax-string); }
+
+/* ── operators ──────────────────────────────────────────────────────────── */
+.chroma .o,
+.chroma .ow      { font-weight: bold; color: var(--syntax-operator); }
+
+/* ── comments ───────────────────────────────────────────────────────────── */
+.chroma .c,
+.chroma .c1,
+.chroma .cm,
+.chroma .ch      { font-style: italic; color: var(--syntax-comment); }
+.chroma .cs      { font-weight: bold; font-style: italic; color: var(--syntax-comment-spec); }
+.chroma .cp,
+.chroma .cpf     { font-weight: bold; color: var(--syntax-comment-spec); }
+
+/* ── diff / generic ─────────────────────────────────────────────────────── */
+.chroma .gi      { color: var(--syntax-addition);   background-color: var(--syntax-bg-addition); }
+.chroma .gd      { color: var(--syntax-deletion);   background-color: var(--syntax-bg-deletion); }
+.chroma .err     { color: var(--syntax-error);      background-color: var(--syntax-bg-error); }
+.chroma .gr,
+.chroma .gt      { color: var(--syntax-traceback); }
+.chroma .gh      { font-weight: bold; color: var(--syntax-title); }
+.chroma .gu      { font-weight: bold; color: var(--syntax-subheading); }
+.chroma .go      { color: var(--syntax-output); }
+.chroma .gp      { font-weight: bold; color: var(--syntax-prompt); }
+.chroma .ge      { font-style: italic; }
+.chroma .gs      { font-weight: bold; }
+.chroma .gl      { text-decoration: underline; }
+.chroma .w       { color: var(--syntax-whitespace); }

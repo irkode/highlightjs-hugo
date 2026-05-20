@@ -17,6 +17,12 @@
 				{{- printf "%s | %s" (or .Title $.Title) site.Title }}
 			{{- end }}
 		</title>
+		{{- if eq .Section "hugo" }}
+			{{- with resources.Get "js/highlight-hugo.min.js" }}
+				{{- warnf "[%04d][ %-20s ] : %s :: HUGO %s" $idx $tpl $.Path . }}
+				<script src="{{ .RelPermalink }}"></script>
+			{{- end }}
+		{{- end }}
 	</head>
 	<body>
 		<header class="site-header">
@@ -61,5 +67,10 @@
 				<p>{{ .Lastmod.Format "2006-01-02" }}</p>
 			</div>
 		</footer>
+		{{- if eq .Section "hugo" }}
+			<script>
+         hljs.highlightAll();
+			</script>
+		{{- end }}
 	</body>
 </html>

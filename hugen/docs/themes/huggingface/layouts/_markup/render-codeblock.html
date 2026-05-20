@@ -1,0 +1,12 @@
+{{- if transform.CanHighlight .Type }}
+	{{- $result := transform.HighlightCodeBlock . -}}
+	<pre tabindex="0" class="chroma"><code class="nohighlight" data-lang="{{ .Type }}">
+			{{- $result.Inner -}}
+		</code>
+	</pre>
+{{- else }}
+	<pre tabindex="0" class="hljs"><code {{ with .Type }} {{ add "class=language-" . }}{{- end }}>
+			{{- .Inner -}}
+		</code>
+	</pre>
+{{- end }}

@@ -1,0 +1,176 @@
+/* CSS coded with help from: https://claude.ai/chat/ and the WEB */
+
+/* typography & element defaults */
+pre,
+code,
+pre code {
+   overflow-x: auto;
+   max-width: 100%;
+   white-space: pre;
+   font-family: var(--mono-font);
+   border-width: 0;
+   /* reset the global line-height so code block bg has no gaps */
+   line-height: 1.5;
+}
+pre {
+   margin-bottom: calc(0.25em + 0.25rem); /* same as p */
+   padding: 0.5em 0.75em;
+   background-color: var(--code-bg);
+   color: var(--code-text);
+}
+/* remove double padding when a highlighter wraps code inside pre */
+pre code,
+pre .hljs {
+   padding: 0;
+   background-color: transparent;
+}
+code:not(pre code) {
+   background-color: var(--code-inline-bg);
+   color: var(--code-inline-text);
+   padding: 0 0.25em;
+}
+/* chroma wraps each line in a span — display: contents passes bg through */
+.chroma .line {
+   display: contents;
+}
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+   margin-bottom: calc(0.25em + 0.25rem);
+}
+h1 {
+   color: var(--heading);
+}
+h2,
+h3,
+h4,
+h5,
+h6 {
+   margin-top: calc(0.5em + 0.5rem);
+   color: var(--heading);
+}
+ul,
+ol {
+   margin-block-end: 1em;
+   margin-block-start: 1em;
+   padding-inline-start: 1.5em;
+}
+#license::after {
+   content: var(--icon-license);
+   display: inline-block;
+   vertical-align: middle;
+   margin-inline-start: 0.5em;
+}
+
+/* layout */
+body {
+   display: grid;
+   grid-template-columns: 1fr min(1280px, 90%) 1fr;
+   grid-template-rows: auto 1fr auto;
+   min-height: 100dvh;
+   font-family: var(--sans-font);
+   background-color: var(--accent-bg);
+   color: var(--text);
+}
+body > * {
+   grid-column: 2;
+}
+.site-header,
+.site-footer {
+   background-color: var(--accent-bg);
+   display: grid;
+   grid-template-columns: auto 1fr auto;
+   align-items: center;
+   gap: 1rem;
+   padding: 0 1.5rem;
+}
+.site-header {
+   border-bottom: 2px solid var(--menu-button-bg);
+   position: sticky;
+   top: 0;
+   z-index: 10;
+   line-height: 0;
+   padding: 4px;
+   padding-block: 4px;
+}
+.header-right {
+   display: flex;
+   align-items: center;
+}
+.header-center {
+   display: flex;
+   align-items: center;
+   position: relative;
+}
+.header-icon {
+   height: 100%;
+   width: auto;
+   max-height: 2.5rem;
+}
+.site-footer {
+   border-top: 2px solid var(--menu-button-bg);
+   color: var(--text-bright);
+   font-size: 0.8rem;
+   position: sticky;
+   bottom: -1px;
+   line-height: 1.25;
+   padding-block: 0.25rem;
+   text-align: center;
+   p {
+      padding: 0;
+      margin: 0;
+   }
+}
+.footer-right {
+   display: flex;
+   align-items: center;
+}
+.footer-left {
+   display: flex;
+   align-items: center;
+   position: relative;
+}
+.site-main {
+   background-color: var(--bg);
+   padding: 0.5rem;
+   align-self: start;
+   overflow-x: hidden;
+   min-width: 0;
+}
+
+/* icon content vars */
+#github-mark {
+   content: var(--github-mark);
+}
+#theme-toggle-icon {
+   content: var(--theme-toggle-icon);
+}
+
+/* burger: hidden checkbox, label hidden on desktop */
+#burger-toggle {
+   display: none;
+}
+#burger-label {
+   display: none;
+   flex-direction: column;
+   justify-content: center;
+   gap: 5px;
+   padding: 6px 4px;
+   cursor: pointer;
+   line-height: 0;
+}
+#burger-label span {
+   display: block;
+   width: 22px;
+   height: 2px;
+   background-color: var(--menu-button-bg);
+   border-radius: 2px;
+   transition: background-color 180ms ease;
+}
+#burger-label:hover span {
+   background-color: var(--accent-hover);
+}
