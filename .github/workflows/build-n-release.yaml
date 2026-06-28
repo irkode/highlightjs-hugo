@@ -78,6 +78,7 @@ jobs:
            uses: actions/checkout@v6
            with:
               fetch-depth: 0
+              fetch-tags: true
 
          - name: Set Tool Versions
            run: |
@@ -212,13 +213,19 @@ jobs:
          - name: Set Hugo version params for docs
            shell: bash
            run: |
-              TAG=$(git for-each-ref refs/tags --sort=-taggerdate \
-                --format='%(refname:strip=2)' --count=1)
-              TAGDATE=$(git for-each-ref "refs/tags/$TAG" \
-                --format='%(taggerdate:short)')
-              COMMITS_AFTER=$(git rev-list --count "${TAG}..HEAD")
-              echo "HUGO_PARAMS_TAG=${TAG}+${COMMITS_AFTER}" >> "$GITHUB_ENV"
-              echo "HUGO_PARAMS_TAGDATE=$TAGDATE"            >> "$GITHUB_ENV"
+              TAG=$(git for-each-ref refs/tags --sort=-taggerdate --format='%(refname:strip=2)' --count=1)
+              if [ -z "$TAG" ]; then
+                TAG="working"
+                TAGDATE=$(date +%F)
+              else
+                TAGDATE=$(git for-each-ref "refs/tags/$TAG" --format='%(taggerdate:short)')
+                COMMITSAFTERTAG=$(git rev-list --count "${TAG}..HEAD")
+                if [ $COMMITSAFTERTAG -ne 0 ]; then
+                  TAG="$TAG+$COMMITSAFTERTAG"
+                fi
+              fi
+              echo "HUGO_PARAMS_TAG=${TAG}"       >> "$GITHUB_ENV"
+              echo "HUGO_PARAMS_TAGDATE=$TAGDATE" >> "$GITHUB_ENV"
 
          - name: Setup Pages
            id: pages
@@ -226,6 +233,8 @@ jobs:
 
          - name: Build the site
            run: |
+              echo "TAG     : {{ env.HUGO_PARAMS_TAG }}"
+              echo "TAGDATE : {{ env.HUGO_PARAMS_TAGDATE }}"
               hugo build --source ./hugen/docs --gc --minify --baseURL "${{ steps.pages.outputs.base_url }}/" --cacheDir "${{ runner.temp }}/hugo_cache"
 
          - name: Upload Pages artifact
