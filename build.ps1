@@ -8,7 +8,6 @@ param(
       'CloneHighlightJS',
       'DeveloperBuild',
       'Distribute',
-      'DocsServer',
       'GenerateHugoGrammars',
       'TestHighlightJS'
    )][string[]]$Skip,
@@ -25,11 +24,15 @@ param(
       'CloneHighlightJS',
       'DeveloperBuild',
       'Distribute',
-      'DocsServer',
       'GenerateHugoGrammars',
       'TestHighlightJS'
    )][string[]]$Steps,
+   # remove old doc build artifacts
    [switch]$Clean,
+   # start the dev server
+   [switch]$Server,
+   # use this tag for versioning
+   [string]$tag,
    [string[]]$OnlyLanguages = @('go-html', 'go-text', 'hugo-embed', 'hugo-html', 'hugo-text')
 )
 
@@ -75,7 +78,7 @@ try {
    }
    if ($Clean) {
       try {
-         if ($Steps -contains "DocsServer") {
+         if ($Steps -contains "BuildDocs ") {
             Test-Folder -Clean -Create $DocsDir "public" -ErrorAction Continue
             Test-Folder -Clean -Create $DocsDir "resources" -ErrorAction Continue
          } else {
