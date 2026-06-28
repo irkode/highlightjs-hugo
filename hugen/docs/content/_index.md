@@ -73,7 +73,7 @@ Development Environment is a Windows 11 Professional with a recent _Powershell C
    .\build.ps1 -Verbose
    ```
 
-- Build results are located in `/release`.
+- Build results are in `/release`.
 
 ### Notes
 
