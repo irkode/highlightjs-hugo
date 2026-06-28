@@ -6,7 +6,7 @@ title = "Example - HugoDocs"
 
 Example how Hugo's documentation could look like styled with _highlighjs-hugo_`
 
-* Rendered with Chroma (go-template)
+## Rendered with Chroma (go-template)
 
 ```go-html-template {style="hugodocs"}
 {{ warnf `%s` templates.Current.Name }}
@@ -28,7 +28,7 @@ Example how Hugo's documentation could look like styled with _highlighjs-hugo_`
 {{ end }}
 ```
 
-* Rendered with HighlightJS (hugo-html)
+## Rendered with HighlightJS (hugo-html)
 
 ```hugo-html {style="hugodocs_bare"}
 {{ warnf `%s` templates.Current.Name }}
@@ -50,7 +50,7 @@ Example how Hugo's documentation could look like styled with _highlighjs-hugo_`
 {{ end }}
 ```
 
-* Rendered with HighlightJS (hugo-html) plus additional classes
+## Rendered with HighlightJS (hugo-html) plus additional classes
 
 ```hugo-html {style="hugodocs"}
 {{ warnf `%s` templates.Current.Name }}

@@ -4,10 +4,10 @@ title = "Example - Discourse"
 
 # Example config for Discourse and HighlightJS
 
-Guess you are familiar with the look and feel of this. The one at the bottom mimics the styles
-but utilizes our custom classes.
+Guess you are familiar with the look and feel of this. The one at the bottom mimics the styles but
+utilizes our custom classes.
 
-* Rendered with Python[^1]
+## Rendered with Python[^1]
 
 ```hljs-python {style="discourse"}
 {{ warnf `%s` templates.Current.Name }}
@@ -29,7 +29,7 @@ but utilizes our custom classes.
 {{ end }}
 ```
 
-* Rendered with Hugo-HTML
+## Rendered with Hugo-HTML
 
 ```hugo-html {style="discourse_bare"}
 {{ warnf `%s` templates.Current.Name }}
@@ -51,7 +51,7 @@ but utilizes our custom classes.
 {{ end }}
 ```
 
-* Rendered with Hugo-HTML plus additional classes
+## Rendered with Hugo-HTML plus additional classes
 
 ```hugo-html {style="discourse"}
 {{ warnf `%s` templates.Current.Name }}

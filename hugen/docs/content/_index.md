@@ -80,11 +80,9 @@ Development Environment is a Windows 11 Professional with a recent _Powershell C
 * Scripts are optimized for the current development setup
 * Custom Highlight.js builds should use standard Node/npm tooling after module generation
 
-## Project Scope
+## Support
 
-This project currently serves as a development workspace. Stability and contribution workflows are not yet formalized.
-
-Feedback, issues, and ideas are welcome:
+Feedback, issues, and ideas are welcome
 
 https://github.com/irkode/highlightjs-hugo/issues
 

@@ -38,25 +38,31 @@ Packages can be downloaded from: [Releases](https://github.com/irkode/highlightj
 
 ## Discourse Requirements
 
-Actually No idea - Here's the one and only test environment:
+The theme components are tested in virtual machines hosted on Windows 11 Professional
 
-- Windows 11 Professional
-- WSL2 - Ubuntu 22.04
-- Installed using this guide:
-  [Install a DEV Environment on Windows 11](https://meta.discourse.org/t/guide-to-setting-up-discourse-development-environment-windows-11/282227)
-  resulting in a runnable developer installation version 3.6.0.beta3-latest (end Oct 2025)
+- [Discourse Dev Container](https://meta.discourse.org/t/developing-discourse-using-a-dev-container/336366?silent=true)
+
+   - Discourse 2026.6.0-latest
+   - Ubuntu 26.04 Desktop
+   - Hyper-V
+
+- [Install a DEV Environment on Windows 11](https://meta.discourse.org/t/guide-to-setting-up-discourse-development-environment-windows-11/282227)
+
+   - Discourse 3.6.0.beta3-latest (end Oct 2025)
+   - Ubuntu 22.04
+   - WSL
+
+### References:
 
 - [API mentioned here](https://meta.discourse.org/t/install-a-new-language-for-highlight-js-via-a-theme-component/292480).
-  That's a post from Jan 2019, expected to be widely supported.
+- [add language using theme component](https://meta.discourse.org/t/install-a-new-language-for-highlight-js-via-a-theme-component/292480)
 
-- Follow [add language using theme component](https://meta.discourse.org/t/install-a-new-language-for-highlight-js-via-a-theme-component/292480)
-  to add the plugin
+## Support
 
-## Disclaimer
+Feedback, issues[^2], and ideas are welcome
 
-The plugins are provided AS-IS and only tested with the below dev installation of Discourse.
+https://github.com/irkode/highlightjs-hugo/issues
 
-If these don't work for you, please raise an issu providing as many details as you can.
-At best you tracked down the problem and can point somewhere to fix.
 
 [^1]: Draft- and pre-releases have to be manually browsed and downloaded.
+[^2]: component related issues only
