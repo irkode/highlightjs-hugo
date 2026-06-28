@@ -1,6 +1,6 @@
 <img align="left" src="huggingface-96x96.png" style="width:96px"/>
 <aside style="flex:1; padding-left:12px;">
-<h1>Advanced syntax highlighting for HuGo templates<br/></h1>
+<h1>  <br/></h1>
 
 Did you ever wonder why hugo templates seem to be randomly highlighted in [Hugo's Discourse Forum](https://discourse.gohugo.io/)?
 
@@ -73,18 +73,16 @@ Development Environment is a Windows 11 Professional with a recent _Powershell C
    .\build.ps1 -Verbose
    ```
 
-- Build results are Artifacts are generated in the `/release` directory.
+- Build results are located in `/release`.
 
 ### Notes
 
 * Scripts are optimized for the current development setup
 * Custom Highlight.js builds should use standard Node/npm tooling after module generation
 
-## Project Scope
+## Support
 
-This project currently serves as a development workspace. Stability and contribution workflows are not yet formalized.
-
-Feedback, issues, and ideas are welcome:
+Feedback, issues, and ideas are welcome
 
 https://github.com/irkode/highlightjs-hugo/issues
 
