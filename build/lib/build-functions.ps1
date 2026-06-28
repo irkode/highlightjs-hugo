@@ -83,7 +83,19 @@ function buildDocs {
    param()
    $Step = "Generate Documentation"
    try {
-      exec hugo --source $DocsDir build
+      if (-not $tag) {
+         $tag = $(git for-each-ref refs/tags --sort=-taggerdate --format='%(refname:strip=2)' --count=1)
+      }
+      $tagDate = (git for-each-ref refs/tags/$tag --format='%(taggerdate:short)')
+      $tagcount = (git rev-list --count "${tag}..HEAD")
+      if ($tagcount -ne "0") { $tag = "$tag+$tagcount" }
+      $ENV:HUGO_PARAMS_TAG = $tag
+      $ENV:HUGO_PARAMS_TAGDATE = $tagDate
+      if ($Server) {
+         exec hugo server --source $DocsDir
+      } else {
+         exec hugo build --source $DocsDir
+      }
    } catch {
       Write-Error "FAIL: $Step" -ErrorAction Continue
       throw "$_"
@@ -198,12 +210,6 @@ function Distribute {
    } finally {
       Set-Location $startCWD
    }
-}
-
-
-function DocsServer {
-   exec hugo --source $DocsDir server
-   exit
 }
 
 # TODO: don't delete foreign folders in extra
