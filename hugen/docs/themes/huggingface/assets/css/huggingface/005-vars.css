@@ -1,0 +1,23 @@
+/*
+ * dark mode is primary
+ *
+ * we support prefer-color-scheme and custom dark/light setting
+ */
+:root {
+   --sans-font:
+      "Avenir Next", Avenir, "Nimbus Sans L", Roboto, "Noto Sans", "Segoe UI", Arial, Helvetica,
+      "Helvetica Neue", sans-serif;
+   --mono-font: Consolas, Menlo, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+   --auto-mode-icon: url("img/auto-mode.svg");
+
+   /* Changes with the selected scheme */
+   --dark-github-mark: url("img/github-mark-white.svg");
+   --dark-mode-icon: url("img/dark-mode.svg");
+   --theme-toggle-icon: var(--light-mode-icon);
+
+   --light-github-mark: url("img/github-mark.svg");
+   --light-mode-icon: url("img/light-mode.svg");
+   --github-mark: var(--light-github-mark);
+
+   --icon-license: url("img/license-mit-blue.svg");
+}

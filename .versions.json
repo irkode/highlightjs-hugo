@@ -1,0 +1,6 @@
+{
+  "!go": { "source": "hugen/grammars/go.mod" },
+  "!hugo": { "source": ".hvm" },
+  "!node": { "version": "22.14.0" },
+  "highlightjs": { "version": "11.11.1" }
+}

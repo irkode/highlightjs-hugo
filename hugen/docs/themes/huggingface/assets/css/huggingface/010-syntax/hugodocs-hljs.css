@@ -1,0 +1,31 @@
+:root {
+   .hljs-hugodocs .hljs-attr { color: light-dark(#008080, #06b6ef)};
+   .hljs-hugodocs .hljs-attribute { color: light-dark(#803378, #06b6ef)};
+   .hljs-hugodocs .hljs-addition { color: light-dark(#2f6f44, #76c490)};
+   .hljs-hugodocs .hljs-bg { color: light-dark(rgb(248.37, 248.37, 248.37), rgba(0, 0, 0, 0.25))};
+   .hljs-hugodocs .inline-code-bg { color: light-dark(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35))};
+   .hljs-hugodocs .hljs-comment { color: light-dark(#999988, #776e71); font-style: italic};
+   .hljs-hugodocs .hljs-deletion { color: light-dark(#c02d2e, #de7176)};
+   .hljs-hugodocs .hljs-keyword { color: light-dark(oklch(0.374 0.01 67.558), #815ba4)};
+   .hljs-hugodocs .hljs-built_in { color: light-dark(rgb(33,33,33), #06b6ef)};
+   .hljs-hugodocs .hljs-title { color: light-dark(#b75501, #06b6ef)};
+   .hljs-hugodocs .hljs-literal { color: light-dark(var(--code-text), #06b6ef)};
+   .hljs-hugodocs .hljs-name { color: light-dark(#000080, #5bc4bf)};
+   .hljs-hugodocs .hljs-punctuation { color: light-dark(var(--code-text), #5bc4bf)};
+   .hljs-hugodocs .hljs-operator { color: light-dark(var(--code-text), #5bc4bf)};
+   .hljs-hugodocs .hljs-property { color: light-dark(rgb(0, 128, 128), #1893eb)};
+   .hljs-hugodocs .hljs-symbol { color: light-dark(#54790d, #b5bd68)};
+   .hljs-hugodocs .hljs-variable { color: light-dark(#54790d, #06b6ef)};
+   .hljs-hugodocs .hljs-string { color: light-dark(#bb8844, #48b685)};
+   /* style scopes added with highlightjs-hugo */
+   .hljs-hugodocs .hljs-property.method_ { color: light-dark(#b75501, #ca73c7);};
+   .hljs-hugodocs .hljs-string.raw_ { color: light-dark(#e5b06b, #54790d)};
+   .hljs-hugodocs .hljs-template-tag { color: light-dark(#999999, rgb(132.6, 132.6, 132.6))};
+   .hljs-hugodocs .hljs-template-variable { color: light-dark(#679511, #b75501)};
+   .hljs-hugodocs .hljs-template-variable.context_ { color: light-dark(#679511,#b75501); background-color: light-dark(var(--_text-light),rgb(211, 209, 209))};
+}
+html[data-theme="light"] .hljs-hugodocs .hljs-keyword { font-weight: 700}
+html[data-theme="light"] .hljs-hugodocs .hljs-literal { font-weight: 700}
+html[data-theme="light"] .hljs-hugodocs .hljs-operator { font-weight: 700}
+html[data-theme="light"] .hljs-hugodocs .hljs-punctuation { font-weight: 700}
+html[data-theme="light"] .hljs-hugodocs .hljs-template-variable.context_ { font-weight: 700}

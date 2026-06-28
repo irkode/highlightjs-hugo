@@ -1,0 +1,18 @@
+/* heavily co-authored by https://claude.ai/chat/ */
+@import "huggingface/000-reset.css";
+@import "huggingface/005-colors.css";
+@import "huggingface/005-vars.css";
+
+/* styles for chroma are added by head/css.html */
+@import "huggingface/010-syntax/discourse-hljs.css";
+@import "huggingface/010-syntax/discourse_bare-hljs.css";
+@import "huggingface/010-syntax/hugodocs-hljs.css";
+@import "huggingface/010-syntax/hugodocs_bare-hljs.css";
+@import "huggingface/010-syntax/colorful-hljs.css";
+
+@import "huggingface/020-layout.css";
+@import "huggingface/025-theme-toggle.css";
+
+@import "huggingface/030-menu.css";
+@import "huggingface/040-media.css";
+@import "huggingface/041-aside.css";

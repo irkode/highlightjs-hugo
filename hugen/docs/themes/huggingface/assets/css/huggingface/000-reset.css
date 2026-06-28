@@ -1,0 +1,41 @@
+/* -- Reset & base inspired by:
+  ---     https://www.joshwcomeau.com/css/custom-css-reset/
+  ---     https://elad2412.github.io/the-new-css-reset/
+*/
+
+*,
+*::before,
+*::after {
+   box-sizing: border-box;
+   margin: 0;
+   padding: 0;
+   border-width: 0;
+}
+*:not(dialog) {
+   margin: 0;
+}
+* {
+   line-height: calc(1em + 0.5rem);
+}
+img,
+picture,
+video,
+canvas,
+svg {
+   display: block;
+   max-width: 100%;
+}
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+   overflow-wrap: break-word;
+}
+@media (prefers-reduced-motion: no-preference) {
+   html {
+      interpolate-size: allow-keywords;
+   }
+}

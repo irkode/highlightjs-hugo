@@ -1,0 +1,9 @@
+/node_modules/
+/release/
+/dist
+/work/
+**/.hugo_build.lock
+**/public/
+**/resources/
+/_keep/
+/hugen/docs/themes/huggingface/assets/css/huggingface/styles/highlightjs

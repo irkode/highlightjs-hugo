@@ -1,0 +1,18 @@
+{{- /*
+Include a markdown snippet to a page and render it
+
+Usage: {{ partial "include-page.html" "path relative to content/_snippets" }}
+
+The path is relative to content/_snippets
+
+*/ -}}
+{{- $tpl := templates.Current.Name }}
+{{- $idx := math.Counter }}
+{{- warnf "[%04d][ %-20s ] : %s :: %s" $idx $tpl page.Path . }}
+
+{{- with site.GetPage (add "_snippets/" .) }}
+   {{- .RenderShortcodes }}
+{{- else }}
+   {{- errorf "Shortcode [ %s ] snippet [ %s ] not found at [ %s ]" $.Name . $.Position }}
+{{- end }}
+{{- /**/ -}}

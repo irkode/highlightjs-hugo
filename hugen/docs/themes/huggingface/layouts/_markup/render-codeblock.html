@@ -1,0 +1,22 @@
+{{- /* TODO: maybe we need to remove style from $opts */ -}}
+{{- $opts := merge dict .Options -}}
+{{- $engine := "chroma" }}
+{{- if not (and .Type (transform.CanHighlight .Type)) -}}{{- $engine = "hljs" }}{{- end }}
+
+{{- with .Options.style }}
+	{{ $opts = merge $opts (dict "wrapperClass" (printf "highlight %s-%s" $engine .)) }}
+{{- else }}
+	{{ $opts = merge $opts (dict "wrapperClass" (printf "highlight %s-%s" $engine (or site.Params.huggingface.markup.chromaStyle "monokai"))) }}
+{{- end }}
+
+{{- if eq $engine "chroma" -}}
+   {{- (transform.HighlightCodeBlock . $opts).Wrapped -}}
+{{- else }}
+	{{- .Page.Store.Set "loadHighlightJS" true -}}
+   {{- $type := .Type | replaceRE `^hljs-?` ""}}
+   {{ $lang := ""}}
+   <div class="{{ $opts.wrapperClass }}"><pre tabindex="0"><code {{ with $type }}{{- printf `class="%s"` . | safeHTMLAttr}}{{- end }}>
+      {{- (transform.HighlightCodeBlock . $opts).Inner -}}
+   </code></pre></div>
+   </div>
+{{- end -}}

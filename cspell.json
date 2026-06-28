@@ -1,0 +1,33 @@
+{
+  "version": "0.2",
+  "ignorePaths": [
+   "**/*.svg",
+   "**/*.sum",
+   "/release",
+   "/work"
+   ],
+  "dictionaryDefinitions": [
+    {
+      "name": "all",
+      "path": "~/.cspell/all.txt",
+      "description": "Words used with Hugo coding",
+      "addWords": true
+    },
+    {
+      "name": "hugo",
+      "path": "~/.cspell/hugo.txt",
+      "description": "Words used with Hugo coding",
+      "addWords": true
+    },
+    {
+      "name": "github",
+      "path": "~/.cspell/github.txt",
+      "description": "Words used within github workflows",
+      "addWords": true
+    }
+  ],
+  "dictionaries": [ "all", "github", "hugo"],
+  "words": [],
+  "ignoreWords": [],
+  "import": [],
+}

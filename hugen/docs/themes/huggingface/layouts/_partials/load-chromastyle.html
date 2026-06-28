@@ -1,0 +1,30 @@
+{{- $theme := printf ".chroma-%s .chroma" . }}
+{{- $style := "" }}
+{{- with add "css/huggingface/styles/chroma/" . "-light.css" }}
+	{{- warnf "CSS: loading style: %s" . -}}
+	{{- with resources.Get . }}
+		{{- $style = replace (.Content | replaceRE `\/\* (Background|PreWrapper) \*\/(.*?)\}` "/* $1 $2 }*/") ".chroma" $theme }}
+	{{- else }}
+		{{- errorf "CSS: failed to load style: %s" . -}}
+	{{- end }}
+{{- end }}
+{{- with add "css/huggingface/styles/chroma/" . "-dark.css" }}
+	{{- warnf "CSS: loading style: %s" . -}}
+	{{- with resources.Get . }}
+		{{ $content := replace (.Content | replaceRE `\/\* (Background|PreWrapper) \*\/(.*?)\}` "/* $1 $2 }*/" | replaceRE `\.dark\s+` "") ".chroma" $theme }}
+		{{- $style = add $style "@media (prefers-color-scheme: dark) {\nhtml:not([data-theme]) {" }}
+		{{- $style = add $style $content }}
+		{{- $style = add $style "}}" }}
+		{{- $style = add $style `html[data-theme="dark"] {` }}
+		{{- $style = add $style $content }}
+		{{- $style = add $style "}" }}
+	{{- else }}
+		{{- errorf "CSS: failed to load style: %s" . -}}
+	{{- end }}
+{{- end }}
+{{- $syntaxStyle := add "/css/chroma-" . ".css" }}
+{{- with resources.FromString $syntaxStyle $style }}
+	<link rel="stylesheet" href="{{ .RelPermalink }}" />
+{{- else }}
+	{{- warnf "CSS publishing syntax style failed: %s" $syntaxStyle }}
+{{- end }}

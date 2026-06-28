@@ -1,0 +1,68 @@
+baseURL = "https://irkode.github.io/highlightjs-hugo/"
+locale  = 'en-US'
+title   = "Highlight 4 Hugo"
+
+disableKinds  = ['rss', 'sitemap', 'taxonomy', 'term']
+enableGitInfo = true
+theme         = "huggingface"
+
+[params]
+   description   = "Advanced syntax highlighting for Hugo templates"
+   [params.h4h]
+      repository = "https://github.com/irkode/highlightjs-hugo/"
+
+   [params.huggingface]
+      siteLogo = "img/site-logo.png"
+      [params.huggingface.markup]
+         enableHighlightJS = true
+
+[build]
+   noJSConfigInAssets = true
+   [build.buildStats]
+      enable = false
+   [[build.cachebusters]]
+      source = 'disabled'
+      target = 'disabled'
+[markup]
+   [markup.highlight]
+      noClasses = false
+      # lineNos      = true
+      # wrapperClass = "custom"
+      # hl_inline = true
+
+   [markup.goldmark.renderHooks.image]
+      useEmbedded = "always"
+   [markup.goldmark.renderHooks.link]
+      useEmbedded = "always"
+
+[module]
+   [[module.mounts]]
+      source = "assets"
+      target = "assets"
+   [[module.mounts]]
+      source = "../_assets"
+      target = "assets"
+   [[module.mounts]]
+      source = "../../work/highlight-hugo-docs.min.js"
+      target = "assets/js/highlight-hugo-docs.min.js"
+
+   [[module.mounts]]
+      source = "content"
+      target = "content"
+   [[module.mounts]]
+      source = "../_snippets"
+      target = "content/_snippets"
+   [[module.mounts]]
+      source = "../../README.md"
+      target = "content/_snippets/README.md"
+   [[module.mounts]]
+      source = "../../LICENSE"
+      target = "content/_snippets/license.md"
+
+   [module.hugoVersion]
+      min      = '0.163.3'
+
+[segments]
+   [segments.testrender]
+      [[segments.testrender.includes]]
+         path = '{/hugo/examples*}'

@@ -1,0 +1,36 @@
+.aside-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.aside-left-image {
+  width: 196px;
+  flex: 0 0 196px;
+  object-fit: cover;
+}
+
+.aside-right h2 {
+  text-align: center;
+}
+
+.aside-right p {
+  text-align: center;
+  line-height: 2.0em;
+}
+
+@media (max-width: 580px) {
+  .aside-left {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .aside-left-image {
+    width: 128px;
+    flex: 0 0 128px;
+  }
+
+  .aside-right h2 {
+    text-align: center;
+  }
+}

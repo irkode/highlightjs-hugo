@@ -1,0 +1,40 @@
+:root {
+   color-scheme: light;
+   --github-mark: var(--light-github-mark);
+   --theme-toggle-icon: var(--light-mode-icon);
+}
+
+@media (prefers-color-scheme: dark) {
+   :root:not([data-theme]) {
+      color-scheme: dark;
+      --theme-toggle-icon: var(--dark-mode-icon);
+      --github-mark: var(--light-github-mark);
+   }
+}
+
+/* JS-controlled — always declared after fallback */
+html[data-theme="light"] {
+   color-scheme: light;
+   --github-mark: var(--light-github-mark);
+   --theme-toggle-icon: var(--light-mode-icon);
+}
+
+html[data-theme="dark"] {
+   color-scheme: dark;
+   --github-mark: var(--dark-github-mark);
+   --theme-toggle-icon: var(--dark-mode-icon);
+}
+
+html[data-theme-auto="true"] {
+   --theme-toggle-icon: var(--auto-mode-icon);
+}
+
+html {
+   transition:
+      --t-accent-bg 1s ease,
+      --t-bg 0.5s ease,
+      --t-text 0.5s ease,
+      --t-header-bg 0.5s ease,
+      --t-footer-bg 0.5s ease,
+      --t-main-bg 0.5s ease;
+}

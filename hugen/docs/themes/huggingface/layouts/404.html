@@ -1,0 +1,19 @@
+{{- define "main" }}
+<article class="aside-left">
+   {{- with resources.Get "img/huggingface_404-1254x1254.png" }}
+      {{- with .Resize "196x" }}
+         <img class="aside-left-image" src="{{ .RelPermalink }}" />
+      {{- end }}
+   {{- end }}
+   <aside class="aside-right">
+      <h2>404 Page not Found</h2>
+      <p>
+         Here is nothing at all you can fetch,</br>
+         There might be another <em>ode</em> to catch.</br>
+         You found only <em>irk</em> on this site,</br>
+         You could try other pages that might,</br>
+         But better: <a href="{{ absURL "" }}"> restart from scratch.</a>
+      </p>
+   </aside>
+</article>
+{{- end }}

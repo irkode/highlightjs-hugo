@@ -1,0 +1,13 @@
+:root {
+   --code-bg: lightblue;
+   --code-inline: lightgreen;
+}
+pre * {
+   background-color: lightyellow;
+}
+pre code > * {
+   background-color: lightgreen;
+}
+code.code-inline > * {
+   background-color: var(--code-inline-bg);
+}

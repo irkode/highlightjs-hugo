@@ -1,0 +1,9 @@
+{{- $tpl := templates.Current.Name }}
+{{- $idx := math.Counter }}
+{{- warnf "[%04d][ %-20s ] : %s " $idx $tpl .Path }}
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="color-scheme" content="dark light" />
+{{- partialCached "head/js.html" . }}
+{{- partialCached "head/favicons.html" . }}
+{{- partialCached "head/css.html" . }}

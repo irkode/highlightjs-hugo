@@ -1,0 +1,72 @@
+# top level entries
+[[main]]
+   name   = 'Highlight.js'
+   weight = 10
+[[main]]
+   name    = 'Discourse'
+   weight  = 20
+[[main]]
+   name   = 'Hugo'
+   weight = 30
+
+# submenu Highlight.js
+[[main]]
+   identifier = 'Highlightjs_Overview'
+   name       = 'Overview'
+   pageRef    = '/highlightjs'
+   Parent     = "Highlight.js"
+   weight     = 1
+[[main]]
+   name    = 'Hugo-Html'
+   pageRef = '/highlightjs/hugo-html'
+   Parent  = "Highlight.js"
+   weight  = 10
+[[main]]
+   name    = 'Hugo-Text'
+   pageRef = '/highlightjs/hugo-text'
+   Parent  = "Highlight.js"
+   weight  = 11
+[[main]]
+   name    = 'Go-Html'
+   pageRef = '/highlightjs/go-html'
+   Parent  = "Highlight.js"
+   weight  = 20
+[[main]]
+   name    = 'Go-Text'
+   pageRef = '/highlightjs/go-text'
+   Parent  = "Highlight.js"
+   weight  = 21
+
+[[main]]
+   name    = 'CSS Classes'
+   pageRef = '/highlightjs/hugo-css-class-reference'
+   Parent  = "Highlight.js"
+   weight  = 30
+
+# submenu Discourse.js
+[[main]]
+   identifier = 'Discourse_Overview'
+   name       = 'Overview'
+   pageRef    = '/discourse'
+   Parent     = "Discourse"
+   weight     = 1
+[[main]]
+   identifier = 'Discourse_Examples'
+   name    = 'Examples'
+   pageRef = '/discourse/examples'
+   Parent  = "Discourse"
+   weight  = 10
+
+# submenu Hugo.js
+[[main]]
+   identifier = 'Hugo_Overview'
+   name       = 'Overview'
+   pageRef    = '/hugo'
+   Parent     = "Hugo"
+   weight     = 1
+[[main]]
+   identifier = 'Hugo_Examples'
+   name    = 'Examples'
+   pageRef = '/hugo/examples'
+   Parent  = "Hugo"
+   weight  = 10

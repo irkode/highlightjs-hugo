@@ -1,0 +1,26 @@
+:root {
+   .hljs-discourse .hljs-attr { color: light-dark(#015692, #88aece)};
+   .hljs-discourse .hljs-attribute { color: light-dark(#803378, #c59bc1)};
+   .hljs-discourse .hljs-addition { color: light-dark(#2f6f44, #76c490)};
+   .hljs-discourse .hljs-bg { color: light-dark(rgb(248.37, 248.37, 248.37), rgba(0, 0, 0, 0.25))};
+   .hljs-discourse .inline-code-bg { color: light-dark(rgb(241.74, 241.74, 241.74), rgba(0, 0, 0, 0.35))};
+   .hljs-discourse .hljs-comment { color: light-dark(rgb(166.6, 166.6, 166.6), rgb(132.6, 132.6, 132.6))};
+   .hljs-discourse .hljs-deletion { color: light-dark(#c02d2e, #de7176)};
+   .hljs-discourse .hljs-keyword { color: light-dark(#015692, #88aece)};
+   .hljs-discourse .hljs-built_in { color: light-dark(#015692, #06b6ef)};
+   .hljs-discourse .hljs-title { color: light-dark(#b75501, #f08d49)};
+   .hljs-discourse .hljs-literal { color: light-dark(var(--code-text), #06b6ef)};
+   .hljs-discourse .hljs-name { color: light-dark(#b75501, #f08d49)};
+   .hljs-discourse .hljs-punctuation { color: light-dark(#535a60, #ccc)};
+   .hljs-discourse .hljs-operator { color: light-dark(var(--code-text), #5bc4bf)};
+   .hljs-discourse .hljs-property { color: light-dark(rgb(0, 128, 128), #1893eb)};
+   .hljs-discourse .hljs-symbol { color: light-dark(#54790d, #b5bd68)};
+   .hljs-discourse .hljs-variable { color: light-dark(#54790d, #b5bd68)};
+   .hljs-discourse .hljs-string { color: light-dark(#54790d, #b5bd68)};
+   /* style scopes added with highlightjs-hugo */
+   .hljs-discourse .hljs-string.raw_ { color: light-dark(#e5b06b, #54790d)};
+   .hljs-discourse .hljs-template-tag { color: light-dark(#999999, rgb(132.6, 132.6, 132.6))};
+   .hljs-discourse .hljs-template-variable { color: light-dark(#679511, #b75501)};
+   .hljs-discourse .hljs-template-variable.context_ { color: light-dark(#679511,#b75501); background-color: light-dark(var(--_text-light),rgb(211, 209, 209))};
+   .hljs-discourse .hljs-property.method_ { color: light-dark(#b75501, #ca73c7);};
+}

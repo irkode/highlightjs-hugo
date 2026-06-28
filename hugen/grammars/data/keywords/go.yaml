@@ -1,0 +1,48 @@
+patterns:
+  KEYWORDS_PIPELINE:
+    - block
+    - define
+    - else\s+with
+    - else\s+if
+    - range
+    - return
+    - template
+    - with
+    - if
+  KEYWORDS_STANDALONE:
+    - break
+    - continue
+    - else
+    - end
+
+scopes:
+  BUILTINS:
+    - urlquery
+    - println
+    - printf
+    - index
+    - print
+    - slice
+    - call
+    - html
+    - and
+    - len
+    - not
+    - eq
+    - ge
+    - gt
+    - js
+    - le
+    - lt
+    - ne
+    - or
+  LITERALS:
+    - "false"
+    - nil
+    - "true"
+
+generate:
+  LITERALS: ['kw']
+  BUILTINS: ['kw']
+  FUNCTIONS: []
+  KEYWORDS:  []

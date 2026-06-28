@@ -1,0 +1,82 @@
+/* =============================================================================
+   010-syntax-colors.css
+   Syntax highlighting semantic tokens — source values per highlighting system.
+   Each token has one variable per source system so adapters reference their
+   exact origin colors. Files consuming these vars never mix sources.
+
+   Sources:
+     hugodocs — hugodocs-chroma-light.css / hugodocs-chroma-dark.css
+     discourse — discourse-hljs-light.css / discourse-hljs-dark.css
+   ============================================================================= */
+
+:root {
+
+  /* ── line numbers (hugodocs only) ─────────────────────────────────────── */
+  --syntax-linenumber-hugodocs:      light-dark(#7f7f7f,                        #7f7f7f);
+
+  /* ── keywords ──────────────────────────────────────────────────────────── */
+  --syntax-keyword-hugodocs:         light-dark(#000000,                        #815ba4);
+  --syntax-keyword-discourse:        light-dark(#015692,                        #88aece);
+  --syntax-keywordtype-hugodocs:     light-dark(#445588,                        #fec418);
+  --syntax-keywordns-hugodocs:       light-dark(#000000,                        #5bc4bf);
+
+  /* ── names ─────────────────────────────────────────────────────────────── */
+  --syntax-builtin-hugodocs:         light-dark(#999999,                        #999999);
+  --syntax-nametag-hugodocs:         light-dark(#000080,                        #5bc4bf);
+  --syntax-nameattr-hugodocs:        light-dark(#008080,                        #06b6ef);
+  --syntax-nameattr-discourse:       light-dark(#015692,                        #88aece);
+  --syntax-nameclass-hugodocs:       light-dark(#445588,                        #fec418);
+  --syntax-namefunc-hugodocs:        light-dark(oklch(0.374 0.01 67.558),       #06b6ef);
+  --syntax-nameconst-hugodocs:       light-dark(#008080,                        #ef6155);
+  --syntax-namens-hugodocs:          light-dark(#555555,                        #fec418);
+  --syntax-namedec-hugodocs:         light-dark(#555555,                        #5bc4bf);
+  --syntax-attribute-hugodocs:       light-dark(#800080,                        #800080);
+  --syntax-attribute-discourse:      light-dark(#803378,                        #c59bc1);
+  --syntax-variable-hugodocs:        light-dark(#008080,                        #ef6155);
+  --syntax-variable-discourse:       light-dark(#54790d,                        #b5bd68);
+  --syntax-title-hugodocs:           light-dark(#999999,                        #999999);
+  --syntax-title-discourse:          light-dark(#b75501,                        #f08d49);
+  --syntax-nameerror-hugodocs:       light-dark(#990000,                        #ef6155);
+
+  /* ── literals — strings ────────────────────────────────────────────────── */
+  --syntax-string-hugodocs:          light-dark(#bb8844,                        #48b685);
+  --syntax-string-discourse:         light-dark(#54790d,                        #b5bd68);
+  --syntax-stringdoc-hugodocs:       light-dark(#bb8844,                        #776e71);
+  --syntax-stringescape-hugodocs:    light-dark(#bb8844,                        #f99b15);
+  --syntax-stringinterpol-hugodocs:  light-dark(#bb8844,                        #f99b15);
+  --syntax-stringregex-hugodocs:     light-dark(#808000,                        #48b685);
+
+  /* ── literals — numbers ────────────────────────────────────────────────── */
+  --syntax-number-hugodocs:          light-dark(#009999,                        #f99b15);
+  --syntax-literal-hugodocs:         light-dark(#009999,                        #f99b15);
+  --syntax-literaldate-hugodocs:     light-dark(#009999,                        #48b685);
+
+  /* ── operators ──────────────────────────────────────────────────────────── */
+  --syntax-operator-hugodocs:        light-dark(#000000,                        #5bc4bf);
+
+  /* ── punctuation ────────────────────────────────────────────────────────── */
+  --syntax-punctuation-discourse:    light-dark(#535a60,                        #cccccc);
+
+  /* ── comments ───────────────────────────────────────────────────────────── */
+  --syntax-comment-hugodocs:         light-dark(#999988,                        #776e71);
+  --syntax-comment-discourse:        light-dark(rgb(166.6, 166.6, 166.6),       rgb(132.6, 132.6, 132.6));
+  --syntax-commentspec-hugodocs:     light-dark(#999999,                        #776e71);
+
+  /* ── diff / generic ─────────────────────────────────────────────────────── */
+  --syntax-addition-hugodocs:        light-dark(#000000,                        #48b685);
+  --syntax-addition-discourse:       light-dark(#2f6f44,                        #76c490);
+  --syntax-deletion-hugodocs:        light-dark(#000000,                        #ef6155);
+  --syntax-deletion-discourse:       light-dark(#c02d2e,                        #de7176);
+  --syntax-error-hugodocs:           light-dark(#a61717,                        #ef6155);
+  --syntax-subheading-hugodocs:      light-dark(#aaaaaa,                        #5bc4bf);
+  --syntax-output-hugodocs:          light-dark(#888888,                        #888888);
+  --syntax-prompt-hugodocs:          light-dark(#555555,                        #776e71);
+  --syntax-traceback-hugodocs:       light-dark(#aa0000,                        #aa0000);
+  --syntax-whitespace-hugodocs:      light-dark(#bbbbbb,                        #bbbbbb);
+
+  /* ── backgrounds ────────────────────────────────────────────────────────── */
+  --syntax-bgaddition-hugodocs:      light-dark(#ddffdd,                        #ddffdd);
+  --syntax-bgdeletion-hugodocs:      light-dark(#ffdddd,                        #ffdddd);
+  --syntax-bgerror-hugodocs:         light-dark(#e3d2d2,                        #e3d2d2);
+  --syntax-bghighlight-hugodocs:     light-dark(#ffffcc,                        rgb(0,19,28));
+}

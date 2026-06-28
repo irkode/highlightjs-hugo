@@ -1,0 +1,59 @@
+{{- $tpl := templates.Current.Name }}
+{{- $idx := math.Counter }}
+{{- warnf "[%04d][ %-20s ] : %s " $idx $tpl .page.Path }}
+{{- $menuID := .menuID }}
+{{- $page := .page }}
+{{- with index site.Menus $menuID }}
+	<nav id="main-menu" aria-label="Main">
+		{{- partial "inline/menu/walk.html" (dict "page" $page "menuEntries" .) }}
+	</nav>
+{{- end }}
+
+{{- define "_partials/inline/menu/walk.html" }}
+{{- $page := .page }}
+{{- range .menuEntries }}
+	<div class="menu-item">
+		{{- $attrs := dict "href" .URL }}
+
+		{{- /* base class depending on active state */}}
+		{{- $class := "menu-button" }}
+		{{- if $page.IsMenuCurrent .Menu . }}
+			{{- $class = "menu-button menu-button--active" }}
+			{{- $attrs = merge $attrs (dict "aria-current" "page") }}
+		{{- else if and ($page.HasMenuCurrent .Menu .) (not .Parent) }}
+			{{- /* only apply ancestor to top-level entries, not submenu entries */}}
+			{{- $class = "menu-button menu-button--ancestor" }}
+			{{- $attrs = merge $attrs (dict "aria-current" "true") }}
+		{{- end }}
+
+		{{- /* append overview modifier when name is Overview */}}
+		{{- if eq .Name "Overview" }}
+			{{- $class = printf "%s menu-button--overview" $class }}
+		{{- end }}
+
+		{{- $attrs = merge $attrs (dict "class" $class) }}
+
+		{{- $name := .Name }}
+		{{- with .Identifier }}
+			{{- with T . }}
+				{{- $name = . }}
+			{{- end }}
+		{{- end }}
+		{{- if .HasChildren }}
+			{{- $attrs = merge $attrs (dict "aria-haspopup" "true" "aria-controls" (add "submenu-" $name)) }}
+		{{- end }}
+		<a
+			{{- range $k, $v := $attrs }}
+				{{- with $v }}
+				{{- printf " %s=%q" $k $v | safeHTMLAttr }}
+				{{- end }}
+			{{- end -}}>{{ $name }}</a
+		>
+		{{- with .Children }}
+			<nav class="submenu" id="submenu-{{ $name }}" aria-label="{{ $name }}">
+				{{- partial "inline/menu/walk.html" (dict "page" $page "menuEntries" .) }}
+			</nav>
+		{{- end }}
+	</div>
+{{- end }}
+{{- end }}

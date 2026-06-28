@@ -1,0 +1,20 @@
+:root {
+   .hljs-discourse_bare .hljs-attr { color: light-dark(#015692, #88aece)};
+   .hljs-discourse_bare .hljs-attribute { color: light-dark(#803378, #c59bc1)};
+   .hljs-discourse_bare .hljs-addition { color: light-dark(#2f6f44, #76c490)};
+   .hljs-discourse_bare .hljs-bg { color: light-dark(rgb(248.37, 248.37, 248.37), rgba(0, 0, 0, 0.25))};
+   .hljs-discourse_bare .inline-code-bg { color: light-dark(rgb(241.74, 241.74, 241.74), rgba(0, 0, 0, 0.35))};
+   .hljs-discourse_bare .hljs-comment { color: light-dark(rgb(166.6, 166.6, 166.6), rgb(132.6, 132.6, 132.6))};
+   .hljs-discourse_bare .hljs-deletion { color: light-dark(#c02d2e, #de7176)};
+   .hljs-discourse_bare .hljs-keyword { color: light-dark(#015692, #88aece)};
+   .hljs-discourse_bare .hljs-built_in { color: light-dark(#015692, #06b6ef)};
+   .hljs-discourse_bare .hljs-title { color: light-dark(#b75501, #f08d49)};
+   .hljs-discourse_bare .hljs-literal { color: light-dark(var(--code-text), #06b6ef)};
+   .hljs-discourse_bare .hljs-name { color: light-dark(#b75501, #f08d49)};
+   .hljs-discourse_bare .hljs-punctuation { color: light-dark(#535a60, #ccc)};
+   .hljs-discourse_bare .hljs-operator { color: light-dark(var(--code-text), #5bc4bf)};
+   .hljs-discourse_bare .hljs-property { color: light-dark(rgb(0, 128, 128), #1893eb)};
+   .hljs-discourse_bare .hljs-symbol { color: light-dark(#54790d, #b5bd68)};
+   .hljs-discourse_bare .hljs-variable { color: light-dark(#54790d, #b5bd68)};
+   .hljs-discourse_bare .hljs-string { color: light-dark(#54790d, #b5bd68)};
+}

@@ -1,0 +1,24 @@
+{{- $tpl := templates.Current.Name }}
+{{- $idx := math.Counter }}
+{{- warnf "[%04d][ %-20s ] : %s " $idx $tpl .Path }}
+{{- $storageKey := default "huggingface-theme" site.Params.huggingface.storageKey }}
+<script>
+	(function() {
+	var stored = window.localStorage?.getItem({{ $storageKey }});
+	var preferred = window.matchMedia?.("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+	document.documentElement.dataset.theme = stored || preferred;
+	document.documentElement.dataset.themeAuto = stored ? "false" : "true";
+	})();
+</script>
+
+{{- $params := dict "storageKey" $storageKey }}
+{{- with resources.Get "js/theme-toggle.js" }}
+	{{- warnf "[%04d][ %-20s ] : %s :: LOAD %s" $idx $tpl $.Path . }}
+	{{- with . | js.Build (dict "params" (dict "storageKey" $storageKey)) }}
+		<script type="module" src="{{ .RelPermalink }}"></script>
+	{{- else }}
+		{{- warnf "js.Build failed for %s" . }}
+	{{- end }}
+{{- else }}
+	{{- warnf "JS not found: js/theme-toggle.js" . }}
+{{- end }}

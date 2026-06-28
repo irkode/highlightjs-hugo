@@ -1,0 +1,435 @@
+# Triggered by:
+#   - push to main                    → build + test + deploy docs
+#   - push of vX.Y.Z+text (lightweight tag) → build + test + deploy docs
+#   - push of vX.Y.Z (annotated tag)  → build + test + deploy docs + draft GitHub release + push to deliver repo
+#   - any other tag or ref            → no-op (check job rejects it)
+#
+# Tag conventions:
+#   annotated:   vX.Y.Z              (semver, triggers release)
+#   lightweight: vX.Y.Z+text         (base must match latest annotated tag)
+#   other:       not allowed
+#
+name: Build and Release
+
+on:
+   push:
+      branches:
+         - "main"
+      tags:
+         - "v*"
+
+permissions:
+   contents: write
+
+concurrency:
+   group: build-deploy-${{ github.ref }}
+   cancel-in-progress: false
+
+# TODO: remove planned after 2nd June 2026 (v24 will be default)
+env:
+   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+   check:
+      runs-on: ubuntu-latest
+      outputs:
+         proceed: ${{ steps.validate.outputs.proceed }}
+         tag-type: ${{ steps.validate.outputs.tag-type }}
+         release-tag: ${{ steps.validate.outputs.release-tag }}
+      steps:
+         - name: Checkout (minimal)
+           uses: actions/checkout@v6
+           with:
+              fetch-depth: 1
+              fetch-tags: true
+
+         - name: Validate trigger
+           id: validate
+           shell: bash
+           run: |
+              REF="${{ github.ref }}"
+
+              # Plain branch push
+              if [ "$REF" = "refs/heads/main" ]; then
+                echo "proceed=true"   >> "$GITHUB_OUTPUT"
+                echo "tag-type=branch" >> "$GITHUB_OUTPUT"
+                echo "release-tag="   >> "$GITHUB_OUTPUT"
+                exit 0
+              fi
+
+              TAG="${{ github.ref_name }}"
+              echo "::debug::REF=$REF TAG=$TAG"
+
+              # Determine if annotated or lightweight
+              OBJ_TYPE=$(git cat-file -t "refs/tags/${TAG}" 2>/dev/null || echo "unknown")
+              echo "::notice::tag '$TAG' object type: $OBJ_TYPE"
+
+              if [ "$OBJ_TYPE" = "tag" ]; then
+                # Annotated — must be exactly vX.Y.Z
+                if [[ "$TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+                  echo "::notice::annotated tag matches vX.Y.Z → release"
+                  echo "proceed=true"     >> "$GITHUB_OUTPUT"
+                  echo "tag-type=release" >> "$GITHUB_OUTPUT"
+                  echo "release-tag=$TAG" >> "$GITHUB_OUTPUT"
+                else
+                  echo "::notice::annotated tag does not match vX.Y.Z → invalid"
+                  echo "::error::Annotated tag '$TAG' must be exactly vX.Y.Z. Doing nothing."
+                  echo "proceed=false"    >> "$GITHUB_OUTPUT"
+                  echo "tag-type=invalid" >> "$GITHUB_OUTPUT"
+                  echo "release-tag="     >> "$GITHUB_OUTPUT"
+                fi
+                exit 0
+              fi
+
+              if [ "$OBJ_TYPE" = "commit" ]; then
+                # Lightweight — must be vX.Y.Z+text where base matches latest annotated tag
+                echo "::notice::lightweight tag — checking shape vX.Y.Z+text"
+                if [[ "$TAG" =~ ^(v[0-9]+\.[0-9]+\.[0-9]+)\+.+$ ]]; then
+                  BASE="${BASH_REMATCH[1]}"
+                  echo "::notice::shape matches, base='$BASE'"
+                  # Exclude tags containing '+' to avoid matching other lightweight tags
+                  LATEST=$(git tag --list 'v[0-9]*.[0-9]*.[0-9]*' \
+                    | grep -v '+' \
+                    | while read -r t; do
+                        [ "$(git cat-file -t "refs/tags/$t" 2>/dev/null)" = "tag" ] && echo "$t" || true
+                      done \
+                    | sort -V | tail -1 || true)
+                  echo "::notice::latest annotated tag='$LATEST'"
+                  if [ "$BASE" = "$LATEST" ]; then
+                    echo "::notice::base matches latest annotated tag → plain"
+                    echo "proceed=true"   >> "$GITHUB_OUTPUT"
+                    echo "tag-type=plain" >> "$GITHUB_OUTPUT"
+                    echo "release-tag="   >> "$GITHUB_OUTPUT"
+                  else
+                    echo "::notice::base '$BASE' does not match latest annotated '$LATEST' → invalid"
+                    echo "::error::Lightweight tag '$TAG' base '$BASE' does not match latest annotated tag '$LATEST'. Doing nothing."
+                    echo "proceed=false"    >> "$GITHUB_OUTPUT"
+                    echo "tag-type=invalid" >> "$GITHUB_OUTPUT"
+                    echo "release-tag="     >> "$GITHUB_OUTPUT"
+                  fi
+                else
+                  echo "::notice::shape does not match vX.Y.Z+text → invalid"
+                  echo "::error::Lightweight tag '$TAG' must be shaped vX.Y.Z+text. Doing nothing."
+                  echo "proceed=false"    >> "$GITHUB_OUTPUT"
+                  echo "tag-type=invalid" >> "$GITHUB_OUTPUT"
+                  echo "release-tag="     >> "$GITHUB_OUTPUT"
+                fi
+                exit 0
+              fi
+
+              echo "::notice::unknown object type '$OBJ_TYPE' → invalid"
+
+              echo "::error::Could not determine type of ref '$REF'. Doing nothing."
+              echo "proceed=false"    >> "$GITHUB_OUTPUT"
+              echo "tag-type=invalid" >> "$GITHUB_OUTPUT"
+              echo "release-tag="     >> "$GITHUB_OUTPUT"
+
+   build:
+      runs-on: ubuntu-latest
+      needs: check
+      if: needs.check.outputs.proceed == 'true'
+      defaults:
+         run:
+            shell: pwsh
+      env:
+         # Versions are loaded from '.versions after checkout' and pushed to $ENV
+         # GO_VERSION:
+         # HUGO_VERSION:
+         # NODE_VERSION:
+         # HIGHLIGHTJS_VERSION:
+         WORK_DIR: ${{ github.workspace }}/work
+         HUGO_CACHE_DIR: ${{ github.workspace }}/work/hugo-cache
+         HIGHLIGHTJS_DIR: ${{ github.workspace }}/work/highlight.js
+         HIGHLIGHTJS_EXTRA_DIR: ${{ github.workspace }}/work/highlight.js/extra
+         HUGEN_DISCOURSE: ${{ github.workspace }}/hugen/discourse
+         HUGEN_GRAMMARS: ${{ github.workspace }}/hugen/grammars
+         RELEASE_DIR: ${{ github.workspace }}/release
+         ONLY_LANGUAGES: go-html go-text hugo-embed hugo-html hugo-text
+         TZ: Europe/Berlin
+
+      steps:
+         - name: Checkout
+           uses: actions/checkout@v6
+           with:
+              fetch-depth: 0
+
+         - name: Set Tool Versions
+           run: |
+              ./build/versions-set-wanted.ps1 -Verbose .versions.json
+
+         - name: Setup Node.js
+           uses: actions/setup-node@v6
+           with:
+              node-version: ${{ env.NODE_VERSION }}
+              cache: "npm"
+              cache-dependency-path: .node.package.json
+
+         - name: Setup Go
+           uses: actions/setup-go@v6
+           with:
+              go-version: "${{ env.GO_VERSION }}"
+              cache: true
+              cache-dependency-path: |
+                 hugen/grammars/go.sum
+                 hugen/grammars/hugo.direct.sum
+
+         - name: Restore Cache - Hugo binary
+           id: cache-hugo-bin
+           uses: actions/cache/restore@v5
+           with:
+              path: ${{ github.workspace }}/work/bin
+              key: hugo-bin-${{ runner.os }}-${{ env.HUGO_VERSION }}
+
+         - name: Download Hugo
+           if: steps.cache-hugo-bin.outputs.cache-hit != 'true'
+           run: |
+              $url = "https://github.com/gohugoio/hugo/releases/download/v${env:HUGO_VERSION}/hugo_extended_${env:HUGO_VERSION}_linux-amd64.tar.gz"
+              Write-Host "Downloading Hugo from $url to ${{ github.workspace }}/work/bin"
+              [void](New-Item -ItemType Directory -Force -Path "${{ github.workspace }}/work/bin")
+              Invoke-WebRequest -Uri $url -OutFile hugo.tar.gz
+              tar -xzf hugo.tar.gz -C "${{ github.workspace }}/work/bin" hugo
+              Remove-Item hugo.tar.gz
+
+         - name: Save Cache - Hugo binary
+           if: steps.cache-hugo-bin.outputs.cache-hit != 'true'
+           uses: actions/cache/save@v5
+           with:
+              path: ${{ github.workspace }}/work/bin
+              key: hugo-bin-${{ runner.os }}-${{ env.HUGO_VERSION }}
+
+         - name: Add Hugo to Path
+           run: |
+              "${{ github.workspace }}/work/bin/" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+
+         - name: Check Versions
+           run: |
+              ./build/versions-check-installed.ps1 -Verbose -VersionConfigFile .versions.json
+
+         - name: Restore Cache - Highlight.js
+           id: cache-highlightjs
+           uses: actions/cache/restore@v5
+           with:
+              path: ${{ env.HIGHLIGHTJS_DIR }}
+              key: highlightjs-${{ runner.os }}-${{ env.HIGHLIGHTJS_VERSION }}
+
+         - name: Clone and Setup Highlight.js
+           if: steps.cache-highlightjs.outputs.cache-hit != 'true'
+           run: |
+              git clone --branch ${{ env.HIGHLIGHTJS_VERSION }} --depth 1 https://github.com/highlightjs/highlight.js.git "${{ env.HIGHLIGHTJS_DIR }}"
+              Set-Location "${{ env.HIGHLIGHTJS_DIR }}"
+              npm ci
+              Write-Host "Highlight.js version folder ready at: ${env:HIGHLIGHTJS_DIR}"
+
+         - name: Save Cache - Highlight.js
+           if: steps.cache-highlightjs.outputs.cache-hit != 'true'
+           uses: actions/cache/save@v5
+           with:
+              path: ${{ env.HIGHLIGHTJS_DIR }}
+              key: highlightjs-${{ runner.os }}-${{ env.HIGHLIGHTJS_VERSION }}
+
+         - name: Generate Highlight.js grammars
+           run: |
+              hugo --source ${{ env.HUGEN_GRAMMARS }} --destination ${{ env.HIGHLIGHTJS_EXTRA_DIR }}
+
+         # On windows this builds only the listed grammars
+         # here we get also the common ones - sick
+         - name: Build Highlight.js Hugo grammars
+           working-directory: ${{ env.HIGHLIGHTJS_DIR }}
+           run: |
+              node ./tools/build.js -t node ($ENV:ONLY_LANGUAGES -split '\s+')
+
+         # It looks like the `npm run test-markup` on linux does not handle ONLY_EXTRA correctly when
+         # enumerating our test files -> it actually ignores all
+         # dunno if this is node/npm problem or the implementation of the Highlight.js build scripts or mine
+         #
+         # WORKAROUND: copy all tests to highlight.js test folder and use $ENV:ONLY_LANGUAGES to set test scope
+         - name: Test Highlight.js Hugo markup
+           working-directory: ${{ env.HIGHLIGHTJS_DIR }}
+           run: |
+              foreach ($g in ($ENV:ONLY_LANGUAGES -split '\s+')) {
+                foreach ($t in @('detect', 'markup')) {
+                  mkdir "test/$t/$g"
+                  cp -R extra/$g/test/$t/* test/$t/$g
+                }
+              }
+              npm run test-markup
+
+         - name: Build CDN plugins Highlight.js
+           working-directory: ${{ env.HIGHLIGHTJS_DIR }}
+           run: |
+              node ./tools/build.js -t cdn ($ENV:ONLY_LANGUAGES -split '\s+')
+              Get-ChildItem -Directory ${{ env.HIGHLIGHTJS_EXTRA_DIR }} | ForEach-Object { Copy-Item -Recurse $_ -Destination "${{ env.RELEASE_DIR }}/highlightjs/$($_.Name)" }
+
+         - name: Build highlight-hugo engine
+           working-directory: ${{ env.HIGHLIGHTJS_DIR }}
+           run: |
+              node ./tools/build.js -t browser hugo-html hugo-text xml
+              Copy-Item  (Join-Path ${{ env.HIGHLIGHTJS_DIR }} "build/highlight.min.js") (Join-Path ${{ env.RELEASE_DIR }} "highlight-hugo.min.js")
+
+              node ./tools/build.js -t browser go-html go-text xml
+              Copy-Item  (Join-Path ${{ env.HIGHLIGHTJS_DIR }} "build/highlight.min.js") (Join-Path ${{ env.RELEASE_DIR }} "highlight-go.min.js")
+
+              node ./tools/build.js -t browser go-html go-text hugo-html hugo-text python xml
+              Copy-Item  (Join-Path ${{ env.HIGHLIGHTJS_DIR }} "build/highlight.min.js") (Join-Path ${{ env.WORK_DIR }} "highlight-hugo-docs.min.js")
+
+         - name: Build Discourse Theme Components
+           run: |
+              hugo --source ${{ env.HUGEN_DISCOURSE }} --destination ${{ env.RELEASE_DIR}}/discourse
+
+         - name: Upload build artifact
+           uses: actions/upload-artifact@v7
+           with:
+              name: release
+              path: ${{ env.RELEASE_DIR}}
+              retention-days: 7
+
+         - name: Set Hugo version params for docs
+           shell: bash
+           run: |
+              # Always reflects the latest annotated vX.Y.Z tag regardless of trigger
+              BASE=$(git describe --tags --match 'v[0-9]*.[0-9]*.[0-9]*' --abbrev=0 2>/dev/null || echo "unreleased")
+              if [ "$BASE" = "unreleased" ]; then
+                TAGDATE=$(date -u '+%Y-%m-%d')
+              else
+                TAGDATE=$(git log -1 --format='%as' "$BASE")
+              fi
+              echo "HUGO_PARAMS_TAG=$BASE" >> $GITHUB_ENV
+              echo "HUGO_PARAMS_TAGDATE=$TAGDATE" >> $GITHUB_ENV
+
+         - name: Setup Pages
+           id: pages
+           uses: actions/configure-pages@v6
+
+         - name: Build the site
+           run: |
+              hugo build --source ./hugen/docs --gc --minify --baseURL "${{ steps.pages.outputs.base_url }}/" --cacheDir "${{ runner.temp }}/hugo_cache"
+
+         - name: Upload Pages artifact
+           uses: actions/upload-pages-artifact@v5
+           with:
+              path: ./hugen/docs/public
+
+   release:
+      runs-on: ubuntu-latest
+      needs: [check, build]
+      if: needs.check.outputs.tag-type == 'release'
+      env:
+         RELEASE_TAG: ${{ needs.check.outputs.release-tag }}
+         RELEASE_DIR: ${{ github.workspace }}/release
+
+      steps:
+         - name: Checkout
+           uses: actions/checkout@v6
+           with:
+              fetch-depth: 0
+
+         - name: Download build artifact
+           uses: actions/download-artifact@v8
+           with:
+              name: release
+              path: ${{ env.RELEASE_DIR }}/
+
+         - name: Create release assets
+           shell: bash
+           run: |
+
+              # plugins of highlight.js and discourse
+              mkdir "${{ env.RELEASE_DIR }}/javascripts"
+              for lang in go-html go-text hugo-html hugo-text; do
+                echo "##### ${{ env.RELEASE_DIR }}/discourse/${lang}"
+                (cd "${{ env.RELEASE_DIR }}/discourse/${lang}" && zip -r "../discourse-${lang}.zip" .)
+                cp ${{ env.RELEASE_DIR }}/highlightjs/${lang}/dist/${lang}.min.js ${{ env.RELEASE_DIR }}/javascripts/${lang}.min.js
+                cp ${{ env.RELEASE_DIR }}/highlightjs/${lang}/dist/${lang}.es.min.js ${{ env.RELEASE_DIR }}/javascripts/${lang}.es.min.js
+              done
+              cp ${{ env.RELEASE_DIR }}/highlight-go.min.js ${{ env.RELEASE_DIR }}/javascripts/highlight-go.min.js
+              cp ${{ env.RELEASE_DIR }}/highlight-hugo.min.js ${{ env.RELEASE_DIR }}/javascripts/highlight-hugo.min.js
+              echo "#### ${{ env.RELEASE_DIR }}"
+              tree ${{ env.RELEASE_DIR }}
+
+              echo "##### copy asset discourse"
+              (cd "${{ env.RELEASE_DIR }}/discourse" && zip "${{ github.workspace }}/highlightjs-hugo-discourse.zip" discourse-go-html.zip discourse-go-text.zip discourse-hugo-html.zip discourse-hugo-text.zip)
+
+              echo "##### copy asset highlightjs"
+              (cd "${{ env.RELEASE_DIR }}/highlightjs" && zip -r "${{ github.workspace }}/highlightjs-hugo-extra-src.zip" .)
+
+              echo "#### copy asset javascripts"
+              tree ${{ env.RELEASE_DIR }}/javascripts
+              (cd ${{ env.RELEASE_DIR }}/javascripts && zip "${{ github.workspace }}/highlightjs-hugo-js-modules.zip" *.js)
+         - name: Generate checksums
+           shell: bash
+           working-directory: ${{ github.workspace }}
+           run: |
+              sha256sum \
+                highlightjs-hugo-discourse.zip \
+                highlightjs-hugo-extra-src.zip \
+                highlightjs-hugo-js-modules.zip \
+                > checksums.txt
+
+              echo "### checksums.txt"
+              cat checksums.txt
+
+         - name: Generate changelog
+           id: changelog
+           shell: bash
+           run: |
+              # Find the most recent annotated vX.Y.Z tag before the new one
+              PREV_TAG=$(git tag --list 'v[0-9]*.[0-9]*.[0-9]*' \
+                | while read -r t; do
+                    [ "$(git cat-file -t "refs/tags/$t" 2>/dev/null)" = "tag" ] && echo "$t" || true
+                  done \
+                | sort -V \
+                | grep -v "^${{ env.RELEASE_TAG }}$" \
+                | tail -1 || true)
+
+              if [ -z "$PREV_TAG" ]; then
+                RANGE="${{ env.RELEASE_TAG }}"
+                SINCE_LINE="Initial release"
+              else
+                RANGE="${PREV_TAG}..${{ env.RELEASE_TAG }}"
+                SINCE_LINE="Changes since ${PREV_TAG}"
+              fi
+
+              echo "Range: $RANGE"
+
+              LOG=$(git log "$RANGE" \
+                --pretty=format:"- \`%h\` %ad — %s" \
+                --date=format:"%Y-%m-%d" \
+                --no-merges)
+
+              {
+                echo "## ${SINCE_LINE}"
+                echo ""
+                echo "$LOG"
+              } > release-body.md
+
+              cat release-body.md
+
+         - name: Create GitHub Release
+           uses: softprops/action-gh-release@v3
+           with:
+              tag_name: ${{ env.RELEASE_TAG }}
+              name: ${{ env.RELEASE_TAG }}
+              draft: true
+              fail_on_unmatched_files: true
+              body_path: release-body.md
+              files: |
+                 highlightjs-hugo-discourse.zip
+                 highlightjs-hugo-extra-src.zip
+                 highlightjs-hugo-js-modules.zip
+                 checksums.txt
+
+   docs:
+      runs-on: ubuntu-latest
+      needs: [check, build]
+      if: needs.check.outputs.proceed == 'true'
+      permissions:
+         contents: read
+         pages: write
+         id-token: write
+      concurrency:
+         group: pages
+         cancel-in-progress: false
+
+      steps:
+         - name: Deploy to GitHub Pages
+           uses: actions/deploy-pages@v5

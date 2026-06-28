@@ -1,0 +1,16 @@
+{
+  "engines": {
+    "node": "22.14.0"
+  },
+  "devDependencies": {
+    "cspell": "^9.7.0",
+    "favicons": "^7.2.0",
+    "prettier": "^3.8.1",
+    "prettier-plugin-go-template": "^0.0.15",
+    "prettier-plugin-toml": "^2.0.6",
+    "svgo": "^4.0.1"
+  },
+  "scripts": {
+    "favicons": "node ./build/gen-favicons.mjs"
+  }
+}

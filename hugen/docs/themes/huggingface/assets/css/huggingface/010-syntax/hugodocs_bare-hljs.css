@@ -1,0 +1,25 @@
+:root {
+   .hljs-hugodocs_bare .hljs-attr { color: light-dark(#008080, #06b6ef)};
+   .hljs-hugodocs_bare .hljs-attribute { color: light-dark(#803378, #06b6ef)};
+   .hljs-hugodocs_bare .hljs-addition { color: light-dark(#2f6f44, #76c490)};
+   .hljs-hugodocs_bare .hljs-bg { color: light-dark(rgb(248.37, 248.37, 248.37), rgba(0, 0, 0, 0.25))};
+   .hljs-hugodocs_bare .inline-code-bg { color: light-dark(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35))};
+   .hljs-hugodocs_bare .hljs-comment { color: light-dark(#999988, #776e71); font-style: italic};
+   .hljs-hugodocs_bare .hljs-deletion { color: light-dark(#c02d2e, #de7176)};
+   .hljs-hugodocs_bare .hljs-keyword { color: light-dark(oklch(0.374 0.01 67.558), #815ba4)};
+   .hljs-hugodocs_bare .hljs-built_in { color: light-dark(rgb(33,33,33), #06b6ef)};
+   .hljs-hugodocs_bare .hljs-title { color: light-dark(#b75501, #06b6ef)};
+   .hljs-hugodocs_bare .hljs-literal { color: light-dark(var(--code-text), #06b6ef)};
+   .hljs-hugodocs_bare .hljs-name { color: light-dark(#000080, #5bc4bf)};
+   .hljs-hugodocs_bare .hljs-punctuation { color: light-dark(var(--code-text), #5bc4bf)};
+   .hljs-hugodocs_bare .hljs-operator { color: light-dark(var(--code-text), #5bc4bf)};
+   .hljs-hugodocs_bare .hljs-property { color: light-dark(rgb(0, 128, 128), #1893eb)};
+   .hljs-hugodocs_bare .hljs-symbol { color: light-dark(#54790d, #b5bd68)};
+   .hljs-hugodocs_bare .hljs-variable { color: light-dark(#54790d, #06b6ef)};
+   .hljs-hugodocs_bare .hljs-string { color: light-dark(#bb8844, #48b685)};
+}
+html[data-theme="light"] .hljs-hugodocs_bare .hljs-keyword { font-weight: 700}
+html[data-theme="light"] .hljs-hugodocs_bare .hljs-literal { font-weight: 700}
+html[data-theme="light"] .hljs-hugodocs_bare .hljs-operator { font-weight: 700}
+html[data-theme="light"] .hljs-hugodocs_bare .hljs-punctuation { font-weight: 700}
+html[data-theme="light"] .hljs-hugodocs_bare .hljs-template-variable.context_ { font-weight: 700}
