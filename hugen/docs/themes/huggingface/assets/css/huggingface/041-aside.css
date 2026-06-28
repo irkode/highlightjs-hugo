@@ -1,36 +1,100 @@
-.aside-left {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+.aside {
+   display: flex;
+   width: 100%;
+   gap: 12px;
+   margin-bottom: 1rem;
+   align-items: stretch;
 }
 
-.aside-left-image {
-  width: 196px;
-  flex: 0 0 196px;
-  object-fit: cover;
+/* =========================================================
+   CONTENT: equal columns (default structural mode)
+   ========================================================= */
+.aside.content > * {
+   flex: 1 1 0;
+   min-width: 0;
 }
 
-.aside-right h2 {
-  text-align: center;
+/* =========================================================
+   CENTER: compact grouping, no edge push
+   ========================================================= */
+.aside.center {
+   justify-content: flex-start;
+   align-items: center;
 }
 
-.aside-right p {
-  text-align: center;
-  line-height: 2.0em;
+/* both items stay content-sized */
+.aside.center > * {
+   flex: 0 0 auto;
+}
+
+/* center text inside right slot */
+.aside.center > :nth-child(2) {
+   text-align: center;
+}
+
+/* =========================================================
+   BANNER: left fixed, right expands
+   ========================================================= */
+.aside.banner {
+   align-items: center;
+}
+
+.aside.banner > :first-child {
+   flex: 0 0 auto;
+}
+
+.aside.banner > :nth-child(2) {
+   flex: 1 1 auto;
+   text-align: left;
+   min-width: 0;
+}
+
+/* =========================================================
+   IMAGES (unchanged utilities)
+   ========================================================= */
+.aside .img192 {
+   width: 192px;
+   flex: 0 0 192px;
+   object-fit: cover;
+}
+
+.aside .img128 {
+   width: 128px;
+   flex: 0 0 128px;
+   object-fit: cover;
+}
+
+/* =========================================================
+   TYPOGRAPHY INSIDE ASIDE
+   (optional global styling, keep if desired)
+   ========================================================= */
+.aside h2 {
+   text-align: center;
+}
+
+.aside p {
+   text-align: center;
+   line-height: 2em;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+@media (max-width: 1000px) {
+   .aside.r1000 {
+      flex-direction: column;
+      align-items: stretch;
+   }
 }
 
 @media (max-width: 580px) {
-  .aside-left {
-    flex-direction: column;
-    align-items: center;
-  }
+   .aside {
+      flex-direction: column;
+      align-items: stretch;
+   }
 
-  .aside-left-image {
-    width: 128px;
-    flex: 0 0 128px;
-  }
-
-  .aside-right h2 {
-    text-align: center;
-  }
+   .aside .img192 {
+      width: 128px;
+      flex: 0 0 128px;
+   }
 }

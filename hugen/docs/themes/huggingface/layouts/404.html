@@ -1,19 +1,38 @@
 {{- define "main" }}
-<article class="aside-left">
-   {{- with resources.Get "img/huggingface_404-1254x1254.png" }}
-      {{- with .Resize "196x" }}
-         <img class="aside-left-image" src="{{ .RelPermalink }}" />
-      {{- end }}
-   {{- end }}
-   <aside class="aside-right">
-      <h2>404 Page not Found</h2>
-      <p>
-         Here is nothing at all you can fetch,</br>
-         There might be another <em>ode</em> to catch.</br>
-         You found only <em>irk</em> on this site,</br>
-         You could try other pages that might,</br>
-         But better: <a href="{{ absURL "" }}"> restart from scratch.</a>
-      </p>
-   </aside>
+<article class="aside center">
+	<div class="main">
+		{{- $filter := "" }}
+		{{- $path := "img/highlightjs-icon.png" }}
+		{{- with resources.Get $path }}
+			{{- with .Resize "48x" }}
+				{{ $filter = images.Overlay . 0 144 }}
+			{{- else }}
+				{{- errorf "Unable to resize overlay %q" $path }}
+			{{ end }}
+		{{- else }}
+			{{- errorf "Unable to get overlay %q" $path }}
+		{{- end }}
+		{{- with resources.Get "img/huggingface_404-1254x1254.png" }}
+			{{- with $image := .Resize "192x" }}
+				{{ with $image.Filter $filter }}
+					<img class="img192" src="{{ .RelPermalink }}" />
+				{{- else }}
+					<img class="img192"src="{{ $image.RelPermalink }}" />
+				{{- end }}
+			{{- else }}
+				{{- errorf "Unable to get home-image %q" $path }}
+			{{- end }}
+		{{- end }}
+	</div>
+	<aside>
+		<h2>404 Page not Found</h2>
+		<p>
+			Here is nothing at all you can fetch,</br>
+			There might be other <b><em>Ode</em></b>s to catch.</br>
+			You found only <b><em>Irk</em></b> on this site,</br>
+			You could try other pages that might,</br>
+			But better: <a href="{{ absURL "" }}"> restart from scratch.</a>
+		</p>
+	</aside>
 </article>
 {{- end }}

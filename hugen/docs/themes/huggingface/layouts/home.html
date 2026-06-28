@@ -1,61 +1,70 @@
 {{- define "main" }}
-<article style="display:flex; align-items:center;margin-bottom: 8px">
-   {{- $filter := "" }}
-   {{- $path := "img/highlightjs-icon.png" }}
-   {{- with resources.Get $path }}
-      {{- with .Resize "48x" }}
-            {{ $filter = images.Overlay . 0 80 }}
-      {{- else }}
-         {{- errorf "Unable to resize overlay %q" $path }}
-      {{end }}
-   {{- else }}
-      {{- errorf "Unable to get overlay %q" $path }}
-   {{- end }}
-   {{- with resources.Get "img/huggingface-1254x1254.png" }}
-      {{- with $image := .Resize "128x" }}
-         {{ with $image.Filter $filter }}
-            <img src="{{ .RelPermalink }}" style="width:128px; flex:0 0 128px; object-fit:cover;"/>
-         {{- else }}
-            <img src="{{ $image.RelPermalink }}" style="width:128px; flex:0 0 128px; object-fit:cover;"/>
-         {{- end }}
-      {{- else }}
-         {{- errorf "Unable to get home-image %q" $path }}
-      {{- end }}
-   {{- end }}
-   <aside style="flex:1; padding-left:12px;">
-      <h1>{{ site.Params.Description }}</h1>
-   </aside>
-</article>
+<div class="aside banner">
+	<div>
+		{{- $filter := "" }}
+		{{- $path := "img/highlightjs-icon.png" }}
+		{{- with resources.Get $path }}
+			{{- with .Resize "48x" }}
+				{{ $filter = images.Overlay . 0 80 }}
+			{{- else }}
+				{{- errorf "Unable to resize overlay %q" $path }}
+			{{ end }}
+		{{- else }}
+			{{- errorf "Unable to get overlay %q" $path }}
+		{{- end }}
+		{{- with resources.Get "img/huggingface-1254x1254.png" }}
+			{{- with $image := .Resize "128x" }}
+				{{ with $image.Filter $filter }}
+					<img src="{{ .RelPermalink }}" />
+				{{- else }}
+					<img src="{{ $image.RelPermalink }}" />
+				{{- end }}
+			{{- else }}
+				{{- errorf "Unable to get home-image %q" $path }}
+			{{- end }}
+		{{- end }}
+	</div>
+	<aside>
+		<h1>{{ site.Params.Description }}</h1>
+	</aside>
+</div>
 {{- .Summary }}
 
 {{- .Store.Set "loadHighlightJS" true -}}
 
-<article class="aside-left">
-   <div>
-<b>Hugo-Html</b>
-<div class="highlight hljs-discourse"><pre tabindex="0"><code class="hljs-hugo-html">
-{{- `{{ printf "discourse Hello %s -> %s" $World .}}
-{{- /*  printf "ONE second line */ -}}
+<div class="aside content r1000">
+	<div>
+		<figure>
+			<figcaption>Hugo-Html</figcaption>
+			<div class="highlight hljs-discourse"><pre tabindex="0"><code class="hljs-hugo-html">
+						{{- `{{ printf "discourse Hello %s -> %s" $World .}}
+{{- /*  just a simple comment */ -}}
 <div class="help"/>
 {{ range $k, $v := hugo.Generator $ $.Method -}}
 {{ site.Language.Label }}
 {{ hugo.Sites.Pages }}
 ` -}}
-</code></pre></div>
-</div>
-   <aside class="aside-right">
-<b>Discourse standard</b>
-<div class="highlight hljs-discourse"><pre tabindex="0"><code class="python">
-{{- `{{ printf "discourse Hello %s -> %s" $World .}}
-{{- /*  printf "ONE second line */ -}}
+					</code>{{- /**/ -}}
+				</pre>
+			</div>
+		</figure>
+	</div>
+	<aside>
+		<figure>
+			<figcaption>Discourse standard</figcaption>
+			<div class="highlight hljs-discourse"><pre tabindex="0"><code class="python">
+						{{- `{{ printf "discourse Hello %s -> %s" $World .}}
+{{- /*  just a simple comment */ -}}
 <div class="help"/>
 {{ range $k, $v := hugo.Generator $ $.Method -}}
 {{ site.Language.Label }}
 {{ hugo.Sites.Pages }}
 ` -}}
-</code></pre></div>
-   </aside>
-</article>
+					</code>{{- /**/ -}}
+				</pre>
+			</figure>
+		</aside>
+	</div>
 
-{{- .ContentWithoutSummary }}
+	{{- .ContentWithoutSummary }}
 {{- end }}
