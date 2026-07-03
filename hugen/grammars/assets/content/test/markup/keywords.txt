@@ -26,3 +26,6 @@
 {{ substr }}
 {{ strings.Substr }}
 {{ and eq else block with continue}}
+{{/* negative tests */}}
+{{ a.range }}
+{{ range.a }}

@@ -25,4 +25,7 @@
 <span class="hljs-template-tag">{{</span> <span class="hljs-built_in">hugo.Generator</span> <span class="hljs-template-tag">}}</span>
 <span class="hljs-template-tag">{{</span> <span class="hljs-built_in">substr</span> <span class="hljs-template-tag">}}</span>
 <span class="hljs-template-tag">{{</span> <span class="hljs-built_in">strings.Substr</span> <span class="hljs-template-tag">}}</span>
-<span class="hljs-template-tag">{{</span> <span class="hljs-built_in">and</span> <span class="hljs-built_in">eq</span> else block with continue<span class="hljs-template-tag">}}</span>
+<span class="hljs-template-tag">{{</span> <span class="hljs-built_in">and</span> <span class="hljs-built_in">eq</span> else block with continue<span class="hljs-template-tag">}}</span><span class="hljs-comment">
+{{/* negative tests */}}</span>
+<span class="hljs-template-tag">{{</span> a<span class="hljs-property">.</span><span class="hljs-property method_">range</span> <span class="hljs-template-tag">}}</span>
+<span class="hljs-template-tag">{{</span> range<span class="hljs-property">.</span><span class="hljs-property method_">a</span> <span class="hljs-template-tag">}}</span>

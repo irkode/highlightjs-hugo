@@ -20,7 +20,7 @@
 
 {{- /* generate keyword base patterns for the action root modes */ -}}
 {{- range $regexName, $regexWords := index $dataKeywords "patterns" }}
-   {{- printf "export const H4HBASE_%s_REGEX = /%s/;\n" $regexName (delimit $regexWords "|") }}
+   {{- printf "export const H4HBASE_%s_REGEX = /(?<!\\.)\\b(%s)\\b(?!\\.)/;\n" $regexName (delimit $regexWords "|") }}
 {{- end }}
 
 {{- /* generate exports for keyword lists and keyword regex */ -}}

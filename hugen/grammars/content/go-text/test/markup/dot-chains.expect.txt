@@ -1,17 +1,17 @@
 <span class="hljs-template-tag">{{</span> just_a_word <span class="hljs-template-tag">}}</span>
 <span class="hljs-template-tag">{{</span> <span class="hljs-property">hugo</span><span class="hljs-property">.Generator</span> <span class="hljs-template-tag">}}</span>
-<span class="hljs-template-tag">{{</span> <span class="hljs-property">hugo</span><span class="hljs-property">.Generator.a.b.c</span> <span class="hljs-template-tag">}}</span>
-<span class="hljs-template-tag">{{</span> <span class="hljs-property">hugo</span><span class="hljs-property">.Store</span> <span class="hljs-template-tag">}}</span>
-<span class="hljs-template-tag">{{</span> <span class="hljs-property">hugo</span><span class="hljs-property">.Store.Set.b.c</span> <span class="hljs-template-tag">}}</span>
+<span class="hljs-template-tag">{{</span> <span class="hljs-property">templates</span><span class="hljs-property">.Current</span> <span class="hljs-template-tag">}}</span>
+<span class="hljs-template-tag">{{</span> <span class="hljs-property">templates</span><span class="hljs-property">.Current.Method</span> <span class="hljs-template-tag">}}</span>
+<span class="hljs-template-tag">{{</span> <span class="hljs-property">templates</span><span class="hljs-property">.Current.Method.a.b.c</span> <span class="hljs-template-tag">}}</span>
+<span class="hljs-template-tag">{{</span> <span class="hljs-property">template</span><span class="hljs-property">.Current.Method</span> <span class="hljs-template-tag">}}</span>
+<span class="hljs-template-tag">{{</span> <span class="hljs-property">oops</span><span class="hljs-property">.range</span> <span class="hljs-template-tag">}}</span>
+<span class="hljs-template-tag">{{</span> <span class="hljs-property">oops</span><span class="hljs-property">.templates.Current</span> <span class="hljs-template-tag">}}</span>
 <span class="hljs-template-tag">{{</span> <span class="hljs-template-variable context_">.</span><span class="hljs-property">Page</span> <span class="hljs-template-tag">}}</span>
 <span class="hljs-template-tag">{{</span> <span class="hljs-template-variable context_">.</span><span class="hljs-property">Page.Pages</span> <span class="hljs-template-tag">}}</span>
 <span class="hljs-template-tag">{{</span> <span class="hljs-template-variable context_">.</span><span class="hljs-property">1</span> <span class="hljs-string">&quot;hello&quot;</span> <span class="hljs-template-tag">}}</span>
 <span class="hljs-template-tag">{{</span> <span class="hljs-template-variable context_">.</span><span class="hljs-property">site.b.c</span> <span class="hljs-template-tag">}}</span>
 <span class="hljs-template-tag">{{</span> <span class="hljs-template-variable context_">.</span> <span class="hljs-template-tag">}}</span>
-<span class="hljs-template-tag">{{</span> <span class="hljs-template-variable">$var</span> <span class="hljs-template-tag">}}</span>
 <span class="hljs-template-tag">{{</span> <span class="hljs-template-variable">$x</span><span class="hljs-property">.Page</span> <span class="hljs-template-tag">}}</span>
 <span class="hljs-template-tag">{{</span> <span class="hljs-template-variable">$x</span><span class="hljs-property">.Page.Pages</span> <span class="hljs-template-tag">}}</span>
 <span class="hljs-template-tag">{{</span> <span class="hljs-template-variable">$var</span><span class="hljs-template-variable context_">.</span> <span class="hljs-template-tag">}}</span>
 <span class="hljs-template-tag">{{</span> <span class="hljs-template-variable">$var</span><span class="hljs-property">.site.b.c</span> <span class="hljs-template-tag">}}</span>
-<span class="hljs-template-tag">{{</span> <span class="hljs-property">hugoStore</span><span class="hljs-property">.Set.b.c</span> <span class="hljs-template-tag">}}</span>
-<span class="hljs-template-tag">{{</span> <span class="hljs-property">hugo_Store</span><span class="hljs-property">.Set.b.c</span> <span class="hljs-template-tag">}}</span>
