@@ -213,14 +213,17 @@ jobs:
          - name: Set Hugo version params for docs
            shell: bash
            run: |
-              TAG=$(git for-each-ref refs/tags --sort=-taggerdate --format='%(refname:strip=2)' --count=1)
+              TAG=$(git for-each-ref refs/tags --sort=version:refname \
+                --format='%(objecttype) %(refname:strip=2)' \
+                | awk '$1=="tag" {print $2}' \
+                | tail -1)
               if [ -z "$TAG" ]; then
                 TAG="working"
                 TAGDATE=$(date +%F)
               else
                 TAGDATE=$(git for-each-ref "refs/tags/$TAG" --format='%(taggerdate:short)')
                 COMMITSAFTERTAG=$(git rev-list --count "${TAG}..HEAD")
-                if [ $COMMITSAFTERTAG -ne 0 ]; then
+                if [ "$COMMITSAFTERTAG" -ne 0 ]; then
                   TAG="$TAG+$COMMITSAFTERTAG"
                 fi
               fi
@@ -305,14 +308,12 @@ jobs:
            id: changelog
            shell: bash
            run: |
-              # Find the most recent annotated vX.Y.Z tag before the new one
-              PREV_TAG=$(git tag --list 'v[0-9]*.[0-9]*.[0-9]*' \
-                | while read -r t; do
-                    [ "$(git cat-file -t "refs/tags/$t" 2>/dev/null)" = "tag" ] && echo "$t" || true
-                  done \
-                | sort -V \
+              # Find the most recent annotated tag before the current one
+              PREV_TAG=$(git for-each-ref refs/tags --sort=version:refname \
+                --format='%(objecttype) %(refname:strip=2)' \
+                | awk '$1=="tag" {print $2}' \
                 | grep -v "^${{ env.RELEASE_TAG }}$" \
-                | tail -1 || true)
+                | tail -1)
 
               if [ -z "$PREV_TAG" ]; then
                 RANGE="${{ env.RELEASE_TAG }}"
