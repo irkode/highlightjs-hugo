@@ -90,7 +90,7 @@ function buildDocs {
       $tagcount = (git rev-list --count "${tag}..HEAD")
       if ($tagcount -ne "0") { $tag = "$tag+$tagcount" }
       $ENV:HUGO_PARAMS_TAG = $tag
-      $ENV:HUGO_PARAMS_TAGDATE = $tagDate
+      $ENV:HUGO_PARAMS_BUILDDATE = Get-Date -format "yyyy-MM-dd"
       if ($Server) {
          exec hugo server --source $DocsDir
       } else {

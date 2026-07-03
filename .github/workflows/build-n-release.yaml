@@ -213,22 +213,21 @@ jobs:
          - name: Set Hugo version params for docs
            shell: bash
            run: |
+              BUILDDATE=$(date +%F)
               TAG=$(git for-each-ref refs/tags --sort=version:refname \
                 --format='%(objecttype) %(refname:strip=2)' \
                 | awk '$1=="tag" {print $2}' \
                 | tail -1)
               if [ -z "$TAG" ]; then
                 TAG="working"
-                TAGDATE=$(date +%F)
               else
-                TAGDATE=$(git for-each-ref "refs/tags/$TAG" --format='%(taggerdate:short)')
                 COMMITSAFTERTAG=$(git rev-list --count "${TAG}..HEAD")
                 if [ "$COMMITSAFTERTAG" -ne 0 ]; then
                   TAG="$TAG+$COMMITSAFTERTAG"
                 fi
               fi
-              echo "HUGO_PARAMS_TAG=${TAG}"       >> "$GITHUB_ENV"
-              echo "HUGO_PARAMS_TAGDATE=$TAGDATE" >> "$GITHUB_ENV"
+              echo "HUGO_PARAMS_TAG=${TAG}"           >> "$GITHUB_ENV"
+              echo "HUGO_PARAMS_BUILDDATE=$BUILDDATE" >> "$GITHUB_ENV"
 
          - name: Setup Pages
            id: pages
@@ -236,8 +235,8 @@ jobs:
 
          - name: Build the site
            run: |
-              echo "TAG     : {{ env.HUGO_PARAMS_TAG }}"
-              echo "TAGDATE : {{ env.HUGO_PARAMS_TAGDATE }}"
+              echo "TAG       : ${{ env.HUGO_PARAMS_TAG }}"
+              echo "BUILDDATE : ${{ env.HUGO_PARAMS_BUILDDATE }}"
               hugo build --source ./hugen/docs --gc --minify --baseURL "${{ steps.pages.outputs.base_url }}/" --cacheDir "${{ runner.temp }}/hugo_cache"
 
          - name: Upload Pages artifact
