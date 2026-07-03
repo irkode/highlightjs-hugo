@@ -2,7 +2,7 @@
 title = "Advanced syntax highlighting for HuGo templates"
 +++
 
-Did you ever wonder why hugo templates seem to be randomly highlighted in [Hugo's Discourse Forum](https://discourse.gohugo.io/)?
+Did you ever wonder why hugo templates get random highlighting in [Hugo's Discourse Forum](https://discourse.gohugo.io/)?
 
 This is due to the use of [Highlight.js](https://highlightjs.org/), which does not natively support Go or Hugo templates. As a result, automatic language detection selects a best match, leading to incorrect or misleading highlighting.
 
