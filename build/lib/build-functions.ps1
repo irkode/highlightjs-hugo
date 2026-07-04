@@ -193,25 +193,6 @@ cssOptions.forEach(css => {
    }
 }
 
-function Distribute {
-   [CmdLetBinding()]
-   param()
-   $Step = "Generate Highlight.js grammars to $TargetDir"
-   try {
-      foreach ($lang in @('go-html', 'go-text', 'hugo-html', 'hugo-text')) {
-         Copy-Item  "$ReleaseDir/highlightjs/${lang}/dist/${lang}.min.js" "$DistDir/${lang}.min.js"
-         Copy-Item  "$ReleaseDir/highlightjs/${lang}/dist/${lang}.es.min.js" "$DistDir/${lang}.es.min.js"
-      }
-      Copy-Item "$ReleaseDir/highlight-hugo.min.js" "$DistDir/highlight-hugo.min.js"
-      Copy-Item "$ReleaseDir/highlight-go.min.js" "$DistDir/highlight-go.min.js"
-   } catch {
-      Write-Error "FAIL: $Step" -ErrorAction Continue
-      throw "$_"
-   } finally {
-      Set-Location $startCWD
-   }
-}
-
 # TODO: don't delete foreign folders in extra
 function generateHugoGrammars {
    [CmdLetBinding()]

@@ -7,7 +7,6 @@ param(
       'BuildDiscoursePlugin',
       'CloneHighlightJS',
       'DeveloperBuild',
-      'Distribute',
       'GenerateHugoGrammars',
       'TestHighlightJS'
    )][string[]]$Skip,
@@ -23,7 +22,6 @@ param(
       'BuildDiscoursePlugin',
       'CloneHighlightJS',
       'DeveloperBuild',
-      'Distribute',
       'GenerateHugoGrammars',
       'TestHighlightJS'
    )][string[]]$Steps,
@@ -47,7 +45,6 @@ if ($PSBoundParameters.Keys -notcontains 'Steps') {
       'BuildHighlightJS'
       'BuildDiscoursePlugin',
       'BuildDocs',
-      'Distribute',
       'DeveloperBuild'
    )
 }
@@ -65,7 +62,6 @@ try {
       $WorkDir = Test-Folder -Create $ProjectRoot "work"
       $DocsDir = Test-Folder $HugenDir "docs"
       $ReleaseDir = Test-Folder -Create $ProjectRoot "release"
-      $DistDir = Test-Folder -Create $ProjectRoot "dist"
 
       $HighlightJsDir = Join-Path $WorkDir "highlight.js"
       Write-Verbose "Starting from: $ProjectRoot"
