@@ -1,6 +1,7 @@
-# Hugo - CSS Class reference
+# HuGo - CSS Class reference
 
-This class reference is valid for all _Hugo_ and _Go_ grammars.[^1]
+This class reference is valid for all _Hugo_ and _Go_ grammars. Exceptions are mentioned in
+the respective sections.
 
 ## Core modes used
 
@@ -16,7 +17,7 @@ for them.
 
 - `comment`
 
-   Used for opening and closing comment tags and comment text `{{/*`, `{{- /*`, `*/ -}}`, `*/}}`
+   Used for opening and closing comment tags and inner text `{{/*`, `{{- /*`, `*/ -}}`, `*/}}`
 
 - `number`
 
@@ -28,8 +29,8 @@ for them.
 
 - `property`
 
-  We style every dot word chain as property **except** if it starts with a _built_in_. In these
-  cases we use _built_in_ for the start (one or two words). see also _property.method_ below.
+  Used for dot chained words **except** if the chain starts with a _built_in_. In that case the
+  beginning of the chain gets _built_in_ (one or two words). see also _property.method_ below.
 
   With *_Go_* grammars there's nothing like that, `a.b` is a property just `a` is not.
 
@@ -39,7 +40,7 @@ for them.
 
 - `string`
 
-  Strings (single and double quoted). Maybe we should skip singe quoted strings?
+  Strings (single and double quoted).
 
 - `template-tag`
 
@@ -51,37 +52,23 @@ for them.
 
 ## New scopes (classes)
 
-Themes out in the wild won't define styles for these[^2]. Define your style or live with the standard _Highlight.js_ fallback mechanism.
+Themes out in the wild won't have styles for these. If you do not define any for these special
+subclasses, _Highlight.js_ will fallback to the parent style.
 
 - `property.method` (valid for _Hugo_ only)
 
-  If _context_, _variable_ or _built_in_ is followed by a _dot_ it must be an object and the next is a method call.
-  Knowing it's something special and it definitely calls something else we assign property.method. Up-to-date themes may
-  have a style configured and will use _property_ style. Create your own or live with the fallback.
+  A _context_, _variable_ or _built_in_ followed by a _dot_ should be a method call. Target this with the
+  `.hljs-property.method_` selector.
 
 - `template-variable.context`
 
-  The _Context_ -- a leading `.` or `$.` -- is a special thing in Go/Hugo templating. We use a
-  dedicated class here to allow emphasis. Use it in your CSS to create a different visual appearance
-  for _Context_. keep in mind, that all styles out there do not define this one. If you want it,
-  define a style or take the fallback which is `template-variable`.
+  The _Context_ -- a leading `.` or `$.` -- is a special thing in Go/Hugo templating. Target this with the
+  `.hljs-template-variable.context_` selector.
 
 - `string.raw`
 
-  A raw string in Go/Hugo templates is a sequence of characters enclosed in backticks. All
-  characters enclosed are taken literally.
-
-## Nested selectors
-
-Each nested scope gets an own class with added underscores for each nesting level.
-
-Here's a layout for _property.method_.
-
-* Scope: `property.method`
-
-* Classes assigned: `class="hljs-property method_"`
-
-* CSS Selector: `hljs-property.method_ { ... }`
+  A raw string in Go/Hugo templates is a sequence of characters enclosed in backticks. Target this with the
+  `.hljs-string.raw_` selector.
 
 ## Keywords
 
@@ -89,35 +76,33 @@ We divide Go/Hugo keywords into the following standard scopes.
 
 - `literal`
 
-  not many with _Hugo_, just: `false`, `true` and `nil`
+  not many with _Hugo_, just: `false`, `nil`, `true`
 
 - `keyword`
 
   For Hugo as documented in [Hugo - go template functions](https://gohugo.io/functions/go-template/)
 
   For Go as documented in [Go template actions](https://pkg.go.dev/text/template#hdr-Actions) and
-  `define`[^3]
+  `define`[^1]
 
-  For both `urlquery` is moved to _built_ins_. [^4] 
+  For both `urlquery` is moved to _built_ins_. [^2]
 
 - `built_in`
 
   For Hugo as documented in [Hugo - Functions](https://gohugo.io/functions/) excluding the keywords
-  from above. We include both -- the real _namespaced_ function name and aliases.
+  from above. Both -- the real _namespaced_ function name and it's aliases are available.
 
   For Go as documented in [Go Template-Text Predefined template functions](https://pkg.go.dev/text/)
 
-> HINT: We generate the Keywords for Hugo at build time using a recent version of the docs. Means
-> highlighting old code won't detect ancient keywords/built_ins. The Go template
-> keywords are handcrafted from the docs. Hopefully that's a complete fetch.
+> HINT: Keywords for _Hugo_ are  generated at build time from a recent version of the docs. For older
+> template code bases this will result in not highlighting ancient keywords/built_ins.
+> The Go template keywords are manually picked from the docs.
 
 ## Sub modes
 
-The HTML grammars use Highlight.js _XML_ grammar as subLanguage. Check the official documentation for scopes used there.
+The HTML grammars use _XML_ as subLanguage. Check the official documentation for scopes used there.
 
 [Highlight.js]: https://highlightjs.readthedocs.io/
 
-[^1]: we add this file to every source module to have that complete. Watch out for special mentions.
-[^2]: also the `template-...` scopes may be missing in some popular styles.
-[^3]: which is mentioned deeper down in the go template docs.
-[^4]: A more natural fit for us. 
+[^1]: mentioned deeper down in the go template docs.
+[^2]: better match than _keyword_.
