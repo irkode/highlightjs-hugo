@@ -3,7 +3,9 @@
 name: Publish Documentation
 
 on:
-   workflow_dispatch
+   workflow_dispatch:
+   release:
+      types: [published]
 
 permissions:
    contents: write
@@ -11,10 +13,6 @@ permissions:
 concurrency:
    group: publish-docs-${{ github.ref }}
    cancel-in-progress: false
-
-# TODO: remove planned after 2nd June 2026 (v24 will be default)
-env:
-   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
    build:
@@ -146,21 +144,9 @@ jobs:
               }
               npm run test-markup
 
-         - name: Build CDN plugins Highlight.js
-           working-directory: ${{ env.HIGHLIGHTJS_DIR }}
-           run: |
-              node ./tools/build.js -t cdn ($ENV:ONLY_LANGUAGES -split '\s+')
-              Get-ChildItem -Directory ${{ env.HIGHLIGHTJS_EXTRA_DIR }} | ForEach-Object { Copy-Item -Recurse $_ -Destination "${{ env.RELEASE_DIR }}/highlightjs/$($_.Name)" }
-
          - name: Build highlight-hugo engine
            working-directory: ${{ env.HIGHLIGHTJS_DIR }}
            run: |
-              node ./tools/build.js -t browser hugo-html hugo-text xml
-              Copy-Item  (Join-Path ${{ env.HIGHLIGHTJS_DIR }} "build/highlight.min.js") (Join-Path ${{ env.RELEASE_DIR }} "highlight-hugo.min.js")
-
-              node ./tools/build.js -t browser go-html go-text xml
-              Copy-Item  (Join-Path ${{ env.HIGHLIGHTJS_DIR }} "build/highlight.min.js") (Join-Path ${{ env.RELEASE_DIR }} "highlight-go.min.js")
-
               node ./tools/build.js -t browser go-html go-text hugo-html hugo-text python xml
               Copy-Item  (Join-Path ${{ env.HIGHLIGHTJS_DIR }} "build/highlight.min.js") (Join-Path ${{ env.WORK_DIR }} "highlight-hugo-docs.min.js")
 
@@ -171,19 +157,23 @@ jobs:
          - name: Set Hugo version params for docs
            shell: bash
            run: |
-              TAG=$(git for-each-ref refs/tags --sort=-taggerdate --format='%(refname:strip=2)' --count=1)
+              BUILDDATE=$(date +%F)
+              TAG=$(git for-each-ref refs/tags --sort=version:refname \
+                --format='%(objecttype) %(refname:strip=2)' \
+                | awk '$1=="tag" {print $2}' \
+                | tail -1)
               if [ -z "$TAG" ]; then
                 TAG="working"
-                TAGDATE=$(date +%F)
               else
-                TAGDATE=$(git for-each-ref "refs/tags/$TAG" --format='%(taggerdate:short)')
                 COMMITSAFTERTAG=$(git rev-list --count "${TAG}..HEAD")
-                if [ $COMMITSAFTERTAG -ne 0 ]; then
+                if [ "$COMMITSAFTERTAG" -ne 0 ]; then
                   TAG="$TAG+$COMMITSAFTERTAG"
                 fi
               fi
-              echo "HUGO_PARAMS_TAG=${TAG}"       >> "$GITHUB_ENV"
-              echo "HUGO_PARAMS_TAGDATE=$TAGDATE" >> "$GITHUB_ENV"
+              echo "TAG       : $TAG"
+              echo "BUILDDATE : $BUILDDATE"
+              echo "HUGO_PARAMS_TAG=$TA  G"           >> "$GITHUB_ENV"
+              echo "HUGO_PARAMS_BUILDDATE=$BUILDDATE" >> "$GITHUB_ENV"
 
          - name: Setup Pages
            id: pages
@@ -193,6 +183,8 @@ jobs:
            run: |
               echo "TAG     : {{ env.HUGO_PARAMS_TAG }}"
               echo "TAGDATE : {{ env.HUGO_PARAMS_TAGDATE }}"
+              "`$ENV:HUGO_PARAMS_TAG ${ENV:HUGO_PARAMS_TAG}" | Out-Host
+              "`$ENV:HUGO_PARAMS_BUILDDATE ${ENV:HUGO_PARAMS_BUILDDATE}" | Out-Host
               hugo build --source ./hugen/docs --gc --minify --baseURL "${{ steps.pages.outputs.base_url }}/" --cacheDir "${{ runner.temp }}/hugo_cache"
 
          - name: Upload Pages artifact

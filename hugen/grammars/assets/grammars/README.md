@@ -51,9 +51,8 @@ If you're using Node / Webpack / Rollup / Browserify, etc, simply require the la
 register it with `highlight.js`.
 
 ```javascript
-var hljs = require("highlight.js");
-var hljsHugo = require("{{$lang}}");
-hljs.registerLanguage("{{$lang}}", hljsHugo);
+global.hljs = require("highlight.js");
+require("./extra/hugo-html/dist/hugo-html.min.js");
 hljs.highlightAll();
 ```
 
