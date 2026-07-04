@@ -7,7 +7,7 @@ the respective sections.
 
 - `hljs.NUMBER_MODE`
 - `hljs.QUOTE_STRING_MODE`
-- `hljs.APOS_STRING_MODE`
+- `hljs.APOS_STRING_MODE` (as base for string.rune)
 - `hljs.COMMENT`
 
 ## Standard scopes (classes)
@@ -70,6 +70,11 @@ subclasses, _Highlight.js_ will fallback to the parent style.
   A raw string in Go/Hugo templates is a sequence of characters enclosed in backticks. Target this with the
   `.hljs-string.raw_` selector.
 
+- `string.rune`
+
+  A rune literal in Go/Hugo templates is a sequence of characters enclosed in single quotes. Target this with the
+  `.hljs-string.rune_` selector.
+
 ## Keywords
 
 We divide Go/Hugo keywords into the following standard scopes.
@@ -95,7 +100,7 @@ We divide Go/Hugo keywords into the following standard scopes.
   For Go as documented in [Go Template-Text Predefined template functions](https://pkg.go.dev/text/)
 
 > HINT: Keywords for _Hugo_ are  generated at build time from a recent version of the docs. For older
-> template code bases this will result in not highlighting ancient keywords/built_ins.
+> template code bases this may result in missing highlighting ancient keywords/built_ins.
 > The Go template keywords are manually picked from the docs.
 
 ## Sub modes

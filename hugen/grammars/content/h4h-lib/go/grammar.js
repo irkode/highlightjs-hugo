@@ -1,5 +1,6 @@
 import * as h4hbase from "./keywords.js";
 import { COMMENT, NUMBER_MODE, QUOTE_STRING_MODE, APOS_STRING_MODE } from '../../../src/lib/modes.js';
+import { inherit } from '../../../src/lib/utils.js';
 
 // action comments
 const H4H_GRAMMAR_COMMENT_OPEN = /\s*(\{\{- \/\*|\{\{\/\*)/;
@@ -18,6 +19,7 @@ const H4H_GRAMMAR_RAW_STRING_MODE = {
    match: /`[^`]*`/,
    keywords: [],
 };
+const H4H_GRAMMAR_RUNE_STRING_MODE = inherit(APOS_STRING_MODE, { scope: 'string.rune'});
 
 const H4H_GRAMMAR_PIPELINE_KEYWORDS = {
    $pattern: /\w+/,
@@ -60,7 +62,7 @@ const H4H_GRAMMAR_SUB_EXPRESSION = {
 const H4H_GRAMMAR_PIPELINE = [
    NUMBER_MODE,
    QUOTE_STRING_MODE,
-   APOS_STRING_MODE,
+   H4H_GRAMMAR_RUNE_STRING_MODE,
    H4H_GRAMMAR_RAW_STRING_MODE,
    H4H_GRAMMAR_PIPE_BUILTIN_MODE,
    H4H_GRAMMAR_PIPE_CONTEXT_MODE,

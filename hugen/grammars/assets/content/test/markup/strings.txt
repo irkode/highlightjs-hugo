@@ -1,0 +1,3 @@
+{{ "strings" "x" }}
+{{ 'rune "strings' 'x' '\u00FC' 'ü' '\n' }}
+{{ `raw "strings` `x` }}
