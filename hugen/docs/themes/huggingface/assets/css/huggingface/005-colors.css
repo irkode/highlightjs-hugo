@@ -89,7 +89,7 @@
    --t-text:      var(--_text-dark);
    --t-header-bg: var(--_white);
    --t-footer-bg: var(--_white);
-   --t-main-bg:   var(--_bg-light);  
+   --t-main-bg:   var(--_bg-light);
 }
 
 [data-theme="dark"] {

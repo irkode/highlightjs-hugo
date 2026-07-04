@@ -51,6 +51,10 @@ ol {
    margin-block-start: 1em;
    padding-inline-start: 1.5em;
 }
+hr {
+   margin-top: 1.25rem;
+   border: 1px solid var(--text);
+}
 #license::after {
    content: var(--icon-license);
    display: inline-block;
