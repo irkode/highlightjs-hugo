@@ -1,5 +1,4 @@
-{{- $lang := .Params.h4h.language -}}
-{{- $aliases := .Params.h4h.aliases -}}
+{{- $lang := .Params.h4h.language -}} {{- $aliases := .Params.h4h.aliases -}}
 
 # Highlight {{ title $lang }} templates
 
@@ -16,10 +15,13 @@ with an older version.
 
 ## Download
 
-Packages can be downloaded from: [Releases](https://github.com/irkode/highlightjs-hugo/releases/latest)[^1].
+Packages can be downloaded from:
+[Releases](https://github.com/irkode/highlightjs-hugo/releases/latest).
 
-- Ready to use javascripts: [highlightjs-hugo-jsmodules.zip](https://github.com/irkode/highlightjs-hugo/releases/latest/download/highlightjs-hugo-js-modules.zip)
-- Grammar sources to build on your own: [highlightjs-hugo-extra-src.zip](https://github.com/irkode/highlightjs-hugo/releases/latest/download/highlightjs-hugo-extra-src.zip)
+- Ready to use javascripts:
+  [highlightjs-hugo-jsmodules.zip](https://github.com/irkode/highlightjs-hugo/releases/latest/download/highlightjs-hugo-js-modules.zip)
+- Grammar sources to build on your own:
+  [highlightjs-hugo-extra-src.zip](https://github.com/irkode/highlightjs-hugo/releases/latest/download/highlightjs-hugo-extra-src.zip)
 
 ## Usage
 
@@ -43,7 +45,8 @@ As of now we do not publish anything to a CDN.
 
 ### With Node or another build system
 
-> There's no official node packages. You will have to build from [source](https://github.com/irkode/highlightjs-hugo/releases/latest/download/highlightjs-hugo-extra-src.zip)
+> There's no official node packages. You will have to build from
+> [source](https://github.com/irkode/highlightjs-hugo/releases/latest/download/highlightjs-hugo-extra-src.zip)
 >
 > The Node description is just copy&paste from a readme example!!!
 
@@ -76,8 +79,8 @@ you want to rely on auto detection, read the section about that below.
 _Handlebars_ and _Go templates_ (used by [Hugo][]) have similar template tags. Without additional
 relevance settings Hugo grammars will loose most of the time. Relevance settings are used to beat
 _Handlebars_ auto-detection -- doing best to make it possible to have both grammars loaded at the
-same time. Importing both `hugo-text` and `hugo-html` may result in undetermined auto-detection.
-To be on the safe side specify the language you want for every code block.
+same time. Importing both `hugo-text` and `hugo-html` may result in undetermined auto-detection. To
+be on the safe side specify the language you want for every code block.
 
 - Go template comments get relevance = 10.
 
@@ -96,5 +99,3 @@ To be on the safe side specify the language you want for every code block.
 The module works with the standard [Highlight.js][] extra build system. Download the grammar source
 from our [Releases][] page and copy it to the `highlight.js/extra` directory. Check out the
 [Highlight.js][] documentation for more details.
-
-[^1]: Draft- and pre-releases have to be manually browsed and downloaded.

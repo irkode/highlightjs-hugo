@@ -15,39 +15,48 @@ Wrapped [HighlightJS grammars](/highlightjs) in _Discourse theme components_.
 {{ hugo.Sites.Pages }}
 ```
 
-You don't have to be that colorful. Adding new wanted styles to your working styles will be a good choice.
-Have a look at the [Discourse Example](/discourse/examples) and [Hugo examples](/hugo/examples) to see how it could look like.
+You don't have to be that colorful. Adding new wanted styles to your working styles will be a good
+choice. Have a look at the [Discourse Example](/discourse/examples) and
+[Hugo examples](/hugo/examples) to see how it could look like.
 
 ## Download
 
-Packages can be downloaded from: [Releases](https://github.com/irkode/highlightjs-hugo/releases/latest)[^1].
+Packages can be downloaded from:
+[Releases](https://github.com/irkode/highlightjs-hugo/releases/latest).
 
-- Discourse theme components [highlightjs-hugo-discourse.zip](https://github.com/irkode/highlightjs-hugo/releases/latest/download/highlightjs-hugo-discourse.zip)
+- Discourse theme components
+  [highlightjs-hugo-discourse.zip](https://github.com/irkode/highlightjs-hugo/releases/latest/download/highlightjs-hugo-discourse.zip)
 
 ## Usage
 
 - you must have Highlight.js configured in your Instance
+- Download
+  [highlightjs-hugo-discourse.zip](https://github.com/irkode/highlightjs-hugo/releases/latest/download/highlightjs-hugo-discourse.zip)
+- Extract to a folder of your choice. You will get all four components as archive file.
 - create a new _Theme Component_
-- either grab a zip from our [Releases][] page and import.
+   - either by importing the archive of your choice
 
-   or
+      or
 
-- download the above zip and just copy the content of the `theme-initializer.gjs` to the JS section
-  of your _Theme component_.
-- To style the custom scopes add your stylesheet to the CSS section.
+   - extract one of the archives and copy the content of `theme-initializer.gjs` to the JS section
+     of your new _Theme component_.
+
+You should have the styles for the standard scopes available. To take advantage of the special
+scopes have a look [CSS class
+reference]({{< relref "/highlightjs/hugo-css-class-reference" >}}).[^1]
+
+Even without you will gain immediate effect of proper highlighted templates.
 
 ## Discourse Requirements
 
 The theme components are tested in virtual machines hosted on Windows 11 Professional
 
 - [Discourse Dev Container](https://meta.discourse.org/t/developing-discourse-using-a-dev-container/336366?silent=true)
-
    - Discourse 2026.6.0-latest
    - Ubuntu 26.04 Desktop
    - Hyper-V
 
 - [Install a DEV Environment on Windows 11](https://meta.discourse.org/t/guide-to-setting-up-discourse-development-environment-windows-11/282227)
-
    - Discourse 3.6.0.beta3-latest (end Oct 2025)
    - Ubuntu 22.04
    - WSL
@@ -63,6 +72,6 @@ Feedback, issues[^2], and ideas are welcome
 
 https://github.com/irkode/highlightjs-hugo/issues
 
+[^1]: add the styles to one of the components or create a pure styling one.
 
-[^1]: Draft- and pre-releases have to be manually browsed and downloaded.
 [^2]: component related issues only
