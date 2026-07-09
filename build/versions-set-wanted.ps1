@@ -15,7 +15,7 @@ $Versions.Keys | ForEach-Object {
     $envVarName = $key.ToUpper() + '_VERSION'
     switch ($key) {
       "go" { $version = (Get-Content $source | Select-String "^go (\d+\.\d+\.\d+)").Matches.Groups[1].Value }
-      # remove the edition to support latest .hvm file format (we ignore that and always use extended in CI for now)
+      # remove the edition to support latest .hvm file format (we ignore that and always use standard in CI for now)
       "hugo" { $version = ((Get-Content $source).Replace('v', '') -split '/')[0] }
     }
     Write-Verbose ("Set $envVarName to $version$(if ($source) { " [$source]"})")
