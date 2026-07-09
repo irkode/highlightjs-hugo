@@ -64,7 +64,7 @@ Development Environment is a Windows 11 Professional with a recent _Powershell C
 
 - Components that have to be there
    - Powershell Core
-   - Hugo ≥ v0.163.3
+   - Hugo ≥ v0.164.0
    - Go ≥ 1.26.3
    - Node 22.14.0 (highlight.js requirement)
 

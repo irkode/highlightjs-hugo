@@ -7,7 +7,7 @@ enableGitInfo = true
 theme         = "huggingface"
 
 [params]
-   description   = "Advanced syntax highlighting for Hugo templates"
+   description = "Advanced syntax highlighting for Hugo templates"
    [params.h4h]
       repository = "https://github.com/irkode/highlightjs-hugo/"
 
@@ -60,7 +60,7 @@ theme         = "huggingface"
       target = "content/_snippets/license.md"
 
    [module.hugoVersion]
-      min      = '0.163.3'
+      min = '0.164.0'
 
 [segments]
    [segments.testrender]

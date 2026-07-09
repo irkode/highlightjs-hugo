@@ -110,7 +110,7 @@ jobs:
          - name: Download Hugo
            if: steps.cache-hugo-bin.outputs.cache-hit != 'true'
            run: |
-              $url = "https://github.com/gohugoio/hugo/releases/download/v${env:HUGO_VERSION}/hugo_extended_${env:HUGO_VERSION}_linux-amd64.tar.gz"
+              $url = "https://github.com/gohugoio/hugo/releases/download/v${env:HUGO_VERSION}/hugo_${env:HUGO_VERSION}_linux-amd64.tar.gz"
               Write-Host "Downloading Hugo from $url to ${{ github.workspace }}/work/bin"
               [void](New-Item -ItemType Directory -Force -Path "${{ github.workspace }}/work/bin")
               Invoke-WebRequest -Uri $url -OutFile hugo.tar.gz

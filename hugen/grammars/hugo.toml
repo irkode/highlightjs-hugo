@@ -77,4 +77,4 @@ disablePathToLower = true
          target = "layouts/functions/_shortcodes"
 
    [module.hugoVersion]
-      min      = '0.163.3'
+      min = '0.164.0'

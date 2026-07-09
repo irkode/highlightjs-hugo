@@ -7,7 +7,7 @@
       siteLogo   = "img/huggingface-logo-48x48.png"
       [params.huggingface.markup]
          enableHighlightJS = true
-         chromaStyle = "monokai"
+         chromaStyle       = "monokai"
          # language fallback settings
          #  language        a language chroma can render
          #  hljs            autodetect with highlightjs
@@ -17,4 +17,4 @@
 
 [module]
    [module.hugoVersion]
-      min      = '0.163.3'
+      min = '0.164.0'
