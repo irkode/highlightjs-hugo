@@ -1,0 +1,8 @@
+{{ .Title }}
+{{# if isTrue }}
+  {{ .Content }}
+{{/if}}
+{{ .Foo | default "bar" }}
+{{!-- a handlebars comment --}}
+{{! shorthand handlebars comment }}
+{{> partial "name" }}

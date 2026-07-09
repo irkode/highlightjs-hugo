@@ -47,7 +47,7 @@ function buildHighlightJS {
          Copy-Item "build/highlight.min.js" (Join-Path $ReleaseDir "highlight-go.min.js")
          exec node tools/build.js -t browser hugo-embed hugo-html hugo-text xml
          Copy-Item "build/highlight.min.js" (Join-Path $ReleaseDir "highlight-hugo.min.js")
-         exec node tools/build.js -t browser go-html go-text hugo-embed hugo-html hugo-text python ruby xml
+         exec node tools/build.js -t browser handlebars go-html go-text hugo-embed hugo-html hugo-text python ruby xml
          Copy-Item "build/highlight.min.js" (Join-Path $WorkDir "highlight-hugo-docs.min.js")
       } catch {
          Write-Error "FAIL: $Step failed" -ErrorAction Continue

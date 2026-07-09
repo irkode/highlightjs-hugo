@@ -1,0 +1,9 @@
+<span class="hljs-template-tag">{{</span> <span class="hljs-template-variable context_">.</span><span class="hljs-property method_">Title</span> <span class="hljs-template-tag">}}</span>
+{{# if isTrue }}
+  {{ .Content }}
+{{/if}}
+{{ .Foo | default &quot;bar&quot; }}
+{{!-- a handlebars comment --}}
+{{! shorthand handlebars comment }}
+{{&gt; partial &quot;name&quot; }}
+
