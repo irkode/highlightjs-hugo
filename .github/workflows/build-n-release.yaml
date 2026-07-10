@@ -134,7 +134,7 @@ jobs:
               echo "Range: $RANGE"
 
               LOG=$(git log "$RANGE" \
-                --pretty=format:"- \`%h\` %ad — %s" \
+                --pretty=format:"- [\`%h\`](${{ github.server_url }}/${{ github.repository }}/commit/%H) %ad — %s" \
                 --date=format:"%Y-%m-%d" \
                 --no-merges)
 
