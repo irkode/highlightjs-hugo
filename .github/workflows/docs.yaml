@@ -1,6 +1,14 @@
 # Triggered by:
-#   - workflow_dispatch
+#   - workflow_dispatch (manual, or auto re-dispatched below after a release is published)
 #   - a GitHub release being published (re-publishes docs against the final released tag)
+#
+# NOTE: actions/deploy-pages silently no-ops when a Pages deployment's triggering event is
+# `release`, even at a commit SHA that was never deployed before. `push` and `workflow_dispatch`
+# deployments are unaffected. So the `release` event itself never deploys here directly — it only
+# re-dispatches this workflow as `workflow_dispatch`, pinned to the exact release tag, and that
+# re-dispatched run does the real build + deploy.
+# See: https://github.com/actions/deploy-pages/issues/383
+#      https://github.com/orgs/community/discussions/145042
 name: Publish Documentation
 
 on:
@@ -16,13 +24,31 @@ concurrency:
    cancel-in-progress: false
 
 jobs:
+   redispatch:
+      if: github.event_name == 'release'
+      runs-on: ubuntu-latest
+      permissions:
+         actions: write
+      env:
+         GH_TOKEN: ${{ github.token }}
+         RELEASE_TAG: ${{ github.event.release.tag_name }}
+      steps:
+         - name: Re-trigger docs.yaml as workflow_dispatch at the release tag
+           run: |
+              echo "::notice::actions/deploy-pages does not reliably deploy on 'release' events; re-dispatching docs.yaml as workflow_dispatch at tag '$RELEASE_TAG'"
+              gh workflow run docs.yaml \
+                --repo "$GITHUB_REPOSITORY" \
+                --ref "$RELEASE_TAG"
+
    build:
+      if: github.event_name != 'release'
       uses: ./.github/workflows/_build-core.yaml
       with:
          build-release-artifacts: false
          check-private-repo: false
 
    docs:
+      if: github.event_name != 'release'
       runs-on: ubuntu-latest
       needs: [build]
       permissions:
