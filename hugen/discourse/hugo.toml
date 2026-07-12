@@ -29,4 +29,4 @@ disableKinds = ['rss', 'sitemap', 'taxonomy', 'term']
       target = "assets/discourse/LICENSE"
 
    [module.hugoVersion]
-      min      = '0.163.1'
+      min = '0.164.0'

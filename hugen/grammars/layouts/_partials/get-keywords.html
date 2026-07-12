@@ -27,6 +27,14 @@
 	{{- end }}
 {{- end }}
 
+{{- /* per hugoDocs function page, capture Title -> sorted non-empty alias
+   list (or an empty list if none). This preserves the Title/alias pairing
+   that the loop below discards once it flattens both into a single
+   $pad-driven word list, so consumers of this partial's return value can
+   render "function: [aliases]" without re-scanning the hugoDocs pages
+   themselves. */ -}}
+{{- $builtinAliases := dict }}
+
 {{- /* load hugo keywords from documentation pages */ -}}
 {{- if eq $lang "hugo" }}
 	{{- range $p := where site.RegularPages "Section" "functions" }}
@@ -59,6 +67,30 @@
 				{{- $pad.SetInMap $scope $len (slice $name) }}
 			{{- end }}
 		{{- end }}
+
+		{{- /* sibling block: does NOT touch $pad, $fixedWords, or the range
+		   above. Skip "go template" pages -- those feed the KEYWORDS scope,
+		   not BUILTINS/FUNCTIONS. */ -}}
+		{{- if ne $p.Parent.LinkTitle "go template" }}
+			{{- $aliases := slice }}
+			{{- range $a := $p.Params.functions_and_methods.Aliases }}
+				{{- /* alias might be an array with empty words, same defensive check as above */ -}}
+				{{- if eq 0 (len $a) }}
+					{{- warnf "empty name or alias at page: %s" $p.Path }}
+				{{- else }}
+					{{- $aliases = $aliases | append $a }}
+				{{- end }}
+			{{- end }}
+			{{- /* derive the empty-list fallback from a per-key temp slice (not a bare `slice`) --
+			   Go returns the same shared zero-capacity pointer for unrelated empty slices, and the
+			   YAML encoder used to dump this data elsewhere mistakes that shared pointer for a
+			   cyclic reference, corrupting output with bogus anchor/alias markers. */ -}}
+			{{- $aliasValue := after 1 (slice $p.Title) }}
+			{{- if gt (len $aliases) 0 }}
+				{{- $aliasValue = sort $aliases }}
+			{{- end }}
+			{{- $builtinAliases = merge $builtinAliases (dict $p.Title $aliasValue) }}
+		{{- end }}
 	{{- end }}
 {{- end }}
 
@@ -72,5 +104,5 @@
 	{{- end }}
 	{{- $keywords = merge $keywords (dict $scope $names) }}
 {{- end }}
-{{- return $keywords }}
+{{- return (dict "scopes" $keywords "builtinAliases" $builtinAliases) }}
 {{- /* remove all trailing whitespace */ -}}

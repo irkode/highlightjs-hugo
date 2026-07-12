@@ -93,7 +93,6 @@ try {
       & $ScriptsDir/versions-set-wanted.ps1 -VersionConfigFile $ProjectRoot\.versions.json
       # we expect all external tools be installed before starting a local build
       & $ScriptsDir/versions-check-installed.ps1 -VersionConfigFile $ProjectRoot\.versions.json
-
       foreach ($step in $Steps) {
          Write-Verbose "> Executing: [ $step ]"
          & $step

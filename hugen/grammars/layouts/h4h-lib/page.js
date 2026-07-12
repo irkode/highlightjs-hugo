@@ -14,7 +14,7 @@
 
 {{- $lang := .Params.keywords }}
 
-{{- $keywords := partialCached "get-keywords.html" $lang $lang }}
+{{- $keywords := (partialCached "get-keywords.html" $lang $lang).scopes }}
 {{- warnf  "DONE" }}
 {{- $dataKeywords := index hugo.Data.keywords $lang }}
 

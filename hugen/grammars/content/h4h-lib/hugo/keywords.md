@@ -1,5 +1,5 @@
 +++
-outputs = ['JS']
+outputs = ['JS', 'YAML']
 
 [params]
 keywords = "hugo"

@@ -209,8 +209,10 @@ function generateHugoGrammars {
       }
       [void](Test-File $TargetDir "h4h-lib\go\grammar.js")
       [void](Test-File $TargetDir "h4h-lib\go\keywords.js")
+      [void](Test-File $TargetDir "h4h-lib\go\keywords.yaml")
       [void](Test-File $TargetDir "h4h-lib\hugo\grammar.js")
       [void](Test-File $TargetDir "h4h-lib\hugo\keywords.js")
+      [void](Test-File $TargetDir "h4h-lib\hugo\keywords.yaml")
       [void](Test-File $TargetDir "go-html\src\languages\go-html.js")
       [void](Test-File $TargetDir "go-text\src\languages\go-text.js")
       [void](Test-File $TargetDir "hugo-embed\src\languages\hugo-embed.js")

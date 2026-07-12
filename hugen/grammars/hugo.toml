@@ -29,12 +29,12 @@ disablePathToLower = true
    notAlternative = true
    ugly           = true
 
-# used to generate Github README.md files
-[outputFormats.markdown]
+# generate keywords.yaml (human-readable dump of the same keyword map used for keywords.js)
+[outputFormats.yaml]
+   isHTML         = false
    isPlainText    = true
-   permalinkable  = true
+   mediaType      = "application/yaml"
    notAlternative = true
-   mediaType      = 'text/markdown'
    ugly           = true
 
 [module]
