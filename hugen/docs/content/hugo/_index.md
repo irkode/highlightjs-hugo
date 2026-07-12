@@ -1,8 +1,7 @@
 +++
 title = "Hugo & Chroma"
+Description = "Using with Hugo & Chroma"
 +++
-
-# Usage with Hugo
 
 You could switch completely to Highlight.js. To get the best of both worlds
 
@@ -48,8 +47,8 @@ That's the standard, if you configure it differently (eg custom wrappers) you ha
 In it's default configuration HighlightJS will pick up `<pre><code>` and highlight it's content.
 Good for the latter two but the first would be double highlighted with strange effects.
 
-HighlightJS provides options to tweak things like that[^2]. Using teh standard `nohighlight`
-class to the code tag would need much more setup.
+HighlightJS provides options to tweak things like that[^2]. Using teh standard `nohighlight` class
+to the code tag would need much more setup.
 
 The key here is the `chroma`-class on the `pre` tag which is only added when Chroma has done
 highlighting.
@@ -60,12 +59,12 @@ Play this at the end of your body:
 
 ```html
 <body>
-...
-  <script src="js/highlight-hugo.min.js"></script>
-  <script>
-     hljs.configure({ cssSelector: "pre:not(.chroma) code" });
-     hljs.highlightAll();
-  </script>
+   ...
+   <script src="js/highlight-hugo.min.js"></script>
+   <script>
+      hljs.configure({ cssSelector: "pre:not(.chroma) code" });
+      hljs.highlightAll();
+   </script>
 </body>
 ```
 
@@ -73,18 +72,27 @@ Play this at the end of your body:
 
 CSS styles can be used as usual. Simple Example for a _keyword_
 
-* Chroma for keyword
-  ```css
-  .chroma .k { color: blue }
-  .chroma { color: light-dark(#015692, #88aece)};
-  ```
-* _Highlightjs_ 
-  ```css
-  .hljs-keyword { color: blue }
-  .hljs-keyword { color: light-dark(#015692, #88aece)};
-  ```
+- Chroma for keyword
+   ```css
+   .chroma .k {
+      color: blue;
+   }
+   .chroma {
+      color: light-dark(#015692, #88aece);
+   }
+   ```
+- _Highlightjs_
+   ```css
+   .hljs-keyword {
+      color: blue;
+   }
+   .hljs-keyword {
+      color: light-dark(#015692, #88aece);
+   }
+   ```
 
-The exact way depends on how you style these things, especially dark/light, prefers or complete color themes.
+The exact way depends on how you style these things, especially dark/light, prefers or complete
+color themes.
 
 [^1]: There are some more variants but the general layout is like that.
 

@@ -1,8 +1,7 @@
 +++
-title = "Discourse"
+Description = "Discourse Theme Components"
+Title = "Discourse"
 +++
-
-# Discourse components
 
 Wrapped [HighlightJS grammars](/highlightjs) in _Discourse theme components_.
 
@@ -34,16 +33,14 @@ Packages can be downloaded from:
   [highlightjs-hugo-discourse.zip](https://github.com/irkode/highlightjs-hugo/releases/latest/download/highlightjs-hugo-discourse.zip)
 - Extract to a folder of your choice. You will get all four components as archive file.
 - create a new _Theme Component_
-   - either by importing the archive of your choice
+   - either import an archive of your choice
 
-      or
-
+   or
    - extract one of the archives and copy the content of `theme-initializer.gjs` to the JS section
      of your new _Theme component_.
 
 You should have the styles for the standard scopes available. To take advantage of the special
-scopes have a look [CSS class
-reference]({{< relref "/highlightjs/hugo-css-class-reference" >}}).[^1]
+scopes have a look [CSS class reference](/highlightjs/css-class-reference).[^1]
 
 Even without you will gain immediate effect of proper highlighted templates.
 
@@ -56,22 +53,21 @@ The theme components are tested in virtual machines hosted on Windows 11 Profess
    - Ubuntu 26.04 Desktop
    - Hyper-V
 
-- [Install a DEV Environment on Windows 11](https://meta.discourse.org/t/guide-to-setting-up-discourse-development-environment-windows-11/282227)
+- [Install a DEV Environment on Windows 11](https://meta.discourse.org/t/guide-to-setting-up-discourse-development-environment-windows-11/282227)[^2]
    - Discourse 3.6.0.beta3-latest (end Oct 2025)
    - Ubuntu 22.04
    - WSL
 
-### References:
-
-- [API mentioned here](https://meta.discourse.org/t/install-a-new-language-for-highlight-js-via-a-theme-component/292480).
-- [add language using theme component](https://meta.discourse.org/t/install-a-new-language-for-highlight-js-via-a-theme-component/292480)
+- References:
+   - [API mentioned here](https://meta.discourse.org/t/install-a-new-language-for-highlight-js-via-a-theme-component/292480).
+   - [add language using theme component](https://meta.discourse.org/t/install-a-new-language-for-highlight-js-via-a-theme-component/292480)
 
 ## Support
 
-Feedback, issues[^2], and ideas are welcome
+Use the issue tracker for feedback, issues, ideas
 
 https://github.com/irkode/highlightjs-hugo/issues
 
 [^1]: add the styles to one of the components or create a pure styling one.
 
-[^2]: component related issues only
+[^2]: deprecated, but much faster than the dev container in a VM

@@ -7,7 +7,7 @@ enableGitInfo = true
 theme         = "huggingface"
 
 [params]
-   description = "Advanced syntax highlighting for Hugo templates"
+   description = "Advanced syntax highlighting for HuGo templates"
    [params.h4h]
       repository = "https://github.com/irkode/highlightjs-hugo/"
 

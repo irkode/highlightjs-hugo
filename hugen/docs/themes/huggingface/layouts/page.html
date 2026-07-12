@@ -1,8 +1,4 @@
 {{- define "main" }}
-   {{- with .Params.h4h.language }}
-      {{- with resources.Get (add . ".png") }}
-         {{- .Publish }}
-      {{- end }}
-   {{- end }}
-   {{- .Content }}
+<h1>{{- or .Params.Description .Title }}</h1>
+{{- .Content }}
 {{- end }}

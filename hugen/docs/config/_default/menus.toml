@@ -3,8 +3,8 @@
    name   = 'Highlight.js'
    weight = 10
 [[main]]
-   name    = 'Discourse'
-   weight  = 20
+   name   = 'Discourse'
+   weight = 20
 [[main]]
    name   = 'Hugo'
    weight = 30
@@ -17,31 +17,15 @@
    Parent     = "Highlight.js"
    weight     = 1
 [[main]]
-   name    = 'Hugo-Html'
-   pageRef = '/highlightjs/hugo-html'
+   name    = 'CSS Classes'
+   pageRef = '/highlightjs/css-class-reference'
    Parent  = "Highlight.js"
    weight  = 10
 [[main]]
-   name    = 'Hugo-Text'
-   pageRef = '/highlightjs/hugo-text'
-   Parent  = "Highlight.js"
-   weight  = 11
-[[main]]
-   name    = 'Go-Html'
-   pageRef = '/highlightjs/go-html'
+   name    = 'Autodetect'
+   pageRef = '/highlightjs/autodetect'
    Parent  = "Highlight.js"
    weight  = 20
-[[main]]
-   name    = 'Go-Text'
-   pageRef = '/highlightjs/go-text'
-   Parent  = "Highlight.js"
-   weight  = 21
-
-[[main]]
-   name    = 'CSS Classes'
-   pageRef = '/highlightjs/hugo-css-class-reference'
-   Parent  = "Highlight.js"
-   weight  = 30
 
 # submenu Discourse.js
 [[main]]
@@ -52,10 +36,10 @@
    weight     = 1
 [[main]]
    identifier = 'Discourse_Examples'
-   name    = 'Examples'
-   pageRef = '/discourse/examples'
-   Parent  = "Discourse"
-   weight  = 10
+   name       = 'Examples'
+   pageRef    = '/discourse/examples'
+   Parent     = "Discourse"
+   weight     = 10
 
 # submenu Hugo.js
 [[main]]
@@ -66,7 +50,7 @@
    weight     = 1
 [[main]]
    identifier = 'Hugo_Examples'
-   name    = 'Examples'
-   pageRef = '/hugo/examples'
-   Parent  = "Hugo"
-   weight  = 10
+   name       = 'Examples'
+   pageRef    = '/hugo/examples'
+   Parent     = "Hugo"
+   weight     = 10

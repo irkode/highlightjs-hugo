@@ -36,7 +36,7 @@ incorrect or misleading highlighting.
 ## Download
 
 Packages can be downloaded from:
-[Releases](https://github.com/irkode/highlightjs-hugo/releases/latest)][^2].
+[Releases](https://github.com/irkode/highlightjs-hugo/releases/latest)[^2].
 
 - Discourse theme Components:
   [highlightjs-hugo-discourse.zip](https://github.com/irkode/highlightjs-hugo/releases/latest/download/highlightjs-hugo-discourse.zip)
@@ -133,6 +133,6 @@ Licenses for foreign assets may be different:
 
 [^1]:
     Check out details here:
-    [A word on auto detection](https://irkode.github.io/highlightjs-hugo/highlightjs/hugo-html#a-word-on-auto-detection)
+    [A word on auto detection](https://irkode.github.io/highlightjs-hugo/highlightjs/autodetect)
 
 [^2]: Draft- and pre-releases have to be manually browsed and downloaded.

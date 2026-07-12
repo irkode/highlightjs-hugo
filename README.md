@@ -134,6 +134,6 @@ Licenses for foreign assets may be different:
 
 [^1]:
     Check out details here:
-    [A word on auto detection](https://irkode.github.io/highlightjs-hugo/highlightjs/hugo-html#a-word-on-auto-detection)
+    [A word on auto detection](https://irkode.github.io/highlightjs-hugo/highlightjs/autodetect)
 
 [^2]: Draft- and pre-releases have to be manually browsed and downloaded.
