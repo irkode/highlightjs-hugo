@@ -64,10 +64,20 @@
    object-fit: cover;
 }
 
+.aside .img84 {
+   width: 84px;
+   flex: 0 0 84px;
+   object-fit: cover;
+}
+
 /* =========================================================
    TYPOGRAPHY INSIDE ASIDE
    (optional global styling, keep if desired)
    ========================================================= */
+.aside h1 {
+   margin: 0;
+   padding: 0;
+}
 .aside h2 {
    text-align: center;
 }

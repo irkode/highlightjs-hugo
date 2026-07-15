@@ -1,4 +1,12 @@
 {{- define "main" }}
-<h1>{{- or .Params.Description .Title }}</h1>
+<div class="aside banner">
+	<div>
+		{{- $teaser := partialCached "img/overlay.html" (dict "image" site.Params.huggingface.images.site "size" 84) }}
+		<img class="img84" src="{{ $teaser.RelPermalink }}" />
+	</div>
+	<aside>
+		<h1>{{- or .Params.Description .Title }}</h1>
+	</aside>
+</div>
 {{- .Content }}
 {{- end }}

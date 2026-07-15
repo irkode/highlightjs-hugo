@@ -1,0 +1,33 @@
+{{- $opts := . }}
+{{- $overlayPath := or (index $opts "overlay") site.Params.huggingface.images.overlay }}
+{{- $imagePath := index $opts "image" }}
+{{- $tileSize := div (or (index $opts "size") 192) 4 }}
+{{- $imageSizeString := string (mul 4 $tileSize) }}
+{{- $overlay := "" }}
+{{- with resources.Get $overlayPath }}
+	{{- with .Resize (printf "%dx" $tileSize) }}
+		{{ $overlay = images.Overlay . 0 (mul 3 $tileSize) }}
+	{{- else }}
+		{{- errorf "resize overlay image failed: [ %q ]" $overlayPath }}
+	{{ end }}
+{{- else }}
+	{{- warnf "overlay image not found [ %q ]" $overlayPath }}
+{{- end }}
+{{- $image := resources.Get $imagePath }}
+{{- with $image }}
+	{{- with .Resize (add $imageSizeString "x") }}
+		{{ if $overlay }}
+			{{ with .Filter $overlay }}
+				{{- $image = . }}
+			{{- else }}
+				{{- warnf "apply overlay failed for: [ %q ]" $image }}
+			{{- end }}
+		{{- end }}
+	{{- else }}
+		{{- errorf "resize teaser image failed: [ %q ]" $image }}
+	{{- end }}
+{{- else }}
+	{{- errorf "teaser image not found [ %q ]" $imagePath }}
+{{- end }}
+{{- return $image }}
+{{- /**/ -}}

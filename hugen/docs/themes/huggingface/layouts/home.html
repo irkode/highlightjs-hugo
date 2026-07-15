@@ -1,28 +1,8 @@
 {{- define "main" }}
 <div class="aside banner">
 	<div>
-		{{- $filter := "" }}
-		{{- $path := "img/highlightjs-icon.png" }}
-		{{- with resources.Get $path }}
-			{{- with .Resize "48x" }}
-				{{ $filter = images.Overlay . 0 80 }}
-			{{- else }}
-				{{- errorf "Unable to resize overlay %q" $path }}
-			{{ end }}
-		{{- else }}
-			{{- errorf "Unable to get overlay %q" $path }}
-		{{- end }}
-		{{- with resources.Get "img/huggingface-1254x1254.png" }}
-			{{- with $image := .Resize "128x" }}
-				{{ with $image.Filter $filter }}
-					<img src="{{ .RelPermalink }}" />
-				{{- else }}
-					<img src="{{ $image.RelPermalink }}" />
-				{{- end }}
-			{{- else }}
-				{{- errorf "Unable to get home-image %q" $path }}
-			{{- end }}
-		{{- end }}
+		{{- $teaser := partialCached "img/overlay.html" (dict "image" site.Params.huggingface.images.site "size" 128) }}
+		<img class="img128" src="{{ $teaser.RelPermalink }}" />
 	</div>
 	<aside>
 		<h1>{{ site.Params.Description }}</h1>
