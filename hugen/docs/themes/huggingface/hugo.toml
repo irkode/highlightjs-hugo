@@ -5,6 +5,10 @@
       # maybe a map here if we need more browser storage stuff
       storageKey = "huggingface-theme"
       siteLogo   = "img/huggingface-logo-48x48.png"
+      [params.huggingface.images]
+         overlay = "img/highlightjs-icon.png"
+         site    = "img/huggingface-1254x1254.png"
+         error   = "img/huggingface_404-1254x1254.png"
       [params.huggingface.markup]
          enableHighlightJS = true
          chromaStyle       = "monokai"

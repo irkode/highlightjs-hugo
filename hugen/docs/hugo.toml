@@ -62,7 +62,59 @@ theme         = "huggingface"
    [module.hugoVersion]
       min = '0.164.0'
 
-[segments]
-   [segments.testrender]
-      [[segments.testrender.includes]]
-         path = '{/hugo/examples*}'
+# top level entries
+[[menus.main]]
+   name   = 'Highlight.js'
+   weight = 10
+[[menus.main]]
+   name   = 'Discourse'
+   weight = 20
+[[menus.main]]
+   name   = 'Hugo'
+   weight = 30
+
+# submenu Highlight.js
+[[menus.main]]
+   identifier = 'Highlightjs_Overview'
+   name       = 'Overview'
+   pageRef    = '/highlightjs'
+   Parent     = "Highlight.js"
+   weight     = 1
+[[menus.main]]
+   name    = 'CSS Classes'
+   pageRef = '/highlightjs/css-class-reference'
+   Parent  = "Highlight.js"
+   weight  = 10
+[[menus.main]]
+   name    = 'Autodetect'
+   pageRef = '/highlightjs/autodetect'
+   Parent  = "Highlight.js"
+   weight  = 20
+
+# submenu Discourse.js
+[[menus.main]]
+   identifier = 'Discourse_Overview'
+   name       = 'Overview'
+   pageRef    = '/discourse'
+   Parent     = "Discourse"
+   weight     = 1
+[[menus.main]]
+   identifier = 'Discourse_Examples'
+   name       = 'Examples'
+   pageRef    = '/discourse/examples'
+   Parent     = "Discourse"
+   weight     = 10
+
+# submenu Hugo.js
+[[menus.main]]
+   identifier = 'Hugo_Overview'
+   name       = 'Overview'
+   pageRef    = '/hugo'
+   Parent     = "Hugo"
+   weight     = 1
+[[menus.main]]
+   identifier = 'Hugo_Examples'
+   name       = 'Examples'
+   pageRef    = '/hugo/examples'
+   Parent     = "Hugo"
+   weight     = 10

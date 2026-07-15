@@ -54,7 +54,7 @@ register it with `highlight.js`.
 
 ```javascript
 global.hljs = require("highlight.js");
-require("./extra/hugo-html/dist/LANGUAGE.min.js");
+require("./extra/LANGUAGE/dist/LANGUAGE.min.js");
 hljs.highlightAll();
 ```
 
