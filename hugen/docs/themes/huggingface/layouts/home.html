@@ -8,7 +8,6 @@
 		<h1>{{ site.Params.Description }}</h1>
 	</aside>
 </div>
-{{- .Summary }}
 
 {{- .Store.Set "loadHighlightJS" true -}}
 
@@ -46,5 +45,5 @@
 		</aside>
 	</div>
 
-	{{- .ContentWithoutSummary }}
+	{{- .Content }}
 {{- end }}
