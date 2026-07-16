@@ -1,10 +1,10 @@
 +++
-title = "Example - HugoDocs"
+title = "Examples - Hugo & Chroma"
 +++
 
 # Hybrid Highlighting with Chroma and Highlight.js
 
-Example how Hugo's documentation could look like styled with _highlighjs-hugo_`
+Example how Hugo's documentation could look like styled with _highlighjs-hugo_
 
 ## Rendered with Chroma (go-template)
 

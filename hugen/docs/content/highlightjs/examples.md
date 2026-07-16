@@ -1,15 +1,14 @@
 +++
-title = "Examples - Discourse"
+title = "Examples - Highlight.js Grammars"
 +++
 
-# Example config for Discourse and HighlightJS
+# Language Grammar examples for Go and Hugo
 
-Guess you are familiar with the look and feel of this. The one at the bottom mimics the styles but
-utilizes our custom classes.
+These borrow styling from Hugo's documentation with additional classes
 
-## Rendered with Python[^1]
+## Hugo HTML
 
-```hljs-python {style="discourse"}
+```hugo-html {style="hugodocs"}
 {{ warnf `%s` templates.Current.Name }}
 {{ with (templates.Defer (dict "key" "global")) }}
   {{ $theme := $.Site.Params.colorScheme | default "slate" }}
@@ -29,9 +28,9 @@ utilizes our custom classes.
 {{ end }}
 ```
 
-## Rendered with Hugo-HTML
+## Hugo TEXT
 
-```hugo-html {style="discourse_bare"}
+```hugo-text {style="hugodocs_bare"}
 {{ warnf `%s` templates.Current.Name }}
 {{ with (templates.Defer (dict "key" "global")) }}
   {{ $theme := $.Site.Params.colorScheme | default "slate" }}
@@ -51,9 +50,9 @@ utilizes our custom classes.
 {{ end }}
 ```
 
-## Rendered with Hugo-HTML plus additional classes
+## Go HTML
 
-```hugo-html {style="discourse"}
+```go-html {style="hugodocs"}
 {{ warnf `%s` templates.Current.Name }}
 {{ with (templates.Defer (dict "key" "global")) }}
   {{ $theme := $.Site.Params.colorScheme | default "slate" }}
@@ -73,4 +72,24 @@ utilizes our custom classes.
 {{ end }}
 ```
 
-[^1]: Other frequently _detected_ languages for HuGo template code are _Ruby_ or _Bash_
+## Go TEXT
+
+```go-text {style="hugodocs"}
+{{ warnf `%s` templates.Current.Name }}
+{{ with (templates.Defer (dict "key" "global")) }}
+  {{ $theme := $.Site.Params.colorScheme | default "slate" }}
+  {{ with resources.Get (printf "css/%s.css" $theme) }}
+  {{/* with resources.Get "css/test.css" */}}
+    {{ $opts := dict "minify" (not hugo.IsDevelopment) "inlineImports" true }}
+    {{ with . | css.TailwindCSS $opts }}
+      {{ if hugo.IsDevelopment }}
+        <link rel="stylesheet" href="{{ .RelPermalink }}">
+      {{ else }}
+        {{ with . | fingerprint }}
+          <link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}">
+        {{ end }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+```

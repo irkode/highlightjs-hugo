@@ -27,7 +27,7 @@
 		{{- end }}
 
 		{{- /* append overview modifier when name is Overview */}}
-		{{- if eq .Name "Overview" }}
+		{{- if eq .Weight 1 }}
 			{{- $class = printf "%s menu-button--overview" $class }}
 		{{- end }}
 

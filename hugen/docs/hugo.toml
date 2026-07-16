@@ -76,45 +76,51 @@ theme         = "huggingface"
 # submenu Highlight.js
 [[menus.main]]
    identifier = 'Highlightjs_Overview'
-   name       = 'Overview'
+   name       = 'Grammars'
    pageRef    = '/highlightjs'
-   Parent     = "Highlight.js"
+   parent     = "Highlight.js"
    weight     = 1
 [[menus.main]]
    name    = 'CSS Classes'
    pageRef = '/highlightjs/css-class-reference'
-   Parent  = "Highlight.js"
+   parent  = "Highlight.js"
    weight  = 10
 [[menus.main]]
    name    = 'Autodetect'
    pageRef = '/highlightjs/autodetect'
-   Parent  = "Highlight.js"
+   parent  = "Highlight.js"
    weight  = 20
+[[menus.main]]
+   identifier = 'Highlightjs_Examples'
+   name       = 'Examples'
+   pageRef    = '/highlightjs/examples'
+   parent     = "Highlight.js"
+   weight     = 30
 
 # submenu Discourse.js
 [[menus.main]]
    identifier = 'Discourse_Overview'
-   name       = 'Overview'
+   name       = 'Theme Components'
    pageRef    = '/discourse'
-   Parent     = "Discourse"
+   parent     = "Discourse"
    weight     = 1
 [[menus.main]]
    identifier = 'Discourse_Examples'
    name       = 'Examples'
    pageRef    = '/discourse/examples'
-   Parent     = "Discourse"
+   parent     = "Discourse"
    weight     = 10
 
 # submenu Hugo.js
 [[menus.main]]
    identifier = 'Hugo_Overview'
-   name       = 'Overview'
+   name       = 'Hugo & Chroma'
    pageRef    = '/hugo'
-   Parent     = "Hugo"
+   parent     = "Hugo"
    weight     = 1
 [[menus.main]]
    identifier = 'Hugo_Examples'
    name       = 'Examples'
    pageRef    = '/hugo/examples'
-   Parent     = "Hugo"
+   parent     = "Hugo"
    weight     = 10

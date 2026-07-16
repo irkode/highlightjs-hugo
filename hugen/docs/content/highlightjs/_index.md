@@ -2,7 +2,7 @@
 title = "Highlight.js Grammars"
 +++
 
-Highlight _HuGo_ templates using Highlight.js with additional styles for _HuGo_ specific tokens.
+Highlight _HuGo_ templates using Highlight.js with additional styles for _HuGo_[^1] specific tokens.
 
 ```hugo-html {style="colorful"}
 {{ printf "Autodetect Hello %s -> %s" $World .}}
@@ -101,3 +101,7 @@ grammars.
 
 With this one referenced from outside the grammar a custom Highlight.js build will pack it only once
 to the core. Saves around 10kB uncompressed in the final engine if both Hugo grammars.
+
+[^1]:
+    This document is a generic version of the `README.md` packed with each grammar. The actual
+    language is replaced with _LANGUAGE_ within this document.
