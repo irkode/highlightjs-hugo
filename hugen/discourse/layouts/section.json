@@ -1,0 +1,11 @@
+{{- $tpl := templates.Current.Name }}
+{{- $idx := math.Counter }}
+{{- warnf "[%04d][ %-20s ] : %s" $idx $tpl .Path }}
+{{- dict
+      "name"        .Section
+      "component"   true
+      "license_url" site.Params.licenseURL
+      "about_url"   site.Params.webRoot
+      "authors"     site.Params.author
+   | jsonify (dict "indent" "   ")
+-}}

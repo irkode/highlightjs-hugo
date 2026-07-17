@@ -3,6 +3,23 @@ baseurl      = "https://irkode.github.io/highlightjs-hugo"
 title        = "Highlight 4 Hugo"
 disableKinds = ['rss', 'sitemap', 'taxonomy', 'term']
 
+[mediaTypes.'text/x-discourse-gjs']
+   suffixes = ['gjs']
+
+[outputFormats.json]
+   baseName    = 'about'
+   isPlainText = true
+
+[outputFormats.gjs]
+   mediaType      = 'text/x-discourse-gjs'
+   baseName       = 'javascripts/discourse/api-initializers/theme-initializer'
+   isHTML         = false
+   isPlainText    = true
+   notAlternative = true
+
+[build]
+   noJSConfigInAssets = true
+
 [params]
    subTitle   = "Advanced syntax highlighting for Hugo templates"
    author     = "Irkode <irkode@rikode.de>"
@@ -17,16 +34,21 @@ disableKinds = ['rss', 'sitemap', 'taxonomy', 'term']
 
 [module]
    [[module.mounts]]
-      source = 'assets'
-      target = 'assets'
-
-   [[module.mounts]]
       source = '../../release/highlightjs/'
       target = 'assets/highlightjs/'
-      files  = ["! **/dist/*.es.min*.js", "! **embed**", "**/dist/*min*.js"]
+      files  = ["! **embed**", "**/dist/*.es.min.js"]
    [[module.mounts]]
       source = "../../LICENSE"
-      target = "assets/discourse/LICENSE"
+      target = "static/go-html/LICENSE"
+   [[module.mounts]]
+      source = "../../LICENSE"
+      target = "static/go-text/LICENSE"
+   [[module.mounts]]
+      source = "../../LICENSE"
+      target = "static/hugo-html/LICENSE"
+   [[module.mounts]]
+      source = "../../LICENSE"
+      target = "static/hugo-text/LICENSE"
 
    [module.hugoVersion]
       min = '0.164.0'

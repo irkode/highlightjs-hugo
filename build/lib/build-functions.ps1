@@ -69,6 +69,7 @@ function buildDiscoursePlugin {
       exec hugo --source $SourceDir --destination $TargetDir
       foreach ($lang in @('go-html', 'go-text', 'hugo-html', 'hugo-text')) {
          [void](Test-File $TargetDir "${lang}/about.json" -ErrorAction Stop)
+         [void](Test-File $TargetDir "${lang}/LICENSE" -ErrorAction Stop)
          [void](Test-File $TargetDir "${lang}/javascripts/discourse/api-initializers/theme-initializer.gjs" -ErrorAction Stop)
       }
    } catch {

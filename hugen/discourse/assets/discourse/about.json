@@ -1,7 +1,0 @@
-{
-   "name": "{{ .Section }}",
-   "component": true,
-   "license_url": "{{ site.Params.licenseURL }}",
-   "about_url": "{{ site.Params.webRoot }}",
-   "authors": "{{ site.Params.author }}"
-}
