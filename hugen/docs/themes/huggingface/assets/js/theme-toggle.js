@@ -36,7 +36,7 @@ const toggleTheme = () => {
    html.dataset.themeAuto = String(nextAuto);
    nextAuto && (nextScheme === preferred) ? window.localStorage?.removeItem(storageKey) : window.localStorage?.setItem(storageKey, nextScheme);
 };
-document.getElementById("theme-toggle-icon")?.addEventListener("click", (e) => {
+document.getElementById("theme-toggle")?.addEventListener("click", (e) => {
    e.preventDefault();
    toggleTheme();
 }, false);

@@ -41,6 +41,10 @@
 		{{- end }}
 		{{- if .HasChildren }}
 			{{- $attrs = merge $attrs (dict "aria-haspopup" "true" "aria-controls" (add "submenu-" $name)) }}
+			{{- /* group headers without a URL are not focusable as links - make them keyboard-reachable */}}
+			{{- if not .URL }}
+				{{- $attrs = merge $attrs (dict "tabindex" "0" "role" "button") }}
+			{{- end }}
 		{{- end }}
 		<a
 			{{- range $k, $v := $attrs }}

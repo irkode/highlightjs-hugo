@@ -2,7 +2,7 @@
 <div class="headline banner">
 	<div>
 		{{- $teaser := partial "img/overlay.html" (dict "image" site.Params.huggingface.images.site "size" 128) }}
-		<img class="img128" src="{{ $teaser.RelPermalink }}" />
+		<img class="img128" src="{{ $teaser.RelPermalink }}" alt="" />
 	</div>
 	<aside>
 		<h1>{{ site.Params.Description }}</h1>

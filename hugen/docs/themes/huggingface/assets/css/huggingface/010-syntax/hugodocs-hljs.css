@@ -18,11 +18,11 @@
    .hljs-hugodocs .hljs-variable { color: light-dark(#54790d, #06b6ef)};
    .hljs-hugodocs .hljs-string { color: light-dark(#bb8844, #48b685)};
    /* style scopes added with highlightjs-hugo */
-   .hljs-hugodocs .hljs-property.method_ { color: light-dark(#b75501, #ca73c7);};
-   .hljs-hugodocs .hljs-string.raw_ { color: light-dark(#e5b06b, #54790d)};
-   .hljs-hugodocs .hljs-template-tag { color: light-dark(#999999, rgb(132.6, 132.6, 132.6))};
-   .hljs-hugodocs .hljs-template-variable { color: light-dark(#679511, #b75501)};
-   .hljs-hugodocs .hljs-template-variable.context_ { color: light-dark(#679511,#b75501); background-color: light-dark(var(--_text-light),rgb(211, 209, 209))};
+   .hljs-hugodocs .hljs-property.method_ { color: light-dark(#9a3412, #ca73c7);};
+   .hljs-hugodocs .hljs-string.raw_ { color: light-dark(#855c00, #d3a34f)};
+   .hljs-hugodocs .hljs-template-tag { color: light-dark(#6d28d9, #c792ea)};
+   .hljs-hugodocs .hljs-template-variable { color: light-dark(#3f6212, #e58a3c)};
+   .hljs-hugodocs .hljs-template-variable.context_ { color: light-dark(#f0eeee,#1c1c1c); background-color: light-dark(#3f6212,#e58a3c)};
 }
 html[data-theme="light"] .hljs-hugodocs .hljs-keyword { font-weight: 700}
 html[data-theme="light"] .hljs-hugodocs .hljs-literal { font-weight: 700}

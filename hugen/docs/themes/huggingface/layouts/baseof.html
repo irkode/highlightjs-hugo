@@ -21,6 +21,7 @@
 		</title>
 	</head>
 	<body{{ if not (in (slice "home" "404") .Kind) }} class="no-hl_img-mobile"{{ end }}>
+		<a class="skip-link" href="#main-content">Skip to main content</a>
 		<header class="site-header">
 			<div class="header-left">
             {{- $filter := "" }}
@@ -38,18 +39,18 @@
 					{{- with $logo := resources.Get . }}
                   {{ with $logo.Filter $filter }}
 						   <a href="{{ absURL "" }}">
-							   <img src="{{ .RelPermalink }}" id="site-logo" class="header-icon" alt="Logo" />
+							   <img src="{{ .RelPermalink }}" id="site-logo" class="header-icon" alt="Home" />
 						   </a>
                   {{- else }}
 						   <a href="{{ absURL "" }}">
-   							<img src="{{ $logo.RelPermalink }}" id="site-logo" class="header-icon" alt="Logo" />
+   							<img src="{{ $logo.RelPermalink }}" id="site-logo" class="header-icon" alt="Home" />
 						   </a>
                   {{- end }}
 					{{- end }}
 				{{- end }}
 			</div>
 			<div class="header-center">
-				<input type="checkbox" id="burger-toggle" />
+				<input type="checkbox" id="burger-toggle" aria-label="Toggle navigation menu" />
 				<label for="burger-toggle" id="burger-label">
 					<span></span>
 					<span></span>
@@ -59,19 +60,21 @@
 			</div>
 			<div class="header-right">
 				{{- with site.Params.h4h.repository }}
-					<a href="{{ . }}"><img id="github-mark" class="header-icon" /></a>
+					<a href="{{ . }}"><img id="github-mark" class="header-icon" alt="View on GitHub" /></a>
 				{{- end }}
-				<img id="theme-toggle-icon" class="header-icon" />
+				<button type="button" id="theme-toggle" class="icon-button">
+					<img id="theme-toggle-icon" class="header-icon" alt="Toggle Theme" />
+				</button>
 			</div>
 		</header>
 
-		<main class="site-main">
+		<main id="main-content" class="site-main" tabindex="-1">
 			{{- block "main" . }}{{- end }}
 		</main>
 
 		<footer class="site-footer">
 			<div class="footer-left">
-				<p>{{- with .GitInfo }}<a href="{{ add site.Params.h4h.repository "/commit/" .Hash }}">#{{- .AbbreviatedHash }}</a> &mdash; {{ end }}{{ .Lastmod.Format "2006-01-02" }}</p>
+				<p>{{- with .GitInfo }}<a href="{{ add site.Params.h4h.repository "/commit/" .Hash }}" aria-label="View commit {{ .AbbreviatedHash }} on GitHub">#{{- .AbbreviatedHash }}</a> &mdash; {{ end }}{{ .Lastmod.Format "2006-01-02" }}</p>
 			</div>
 			<div class="footer-center">
 				<p>&copy; {{ now.Year }}. Irkode &lt;github.com/irkode&gt;</p>

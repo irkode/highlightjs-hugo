@@ -18,9 +18,9 @@
    .hljs-discourse .hljs-variable { color: light-dark(#54790d, #b5bd68)};
    .hljs-discourse .hljs-string { color: light-dark(#54790d, #b5bd68)};
    /* style scopes added with highlightjs-hugo */
-   .hljs-discourse .hljs-string.raw_ { color: light-dark(#e5b06b, #54790d)};
-   .hljs-discourse .hljs-template-tag { color: light-dark(#999999, rgb(132.6, 132.6, 132.6))};
-   .hljs-discourse .hljs-template-variable { color: light-dark(#679511, #b75501)};
-   .hljs-discourse .hljs-template-variable.context_ { color: light-dark(#679511,#b75501); background-color: light-dark(var(--_text-light),rgb(211, 209, 209))};
-   .hljs-discourse .hljs-property.method_ { color: light-dark(#b75501, #ca73c7);};
+   .hljs-discourse .hljs-string.raw_ { color: light-dark(#855c00, #d3a34f)};
+   .hljs-discourse .hljs-template-tag { color: light-dark(#6d28d9, #c792ea)};
+   .hljs-discourse .hljs-template-variable { color: light-dark(#3f6212, #e58a3c)};
+   .hljs-discourse .hljs-template-variable.context_ { color: light-dark(#f0eeee,#1c1c1c); background-color: light-dark(#3f6212,#e58a3c)};
+   .hljs-discourse .hljs-property.method_ { color: light-dark(#9a3412, #ca73c7);};
 }

@@ -130,9 +130,8 @@
 /* ── show submenu on trigger hover or focus-within ─────────────────────── */
 /* the <a> and its following <nav> are siblings inside #main-menu           */
 .menu-button:hover + .submenu,
-.menu-button:focus-visible + .submenu,
 .submenu:hover,
-.submenu:focus-within {
+.menu-item:focus-within > .submenu {
    display: flex;
 }
 
