@@ -1,7 +1,7 @@
 {{- define "main" }}
 <div class="headline banner">
 	<div>
-		{{- $teaser := partialCached "img/overlay.html" (dict "image" site.Params.huggingface.images.site "size" 128) }}
+		{{- $teaser := partial "img/overlay.html" (dict "image" site.Params.huggingface.images.site "size" 128) }}
 		<img class="img128" src="{{ $teaser.RelPermalink }}" />
 	</div>
 	<aside>

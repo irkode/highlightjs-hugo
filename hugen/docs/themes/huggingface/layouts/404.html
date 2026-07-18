@@ -1,5 +1,5 @@
 {{- define "main" }}
-{{- $teaser := partialCached "img/overlay.html" (dict "image" site.Params.huggingface.images.error) }}
+{{- $teaser := partial "img/overlay.html" (dict "image" site.Params.huggingface.images.error) }}
 <article class="headline center">
 	<div class="main">
 		<img class="img192" src="{{ $teaser.RelPermalink }}"/>
