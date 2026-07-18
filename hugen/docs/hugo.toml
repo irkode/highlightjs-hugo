@@ -2,7 +2,7 @@ baseURL = "https://irkode.github.io/highlightjs-hugo/"
 locale  = 'en-US'
 title   = "Highlight 4 Hugo"
 
-disableKinds  = ['rss', 'sitemap', 'taxonomy', 'term']
+disableKinds  = ['rss', 'taxonomy', 'term']
 enableGitInfo = true
 theme         = "huggingface"
 
