@@ -20,7 +20,7 @@
 			{{- end }}
 		</title>
 	</head>
-	<body>
+	<body{{ if not (in (slice "home" "404") .Kind) }} class="no-hl_img-mobile"{{ end }}>
 		<header class="site-header">
 			<div class="header-left">
             {{- $filter := "" }}

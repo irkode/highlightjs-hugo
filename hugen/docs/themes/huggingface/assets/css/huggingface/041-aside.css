@@ -109,4 +109,16 @@
       width: 128px;
       flex: 0 0 128px;
    }
+   .headline .img128 {
+      width: 96px;
+      flex: 0 0 96px;
+   }
+
+   body.no-hl_img-mobile .headline img {
+      display: none;
+   }
+
+   body.no-hl_img-mobile .headline.banner {
+      align-items: flex-start;
+   }
 }
