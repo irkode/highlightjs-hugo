@@ -1,5 +1,6 @@
 +++
 title = "Examples - Highlight.js Grammars"
+description = "Live examples of the go-html, go-text, hugo-html, and hugo-text Highlight.js grammars, styled with Hugo's documentation theme."
 +++
 
 The styles are _borrowed_ from Hugo's documentation to have identifiable visible changes.

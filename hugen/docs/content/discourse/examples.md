@@ -1,5 +1,6 @@
 +++
 title = "Examples - Discourse"
+description = "Hugo and Go template highlighting rendered with Discourse forum styles, compared against the usual Python auto-detection."
 +++
 
 The styles are _borrowed_ from Hugo's Discourse forum to have identifiable visible changes.

@@ -1,5 +1,6 @@
 +++
 title = "Using with Hugo & Chroma"
+description = "Combine Chroma's fast build-time highlighting with Highlight.js for Hugo templates: a minimal setup passing what Chroma cannot highlight to Highlight.js."
 +++
 
 You could switch completely to Highlight.js. To get the best of both worlds

@@ -1,0 +1,28 @@
+{{- /* Open Graph + Twitter Card tags.
+   Rendered per page from head.html (cached by .Path), so values vary per page.
+   Share image: per-page front matter `images` (first entry) if set, otherwise the
+   site image stamped with the overlay and resized to a 1200 square via img/overlay.html. */ -}}
+{{- $title := cond .IsHome site.Title (printf "%s | %s" .Title site.Title) }}
+{{- $description := or .Description site.Params.description }}
+{{- $image := "" }}
+{{- with .Params.images }}
+   {{- $image = index . 0 | absURL }}
+{{- else }}
+   {{- with partial "img/overlay.html" (dict "image" site.Params.huggingface.images.site "size" 1200) }}
+      {{- $image = .Permalink }}
+   {{- end }}
+{{- end }}
+<meta property="og:title" content="{{ $title }}" />
+<meta property="og:description" content="{{ $description }}" />
+<meta property="og:type" content="{{ cond .IsHome `website` `article` }}" />
+<meta property="og:url" content="{{ .Permalink }}" />
+<meta property="og:site_name" content="{{ site.Title }}" />
+{{- with $image }}
+<meta property="og:image" content="{{ . }}" />
+{{- end }}
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="{{ $title }}" />
+<meta name="twitter:description" content="{{ $description }}" />
+{{- with $image }}
+<meta name="twitter:image" content="{{ . }}" />
+{{- end }}

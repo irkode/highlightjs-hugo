@@ -1,5 +1,5 @@
 +++
-Description = "Discourse Theme Components"
+Description = "Discourse theme components that wrap the Highlight.js Go and Hugo grammars for correct template highlighting in Discourse forums."
 Title = "Discourse"
 +++
 

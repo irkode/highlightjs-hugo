@@ -1,5 +1,6 @@
 +++
 title = 'CSS Class Reference'
+description = "CSS class reference for the Go and Hugo Highlight.js grammars: the standard scopes plus the extra scopes for methods, context, raw strings, and runes."
 +++
 
 This class reference is valid for all _Hugo_ and _Go_ grammars. Exceptions are mentioned in the

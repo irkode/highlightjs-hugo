@@ -1,5 +1,6 @@
 +++
 title = "Examples - Hugo & Chroma"
+description = "Examples comparing Chroma and Highlight.js output for Hugo templates, styled like Hugo's own documentation."
 +++
 
 Example how Hugo's documentation could look like styled with _highlighjs-hugo_

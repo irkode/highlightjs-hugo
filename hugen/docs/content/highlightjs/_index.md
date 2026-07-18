@@ -1,5 +1,6 @@
 +++
 title = "Highlight.js Grammars"
+description = "Highlight.js grammars for Go and Hugo templates (HTML and text), with full keyword and built-in coverage, extra token scopes, and a prebuilt browser bundle."
 +++
 
 Highlight _HuGo_ templates using Highlight.js with additional styles for _HuGo_[^1] specific tokens.

@@ -13,7 +13,10 @@
 {{- $page := .page }}
 {{- range .menuEntries }}
 	<div class="menu-item">
-		{{- $attrs := dict "href" .URL }}
+		{{- $attrs := dict }}
+		{{- with .URL }}
+			{{- $attrs = merge $attrs (dict "href" .) }}
+		{{- end }}
 
 		{{- /* base class depending on active state */}}
 		{{- $class := "menu-button" }}
@@ -41,18 +44,24 @@
 		{{- end }}
 		{{- if .HasChildren }}
 			{{- $attrs = merge $attrs (dict "aria-haspopup" "true" "aria-controls" (add "submenu-" $name)) }}
-			{{- /* group headers without a URL are not focusable as links - make them keyboard-reachable */}}
-			{{- if not .URL }}
-				{{- $attrs = merge $attrs (dict "tabindex" "0" "role" "button") }}
-			{{- end }}
 		{{- end }}
-		<a
-			{{- range $k, $v := $attrs }}
-				{{- with $v }}
-				{{- printf " %s=%q" $k $v | safeHTMLAttr }}
-				{{- end }}
-			{{- end -}}>{{ $name }}</a
-		>
+		{{- if .URL }}
+			<a
+				{{- range $k, $v := $attrs }}
+					{{- with $v }}
+					{{- printf " %s=%q" $k $v | safeHTMLAttr }}
+					{{- end }}
+				{{- end -}}>{{ $name }}</a
+			>
+		{{- else }}
+			<button type="button"
+				{{- range $k, $v := $attrs }}
+					{{- with $v }}
+					{{- printf " %s=%q" $k $v | safeHTMLAttr }}
+					{{- end }}
+				{{- end -}}>{{ $name }}</button
+			>
+		{{- end }}
 		{{- with .Children }}
 			<nav class="submenu" id="submenu-{{ $name }}" aria-label="{{ $name }}">
 				{{- partial "inline/menu/walk.html" (dict "page" $page "menuEntries" .) }}

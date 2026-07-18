@@ -1,5 +1,6 @@
 +++
 title = "A word on auto detection"
+description = "How the Go and Hugo grammars use Highlight.js relevance settings to win auto-detection against Handlebars and other similar template languages."
 +++
 
 _Handlebars_ and _Go templates_ (used by [Hugo][]) have similar template tags. Without additional

@@ -1,5 +1,6 @@
 +++
 title = "Advanced syntax highlighting for HuGo templates"
+description = "Advanced syntax highlighting for Hugo and Go templates with Highlight.js - plus Discourse theme components and Chroma-friendly setup."
 +++
 
 Did you ever wonder why hugo templates get random highlighting in
@@ -17,14 +18,14 @@ incorrect or misleading highlighting.
 
 - Support for:
    - Hugo and Go templates
-   - Html and Text templates
+   - Html and Text variants
 
 - Full coverage of:
    - Template keywords
    - Built-in functions
    - Aliases
 
-- Improved automatic language detection[^1]
+- Improved automatic language detection (see [A word on Auto detection](/highlightjs/autodetect.md))
 - Advanced highlighting scopes
 - Prebuilt **browser bundle** for immediate use
 
@@ -36,7 +37,7 @@ incorrect or misleading highlighting.
 ## Download
 
 Packages can be downloaded from:
-[Releases](https://github.com/irkode/highlightjs-hugo/releases/latest)[^2].
+[Releases](https://github.com/irkode/highlightjs-hugo/releases/latest).
 
 - Discourse theme Components:
   [highlightjs-hugo-discourse.zip](https://github.com/irkode/highlightjs-hugo/releases/latest/download/highlightjs-hugo-discourse.zip)
@@ -50,9 +51,10 @@ As of now we do not publish anything to a CDN.
 
 ## Documentation
 
-- https://irkode.github.io/highlightjs-hugo/
+Downloaded artifacts contain their own `README.md` with instructions.
 
-Each artifact includes its own `README.md` with usage instructions.
+For more details and examples visit the
+[Project documentation site](https://irkode.github.io/highlightjs-hugo/)
 
 ## Build from Source
 
@@ -88,9 +90,8 @@ Development Environment is a Windows 11 Professional with a recent _Powershell C
 
 ## Support
 
-Feedback, issues, and ideas are welcome
-
-https://github.com/irkode/highlightjs-hugo/issues
+Feedback, issues, and ideas are welcome. Please post these to the
+[Project issue tracker](https://github.com/irkode/highlightjs-hugo/issues)
 
 ## Hugo as a Generator
 
@@ -107,7 +108,8 @@ Hugo is used as a general-purpose generation engine to:
 Take it as a nifty but hacky showcase to use Hugo as a generic templating and publishing engine –
 extended beyond static WEB web sites.
 
-If you want to dig in, here's the source: https://github.com/irkode/highlightjs-hugo/tree/main/hugen
+If you want to dig in, here's the source:
+[Hugen generator](https://github.com/irkode/highlightjs-hugo/tree/main/hugen)
 
 ## License
 
@@ -125,14 +127,8 @@ Licenses for foreign assets may be different:
 
 ## References
 
-- Repository: https://github.com/irkode/highlightjs-hugo/
-- Documentation : https://irkode.github.io/highlightjs-hugo/
-- Highlight.js : https://highlightjs.org/
-- Hugo : https://gohugo.io/
-- Hugo Forum: https://discourse.gohugo.io/
-
-[^1]:
-    Check out details here:
-    [A word on auto detection](https://irkode.github.io/highlightjs-hugo/highlightjs/autodetect)
-
-[^2]: Draft- and pre-releases have to be manually browsed and downloaded.
+- [Project GitHub Repository](https://github.com/irkode/highlightjs-hugo/)
+- [Project Documentation Site](https://irkode.github.io/highlightjs-hugo/)
+- [Highlight.JS Homepage](https://highlightjs.org/)
+- [Hugo Homepage](https://gohugo.io/)
+- [Hugo Discourse Forum](https://discourse.gohugo.io/)
