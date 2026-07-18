@@ -2,9 +2,7 @@
 title = "Examples - Highlight.js Grammars"
 +++
 
-# Language Grammar examples for Go and Hugo
-
-These borrow styling from Hugo's documentation with additional classes
+The styles are _borrowed_ from Hugo's documentation to have identifiable visible changes.
 
 ## Hugo HTML
 
@@ -30,7 +28,7 @@ These borrow styling from Hugo's documentation with additional classes
 
 ## Hugo TEXT
 
-```hugo-text {style="hugodocs_bare"}
+```hugo-text {style="hugodocs"}
 {{ warnf `%s` templates.Current.Name }}
 {{ with (templates.Defer (dict "key" "global")) }}
   {{ $theme := $.Site.Params.colorScheme | default "slate" }}

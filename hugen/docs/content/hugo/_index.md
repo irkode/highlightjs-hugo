@@ -1,6 +1,5 @@
 +++
-title = "Hugo & Chroma"
-Description = "Using with Hugo & Chroma"
+title = "Using with Hugo & Chroma"
 +++
 
 You could switch completely to Highlight.js. To get the best of both worlds

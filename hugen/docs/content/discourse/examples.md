@@ -2,10 +2,7 @@
 title = "Examples - Discourse"
 +++
 
-# Example config for Discourse and HighlightJS
-
-Guess you are familiar with the look and feel of this. The one at the bottom mimics the styles but
-utilizes our custom classes.
+The styles are _borrowed_ from Hugo's Discourse forum to have identifiable visible changes.
 
 ## Rendered with Python[^1]
 
