@@ -1,5 +1,5 @@
 {{- define "main" }}
-<div class="aside banner">
+<div class="headline banner">
 	<div>
 		{{- $teaser := partialCached "img/overlay.html" (dict "image" site.Params.huggingface.images.site "size" 128) }}
 		<img class="img128" src="{{ $teaser.RelPermalink }}" />
@@ -11,7 +11,7 @@
 
 {{- .Store.Set "loadHighlightJS" true -}}
 
-<div class="aside content r1000">
+<div class="twocols r1000">
 	<div>
 		<figure>
 			<figcaption>Hugo-Html</figcaption>

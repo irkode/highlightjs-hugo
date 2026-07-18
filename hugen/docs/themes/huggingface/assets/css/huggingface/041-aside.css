@@ -1,4 +1,5 @@
-.aside {
+.headline,
+.twocols {
    display: flex;
    width: 100%;
    gap: 12px;
@@ -7,9 +8,9 @@
 }
 
 /* =========================================================
-   CONTENT: equal columns (default structural mode)
+   TWOCOLS: equal columns
    ========================================================= */
-.aside.content > * {
+.twocols > * {
    flex: 1 1 0;
    min-width: 0;
 }
@@ -17,33 +18,33 @@
 /* =========================================================
    CENTER: compact grouping, no edge push
    ========================================================= */
-.aside.center {
+.headline.center {
    justify-content: flex-start;
    align-items: center;
 }
 
 /* both items stay content-sized */
-.aside.center > * {
+.headline.center > * {
    flex: 0 0 auto;
 }
 
 /* center text inside right slot */
-.aside.center > :nth-child(2) {
+.headline.center > :nth-child(2) {
    text-align: center;
 }
 
 /* =========================================================
    BANNER: left fixed, right expands
    ========================================================= */
-.aside.banner {
+.headline.banner {
    align-items: center;
 }
 
-.aside.banner > :first-child {
+.headline.banner > :first-child {
    flex: 0 0 auto;
 }
 
-.aside.banner > :nth-child(2) {
+.headline.banner > :nth-child(2) {
    flex: 1 1 auto;
    text-align: left;
    min-width: 0;
@@ -52,19 +53,19 @@
 /* =========================================================
    IMAGES (unchanged utilities)
    ========================================================= */
-.aside .img192 {
+.headline .img192 {
    width: 192px;
    flex: 0 0 192px;
    object-fit: cover;
 }
 
-.aside .img128 {
+.headline .img128 {
    width: 128px;
    flex: 0 0 128px;
    object-fit: cover;
 }
 
-.aside .img84 {
+.headline .img84 {
    width: 84px;
    flex: 0 0 84px;
    object-fit: cover;
@@ -74,15 +75,15 @@
    TYPOGRAPHY INSIDE ASIDE
    (optional global styling, keep if desired)
    ========================================================= */
-.aside h1 {
+.headline h1 {
    margin: 0;
    padding: 0;
 }
-.aside h2 {
+.headline h2 {
    text-align: center;
 }
 
-.aside p {
+.headline p {
    text-align: center;
    line-height: 2em;
 }
@@ -91,19 +92,20 @@
    RESPONSIVE
    ========================================================= */
 @media (max-width: 1000px) {
-   .aside.r1000 {
+   .twocols.r1000 {
       flex-direction: column;
       align-items: stretch;
    }
 }
 
 @media (max-width: 580px) {
-   .aside {
+   .headline,
+   .twocols {
       flex-direction: column;
       align-items: stretch;
    }
 
-   .aside .img192 {
+   .headline .img192 {
       width: 128px;
       flex: 0 0 128px;
    }
