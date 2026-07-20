@@ -1,4 +1,15 @@
 {{- define "main" }}
+{{- /*
+{{- partial "img/solid-color-image.html" }}
+{{- partialCached "img/solid-color-image.html" (dict "color" "111dfe") "111dfe" }}
+{{- partialCached "img/solid-color-image.html" (dict "color" "#111dfe") "#111dfe" }}
+{{- partialCached "img/solid-color-image.html" (dict "color" "111zfe") "111zfe" }}
+{{- partialCached "img/solid-color-image.html" (dict "color" "#111zfe") "#111zfe" }}
+{{- partialCached "img/solid-color-image.html" (dict "color" "11ze") "11ze" }}
+{{- partialCached "img/solid-color-image.html" (dict "color" "#11ze") "#11ze" }}
+{{- partialCached "img/solid-color-image.html" (dict "color" "111dfea") "111dfea" }}
+{{- partialCached "img/solid-color-image.html" (dict "color" "#111dfea") "#111dfea" }}
+*/ -}}
 <div class="headline banner">
 	<div>
 		{{- $teaser := partial "img/overlay.html" (dict "image" site.Params.huggingface.images.site "size" 128) }}

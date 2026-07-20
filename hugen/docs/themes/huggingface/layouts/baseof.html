@@ -7,7 +7,7 @@
 	{{- warnf "[%04d][ %-20s ] : %s" $idx $tpl $pagePath }}
 {{- end }}
 {{ $tag := or site.Params.Tag "unreleased" }}
-{{ $buildDate := or  site.Params.BuildDate ((. | time.AsTime).Format "2006-01-02")}}
+{{ $buildDate := or site.Params.BuildDate ((. | time.AsTime).Format "2006-01-02") }}
 <!doctype html>
 <html lang="{{ site.Language.Locale }}" dir="{{ or site.Language.Direction `ltr` }}">
 	<head>
@@ -24,28 +24,28 @@
 		<a class="skip-link" href="#main-content">Skip to main content</a>
 		<header class="site-header">
 			<div class="header-left">
-            {{- $filter := "" }}
-            {{- $path := "img/highlightjs-icon.png" }}
-            {{- with resources.Get $path }}
-               {{- with .Resize "20x" }}
-                     {{ $filter = images.Overlay . 0 28 }}
-               {{- else }}
-                  {{- errorf "Unable to resize overlay %q" $path }}
-               {{end }}
-            {{- else }}
-               {{- errorf "Unable to get overlay %q" $path }}
-            {{- end }}
+				{{- $filter := "" }}
+				{{- $path := "img/highlightjs-icon.png" }}
+				{{- with resources.Get $path }}
+					{{- with .Resize "20x" }}
+						{{ $filter = images.Overlay . 0 28 }}
+					{{- else }}
+						{{- errorf "Unable to resize overlay %q" $path }}
+					{{ end }}
+				{{- else }}
+					{{- errorf "Unable to get overlay %q" $path }}
+				{{- end }}
 				{{- with default "img/huggingface-logo-48x48.png" site.Params.huggingface.siteLogo }}
 					{{- with $logo := resources.Get . }}
-                  {{ with $logo.Filter $filter }}
-						   <a href="{{ absURL "" }}">
-							   <img src="{{ .RelPermalink }}" id="site-logo" class="header-icon" alt="Home" />
-						   </a>
-                  {{- else }}
-						   <a href="{{ absURL "" }}">
-   							<img src="{{ $logo.RelPermalink }}" id="site-logo" class="header-icon" alt="Home" />
-						   </a>
-                  {{- end }}
+						{{ with $logo.Filter $filter }}
+							<a href="{{ absURL "" }}">
+								<img src="{{ .RelPermalink }}" id="site-logo" class="header-icon" alt="Home" />
+							</a>
+						{{- else }}
+							<a href="{{ absURL "" }}">
+								<img src="{{ $logo.RelPermalink }}" id="site-logo" class="header-icon" alt="Home" />
+							</a>
+						{{- end }}
 					{{- end }}
 				{{- end }}
 			</div>

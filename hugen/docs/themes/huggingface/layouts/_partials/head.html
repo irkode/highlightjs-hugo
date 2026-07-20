@@ -6,6 +6,7 @@
 <meta name="color-scheme" content="dark light" />
 <meta name="description" content="{{ or .Description site.Params.description }}" />
 <link rel="canonical" href="{{ .Permalink }}" />
+{{- /*partial "head/opengraph.html" .*/}}
 {{- partial "head/opengraph.html" . }}
 {{- partialCached "head/js.html" . }}
 {{- partialCached "head/favicons.html" . }}

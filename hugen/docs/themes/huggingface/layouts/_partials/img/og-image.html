@@ -1,0 +1,60 @@
+{{- $ogImage := partialCached "img/overlay.html" (dict "image" site.Params.huggingface.images.site "size" 440) }}
+{{- $ogText := partialCached "img/solid-color-image.html" (slice "#976941" 760 440) }}
+
+{{- $fontPath := "fonts/ArchivoBlack-Regular.ttf" }}
+{{- $font := "" }}
+{{- with try (resources.Get $fontPath) }}
+	{{- with .Err }}
+		{{- errorf "%s" . }}
+	{{- else with .Value }}
+		{{- $font = . }}
+	{{- else }}
+		{{- errorf "Unable to get resource %s" $fontPath }}
+	{{- end }}
+{{- end }}
+
+{{- $optsText := dict
+	"alignx" "center"
+	"aligny" "center"
+	"color" "#fbfaf5"
+	"font" $font
+	"linespacing" 8
+	"size" 60
+	"x" (mul $ogText.Width 0.5 | int)
+	"y" (mul $ogText.Height 0.5 | int)
+}}
+{{- $ogText = $ogText | images.Filter (images.Text site.Params.Description $optsText) }}
+{{- $optsTitle := dict
+	"alignx" "center"
+	"aligny" "center"
+	"color" "#000000"
+	"font" $font
+	"linespacing" 12
+	"size" 61
+	"x" 600
+	"y" 47
+}}
+{{ $optsURL := dict
+	"alignx" "left"
+	"aligny" "center"
+	"color" "#000000"
+	"font" $font
+	"linespacing" 8
+	"size" 24
+	"x" 10
+	"y" 582
+}}
+
+{{- /* dark yellow: #ffb300 */ -}}
+{{- /* light yellow: #fcd804 */ -}}
+{{- /* bright yellow: #ebb951 */ -}}
+{{- /* brown: #976941 */ -}}
+{{- $filter := slice
+	(images.Padding 0 760 0 0 "#976941")
+	(images.Padding 95 0 95 0 "#ebb951")
+	(images.Overlay $ogText 441 95)
+	(images.Text site.Title $optsTitle)
+	(images.Text site.Home.Permalink $optsURL)
+}}
+{{- return ($ogImage | images.Filter $filter | resources.Copy "img/og-image.png") }}
+{{- /**/ -}}
