@@ -3,7 +3,7 @@ title = "Highlight.js Grammars"
 description = "Highlight.js grammars for Go and Hugo templates (HTML and text), with full keyword and built-in coverage, extra token scopes, and a prebuilt browser bundle."
 +++
 
-Highlight _HuGo_ templates using Highlight.js with additional styles for _HuGo_[^1] specific tokens.
+Highlight _HuGo_ templates using Highlight.js with additional styles for _HuGo_ specific tokens.
 
 ```hugo-html {style="colorful"}
 {{ printf "Autodetect Hello %s -> %s" $World .}}
@@ -47,11 +47,10 @@ No CDN published version.
 ### With Node or another build system
 
 > There's no official node packages. But guess you can combine a node installation and our plugins.
-> have a look at the highlight.js source Asset. Maybe that fits for you The Node stuff is untested,
-> just an adapted copy from some other highlight.js module!!!
+> Have a look at the highlight.js source assets. Maybe these work for you.
+> No complete setup instructions here for Node, Webpack, Rollup or Browserify.
 
-If you're using Node / Webpack / Rollup / Browserify, etc, simply require the language module, then
-register it with `highlight.js`.
+Here's an example for a simple node script:
 
 ```javascript
 global.hljs = require("highlight.js");
@@ -61,8 +60,8 @@ hljs.highlightAll();
 
 ## Example
 
-Enclose your code in `<pre><code>` tags and at best set the language with `class="LANGUAGE"`. If you
-want to rely on auto detection, read the section about that below.
+Enclose your code in `<pre><code>` tags and at best set the language with `class="LANGUAGE"`.
+You may want to check out the [word on auto detection](/highlightjs/autodetect)
 
 ```html
 <pre><code class="hugho-html">
@@ -80,29 +79,23 @@ want to rely on auto detection, read the section about that below.
 Packages can be downloaded from:
 [Releases](https://github.com/irkode/highlightjs-hugo/releases/latest).
 
-- Ready to use javascripts:
+- Ready to use javascript grammars and prebuild highlightjs browser engines for Go and Hugo
   [highlightjs-hugo-jsmodules.zip](https://github.com/irkode/highlightjs-hugo/releases/latest/download/highlightjs-hugo-js-modules.zip)
-- Grammar sources to build on your own:
+- All Grammar sources to build your own custom Highlight.ja browser engine:
   [highlightjs-hugo-extra-src.zip](https://github.com/irkode/highlightjs-hugo/releases/latest/download/highlightjs-hugo-extra-src.zip)
 
 ## Custom Highlight.js build
 
-The module works with the standard Highlight.js extra build system. Download the grammar source from
-Releases and extract to `highlight.js/extra` directory. Check the
-[Highlight.js documentation](https://highlightjs.readthedocs.io/en/latest/index.html) for more
-details.
+The modules works with the standard Highlight.js extra build system. Extract the source archive to `highlight.js/extra`. For details on
+building consult the [Highlight.js documentation](https://highlightjs.readthedocs.io/en/latest/index.html).
 
-### h4h-lib
+### Keyword and Grammar library - h4h-lib
 
 The shared library containing grammar and keyword definitions. Make sure it's also in the _extra_
 folder.
 
-This one is created based on Hugo's (or Go) keywords and contains the _token, regex_ part of the
-grammars.
+This one is created based on Hugo's (or Go) keywords and contains the _token, regex_ part for the
+languages. It will be regularly updated, to contain the latest keywords.
 
 With this one referenced from outside the grammar a custom Highlight.js build will pack it only once
-to the core. Saves around 10kB uncompressed in the final engine if both Hugo grammars.
-
-[^1]:
-    This document is a generic version of the `README.md` packed with each grammar. The actual
-    language is replaced with _LANGUAGE_ within this document.
+to the core. Saves around 10kB uncompressed in the final engine if both _hugo-text_ and _hugo-html_ are imported.

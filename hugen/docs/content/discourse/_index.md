@@ -14,8 +14,7 @@ Wrapped [HighlightJS grammars](/highlightjs) in _Discourse theme components_.
 {{ hugo.Sites.Pages }}
 ```
 
-You don't have to be that colorful. Adding new wanted styles to your working styles will be a good
-choice. Have a look at the [Discourse Example](/discourse/examples) and
+You don't have to be that colorful. Have a look at the [Discourse Example](/discourse/examples) and
 [Hugo examples](/hugo/examples) to see how it could look like.
 
 ## Download
@@ -26,21 +25,26 @@ Packages can be downloaded from:
 - Discourse theme components
   [highlightjs-hugo-discourse.zip](https://github.com/irkode/highlightjs-hugo/releases/latest/download/highlightjs-hugo-discourse.zip)
 
+  The archive contains all four theme components -- packed ready for import into discourse.
+
 ## Usage
 
 - you must have Highlight.js configured in your Instance
 - Download
   [highlightjs-hugo-discourse.zip](https://github.com/irkode/highlightjs-hugo/releases/latest/download/highlightjs-hugo-discourse.zip)
-- Extract to a folder of your choice. You will get all four components as archive file.
-- create a new _Theme Component_
-   - either import an archive of your choice
+- Extract to the downloaded archive to a folder of your choice. After extraction the folder contains the ready-to-import theme component archives -- also zip files.
+- login as admin to discourse and create a new theme component.
+   - either import one of the archives extracted before
 
    or
-   - extract one of the archives and copy the content of `theme-initializer.gjs` to the JS section
+   - select your archive, extract it and copy the content of the contained `theme-initializer.gjs` to the JS section
      of your new _Theme component_.
 
-You should have the styles for the standard scopes available. To take advantage of the special
-scopes have a look [CSS class reference](/highlightjs/css-class-reference).[^1]
+Standard Styles should already be active in your instance. To take advantage of the special
+scopes (eg _template variables or _context_ have a look [CSS class reference](/highlightjs/css-class-reference). Add these to
+- your standard CSS
+- the just created theme component
+- to an own dedicated component just for styling.
 
 Even without you will gain immediate effect of proper highlighted templates.
 
@@ -53,7 +57,7 @@ The theme components are tested in virtual machines hosted on Windows 11 Profess
    - Ubuntu 26.04 Desktop
    - Hyper-V
 
-- [Install a DEV Environment on Windows 11](https://meta.discourse.org/t/guide-to-setting-up-discourse-development-environment-windows-11/282227)[^2]
+- [Install a DEV Environment on Windows 11](https://meta.discourse.org/t/guide-to-setting-up-discourse-development-environment-windows-11/282227)[^1]
    - Discourse 3.6.0.beta3-latest (end Oct 2025)
    - Ubuntu 22.04
    - WSL
@@ -64,10 +68,6 @@ The theme components are tested in virtual machines hosted on Windows 11 Profess
 
 ## Support
 
-Use the issue tracker for feedback, issues, ideas
+Use the [issue tracker](https://github.com/irkode/highlightjs-hugo/issues) for feedback, issues, ideas...
 
-https://github.com/irkode/highlightjs-hugo/issues
-
-[^1]: add the styles to one of the components or create a pure styling one.
-
-[^2]: deprecated, but much faster than the dev container in a VM
+[^1]: deprecated, but much faster than the dev container in a VM

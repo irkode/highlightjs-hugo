@@ -3,7 +3,7 @@ title = "Using with Hugo & Chroma"
 description = "Combine Chroma's fast build-time highlighting with Highlight.js for Hugo templates: a minimal setup passing what Chroma cannot highlight to Highlight.js."
 +++
 
-You could switch completely to Highlight.js. To get the best of both worlds
+Of course you could switch completely to Highlight.js. But to get the best of both worlds
 
 - fast static rendering using Chroma at build time
 - dynamic but beautiful code highlighting for Hugo templates
@@ -91,8 +91,8 @@ CSS styles can be used as usual. Simple Example for a _keyword_
    }
    ```
 
-The exact way depends on how you style these things, especially dark/light, prefers or complete
-color themes.
+The exact way depends on how you style these things, especially dark/light, prefers color
+scheme or complete color themes.
 
 [^1]: There are some more variants but the general layout is like that.
 
