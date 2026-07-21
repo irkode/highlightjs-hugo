@@ -3,7 +3,7 @@
    Share image: per-page front matter `images` (first entry) if set, otherwise the
    site image stamped with the overlay and resized to a 1200 square via img/overlay.html.
 */ -}}
-{{- $title := cond .IsHome site.Title (printf "%s | %s" .Title site.Title) }}
+{{- $title := cond .IsHome site.Title .Title }}
 {{- $description := or .Description site.Params.description }}
 <meta property="og:title" content="{{ $title }}" />
 <meta property="og:description" content="{{ $description }}" />
