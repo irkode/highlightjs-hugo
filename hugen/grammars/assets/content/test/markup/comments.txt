@@ -1,6 +1,9 @@
 {{/* a comment */}}
-
-{{- /* a comment with white space trimmed from preceding and following text */ -}}
+{{- /* a comment with white space eating delimiters */ -}}
+{{-   /* tab separation */ }}
+{{-
+/* newline separated /*
+}}
 
 {{/* a multiline comment
 continued on the next lines
@@ -8,3 +11,9 @@ continued on the next lines
 even with a blank line inside and a template {{ false }}
 
  */ -}}
+
+{{-  /* two spaces are not allowed */  -}}
+{{-   /* nor space and tab */    -}}
+{{-
+   /* newline and space */
+   -}}

@@ -3,8 +3,8 @@ import { COMMENT, NUMBER_MODE, QUOTE_STRING_MODE, APOS_STRING_MODE } from '../..
 import { inherit } from '../../../src/lib/utils.js';
 
 // action comments
-const H4H_GRAMMAR_COMMENT_OPEN = /\s*(\{\{- \/\*|\{\{\/\*)/;
-const H4H_GRAMMAR_COMMENT_CLOSE = /\*\/ -\}\}|\*\/\}\}/;
+const H4H_GRAMMAR_COMMENT_OPEN = /\s*(\{\{-\s\/\*|\{\{\/\*)/;
+const H4H_GRAMMAR_COMMENT_CLOSE = /\*\/\s-\}\}|\*\/\}\}/;
 // action commands
 const H4H_GRAMMAR_ACTION_OPEN = /\{\{- |\{\{(?!-)/;
 const H4H_GRAMMAR_ACTION_CLOSE = / -\}\}|(?<! -)\}\}/;
@@ -19,7 +19,7 @@ const H4H_GRAMMAR_RAW_STRING_MODE = {
    match: /`[^`]*`/,
    keywords: [],
 };
-const H4H_GRAMMAR_RUNE_STRING_MODE = inherit(APOS_STRING_MODE, { scope: 'string.rune'});
+const H4H_GRAMMAR_RUNE_STRING_MODE = inherit(APOS_STRING_MODE, { scope: 'string.rune' });
 
 const H4H_GRAMMAR_METHOD_CHAIN_HELPER = {
    // scope: METHOD_CHAIN_HELPER',
