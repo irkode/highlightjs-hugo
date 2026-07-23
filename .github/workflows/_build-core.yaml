@@ -43,7 +43,7 @@ jobs:
          HUGEN_DISCOURSE: ${{ github.workspace }}/hugen/discourse
          HUGEN_GRAMMARS: ${{ github.workspace }}/hugen/grammars
          RELEASE_DIR: ${{ github.workspace }}/release
-         ONLY_LANGUAGES: go-html go-text hugo-embed hugo-html hugo-text
+         ONLY_LANGUAGES: hugo-html hugo-text go-html go-text hugo-embed
          TZ: Europe/Berlin
 
       steps:
@@ -157,7 +157,7 @@ jobs:
          - name: Build highlight-hugo docs engine
            working-directory: ${{ env.HIGHLIGHTJS_DIR }}
            run: |
-              node ./tools/build.js -t browser go-html go-text hugo-html hugo-text python xml
+              node ./tools/build.js -t browser hugo-html hugo-text go-html go-text python xml
               Copy-Item  (Join-Path ${{ env.HIGHLIGHTJS_DIR }} "build/highlight.min.js") (Join-Path ${{ env.WORK_DIR }} "highlight-hugo-docs.min.js")
 
          - name: Build CDN plugins Highlight.js
