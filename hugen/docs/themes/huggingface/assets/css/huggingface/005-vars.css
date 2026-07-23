@@ -4,6 +4,7 @@
  * we support prefer-color-scheme and custom dark/light setting
  */
 :root {
+   --tab-size: 3;
    --sans-font:
       "Avenir Next", Avenir, "Nimbus Sans L", Roboto, "Noto Sans", "Segoe UI", Arial, Helvetica,
       "Helvetica Neue", sans-serif;

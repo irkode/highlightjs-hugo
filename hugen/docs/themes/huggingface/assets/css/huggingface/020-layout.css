@@ -7,6 +7,7 @@ pre code {
    overflow-x: auto;
    max-width: 100%;
    white-space: pre;
+   tab-size: var(--tab-size);
    font-family: var(--mono-font);
    border-width: 0;
    /* reset the global line-height so code block bg has no gaps */
