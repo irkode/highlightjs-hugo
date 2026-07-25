@@ -43,11 +43,11 @@ function buildHighlightJS {
          $TargetDir = Test-Folder -Clean -Create $ReleaseDir "highlightjs"
          Get-ChildItem -Directory $ExtraDir | ForEach-Object { Copy-Item -Recurse $_ "$TargetDir/$($_.Name)" }
 
-         exec node tools/build.js -t browser go-html go-text hugo-text xml
+         exec node tools/build.js -t browser go-html go-text xml
          Copy-Item "build/highlight.min.js" (Join-Path $ReleaseDir "highlight-go.min.js")
-         exec node tools/build.js -t browser hugo-embed hugo-html hugo-text xml
+         exec node tools/build.js -t browser hugo-html hugo-text xml
          Copy-Item "build/highlight.min.js" (Join-Path $ReleaseDir "highlight-hugo.min.js")
-         exec node tools/build.js -t browser handlebars django python ruby xml hugo-html hugo-text go-html go-text hugo-embed
+         exec node tools/build.js -t browser hugo-html hugo-text go-html go-text xml handlebars
          Copy-Item "build/highlight.min.js" (Join-Path $WorkDir "highlight-hugo-docs.min.js")
       } catch {
          Write-Error "FAIL: $Step failed" -ErrorAction Continue
@@ -91,7 +91,7 @@ function buildDocs {
       $tagcount = (git rev-list --count "${tag}..HEAD")
       if ($tagcount -ne "0") { $tag = "$tag+$tagcount" }
       $ENV:HUGO_PARAMS_TAG = $tag
-      $ENV:HUGO_PARAMS_BUILDDATE = Get-Date -format "yyyy-MM-dd"
+      $ENV:HUGO_PARAMS_BUILDDATE = Get-Date -Format "yyyy-MM-dd"
       if ($Server) {
          exec hugo server --source $DocsDir
       } else {

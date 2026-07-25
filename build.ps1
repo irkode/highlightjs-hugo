@@ -31,7 +31,7 @@ param(
    [switch]$Server,
    # use this tag for versioning
    [string]$tag,
-   [string[]]$OnlyLanguages = @('go-html', 'go-text', 'hugo-embed', 'hugo-html', 'hugo-text')
+   [string[]]$OnlyLanguages = @('hugo-html', 'hugo-text', 'go-html', 'go-text')
 )
 
 $startCWD = Get-Location
