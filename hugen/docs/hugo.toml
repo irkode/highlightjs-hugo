@@ -110,6 +110,12 @@ theme         = "huggingface"
    pageRef    = '/discourse/examples'
    parent     = "Discourse"
    weight     = 10
+[[menus.main]]
+   identifier = 'lang-auto'
+   name       = 'Lang-Auto'
+   pageRef    = '/discourse/lang-auto'
+   parent     = "Discourse"
+   weight     = 20
 
 # submenu Hugo.js
 [[menus.main]]

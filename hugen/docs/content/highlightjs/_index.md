@@ -14,9 +14,11 @@ Highlight _HuGo_ templates using Highlight.js with additional styles for _HuGo_ 
 {{ hugo.Sites.Pages }}
 ```
 
-You don't have to be that colorful. If you have a a working setup, just adding new scopes will be a
-good choice. Have a look at the [Discourse examples](/discourse/examples) and
-[Hugo examples](/hugo/examples) to see how it could look like.
+You don't have to be that colorful. If you have a working setup, just add new scopes you want. Have
+a look at the [Discourse examples](/discourse/examples) and [Hugo examples](/hugo/examples) to see
+how it could look like.
+
+Even without the new scopes you will immediate gain proper highlighted HuGo templates.
 
 ## Requirements
 
@@ -47,8 +49,8 @@ No CDN published version.
 ### With Node or another build system
 
 > There's no official node packages. But guess you can combine a node installation and our plugins.
-> Have a look at the highlight.js source assets. Maybe these work for you.
-> No complete setup instructions here for Node, Webpack, Rollup or Browserify.
+> Have a look at the highlight.js source assets. Maybe these work for you. No complete setup
+> instructions here for Node, Webpack, Rollup or Browserify.
 
 Here's an example for a simple node script:
 
@@ -60,8 +62,8 @@ hljs.highlightAll();
 
 ## Example
 
-Enclose your code in `<pre><code>` tags and at best set the language with `class="LANGUAGE"`.
-You may want to check out the [word on auto detection](/highlightjs/autodetect)
+Enclose your code in `<pre><code>` tags and at best set the language with `class="LANGUAGE"`. You
+may want to check out the [word on auto detection](/highlightjs/autodetect)
 
 ```html
 <pre><code class="hugho-html">
@@ -86,8 +88,9 @@ Packages can be downloaded from:
 
 ## Custom Highlight.js build
 
-The modules works with the standard Highlight.js extra build system. Extract the source archive to `highlight.js/extra`. For details on
-building consult the [Highlight.js documentation](https://highlightjs.readthedocs.io/en/latest/index.html).
+The modules works with the standard Highlight.js extra build system. Extract a source archive to
+`highlight.js/extra`. For details on building consult the
+[Highlight.js documentation](https://highlightjs.readthedocs.io/en/latest/index.html).
 
 ### Keyword and Grammar library - h4h-lib
 
@@ -98,4 +101,5 @@ This one is created based on Hugo's (or Go) keywords and contains the _token, re
 languages. It will be regularly updated, to contain the latest keywords.
 
 With this one referenced from outside the grammar a custom Highlight.js build will pack it only once
-to the core. Saves around 10kB uncompressed in the final engine if both _hugo-text_ and _hugo-html_ are imported.
+to the core. Saves around 10kB uncompressed in the final engine if both _hugo-text_ and _hugo-html_
+are imported.
