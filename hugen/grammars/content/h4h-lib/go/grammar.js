@@ -3,8 +3,8 @@ import { COMMENT, NUMBER_MODE, QUOTE_STRING_MODE, APOS_STRING_MODE } from '../..
 import { inherit } from '../../../src/lib/utils.js';
 
 // action comments
-const H4H_GRAMMAR_COMMENT_OPEN = /\s*(\{\{- \/\*|\{\{\/\*)/;
-const H4H_GRAMMAR_COMMENT_CLOSE = /\*\/ -\}\}|\*\/\}\}/;
+const H4H_GRAMMAR_COMMENT_OPEN = /\s*(\{\{-\s\/\*|\{\{\/\*)/;
+const H4H_GRAMMAR_COMMENT_CLOSE = /\*\/\s-\}\}|\*\/\}\}/;
 // action commands
 const H4H_GRAMMAR_ACTION_OPEN = /\{\{- |\{\{(?!-)/;
 const H4H_GRAMMAR_ACTION_CLOSE = / -\}\}|(?<! -)\}\}/;
@@ -19,7 +19,7 @@ const H4H_GRAMMAR_RAW_STRING_MODE = {
    match: /`[^`]*`/,
    keywords: [],
 };
-const H4H_GRAMMAR_RUNE_STRING_MODE = inherit(APOS_STRING_MODE, { scope: 'string.rune'});
+const H4H_GRAMMAR_RUNE_STRING_MODE = inherit(APOS_STRING_MODE, { scope: 'string.rune' });
 
 const H4H_GRAMMAR_PIPELINE_KEYWORDS = {
    $pattern: /\w+/,
@@ -30,15 +30,15 @@ const H4H_GRAMMAR_PIPELINE_KEYWORDS = {
 // method chain - starting with a context DOT
 const H4H_GRAMMAR_PIPE_CONTEXT_MODE = {
    // scope: 'PIPE_CONTEXT_MODE',
-   begin: [/\.(?=\w+)/, /\w+(\.\w+)*/ ], beginScope: { 1: 'template-variable.context', 2: 'property' },
+   begin: [/\.(?=\w+)/, /\w+(\.\w+)*/], beginScope: { 1: 'template-variable.context', 2: 'property' },
 };
 
 // one word identifier followed by a DOT is a method call of an object
 const H4H_GRAMMAR_PIPE_BUILTIN_MODE = {
    // scope: 'H4H_GRAMMAR_PIPE_BUILTIN_MODE',
    variants: [
-      { begin: [ /\w+(?=\.)/, ], beginScope: {1: 'property', }, contains: [H4H_GRAMMAR_DOT_PROPERTY_CHAIN] },
-      { match: /\w+/, scope: ''}
+      { begin: [/\w+(?=\.)/,], beginScope: { 1: 'property', }, contains: [H4H_GRAMMAR_DOT_PROPERTY_CHAIN] },
+      { match: /\w+/, scope: '' }
    ],
    keywords: H4H_GRAMMAR_PIPELINE_KEYWORDS,
 };
