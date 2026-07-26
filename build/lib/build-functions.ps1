@@ -34,7 +34,6 @@ function buildHighlightJS {
       try {
          $ExtraDir = Test-Folder -Create $HighlightJsDir "extra"
          exec node tools/build.js -t cdn @OnlyLanguages
-         [void](Test-File $ExtraDir "hugo-embed\dist\hugo-embed.min.js")
          [void](Test-File $ExtraDir "hugo-html\dist\hugo-html.min.js")
          [void](Test-File $ExtraDir "hugo-text\dist\hugo-text.min.js")
          [void](Test-File $ExtraDir "go-html\dist\go-html.min.js")
@@ -216,7 +215,6 @@ function generateHugoGrammars {
       [void](Test-File $TargetDir "h4h-lib\hugo\keywords.yaml")
       [void](Test-File $TargetDir "go-html\src\languages\go-html.js")
       [void](Test-File $TargetDir "go-text\src\languages\go-text.js")
-      [void](Test-File $TargetDir "hugo-embed\src\languages\hugo-embed.js")
       [void](Test-File $TargetDir "hugo-html\src\languages\hugo-html.js")
       [void](Test-File $TargetDir "hugo-text\src\languages\hugo-text.js")
    } catch {

@@ -45,7 +45,7 @@ jobs:
          HUGEN_DISCOURSE: ${{ github.workspace }}/hugen/discourse
          HUGEN_GRAMMARS: ${{ github.workspace }}/hugen/grammars
          RELEASE_DIR: ${{ github.workspace }}/release
-         ONLY_LANGUAGES: hugo-html hugo-text go-html go-text hugo-embed
+         ONLY_LANGUAGES: hugo-html hugo-text go-html go-text
          TZ: Europe/Berlin
 
       steps:
