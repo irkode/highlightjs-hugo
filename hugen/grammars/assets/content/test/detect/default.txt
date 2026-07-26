@@ -5,7 +5,7 @@
     {{ $opts := dict
       "minify" (not hugo.IsDevelopment)
       "inlineImports" true
-              }}
+    }}
     {{ with . | css.TailwindCSS $opts }}
       {{ if hugo.IsDevelopment }}
         <link rel="stylesheet" href="{{ .RelPermalink }}">
