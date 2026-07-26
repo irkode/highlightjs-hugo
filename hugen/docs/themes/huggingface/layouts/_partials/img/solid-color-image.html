@@ -45,5 +45,4 @@
 {{- else }}
 	{{- errorf "solid-color.html: not a valid HEX color value %s" $color }}
 {{- end }}
-{{- warnf "RIK: [%2d] INPUT [ %s ] [ %d x %d ] [ %s ]" $c $color $width $height $format }}
 {{ return $img }}
