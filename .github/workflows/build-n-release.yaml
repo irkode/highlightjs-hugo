@@ -23,6 +23,10 @@ concurrency:
    group: build-deploy-${{ github.ref }}
    cancel-in-progress: false
 
+# TODO: remove planned after 2nd June 2026 (v24 will be default)
+env:
+   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
    check:
       runs-on: ubuntu-latest
@@ -171,8 +175,11 @@ jobs:
       if: ${{ !github.event.repository.private }}
       runs-on: ubuntu-latest
       needs: [check, build]
+      environment:
+         name: github-pages
+         url: ${{ steps.deploy.outputs.page_url }}
       permissions:
-         contents: read
+         contents: write
          pages: write
          id-token: write
       concurrency:
@@ -180,5 +187,13 @@ jobs:
          cancel-in-progress: false
 
       steps:
+         - name: Checkout
+           uses: actions/checkout@v6
+           with:
+              fetch-depth: 1
+
          - name: Deploy to GitHub Pages
-           uses: actions/deploy-pages@v5
+           id: deploy
+           uses: ./.github/actions/deploy-pages-unique
+           with:
+              artifact_id: ${{ needs.build.outputs.pages_artifact_id }}

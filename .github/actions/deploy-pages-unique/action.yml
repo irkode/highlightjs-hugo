@@ -1,0 +1,111 @@
+# Creates a GitHub Pages deployment directly via the REST API, using a pages_build_version
+# unique to this workflow run instead of GITHUB_SHA.
+#
+# actions/deploy-pages hardcodes pages_build_version to GITHUB_SHA (see
+# src/internal/context.js in actions/deploy-pages, no override input exists). GitHub Pages
+# dedupes deployments by that value, so a second deploy at a commit that was already published
+# (a tag on an existing main commit, or a release published from an already-deployed commit)
+# silently reuses the old build instead of publishing the new artifact. See
+# https://github.com/actions/deploy-pages/issues/383
+name: "Deploy to GitHub Pages (unique build version)"
+description: "Deploys a Pages artifact via the REST API with a per-run unique pages_build_version"
+
+inputs:
+   artifact_id:
+      description: "ID of the already-uploaded Pages artifact to deploy"
+      required: true
+   timeout_minutes:
+      description: "Minutes to wait for the deployment to report success before failing"
+      required: false
+      default: "10"
+
+outputs:
+   page_url:
+      description: "URL of the deployed site"
+      value: ${{ steps.deploy.outputs.page_url }}
+
+runs:
+   using: composite
+   steps:
+      - id: deploy
+        uses: actions/github-script@v7
+        env:
+           ARTIFACT_ID: ${{ inputs.artifact_id }}
+           TIMEOUT_MINUTES: ${{ inputs.timeout_minutes }}
+        with:
+           script: |
+              const { owner, repo } = context.repo
+              const artifactId = Number(process.env.ARTIFACT_ID)
+              const timeoutMs = Number(process.env.TIMEOUT_MINUTES) * 60 * 1000
+
+              // pages_build_version must be a real, existing commit SHA in the repo - the API
+              // 404s on synthetic hex strings that aren't actual git objects. It does NOT have
+              // to be the checked-out ref's own SHA though, so create a throwaway commit object
+              // (same tree as HEAD, never attached to any branch/tag ref - it won't show up in
+              // git log, PRs, or the GitHub UI) purely to get a unique, valid SHA per run. This
+              // is what lets a redeploy at an unchanged commit avoid GitHub Pages' dedup-by-SHA
+              // behavior without requiring an actual new commit.
+              const { data: headCommit } = await github.rest.git.getCommit({
+                owner,
+                repo,
+                commit_sha: context.sha
+              })
+              const { data: throwawayCommit } = await github.rest.git.createCommit({
+                owner,
+                repo,
+                message: `Pages deploy marker for run ${context.runId} attempt ${process.env.GITHUB_RUN_ATTEMPT}`,
+                tree: headCommit.tree.sha,
+                parents: [context.sha]
+              })
+              const buildVersion = throwawayCommit.sha
+
+              const idToken = await core.getIDToken()
+
+              const { data: deployment } = await github.request('POST /repos/{owner}/{repo}/pages/deployments', {
+                owner,
+                repo,
+                artifact_id: artifactId,
+                pages_build_version: buildVersion,
+                oidc_token: idToken
+              })
+              const deploymentId = deployment.id
+              // The status-poll endpoint only ever returns { status }, no page_url - it's only
+              // present on the create response.
+              const pageUrl = deployment.page_url
+              core.info(`Created Pages deployment ${deploymentId} for build version ${buildVersion}`)
+
+              const finalErrorStatus = new Set([
+                'deployment_failed',
+                'deployment_content_failed',
+                'deployment_cancelled',
+                'deployment_lost'
+              ])
+              const deadline = Date.now() + timeoutMs
+
+              while (true) {
+                if (Date.now() > deadline) {
+                  core.setFailed('Timed out waiting for Pages deployment to complete')
+                  return
+                }
+
+                await new Promise(resolve => setTimeout(resolve, 5000))
+
+                const { data: status } = await github.request('GET /repos/{owner}/{repo}/pages/deployments/{deployment_id}', {
+                  owner,
+                  repo,
+                  deployment_id: deploymentId
+                })
+
+                if (status.status === 'succeed') {
+                  core.setOutput('page_url', pageUrl)
+                  core.info(`Deployed: ${pageUrl}`)
+                  return
+                }
+
+                if (finalErrorStatus.has(status.status)) {
+                  core.setFailed(`Pages deployment failed with status: ${status.status}`)
+                  return
+                }
+
+                core.info(`Current status: ${status.status}`)
+              }

@@ -19,14 +19,16 @@ on:
             description: "Skip the docs/Pages build steps when the repository is private"
             type: boolean
             default: false
-
-# TODO: remove planned after 2nd June 2026 (v24 will be default)
-env:
-   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+      outputs:
+         pages_artifact_id:
+            description: "ID of the uploaded GitHub Pages artifact (for direct Pages API deployment)"
+            value: ${{ jobs.build.outputs.pages_artifact_id }}
 
 jobs:
    build:
       runs-on: ubuntu-latest
+      outputs:
+         pages_artifact_id: ${{ steps.upload-pages-artifact.outputs.artifact_id }}
       defaults:
          run:
             shell: pwsh
@@ -178,6 +180,7 @@ jobs:
               Copy-Item  (Join-Path ${{ env.HIGHLIGHTJS_DIR }} "build/highlight.min.js") (Join-Path ${{ env.RELEASE_DIR }} "highlight-go.min.js")
 
          - name: Build Discourse Theme Components
+           if: inputs.build-release-artifacts
            run: |
               hugo --source ${{ env.HUGEN_DISCOURSE }} --destination ${{ env.RELEASE_DIR}}/discourse
 
@@ -224,6 +227,7 @@ jobs:
 
          - name: Upload Pages artifact
            if: ${{ !inputs.check-private-repo || !github.event.repository.private }}
+           id: upload-pages-artifact
            uses: actions/upload-pages-artifact@v5
            with:
               path: ./hugen/docs/public
