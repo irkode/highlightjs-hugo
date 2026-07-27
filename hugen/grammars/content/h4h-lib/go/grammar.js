@@ -76,14 +76,7 @@ H4H_GRAMMAR_SUB_EXPRESSION.contains = H4H_GRAMMAR_PIPELINE;
 
 export const H4H_GRAMMAR_mainContains = [
    // don't pass bare whitespace between actions or BOF,EOF xml parser
-   {
-      relevance: 0,
-      variants: [
-         { begin: /(?<=\}\})\s+(?=\{\{)/ },
-         { match: /^\s+/ },
-         { match: /\s+$/ },
-      ],
-   },
+   { begin: /(?<=\}\})\s+(?=\{\{)/, relevance: 0, },
    COMMENT(H4H_GRAMMAR_COMMENT_OPEN, H4H_GRAMMAR_COMMENT_CLOSE, { relevance: 10, }),
    // stop highlighting if a handlebars begin tag is found
    { begin: /\{\{(#|>|!--|!)/, end: /\}\}/, illegal: /.*/, },
