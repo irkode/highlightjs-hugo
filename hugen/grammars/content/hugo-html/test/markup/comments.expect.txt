@@ -15,5 +15,5 @@ even with a blank line inside and a template {{ false }}
 <span class="hljs-template-tag">{{- </span> /* two spaces are <span class="hljs-built_in">not</span> allowed */ <span class="hljs-template-tag"> -}}</span>
 <span class="hljs-template-tag">{{- </span>	/* nor space <span class="hljs-built_in">and</span> tab */   <span class="hljs-template-tag"> -}}</span>
 <span class="language-xml">{{-
-</span>   <span class="language-xml">/* newline and space */
-</span>   <span class="language-xml">-}}</span>
+   /* newline and space */
+   -}}</span>
