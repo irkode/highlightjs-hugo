@@ -28,7 +28,7 @@ runs:
    using: composite
    steps:
       - id: deploy
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         env:
            ARTIFACT_ID: ${{ inputs.artifact_id }}
            TIMEOUT_MINUTES: ${{ inputs.timeout_minutes }}
