@@ -1,0 +1,10 @@
+BUILTINS:
+  - and
+  - len
+  - not
+  - or
+  - urlquery
+LITERALS:
+  - "false"
+  - nil
+  - "true"

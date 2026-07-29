@@ -10,7 +10,7 @@
 
 {{- /* add fixed keywords for language */ -}}
 {{- $fixedWords := slice }}
-{{- $scopes := index (index hugo.Data.keywords $lang) "scopes" }}
+{{- $scopes := index hugo.Data.scopes $lang }}
 {{- range $scope, $words := $scopes }}
 	{{- $fixedWords = $fixedWords | append $words }}
 	{{- range $word := $words }}

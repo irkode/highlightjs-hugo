@@ -1,0 +1,31 @@
+language     = "en-us"
+disableKinds = ['rss', 'sitemap', 'taxonomy', 'term']
+
+# for our json files
+uglyUrls = 'true'
+
+# we generate a JSON keyword-list file per language
+[outputFormats.json]
+   isHTML         = false
+   isPlainText    = true
+   mediaType      = "application/json"
+   notAlternative = true
+   ugly           = true
+
+[module]
+   # import function part of the documentation
+   [[module.imports]]
+      ignoreConfig  = true
+      ignoreImports = true
+      path          = 'github.com/gohugoio/hugoDocs'
+      version       = 'master'
+      [[module.imports.mounts]]
+         source = "content/en/functions"
+         target = "content/functions"
+      # these are referenced even if a page is not rendered
+      [[module.imports.mounts]]
+         source = "layouts/_shortcodes"
+         target = "layouts/functions/_shortcodes"
+
+   [module.hugoVersion]
+      min = '0.164.0'

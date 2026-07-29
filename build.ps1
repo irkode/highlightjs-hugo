@@ -7,6 +7,7 @@ param(
       'BuildDiscoursePlugin',
       'CloneHighlightJS',
       'DeveloperBuild',
+      'ExtractKeywordsFromDocs',
       'GenerateHugoGrammars',
       'TestHighlightJS'
    )][string[]]$Skip,
@@ -22,6 +23,7 @@ param(
       'BuildDiscoursePlugin',
       'CloneHighlightJS',
       'DeveloperBuild',
+      'ExtractKeywordsFromDocs',
       'GenerateHugoGrammars',
       'TestHighlightJS'
    )][string[]]$Steps,
@@ -40,6 +42,7 @@ $ProgressPreference = 'SilentlyContinue'
 if ($PSBoundParameters.Keys -notcontains 'Steps') {
    $Steps = @(
       'CloneHighlightJS',
+      'ExtractKeywordsFromDocs',
       'GenerateHugoGrammars',
       'TestHighlightJS',
       'BuildHighlightJS'

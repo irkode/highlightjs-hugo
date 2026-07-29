@@ -1,0 +1,3 @@
+{{- $lang := .Params.keywords }}
+{{- $result := partialCached "get-keywords.html" $lang $lang }}
+{{- jsonify (dict "indent" "  ") $result }}

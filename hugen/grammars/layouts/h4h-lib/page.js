@@ -14,8 +14,11 @@
 
 {{- $lang := .Params.keywords }}
 
-{{- $keywords := (partialCached "get-keywords.html" $lang $lang).scopes }}
-{{- warnf  "DONE" }}
+{{- $hugodocs := index hugo.Data.hugodocs $lang }}
+{{- if not $hugodocs }}
+   {{- errorf "hugo.Data.hugodocs.%s is empty -- run the ExtractKeywordsFromDocs build step (hugen/hugodocs) before generating grammars" $lang }}
+{{- end }}
+{{- $keywords := $hugodocs.scopes }}
 {{- $dataKeywords := index hugo.Data.keywords $lang }}
 
 {{- /* generate keyword base patterns for the action root modes */ -}}

@@ -16,18 +16,6 @@ patterns:
     - else
     - end
 
-scopes:
-  BUILTINS:
-    - and
-    - len
-    - not
-    - or
-    - urlquery
-  LITERALS:
-    - "false"
-    - nil
-    - "true"
-
 generate:
   LITERALS: ['kw']
   BUILTINS: ['kw']

@@ -10,15 +10,29 @@
 {{- $idx := math.Counter -}}
 {{- $lang := .Params.keywords -}}
 {{- warnf "[%04d][ %-20s ] : %s :: %s" $idx $tpl $pagePath $lang -}}
-{{- $result := partialCached "get-keywords.html" $lang $lang -}}
+{{- $result := index hugo.Data.hugodocs $lang -}}
+{{- if not $result -}}
+   {{- errorf "hugo.Data.hugodocs.%s is empty -- run the ExtractKeywordsFromDocs build step (hugen/hugodocs) before generating grammars" $lang -}}
+{{- end -}}
 {{- $keywords := $result.scopes -}}
-{{- $builtinAliases := $result.builtinAliases -}}
 {{- $dataKeywords := index hugo.Data.keywords $lang -}}
 
-{{- /* NOTE: bare `slice`/zero-length values below are deliberately derived
-   via `after 1 (slice X)` rather than a fresh empty `slice` -- see
-   get-keywords.html for why (shared zero-capacity pointer corrupts
-   transform.Remarshal's YAML output otherwise). */ -}}
+{{- /* NOTE: bare `slice`/zero-length values are deliberately derived via
+   `after 1 (slice X)` rather than a fresh empty `slice` -- Go gives every
+   zero-capacity slice the same shared pointer, which transform.Remarshal's
+   YAML encoder then mistakes for an anchor/alias cycle. get-keywords.html
+   already applies this when building builtinAliases, but round-tripping
+   through hugen/hugodocs's JSON collapses that distinction again (every
+   empty JSON array decodes back to the same shared zero-capacity slice),
+   so it has to be re-applied here after reading $result.builtinAliases. */ -}}
+{{- $builtinAliases := dict -}}
+{{- range $name, $aliases := $result.builtinAliases -}}
+   {{- $value := $aliases -}}
+   {{- if eq 0 (len $aliases) -}}
+      {{- $value = after 1 (slice $name) -}}
+   {{- end -}}
+   {{- $builtinAliases = merge $builtinAliases (dict $name $value) -}}
+{{- end -}}
 
 {{- /* --- BUILTINS: $builtinAliases (functionFullName -> [alias...]) plus
    every preset BUILTINS word not already accounted for there --- */ -}}
@@ -27,7 +41,7 @@
    {{- $knownAliases = $knownAliases | append $aliases -}}
 {{- end -}}
 {{- $builtins := $builtinAliases -}}
-{{- range $word := (index $dataKeywords "scopes" "BUILTINS") -}}
+{{- range $word := (index $keywords "BUILTINS") -}}
    {{- if and (not (in $knownAliases $word)) (not (isset $builtins $word)) -}}
       {{- $builtins = merge $builtins (dict $word (after 1 (slice $word))) -}}
    {{- end -}}

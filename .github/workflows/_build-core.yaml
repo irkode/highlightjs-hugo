@@ -43,6 +43,7 @@ jobs:
          HIGHLIGHTJS_DIR: ${{ github.workspace }}/work/highlight.js
          HIGHLIGHTJS_EXTRA_DIR: ${{ github.workspace }}/work/highlight.js/extra
          HUGEN_DISCOURSE: ${{ github.workspace }}/hugen/discourse
+         HUGEN_HUGODOCS: ${{ github.workspace }}/hugen/hugodocs
          HUGEN_GRAMMARS: ${{ github.workspace }}/hugen/grammars
          RELEASE_DIR: ${{ github.workspace }}/release
          ONLY_LANGUAGES: hugo-html hugo-text go-html go-text
@@ -72,8 +73,8 @@ jobs:
               go-version: "${{ env.GO_VERSION }}"
               cache: true
               cache-dependency-path: |
-                 hugen/grammars/go.sum
-                 hugen/grammars/hugo.direct.sum
+                 hugen/hugodocs/go.sum
+                 hugen/hugodocs/hugo.direct.sum
 
          - name: Restore Cache - Hugo binary
            id: cache-hugo-bin
@@ -128,6 +129,10 @@ jobs:
            with:
               path: ${{ env.HIGHLIGHTJS_DIR }}
               key: highlightjs-${{ runner.os }}-${{ env.HIGHLIGHTJS_VERSION }}
+
+         - name: Generate Hugo Docs keywords JSON
+           run: |
+              hugo --source ${{ env.HUGEN_HUGODOCS }} --destination ${{ env.WORK_DIR }}/hugodocs
 
          - name: Generate Highlight.js grammars
            run: |

@@ -46,7 +46,7 @@ function buildHighlightJS {
          Copy-Item "build/highlight.min.js" (Join-Path $ReleaseDir "highlight-go.min.js")
          exec node tools/build.js -t browser hugo-html hugo-text xml
          Copy-Item "build/highlight.min.js" (Join-Path $ReleaseDir "highlight-hugo.min.js")
-         exec node tools/build.js -t browser hugo-html hugo-text go-html go-text xml handlebars
+         exec node tools/build.js -t browser hugo-html hugo-text go-html go-text python ruby xml
          Copy-Item "build/highlight.min.js" (Join-Path $WorkDir "highlight-hugo-docs.min.js")
       } catch {
          Write-Error "FAIL: $Step failed" -ErrorAction Continue
@@ -188,6 +188,29 @@ cssOptions.forEach(css => {
       [void](Test-File $WorkDir developer.html)
    } catch {
       throw $_
+   } finally {
+      Set-Location $startCWD
+   }
+}
+
+function ExtractKeywordsFromDocs {
+   [CmdLetBinding()]
+   param()
+   $TargetDir = Test-Folder -Create -Clean $WorkDir "hugodocs"
+   $SourceDir = Test-Folder $HugenDir "hugodocs"
+   $Step = "Generate Hugo Docs keywords to $TargetDir"
+   try {
+      if ($Skip -contains 'ExtractKeywordsFromDocs') {
+         Write-Verbose "SKIP: $Step"
+      } else {
+         Write-Verbose "CALL: $Step"
+         exec hugo --source $SourceDir --destination $TargetDir
+      }
+      [void](Test-File $TargetDir "keywords\go.json")
+      [void](Test-File $TargetDir "keywords\hugo.json")
+   } catch {
+      Write-Error "FAIL: $Step" -ErrorAction Continue
+      throw "$_"
    } finally {
       Set-Location $startCWD
    }
