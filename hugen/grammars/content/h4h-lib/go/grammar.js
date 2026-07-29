@@ -75,23 +75,23 @@ const H4H_GRAMMAR_PIPELINE = [
 H4H_GRAMMAR_SUB_EXPRESSION.contains = H4H_GRAMMAR_PIPELINE;
 
 export const H4H_GRAMMAR_mainContains = [
-   // don't pass bare whitespace between actions or BOF,EOF xml parser
-   { begin: /(?<=\}\})\s+(?=\{\{)/, relevance: 0, },
+   // don't pass bare whitespace between actions to xml parser
+   { match: /(?<=\}\})\s+(?=\{\{)/, relevance: 0, },
    COMMENT(H4H_GRAMMAR_COMMENT_OPEN, H4H_GRAMMAR_COMMENT_CLOSE, { relevance: 10, }),
    // stop highlighting if a handlebars begin tag is found
    { begin: /\{\{(#|>|!--|!)/, end: /\}\}/, illegal: /.*/, },
    {
       begin: [H4H_GRAMMAR_ACTION_OPEN, /\s*/, h4hbase.H4HBASE_KEYWORDS_PIPELINE_REGEX], beginScope: { 1: 'template-tag', 3: 'keyword' },
-      end: [H4H_GRAMMAR_ACTION_CLOSE], endScope: { 1: 'template-tag' },
+      end: [H4H_GRAMMAR_ACTION_CLOSE, /\s*/], endScope: { 1: 'template-tag' },
       contains: H4H_GRAMMAR_PIPELINE,
    },
    {
       begin: [H4H_GRAMMAR_ACTION_OPEN, /\s*/, h4hbase.H4HBASE_KEYWORDS_STANDALONE_REGEX], beginScope: { 1: 'template-tag', 3: 'keyword' },
-      end: [H4H_GRAMMAR_ACTION_CLOSE], endScope: { 1: 'template-tag' },
+      end: [H4H_GRAMMAR_ACTION_CLOSE, /\s*/], endScope: { 1: 'template-tag' },
    },
    {
       begin: [H4H_GRAMMAR_ACTION_OPEN], beginScope: { 1: 'template-tag' },
-      end: [H4H_GRAMMAR_ACTION_CLOSE], endScope: { 1: 'template-tag' },
+      end: [H4H_GRAMMAR_ACTION_CLOSE, /\s*/], endScope: { 1: 'template-tag' },
       contains: H4H_GRAMMAR_PIPELINE,
    }
 ];
