@@ -122,7 +122,7 @@ Real world examples from our docs layouts
 			{{- end }}
 		</title>
 	</head>
-	<body{{ if not (in (slice "home" "404") .Kind) }} class="no-hl_img-mobile"{{ end }}>
+	<body {{- if not (in (slice "home" "404") .Kind) }} class="no-hl_img-mobile"{{ end }}>
 		<a class="skip-link" href="#main-content">Skip to main content</a>
 		<header class="site-header">
 			<div class="header-left">
@@ -227,7 +227,7 @@ Real world examples from our docs layouts
 			{{- end }}
 		</title>
 	</head>
-	<body{{ if not (in (slice "home" "404") .Kind) }} class="no-hl_img-mobile"{{ end }}>
+	<body {{- if not (in (slice "home" "404") .Kind) }} class="no-hl_img-mobile"{{ end }}>
 		<a class="skip-link" href="#main-content">Skip to main content</a>
 		<header class="site-header">
 			<div class="header-left">
