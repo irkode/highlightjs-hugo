@@ -3,10 +3,6 @@ title = "Discourse adds lang-auto"
 description = "Thoughts about the 'lang-auto' sometimes added by Discourse which totally breaks autodetection"
 +++
 
-## Summary:
-
-Use explicit class names with Discourse. **Always!**
-
 ## The 'lang-auto' problem
 
 Sometimes we don't get any highlighting in Discourse. That's true for our HuGo grammars as well.
@@ -39,3 +35,20 @@ We could not yet track it down to a definite root cause, but since
 - it perfectly works without Discourse way of doing this
 
 Might be a timing or async problem caused by how Highlight.JS is integrated with Discourse.
+
+## Root Cause
+
+Sometimes it's as simple as it can be: A hard cap of 1K bytes for auto detection in Discourse.
+[408503-post8](https://meta.discourse.org/t/automatic-highlighting-fails-for-some-fenced-code-blocks/408503/8)
+
+## Solution
+
+And here is a PR that should solve the problem:
+[FIX: Reliably highlight fenced code blocks with no language](https://github.com/discourse/discourse/pull/42106/)
+
+- Still a hard limit on 30000 bytes
+- raise the autodetect limit to 2K
+- if it’s longer, use the first 2000 bytes to try autodetect
+- if it still can't figure it out remove the 'lang-auto' class
+
+As of today 2026-07-29 the fix is live in Hugo's discourse forum.
