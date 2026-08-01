@@ -193,24 +193,51 @@ cssOptions.forEach(css => {
    }
 }
 
+# Re-scrape hugoDocs at the version pinned in hugen/hugodocs/hugo.toml and compare the
+# result against the committed snapshot in hugen/_keywords. The grammar build reads the
+# snapshot, never this output, so a difference here only means "the pin was bumped but
+# the snapshot was not refreshed" -- report it, never fail the build. -UpdateKeywords
+# adopts the fresh extraction; it is the only thing that writes the snapshot.
 function ExtractKeywordsFromDocs {
    [CmdLetBinding()]
    param()
-   $TargetDir = Test-Folder -Create -Clean $WorkDir "hugodocs"
-   $SourceDir = Test-Folder $HugenDir "hugodocs"
-   $Step = "Generate Hugo Docs keywords to $TargetDir"
+   $SnapshotDir = Test-Folder -Create $HugenDir "_keywords"
+   $Step = "Extract hugoDocs keywords (pinned version)"
    try {
       if ($Skip -contains 'ExtractKeywordsFromDocs') {
          Write-Verbose "SKIP: $Step"
       } else {
          Write-Verbose "CALL: $Step"
-         exec hugo --source $SourceDir --destination $TargetDir
+         [void](& (Join-Path $ScriptsDir "keywords-check.ps1") -Update:$UpdateKeywords -Notice)
       }
-      [void](Test-File $TargetDir "keywords\go.json")
-      [void](Test-File $TargetDir "keywords\hugo.json")
+      # the grammar build reads these, so they have to exist even when the step is skipped
+      [void](Test-File $SnapshotDir "go.json")
+      [void](Test-File $SnapshotDir "hugo.json")
    } catch {
       Write-Error "FAIL: $Step" -ErrorAction Continue
       throw "$_"
+   } finally {
+      Set-Location $startCWD
+   }
+}
+
+# Notification-only step: scrape hugoDocs at $KeywordsLatestRef (a branch, by default
+# 'master') and report how far the upstream vocabulary has moved beyond our pin. Never
+# writes the snapshot and never fails - bumping the pin stays a manual decision.
+function ExtractKeywordsLatest {
+   [CmdLetBinding()]
+   param()
+   $Step = "Extract hugoDocs keywords ($KeywordsLatestRef)"
+   try {
+      if ($Skip -contains 'ExtractKeywordsLatest') {
+         Write-Verbose "SKIP: $Step"
+         return
+      }
+      Write-Verbose "CALL: $Step"
+      [void](& (Join-Path $ScriptsDir "keywords-check.ps1") -Ref $KeywordsLatestRef -Notice)
+   } catch {
+      # upstream lookup is informational - a network or upstream failure must not break a build
+      Write-Warning "SKIPPED: $Step - $_"
    } finally {
       Set-Location $startCWD
    }

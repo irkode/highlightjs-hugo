@@ -136,6 +136,7 @@ jobs:
               fi
 
               echo "Range: $RANGE"
+              echo "prev-tag=${PREV_TAG}" >> "$GITHUB_OUTPUT"
 
               LOG=$(git log "$RANGE" \
                 --pretty=format:"- [\`%h\`](${{ github.server_url }}/${{ github.repository }}/commit/%H) %ad — %s" \
@@ -149,6 +150,43 @@ jobs:
               } > release-body.md
 
               cat release-body.md
+
+         # The keyword vocabulary is committed (hugen/_keywords), so the changes between
+         # two releases are already in git history - no rebuild or hugoDocs access needed.
+         # The section is put in front of the commit list: it is the part of a release a
+         # grammar consumer actually cares about.
+         - name: Prepend keyword changes to release notes
+           shell: pwsh
+           run: |
+              $prev = '${{ steps.changelog.outputs.prev-tag }}'
+              $prevDir = Join-Path '${{ github.workspace }}' 'work/prev-keywords'
+              [void](New-Item -ItemType Directory -Force -Path $prevDir)
+              if ($prev) {
+                 foreach ($lang in 'go', 'hugo') {
+                    $out = Join-Path $prevDir "$lang.json"
+                    $json = git show "${prev}:hugen/_keywords/$lang.json" 2>$null
+                    if ($LASTEXITCODE -eq 0 -and $json) {
+                       $json | Set-Content -Encoding utf8 -Path $out
+                    } else {
+                       # tag predates the committed snapshot -- reported as "no baseline"
+                       Write-Host "no hugen/_keywords/$lang.json at $prev"
+                    }
+                 }
+              }
+              $heading = if ($prev) { "## Keyword changes since $prev" } else { '## Keyword changes' }
+              $diff = ./build/keywords-diff.ps1 -OldDir $prevDir -NewDir hugen/_keywords `
+                 -Format Markdown -Heading $heading -OutFile keywords-section.md
+              # most releases do not touch the vocabulary -- do not open the notes with an
+              # empty section then, just leave it out
+              if ($diff.Changed) {
+                 $section = (Get-Content -Raw keywords-section.md).TrimEnd()
+                 $commits = (Get-Content -Raw release-body.md).TrimEnd()
+                 Set-Content -Encoding utf8 -Path release-body.md -Value "$section`n`n$commits`n"
+              } else {
+                 Write-Host 'no keyword changes - section omitted'
+              }
+              Write-Host '### release-body.md'
+              Get-Content release-body.md
 
          - name: Delete existing draft releases
            shell: bash

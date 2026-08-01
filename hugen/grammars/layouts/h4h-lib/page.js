@@ -16,7 +16,7 @@
 
 {{- $hugodocs := index hugo.Data.hugodocs $lang }}
 {{- if not $hugodocs }}
-   {{- errorf "hugo.Data.hugodocs.%s is empty -- run the ExtractKeywordsFromDocs build step (hugen/hugodocs) before generating grammars" $lang }}
+   {{- errorf "hugo.Data.hugodocs.%s is empty -- the committed keyword snapshot hugen/_keywords/%s.json is missing or unreadable; regenerate it with `.\\build.ps1 -Steps ExtractKeywordsFromDocs -UpdateKeywords`" $lang $lang }}
 {{- end }}
 {{- $keywords := $hugodocs.scopes }}
 {{- $dataKeywords := index hugo.Data.keywords $lang }}

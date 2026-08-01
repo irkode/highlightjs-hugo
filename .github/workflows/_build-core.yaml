@@ -43,7 +43,6 @@ jobs:
          HIGHLIGHTJS_DIR: ${{ github.workspace }}/work/highlight.js
          HIGHLIGHTJS_EXTRA_DIR: ${{ github.workspace }}/work/highlight.js/extra
          HUGEN_DISCOURSE: ${{ github.workspace }}/hugen/discourse
-         HUGEN_HUGODOCS: ${{ github.workspace }}/hugen/hugodocs
          HUGEN_GRAMMARS: ${{ github.workspace }}/hugen/grammars
          RELEASE_DIR: ${{ github.workspace }}/release
          ONLY_LANGUAGES: hugo-html hugo-text go-html go-text
@@ -130,9 +129,22 @@ jobs:
               path: ${{ env.HIGHLIGHTJS_DIR }}
               key: highlightjs-${{ runner.os }}-${{ env.HIGHLIGHTJS_VERSION }}
 
-         - name: Generate Hugo Docs keywords JSON
+         # Informational only. Grammars are built from the committed snapshot in
+         # hugen/_keywords, so neither of the next two steps can change what is built --
+         # they only report. Both are non-blocking on purpose: a tag/release build must
+         # never fail because hugoDocs moved.
+         - name: Check keyword snapshot against pinned hugoDocs
+           continue-on-error: true
            run: |
-              hugo --source ${{ env.HUGEN_HUGODOCS }} --destination ${{ env.WORK_DIR }}/hugodocs
+              [void](./build/keywords-check.ps1 -Notice -Verbose)
+
+         # Skipped for tags: a release build stays fast and quiet, and adopting a new
+         # hugoDocs is a decision made on a branch, not during a release.
+         - name: Check hugoDocs master for new keywords
+           if: github.ref_type != 'tag'
+           continue-on-error: true
+           run: |
+              [void](./build/keywords-check.ps1 -Ref master -Notice -Verbose)
 
          - name: Generate Highlight.js grammars
            run: |

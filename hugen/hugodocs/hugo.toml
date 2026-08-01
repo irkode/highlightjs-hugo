@@ -14,11 +14,17 @@ uglyUrls = 'true'
 
 [module]
    # import function part of the documentation
+   #
+   # PINNED on purpose: with 'master' every build re-resolved the branch, so the
+   # extracted keyword vocabulary (and with it the generated grammars) could change
+   # without a single commit. Bumping this line is the deliberate act of adopting a
+   # newer hugoDocs -- follow it with `.\build.ps1 -Steps ExtractKeywordsFromDocs
+   # -UpdateKeywords` to refresh the committed snapshot in hugen/_keywords.
    [[module.imports]]
       ignoreConfig  = true
       ignoreImports = true
       path          = 'github.com/gohugoio/hugoDocs'
-      version       = 'master'
+      version       = 'v0.148.1-0.20260728141640-2a6a5548f120'
       [[module.imports.mounts]]
          source = "content/en/functions"
          target = "content/functions"

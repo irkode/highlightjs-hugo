@@ -1,0 +1,31 @@
+{
+  "builtinAliases": {},
+  "scopes": {
+    "BUILTINS": [
+      "urlquery",
+      "println",
+      "printf",
+      "index",
+      "print",
+      "slice",
+      "call",
+      "html",
+      "and",
+      "len",
+      "not",
+      "eq",
+      "ge",
+      "gt",
+      "js",
+      "le",
+      "lt",
+      "ne",
+      "or"
+    ],
+    "LITERALS": [
+      "false",
+      "true",
+      "nil"
+    ]
+  }
+}

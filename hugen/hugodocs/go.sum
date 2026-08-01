@@ -1,2 +1,4 @@
 github.com/gohugoio/hugoDocs v0.148.0 h1:xhQIpFXAMDjP+rMMZcmdbt4Y4le0x/fxlXPlVTsdFvQ=
 github.com/gohugoio/hugoDocs v0.148.0/go.mod h1:5tw9S3zNniW5wuNPkCHrFhfpIoqXRhBDq7hM9ZbcO7I=
+github.com/gohugoio/hugoDocs v0.148.1-0.20260728141640-2a6a5548f120 h1:vjLL0jW6FsvZD52plFxBWLDnniG2QpzrqoPP867K0yM=
+github.com/gohugoio/hugoDocs v0.148.1-0.20260728141640-2a6a5548f120/go.mod h1:SRMUD9iT3aBc7AKtJupUKHik/1OqvX7YyJRj2k1WS70=

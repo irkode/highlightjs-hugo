@@ -8,6 +8,7 @@ param(
       'CloneHighlightJS',
       'DeveloperBuild',
       'ExtractKeywordsFromDocs',
+      'ExtractKeywordsLatest',
       'GenerateHugoGrammars',
       'TestHighlightJS'
    )][string[]]$Skip,
@@ -24,9 +25,14 @@ param(
       'CloneHighlightJS',
       'DeveloperBuild',
       'ExtractKeywordsFromDocs',
+      'ExtractKeywordsLatest',
       'GenerateHugoGrammars',
       'TestHighlightJS'
    )][string[]]$Steps,
+   # adopt the freshly extracted keywords as the committed snapshot in hugen/_keywords
+   [switch]$UpdateKeywords,
+   # branch or tag the ExtractKeywordsLatest step checks the pinned hugoDocs against
+   [string]$KeywordsLatestRef = 'master',
    # remove old doc build artifacts
    [switch]$Clean,
    # start the dev server
