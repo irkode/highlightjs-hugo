@@ -1,7 +1,7 @@
 <#
 .SYNOPSIS
-   Re-scrape the hugoDocs keyword vocabulary and report how it differs from the committed
-   snapshot in hugen/_keywords.
+   Re-scrape the hugoDocs function reference and report how it differs from the committed
+   extraction in hugen/_hugodocs.
 
 .DESCRIPTION
    Two modes:
@@ -22,6 +22,8 @@
 .OUTPUTS
    The PSCustomObject returned by build/keywords-diff.ps1.
 
+   Output is hugen/_hugodocs/functions.json - see build/keywords-diff.ps1 for its shape.
+
 .EXAMPLE
    ./build/keywords-check.ps1 -Update
 
@@ -32,7 +34,7 @@
 param(
    # the Hugo module doing the scraping (default: <repo>/hugen/hugodocs)
    [Parameter(Mandatory = $false)][string]$SourceDir,
-   # the committed snapshot (default: <repo>/hugen/_keywords)
+   # the committed snapshot (default: <repo>/hugen/_hugodocs)
    [Parameter(Mandatory = $false)][string]$SnapshotDir,
    # where the fresh extraction is written (default: <repo>/work/hugodocs[-<ref>])
    [Parameter(Mandatory = $false)][string]$TargetDir,
@@ -48,7 +50,7 @@ $ErrorActionPreference = 'Stop'
 
 $repoRoot = Split-Path -Parent $PSScriptRoot
 if (-not $SourceDir) { $SourceDir = Join-Path $repoRoot 'hugen/hugodocs' }
-if (-not $SnapshotDir) { $SnapshotDir = Join-Path $repoRoot 'hugen/_keywords' }
+if (-not $SnapshotDir) { $SnapshotDir = Join-Path $repoRoot 'hugen/_hugodocs' }
 if (-not $TargetDir) {
    $TargetDir = Join-Path $repoRoot ($Ref ? 'work/hugodocs-latest' : 'work/hugodocs')
 }
@@ -101,11 +103,11 @@ try {
    }
 }
 
-$freshDir = Join-Path $TargetDir 'keywords'
-foreach ($lang in @('go', 'hugo')) {
-   $file = Join-Path $freshDir "$lang.json"
-   if (-not (Test-Path -PathType Leaf $file)) { throw "Expected keyword file was not generated: $file" }
-}
+# hugen/hugodocs renders content/extract/functions.md, so the artifact lands under
+# extract/ in the destination
+$freshDir = Join-Path $TargetDir 'extract'
+$freshFile = Join-Path $freshDir 'functions.json'
+if (-not (Test-Path -PathType Leaf $freshFile)) { throw "Expected extraction was not generated: $freshFile" }
 
 $label = if ($Ref) { "hugoDocs '$Ref'" } else { 'the pinned hugoDocs version' }
 $diffArgs = @{
@@ -124,8 +126,8 @@ $diff = & (Join-Path $PSScriptRoot 'keywords-diff.ps1') @diffArgs
 
 if ($Update) {
    if ($diff.Changed) {
-      Copy-Item -Force (Join-Path $freshDir '*.json') $SnapshotDir
-      Write-Host -ForegroundColor Green "Updated keyword snapshot in $SnapshotDir - review and commit it."
+      Copy-Item -Force $freshFile $SnapshotDir
+      Write-Host -ForegroundColor Green "Updated hugoDocs extraction in $SnapshotDir - review and commit it."
    } else {
       Write-Verbose "Keyword snapshot already up to date."
    }
@@ -135,7 +137,7 @@ if ($Update) {
          "To adopt it: bump that version, then run`n" +
          "   ./build.ps1 -Steps ExtractKeywordsFromDocs -UpdateKeywords")
    } else {
-      Write-Warning ("Keyword snapshot in $SnapshotDir is out of date with the pinned hugoDocs version.`n" +
+      Write-Warning ("hugoDocs extraction in $SnapshotDir is out of date with the pinned hugoDocs version.`n" +
          "Grammars are built from the snapshot. Refresh it with:`n" +
          "   ./build.ps1 -Steps ExtractKeywordsFromDocs -UpdateKeywords")
    }

@@ -1,0 +1,45 @@
+{{- /*
+   Collect the raw facts the hugoDocs function reference provides, and nothing
+   else: per documented function its section, its name and its aliases.
+
+   Deliberately NOT done here (all of it is a grammar decision and lives in
+   hugen/grammars/layouts/_partials/build-scopes.html):
+     - assigning highlight.js scopes (BUILTINS / FUNCTIONS / KEYWORDS / LITERALS)
+     - merging the fixed seed word lists
+     - ordering words for regex alternation
+
+   The section is taken from the page path rather than .Parent.LinkTitle, which
+   renders the go-template directory as "go template" with a space.
+
+   Returns: {name: {section: string, aliases: [string]}}
+   */ -}}
+{{- $tpl := templates.Current.Name }}
+{{- $idx := math.Counter }}
+{{- warnf "[%04d][ %-20s ] : %s" $idx $tpl page.Path }}
+
+{{- $functions := dict }}
+{{- range $p := where site.RegularPages "Section" "functions" }}
+   {{- $name := $p.Title }}
+   {{- if not $name }}
+      {{- warnf "hugoDocs page without title, skipped: %s" $p.Path }}
+      {{- continue }}
+   {{- end }}
+
+   {{- /* NOTE: the page can carry a second, top-level `aliases` -- that one is a
+      Hugo URL redirect (/functions/md5), not a template function alias. Only the
+      nested functions_and_methods.Aliases may be scraped. */ -}}
+   {{- $aliases := slice }}
+   {{- range $a := $p.Params.functions_and_methods.Aliases }}
+      {{- if $a }}
+         {{- $aliases = $aliases | append $a }}
+      {{- else }}
+         {{- warnf "empty alias at page: %s" $p.Path }}
+      {{- end }}
+   {{- end }}
+
+   {{- $entry := dict "section" (path.Base $p.Parent.Path) "aliases" (sort $aliases) }}
+   {{- $functions = merge $functions (dict $name $entry) }}
+{{- end }}
+
+{{- return $functions }}
+{{- /* remove all trailing whitespace */ -}}

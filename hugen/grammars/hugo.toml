@@ -67,11 +67,11 @@ disablePathToLower = true
    [[module.mounts]]
       source = 'data'
       target = 'data'
-   # keyword vocabulary scraped from hugoDocs by hugen/hugodocs and committed as a
-   # snapshot -- reading the tracked files (not work/) keeps this module buildable on
+   # raw function/alias facts scraped from hugoDocs by hugen/hugodocs and committed as
+   # a snapshot -- reading the tracked file (not work/) keeps this module buildable on
    # a clean checkout and makes every build of a given commit produce the same grammars
    [[module.mounts]]
-      source = "../_keywords"
+      source = "../_hugodocs"
       target = "data/hugodocs"
 
    [module.hugoVersion]

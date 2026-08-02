@@ -1,0 +1,133 @@
+{{- /*
+   Turn the raw hugoDocs facts (hugen/_hugodocs/functions.json: name ->
+   {section, aliases}) plus this module's own `fixed` seed lists into the
+   highlight.js scopes the grammar needs.
+
+   Every decision made here is a grammar decision, which is why it lives in this
+   module and not in hugen/hugodocs:
+     - which scope a documented name lands in
+     - that go-template constructs are NOT builtins (they are matched by the
+       `patterns` regexes instead, see below)
+     - the word order inside a scope
+
+   Also asserts that the go-template section of the docs still matches the
+   `patterns` word list. A construct added or removed upstream (that is how `try`
+   arrived) has to be reflected there by hand, so failing loudly here is the
+   point -- it would otherwise silently mis-highlight.
+
+   Takes: language string ("go" / "hugo")
+   Returns: {SCOPE: [words]}
+   */ -}}
+{{- $lang := . }}
+{{- $data := index hugo.Data.keywords $lang }}
+{{- $fixed := $data.fixed }}
+{{- if not $fixed }}
+   {{- errorf "data/keywords/%s.yaml has no `fixed` section" $lang }}
+{{- end }}
+
+{{- /* temporary storage for words ordered by scope and length */ -}}
+{{- $pad := newScratch }}
+
+{{- /* seed the scopes with the fixed word lists */ -}}
+{{- $fixedWords := slice }}
+{{- range $scope, $words := $fixed }}
+   {{- $fixedWords = $fixedWords | append $words }}
+   {{- range $word := $words }}
+      {{- $len := len . | string }}
+      {{- with $pad.Get $scope }}
+         {{- with index . $len }}
+            {{- $pad.SetInMap $scope $len (append $word .) }}
+         {{- else }}
+            {{- $pad.SetInMap $scope $len (slice $word) }}
+         {{- end }}
+      {{- else }}
+         {{- $pad.SetInMap $scope $len (slice $word) }}
+      {{- end }}
+   {{- end }}
+{{- end }}
+
+{{- /* hugoDocs documents Hugo templates only -- the `go` vocabulary is entirely
+   the fixed lists above, so there is nothing to scrape for it. */ -}}
+{{- $docsKeywords := slice }}
+{{- if eq $lang "hugo" }}
+   {{- $functions := hugo.Data.hugodocs.functions }}
+   {{- if not $functions }}
+      {{- errorf "hugo.Data.hugodocs.functions is empty -- the committed extraction hugen/_hugodocs/functions.json is missing or unreadable; regenerate it with `.\\build.ps1 -Steps ExtractKeywordsFromDocs -UpdateKeywords`" }}
+   {{- end }}
+
+   {{- range $name, $entry := $functions }}
+      {{- /* a function and each of its aliases are classified the same way */ -}}
+      {{- range $word := (append $name $entry.aliases) }}
+         {{- if eq 0 (len $word) }}
+            {{- continue }}
+         {{- end }}
+         {{- /* fixed keywords already added to their scope above */ -}}
+         {{- if in $fixedWords $word }}
+            {{- continue }}
+         {{- end }}
+         {{- $scope := "BUILTINS" }}
+         {{- if eq $entry.section "go-template" }}
+            {{- $scope = "KEYWORDS" }}
+            {{- $docsKeywords = $docsKeywords | append $word }}
+         {{- else if strings.Contains $word "." }}
+            {{- $scope = "FUNCTIONS" }}
+         {{- end }}
+
+         {{- $len := len $word | string }}
+         {{- with $pad.Get $scope }}
+            {{- with index . $len }}
+               {{- $pad.SetInMap $scope $len (append $word .) }}
+            {{- else }}
+               {{- $pad.SetInMap $scope $len (slice $word) }}
+            {{- end }}
+         {{- else }}
+            {{- $pad.SetInMap $scope $len (slice $word) }}
+         {{- end }}
+      {{- end }}
+   {{- end }}
+
+   {{- /* --- assertion: docs go-template section vs our `patterns` --- */ -}}
+   {{- $patterns := $data.patterns }}
+   {{- $patternWords := slice }}
+   {{- range $name, $words := $patterns }}
+      {{- range $w := $words }}
+         {{- $plain := replace $w `\s+` " " }}
+         {{- /* composites like "else if" are covered by their individual words,
+            which are listed separately -- skip them in the comparison */ -}}
+         {{- if not (strings.Contains $plain " ") }}
+            {{- if not (in $patternWords $plain) }}
+               {{- $patternWords = $patternWords | append $plain }}
+            {{- end }}
+         {{- end }}
+      {{- end }}
+   {{- end }}
+   {{- $undeclared := slice }}
+   {{- $stale := slice }}
+   {{- range $w := $docsKeywords }}
+      {{- if not (in $patternWords $w) }}{{ $undeclared = $undeclared | append $w }}{{ end }}
+   {{- end }}
+   {{- range $w := $patternWords }}
+      {{- if not (in $docsKeywords $w) }}{{ $stale = $stale | append $w }}{{ end }}
+   {{- end }}
+   {{- if or $undeclared $stale }}
+      {{- errorf (printf "hugoDocs go-template section no longer matches `patterns` in data/keywords/%s.yaml -- new in the docs: [%s]; in patterns but gone from the docs: [%s]. Update KEYWORDS_PIPELINE / KEYWORDS_STANDALONE (or add the word to `fixed.BUILTINS` if it should highlight as a builtin)."
+         $lang (delimit (sort $undeclared) ", ") (delimit (sort $stale) ", ")) }}
+   {{- end }}
+{{- end }}
+
+{{- /* flatten the scratch pad to a map{scope: [words]}
+   NOTE: the length keys are strings, so `sort` orders them lexicographically --
+   the resulting bucket order is 9,8,7,6,5,4,3,2,14,13,12,11,10,1 rather than
+   strictly longest-first. Preserved deliberately: changing it changes every
+   generated regex alternation. */ -}}
+{{- $keywords := dict }}
+{{- range $scope, $values := $pad.Values }}
+   {{- $names := slice }}
+   {{- /* collect all strings for the current scope, sort by length(desc) and name(asc)*/ -}}
+   {{- range sort $values | collections.Reverse }}
+      {{- $names = $names | append (sort .) }}
+   {{- end }}
+   {{- $keywords = merge $keywords (dict $scope $names) }}
+{{- end }}
+{{- return $keywords }}
+{{- /* remove all trailing whitespace */ -}}

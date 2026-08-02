@@ -1,0 +1,19 @@
+{{- /*
+   Render the scraped facts as JSON, one line per function so that adding,
+   removing or re-aliasing a function is a single-line diff. Written with printf
+   instead of jsonify because jsonify controls indentation but not where the
+   line breaks go.
+
+   Go templates visit map keys in sorted order, so the function names come out
+   sorted without an explicit sort; aliases were sorted in the partial.
+   */ -}}
+{{- $functions := partialCached "get-functions.html" "functions" }}
+{{- $lines := slice }}
+{{- range $name, $entry := $functions }}
+   {{- $aliases := slice }}
+   {{- range $entry.aliases }}
+      {{- $aliases = $aliases | append (printf "%q" .) }}
+   {{- end }}
+   {{- $lines = $lines | append (printf "  %q: { \"section\": %q, \"aliases\": [%s] }" $name $entry.section (delimit $aliases ", ")) }}
+{{- end }}
+{{- printf "{\n%s\n}\n" (delimit $lines ",\n") }}

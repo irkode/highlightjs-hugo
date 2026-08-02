@@ -194,15 +194,15 @@ cssOptions.forEach(css => {
 }
 
 # Re-scrape hugoDocs at the version pinned in hugen/hugodocs/hugo.toml and compare the
-# result against the committed snapshot in hugen/_keywords. The grammar build reads the
-# snapshot, never this output, so a difference here only means "the pin was bumped but
-# the snapshot was not refreshed" -- report it, never fail the build. -UpdateKeywords
-# adopts the fresh extraction; it is the only thing that writes the snapshot.
+# result against the committed extraction in hugen/_hugodocs. The grammar build reads the
+# committed file, never this output, so a difference here only means "the pin was bumped
+# but the extraction was not refreshed" -- report it, never fail the build.
+# -UpdateKeywords adopts the fresh scrape; it is the only thing that writes the file.
 function ExtractKeywordsFromDocs {
    [CmdLetBinding()]
    param()
-   $SnapshotDir = Test-Folder -Create $HugenDir "_keywords"
-   $Step = "Extract hugoDocs keywords (pinned version)"
+   $SnapshotDir = Test-Folder -Create $HugenDir "_hugodocs"
+   $Step = "Extract hugoDocs functions (pinned version)"
    try {
       if ($Skip -contains 'ExtractKeywordsFromDocs') {
          Write-Verbose "SKIP: $Step"
@@ -210,9 +210,8 @@ function ExtractKeywordsFromDocs {
          Write-Verbose "CALL: $Step"
          [void](& (Join-Path $ScriptsDir "keywords-check.ps1") -Update:$UpdateKeywords -Notice)
       }
-      # the grammar build reads these, so they have to exist even when the step is skipped
-      [void](Test-File $SnapshotDir "go.json")
-      [void](Test-File $SnapshotDir "hugo.json")
+      # the grammar build reads this, so it has to exist even when the step is skipped
+      [void](Test-File $SnapshotDir "functions.json")
    } catch {
       Write-Error "FAIL: $Step" -ErrorAction Continue
       throw "$_"

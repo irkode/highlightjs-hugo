@@ -151,7 +151,7 @@ jobs:
 
               cat release-body.md
 
-         # The keyword vocabulary is committed (hugen/_keywords), so the changes between
+         # The keyword vocabulary is committed (hugen/_hugodocs), so the changes between
          # two releases are already in git history - no rebuild or hugoDocs access needed.
          # The section is put in front of the commit list: it is the part of a release a
          # grammar consumer actually cares about.
@@ -162,19 +162,16 @@ jobs:
               $prevDir = Join-Path '${{ github.workspace }}' 'work/prev-keywords'
               [void](New-Item -ItemType Directory -Force -Path $prevDir)
               if ($prev) {
-                 foreach ($lang in 'go', 'hugo') {
-                    $out = Join-Path $prevDir "$lang.json"
-                    $json = git show "${prev}:hugen/_keywords/$lang.json" 2>$null
-                    if ($LASTEXITCODE -eq 0 -and $json) {
-                       $json | Set-Content -Encoding utf8 -Path $out
-                    } else {
-                       # tag predates the committed snapshot -- reported as "no baseline"
-                       Write-Host "no hugen/_keywords/$lang.json at $prev"
-                    }
+                 $json = git show "${prev}:hugen/_hugodocs/functions.json" 2>$null
+                 if ($LASTEXITCODE -eq 0 -and $json) {
+                    $json | Set-Content -Encoding utf8 -Path (Join-Path $prevDir 'functions.json')
+                 } else {
+                    # tag predates the committed extraction -- reported as "no baseline"
+                    Write-Host "no hugen/_hugodocs/functions.json at $prev"
                  }
               }
               $heading = if ($prev) { "## Keyword changes since $prev" } else { '## Keyword changes' }
-              $diff = ./build/keywords-diff.ps1 -OldDir $prevDir -NewDir hugen/_keywords `
+              $diff = ./build/keywords-diff.ps1 -OldDir $prevDir -NewDir hugen/_hugodocs `
                  -Format Markdown -Heading $heading -OutFile keywords-section.md
               # most releases do not touch the vocabulary -- do not open the notes with an
               # empty section then, just leave it out

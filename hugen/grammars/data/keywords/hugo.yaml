@@ -1,3 +1,20 @@
+# Seed words the hugoDocs function reference does not give us as such: they are
+# either documented as go-template constructs but wanted as builtins (and, len,
+# not, or, urlquery), or not documented as functions at all (the literals).
+# Moved here from hugen/hugodocs -- which scope a word belongs to is a grammar
+# decision, so it belongs next to `patterns` and `generate`.
+fixed:
+  BUILTINS:
+    - and
+    - len
+    - not
+    - or
+    - urlquery
+  LITERALS:
+    - "false"
+    - nil
+    - "true"
+
 patterns:
   KEYWORDS_PIPELINE:
     - block

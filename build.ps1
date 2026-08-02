@@ -29,7 +29,7 @@ param(
       'GenerateHugoGrammars',
       'TestHighlightJS'
    )][string[]]$Steps,
-   # adopt the freshly extracted keywords as the committed snapshot in hugen/_keywords
+   # adopt the freshly extracted functions as the committed extraction in hugen/_hugodocs
    [switch]$UpdateKeywords,
    # branch or tag the ExtractKeywordsLatest step checks the pinned hugoDocs against
    [string]$KeywordsLatestRef = 'master',
