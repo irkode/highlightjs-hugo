@@ -34,10 +34,16 @@ incorrect or misleading highlighting.
 - Theme components built on the provided grammars
 - Enables proper syntax highlighting in Discourse environments
 
+## Documentation
+
+- https://irkode.github.io/highlightjs-hugo/
+
+Each artifact includes its own `README.md` with usage instructions.
+
 ## Download
 
 Packages can be downloaded from:
-[Releases](https://github.com/irkode/highlightjs-hugo/releases/latest)][^2].
+[Releases](https://github.com/irkode/highlightjs-hugo/releases/latest).
 
 - Discourse theme Components:
   [highlightjs-hugo-discourse.zip](https://github.com/irkode/highlightjs-hugo/releases/latest/download/highlightjs-hugo-discourse.zip)
@@ -48,12 +54,6 @@ Packages can be downloaded from:
 - repository sources - GitHub release standard assets
 
 As of now we do not publish anything to a CDN.
-
-## Documentation
-
-- https://irkode.github.io/highlightjs-hugo/
-
-Each artifact includes its own `README.md` with usage instructions.
 
 ## Build from Source
 
@@ -135,5 +135,3 @@ Licenses for foreign assets may be different:
 [^1]:
     Check out details here:
     [A word on auto detection](https://irkode.github.io/highlightjs-hugo/highlightjs/autodetect)
-
-[^2]: Draft- and pre-releases have to be manually browsed and downloaded.
