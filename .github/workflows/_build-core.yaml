@@ -129,10 +129,8 @@ jobs:
               path: ${{ env.HIGHLIGHTJS_DIR }}
               key: highlightjs-${{ runner.os }}-${{ env.HIGHLIGHTJS_VERSION }}
 
-         # Informational only. Grammars are built from the committed snapshot in
-         # hugen/_hugodocs, so neither of the next two steps can change what is built --
-         # they only report. Both are non-blocking on purpose: a tag/release build must
-         # never fail because hugoDocs moved.
+         # Informational only: grammars build from committed hugen/_hugodocs, so these
+         # two steps cannot change the output and must never fail a release build.
          - name: Check keyword snapshot against pinned hugoDocs
            continue-on-error: true
            run: |

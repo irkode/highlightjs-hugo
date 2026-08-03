@@ -151,10 +151,8 @@ jobs:
 
               cat release-body.md
 
-         # The keyword vocabulary is committed (hugen/_hugodocs), so the changes between
-         # two releases are already in git history - no rebuild or hugoDocs access needed.
-         # The section is put in front of the commit list: it is the part of a release a
-         # grammar consumer actually cares about.
+         # hugen/_hugodocs is committed, so the delta between two releases is already in
+         # git history - no rebuild needed. Goes in front of the commit list.
          - name: Prepend keyword changes to release notes
            shell: pwsh
            run: |
@@ -173,8 +171,7 @@ jobs:
               $heading = if ($prev) { "## Keyword changes since $prev" } else { '## Keyword changes' }
               $diff = ./build/keywords-diff.ps1 -OldDir $prevDir -NewDir hugen/_hugodocs `
                  -Format Markdown -Heading $heading -OutFile keywords-section.md
-              # most releases do not touch the vocabulary -- do not open the notes with an
-              # empty section then, just leave it out
+              # most releases change nothing -- do not open the notes with an empty section
               if ($diff.Changed) {
                  $section = (Get-Content -Raw keywords-section.md).TrimEnd()
                  $commits = (Get-Content -Raw release-body.md).TrimEnd()

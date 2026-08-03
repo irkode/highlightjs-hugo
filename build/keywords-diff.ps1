@@ -3,22 +3,13 @@
    Compare two hugoDocs function extractions and report what changed.
 
 .DESCRIPTION
-   `hugen/hugodocs` scrapes the hugoDocs function reference into a single
-   `functions.json`, one line per documented function:
+   Diffs the `functions.json` written by hugen/hugodocs, one line per function:
 
       { "cast.ToFloat": { "section": "cast", "aliases": ["float"] }, ... }
 
-   That file holds facts only - no highlight.js scopes - so a diff of it is already
-   one row per real thing and needs no normalization. Which scope a name ends up in
-   is decided later by hugen/grammars.
-
-   This is the single diff implementation used by:
-     - the local build      (build/lib/build-functions.ps1, via keywords-check.ps1)
-     - CI                   (.github/workflows/_build-core.yaml, upstream notice)
-     - the release job      (.github/workflows/build-n-release.yaml, "## Keyword changes")
-
-   The script never fails a build: a missing old file is treated as "no baseline",
-   and the exit code is always 0. Callers inspect the returned object.
+   Shared by the local build, CI and the release job. Never fails a build: a missing
+   old file is "no baseline" and the exit code is always 0 - callers inspect the
+   returned object. Runs on the Linux runners, so keep it POSIX-path clean.
 
 .OUTPUTS
    PSCustomObject with Changed (bool), AddedCount, RemovedCount, ChangedCount,
@@ -46,8 +37,7 @@ param(
    # emit a GitHub Actions ::notice:: when something changed
    [Parameter(Mandatory = $false)][switch]$Notice,
    [Parameter(Mandatory = $false)][string]$NoticeTitle = 'hugoDocs keyword changes',
-   # cap the rows so a huge diff cannot blow up the 65k character limit of a
-   # GitHub release body
+   # cap the rows -- a GitHub release body is limited to 65k characters
    [Parameter(Mandatory = $false)][int]$MaxRows = 60,
    [Parameter(Mandatory = $false)][string]$FileName = 'functions.json'
 )
@@ -77,9 +67,7 @@ function Format-Alias {
    return (@($list | ForEach-Object { "``$_``" }) -join ', ')
 }
 
-# ---------------------------------------------------------------------------
 # collect the differences
-# ---------------------------------------------------------------------------
 $old = Read-Functions -Dir $OldDir
 $new = Read-Functions -Dir $NewDir
 $hasBaseline = $null -ne $old
@@ -130,9 +118,7 @@ $changed = $rows.Count -gt 0
 $summary = "$addedTotal added, $removedTotal removed"
 if ($changedTotal) { $summary += ", $changedTotal alias change(s)" }
 
-# ---------------------------------------------------------------------------
-# render Markdown (always built -- Console output is derived from the same data)
-# ---------------------------------------------------------------------------
+# render Markdown (Console output is derived from the same data)
 $md = @($Heading, '')
 if (-not $hasBaseline) {
    $md += '_No keyword baseline available to compare against._'
@@ -149,9 +135,7 @@ if (-not $hasBaseline) {
 }
 $text = ($md -join "`n").TrimEnd() + "`n"
 
-# ---------------------------------------------------------------------------
 # emit
-# ---------------------------------------------------------------------------
 switch ($Format) {
    'Markdown' { Write-Host $text }
    'Console' {

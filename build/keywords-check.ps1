@@ -4,25 +4,19 @@
    extraction in hugen/_hugodocs.
 
 .DESCRIPTION
-   Two modes:
+   Without -Ref: builds at the hugoDocs version pinned in hugen/hugodocs/hugo.toml, so a
+   difference means the pin was bumped without refreshing the extraction. `-Update`
+   adopts the fresh scrape.
 
-   - without -Ref: builds `hugen/hugodocs` as configured, i.e. at the hugoDocs version
-     pinned in its `hugo.toml`. A difference means the pin was bumped without refreshing
-     the snapshot. `-Update` adopts the fresh extraction as the new snapshot.
+   With -Ref <branch|tag|version>: builds against that ref instead to see how far upstream
+   has moved beyond the pin. The pin is left untouched (the ref goes in through a generated
+   config overlay) and go.mod / go.sum / hugo.direct.sum are restored afterwards.
 
-   - with -Ref <branch|tag|version>: builds against that hugoDocs ref instead, to see how
-     far upstream has moved beyond the pin. The pinned config is left untouched (the ref
-     is injected through a generated config overlay), and go.mod / go.sum /
-     hugo.direct.sum are restored afterwards so the working tree stays clean.
-
-   Reporting only: this script never fails the build. It is called both by
-   `build.ps1` (steps ExtractKeywordsFromDocs / ExtractKeywordsLatest) and directly by CI,
-   so it must stay cross-platform - no Windows-only path separators.
+   Reporting only, never fails a build. Called by build.ps1 and directly by CI, so keep it
+   POSIX-path clean.
 
 .OUTPUTS
    The PSCustomObject returned by build/keywords-diff.ps1.
-
-   Output is hugen/_hugodocs/functions.json - see build/keywords-diff.ps1 for its shape.
 
 .EXAMPLE
    ./build/keywords-check.ps1 -Update
@@ -67,9 +61,7 @@ $hugoArgs = @('--source', $SourceDir, '--destination', $TargetDir)
 $moduleState = @{}
 
 if ($Ref) {
-   # Derive the overlay from the real config instead of keeping a second copy of the
-   # [module] block: only the import version differs, and the hugoDocs mounts have to
-   # stay in sync automatically.
+   # patch the real config rather than keep a second copy of the [module] block
    $configFile = Join-Path $SourceDir 'hugo.toml'
    $config = Get-Content -Raw -Path $configFile
    $patched = [regex]::Replace($config, "(?m)^(\s*version\s*=\s*)'[^']*'", "`${1}'$Ref'")
@@ -81,8 +73,7 @@ if ($Ref) {
    # right-most config file wins, so the overlay replaces the pinned module import
    $hugoArgs += @('--config', "hugo.toml,$overlay")
 
-   # Hugo rewrites the module state for whatever version it resolves; this step is
-   # informational and must not leave the working tree dirty.
+   # Hugo rewrites these for the version it resolves -- restore them afterwards
    foreach ($name in @('go.mod', 'go.sum', 'hugo.direct.sum')) {
       $file = Join-Path $SourceDir $name
       if (Test-Path -PathType Leaf $file) { $moduleState[$file] = [System.IO.File]::ReadAllBytes($file) }
@@ -103,8 +94,7 @@ try {
    }
 }
 
-# hugen/hugodocs renders content/extract/functions.md, so the artifact lands under
-# extract/ in the destination
+# content/extract/functions.md renders to extract/functions.json
 $freshDir = Join-Path $TargetDir 'extract'
 $freshFile = Join-Path $freshDir 'functions.json'
 if (-not (Test-Path -PathType Leaf $freshFile)) { throw "Expected extraction was not generated: $freshFile" }

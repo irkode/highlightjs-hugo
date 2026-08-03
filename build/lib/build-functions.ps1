@@ -193,11 +193,9 @@ cssOptions.forEach(css => {
    }
 }
 
-# Re-scrape hugoDocs at the version pinned in hugen/hugodocs/hugo.toml and compare the
-# result against the committed extraction in hugen/_hugodocs. The grammar build reads the
-# committed file, never this output, so a difference here only means "the pin was bumped
-# but the extraction was not refreshed" -- report it, never fail the build.
-# -UpdateKeywords adopts the fresh scrape; it is the only thing that writes the file.
+# Re-scrape at the pinned version and compare against hugen/_hugodocs. A difference means
+# the pin was bumped without refreshing -- reported, never fatal. -UpdateKeywords is the
+# only thing that writes the committed file.
 function ExtractKeywordsFromDocs {
    [CmdLetBinding()]
    param()
@@ -220,9 +218,8 @@ function ExtractKeywordsFromDocs {
    }
 }
 
-# Notification-only step: scrape hugoDocs at $KeywordsLatestRef (a branch, by default
-# 'master') and report how far the upstream vocabulary has moved beyond our pin. Never
-# writes the snapshot and never fails - bumping the pin stays a manual decision.
+# Notification only: how far $KeywordsLatestRef has moved beyond our pin. Never writes
+# the committed file and never fails - bumping the pin stays a manual decision.
 function ExtractKeywordsLatest {
    [CmdLetBinding()]
    param()
