@@ -99,9 +99,17 @@ try {
    }
 
    try {
+      $hvmStatus = $ENV:HVM_SHOW_STATUS; $ENV:HVM_SHOW_STATUS = $false
       & $ScriptsDir/versions-set-wanted.ps1 -VersionConfigFile $ProjectRoot\.versions.json
       # we expect all external tools be installed before starting a local build
       & $ScriptsDir/versions-check-installed.ps1 -VersionConfigFile $ProjectRoot\.versions.json
+      $ENV:HVM_SHOW_STATUS = $hvmStatus
+      # exit 2 means a tool is missing - without this the build runs on and dies much later with a
+      # confusing "'node' is not recognized". A version that only differs (exit 1) stays a warning:
+      # deliberately running a newer or older tool is the developer's call.
+      if ($LASTEXITCODE -ge 2) {
+         throw "Required tools are missing - see the errors above. Install them before building."
+      }
       foreach ($step in $Steps) {
          Write-Verbose "> Executing: [ $step ]"
          & $step
