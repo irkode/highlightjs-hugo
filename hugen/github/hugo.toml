@@ -1,0 +1,30 @@
+baseURL = "https://github.com/irkode/highlightjs-hugo"
+locale  = 'en-US'
+title   = "Highlight 4 Hugo"
+
+disableKinds       = ['rss', 'sitemap', 'taxonomy', 'term']
+enableGitInfo      = true
+disablePathToLower = true
+uglyURLs           = true
+
+[outputs]
+   page = ["markdown"]
+
+[params]
+   description = "Advanced syntax highlighting for HuGo templates"
+
+[build]
+   noJSConfigInAssets = true
+   [build.buildStats]
+      enable = false
+   [[build.cachebusters]]
+      source = 'disabled'
+      target = 'disabled'
+
+[module]
+   [[module.mounts]]
+      source = "content"
+      target = "content"
+   [[module.mounts]]
+      source = "../docs/content/_index.md"
+      target = "content/README/index.md"
