@@ -1,9 +1,10 @@
-
+<!-- this README is generated with hugen/github -->
 <img align="left" src="huggingface-96x96.png" style="width:96px;"/>
 <aside style="flex:1; padding-left:12px;">
 <h1>Advanced syntax highlighting for HuGo templates<br/></h1>
 </aside><br/>
 
+<img align="center" src="highlightjs-hugo.png">
 Did you ever wonder why hugo templates get random highlighting in [Hugo’s Discourse Forum](https://discourse.gohugo.io/)?
 
 This is due to the use of [Highlight.js](https://highlightjs.org/), which does not natively support Go or Hugo templates. As a result, automatic language detection selects a best match, leading to incorrect or misleading highlighting.

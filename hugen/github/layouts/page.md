@@ -1,3 +1,4 @@
+<!-- this README is generated with hugen/github -->
 {{- $tpl := templates.Current.Name }}
 {{- $pagePath := .Path }}
 {{- $idx := math.Counter }}
@@ -11,5 +12,6 @@
 <h1>Advanced syntax highlighting for HuGo templates<br/></h1>
 </aside><br/>
 
+<img align="center" src="highlightjs-hugo.png">
 {{ .Content | transform.HTMLToMarkdown }}
 {{- /**/ -}}
