@@ -3,7 +3,7 @@
 {{-	/* tab separation */	-}}
 {{-
 /* newline separated */
-}}
+-}}
 
 {{/* a multiline comment
 continued on the next lines
@@ -12,8 +12,16 @@ even with a blank line inside and a template {{ false }}
 
  */ -}}
 
-{{-  /* two spaces are not allowed */  -}}
-{{- 	/* nor space and tab */    -}}
+-- NEGATIVE TESTS
+{{-  /* two spaces}}
+{{- 	/* space and tab}}
 {{-
-   /* newline and space */
-   -}}
+	/* newline and space}}
+{{-	
+/* tab and newline}}
+{{/* two spaces */  }} */}}
+{{/* space and tab*/ 	}} */}}
+{{/* newline and space*/
+ -}} */}}
+{{/* tab and newline*/	
+-}} {{ end }}

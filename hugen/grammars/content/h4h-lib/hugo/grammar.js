@@ -6,8 +6,8 @@ import { inherit } from '../../../src/lib/utils.js';
 const H4H_GRAMMAR_COMMENT_OPEN = /\{\{-\s\/\*|\{\{\/\*/;
 const H4H_GRAMMAR_COMMENT_CLOSE = /\*\/\s-\}\}|\*\/\}\}/;
 // action commands
-const H4H_GRAMMAR_ACTION_OPEN = /\{\{- |\{\{(?!-)/;
-const H4H_GRAMMAR_ACTION_CLOSE = / -\}\}|(?<! -)\}\}/;
+const H4H_GRAMMAR_ACTION_OPEN = /\{\{-(?=\s)|\{\{(?!-)/;
+const H4H_GRAMMAR_ACTION_CLOSE = /\s-\}\}|(?<!\s-)\}\}/;
 // simple modes, -> always list last to not capture begin of complex modes
 const H4H_GRAMMAR_PIPE_OPERATOR_MODE = { scope: 'operator', match: /[|,=]|:=/, };
 const H4H_GRAMMAR_CONTEXT_ONLY_MODE = { scope: 'template-variable.context', match: /\.|\$/ };

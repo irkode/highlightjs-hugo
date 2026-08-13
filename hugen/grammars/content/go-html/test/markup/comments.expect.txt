@@ -3,17 +3,26 @@
 <span class="hljs-comment">{{-	/* tab separation */	-}}</span>
 <span class="hljs-comment">{{-
 /* newline separated */
-}}
+-}}</span>
 
-{{/* a multiline comment
+<span class="hljs-comment">{{/* a multiline comment
 continued on the next lines
 
 even with a blank line inside and a template {{ false }}
 
- */ -}}</span>
+ */ -}}</span><span class="language-xml">
 
-<span class="hljs-template-tag">{{- </span> /* two spaces are <span class="hljs-built_in">not</span> allowed */ <span class="hljs-template-tag"> -}}</span>
-<span class="hljs-template-tag">{{- </span>	/* nor space <span class="hljs-built_in">and</span> tab */   <span class="hljs-template-tag"> -}}</span>
-<span class="language-xml">{{-
-   /* newline and space */
-   -}}</span>
+-- NEGATIVE TESTS
+</span><span class="hljs-template-tag">{{- </span> /* two spaces<span class="hljs-template-tag">}}</span>
+<span class="hljs-template-tag">{{- </span>	/* space <span class="hljs-built_in">and</span> tab<span class="hljs-template-tag">}}</span>
+<span class="hljs-template-tag">{{-
+</span>	/* newline <span class="hljs-built_in">and</span> space<span class="hljs-template-tag">}}</span>
+<span class="hljs-template-tag">{{-	</span>
+/* tab <span class="hljs-built_in">and</span> newline<span class="hljs-template-tag">}}</span>
+<span class="hljs-comment">{{/* two spaces */  }} */}}</span>
+<span class="hljs-comment">{{/* space and tab*/ 	}} */}}</span>
+<span class="hljs-comment">{{/* newline and space*/
+ -}} */}}</span>
+<span class="hljs-comment">{{/* tab and newline*/	
+-}} {{ end }}
+</span>
