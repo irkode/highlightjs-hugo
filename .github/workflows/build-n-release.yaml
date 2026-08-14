@@ -161,7 +161,11 @@ jobs:
               [void](New-Item -ItemType Directory -Force -Path $prevDir)
               if ($prev) {
                  $json = git show "${prev}:hugen/_hugodocs/functions.json" 2>$null
-                 if ($LASTEXITCODE -eq 0 -and $json) {
+                 $gitShowExitCode = $LASTEXITCODE
+                 # pwsh actions steps fail on a stray non-zero $LASTEXITCODE even after
+                 # it has been handled here, so clear it once read
+                 $global:LASTEXITCODE = 0
+                 if ($gitShowExitCode -eq 0 -and $json) {
                     $json | Set-Content -Encoding utf8 -Path (Join-Path $prevDir 'functions.json')
                  } else {
                     # tag predates the committed extraction -- reported as "no baseline"
