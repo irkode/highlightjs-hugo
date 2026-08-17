@@ -129,20 +129,29 @@ jobs:
               path: ${{ env.HIGHLIGHTJS_DIR }}
               key: highlightjs-${{ runner.os }}-${{ env.HIGHLIGHTJS_VERSION }}
 
-         # Informational only: grammars build from committed hugen/_hugodocs, so these
-         # two steps cannot change the output and must never fail a release build.
+         # The committed snapshot must always match what the pin resolves to - a mismatch
+         # means someone bumped hugen/hugodocs/hugo.toml (or hand-edited the snapshot)
+         # without refreshing the other half. That's a broken commit, not routine drift,
+         # so fail loudly instead of silently building grammars from a stale snapshot.
          - name: Check keyword snapshot against pinned hugoDocs
-           continue-on-error: true
            run: |
-              [void](./build/keywords-check.ps1 -Notice -Verbose)
+              $diff = ./build/keywords-check.ps1 -Verbose
+              if ($diff.Changed) {
+                 Write-Host "::error title=Keyword snapshot is out of date::hugen/_hugodocs/functions.json does not match the pinned hugoDocs version ($($diff.AddedCount) new, $($diff.RemovedCount) removed). Run './build.ps1 -Steps ExtractKeywordsFromDocs -UpdateKeywords' and commit the result."
+                 exit 1
+              }
 
-         # Skipped for tags: a release build stays fast and quiet, and adopting a new
-         # hugoDocs is a decision made on a branch, not during a release.
+         # Informational only: how far upstream has moved beyond our pin. Adopting it is a
+         # deliberate decision made on a branch, so this never fails the build. Skipped for
+         # tags: a release build stays fast and quiet.
          - name: Check hugoDocs master for new keywords
            if: github.ref_type != 'tag'
            continue-on-error: true
            run: |
-              [void](./build/keywords-check.ps1 -Ref master -Notice -Verbose)
+              $diff = ./build/keywords-check.ps1 -Ref master -Verbose
+              if ($diff.Changed) {
+                 Write-Host "::warning title=hugoDocs 'master' has keyword changes::keyword changes detected: $($diff.AddedCount) new and $($diff.RemovedCount) deleted - see the job summary for details"
+              }
 
          - name: Generate Highlight.js grammars
            run: |
