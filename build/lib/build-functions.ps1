@@ -195,21 +195,24 @@ cssOptions.forEach(css => {
 
 # Re-scrape at the pinned version and compare against hugen/_hugodocs. A difference means
 # the pin was bumped without refreshing -- reported, never fatal. -UpdateKeywords is the
-# only thing that writes the committed file.
+# only thing that writes the committed file. Returns the keywords-check.ps1 report so the
+# caller can reprint it at the end of the build.
 function ExtractKeywordsFromDocs {
    [CmdLetBinding()]
    param()
    $SnapshotDir = Test-Folder -Create $HugenDir "_hugodocs"
    $Step = "Extract hugoDocs functions (pinned version)"
+   $result = $null
    try {
       if ($Skip -contains 'ExtractKeywordsFromDocs') {
          Write-Verbose "SKIP: $Step"
       } else {
          Write-Verbose "CALL: $Step"
-         [void](& (Join-Path $ScriptsDir "keywords-check.ps1") -Update:$UpdateKeywords -Notice)
+         $result = & (Join-Path $ScriptsDir "keywords-check.ps1") -Update:$UpdateKeywords -Notice
       }
       # the grammar build reads this, so it has to exist even when the step is skipped
       [void](Test-File $SnapshotDir "functions.json")
+      return $result
    } catch {
       Write-Error "FAIL: $Step" -ErrorAction Continue
       throw "$_"
@@ -218,8 +221,10 @@ function ExtractKeywordsFromDocs {
    }
 }
 
-# Notification only: how far $KeywordsLatestRef has moved beyond our pin. Never writes
-# the committed file and never fails - bumping the pin stays a manual decision.
+# Reports how far $KeywordsLatestRef has moved beyond our pin. With -UpdateKeywords, adopts
+# it: pins hugo.toml to the resolved version and refreshes the snapshot (see
+# keywords-check.ps1). Never fails a build - network/upstream errors are caught and
+# downgraded to a warning. Returns the report so the caller can reprint it at the end.
 function ExtractKeywordsLatest {
    [CmdLetBinding()]
    param()
@@ -230,7 +235,8 @@ function ExtractKeywordsLatest {
          return
       }
       Write-Verbose "CALL: $Step"
-      [void](& (Join-Path $ScriptsDir "keywords-check.ps1") -Ref $KeywordsLatestRef -Notice)
+      $result = & (Join-Path $ScriptsDir "keywords-check.ps1") -Ref $KeywordsLatestRef -Update:$UpdateKeywords -Notice
+      return $result
    } catch {
       # upstream lookup is informational - a network or upstream failure must not break a build
       Write-Warning "SKIPPED: $Step - $_"

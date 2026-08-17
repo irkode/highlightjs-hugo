@@ -9,20 +9,28 @@
    adopts the fresh scrape.
 
    With -Ref <branch|tag|version>: builds against that ref instead to see how far upstream
-   has moved beyond the pin. The pin is left untouched (the ref goes in through a generated
-   config overlay) and go.mod / go.sum / hugo.direct.sum are restored afterwards.
+   has moved beyond the pin. The ref goes in through a generated config overlay and is
+   resolved by Hugo to a concrete pseudo-version, which is always reported back
+   (.ResolvedVersion). Without -Update, the pin is left untouched and go.mod / go.sum /
+   hugo.direct.sum are restored afterwards. With -Update, the resolved version is written
+   as the new pin in hugo.toml instead of being restored, and the snapshot is refreshed -
+   i.e. -Ref -Update adopts that ref as the new pin.
 
-   Reporting only, never fails a build. Called by build.ps1 and directly by CI, so keep it
-   POSIX-path clean.
+   Reporting only unless -Update is given; never fails a build. Called by build.ps1 and
+   directly by CI, so keep it POSIX-path clean.
 
 .OUTPUTS
-   The PSCustomObject returned by build/keywords-diff.ps1.
+   The PSCustomObject returned by build/keywords-diff.ps1, plus a ResolvedVersion property
+   when -Ref was given.
 
 .EXAMPLE
    ./build/keywords-check.ps1 -Update
 
 .EXAMPLE
    ./build/keywords-check.ps1 -Ref master -Notice
+
+.EXAMPLE
+   ./build/keywords-check.ps1 -Ref master -Update
 #>
 [CmdLetBinding()]
 param(
@@ -34,7 +42,8 @@ param(
    [Parameter(Mandatory = $false)][string]$TargetDir,
    # hugoDocs branch/tag/version to compare against instead of the pinned one
    [Parameter(Mandatory = $false)][string]$Ref,
-   # adopt the fresh extraction as the committed snapshot (only valid without -Ref)
+   # adopt the fresh extraction as the committed snapshot; combined with -Ref, also pins
+   # hugo.toml to the resolved version instead of restoring it
    [Parameter(Mandatory = $false)][switch]$Update,
    # emit a GitHub Actions ::notice:: and a job summary entry when something changed
    [Parameter(Mandatory = $false)][switch]$Notice
@@ -48,10 +57,6 @@ if (-not $SnapshotDir) { $SnapshotDir = Join-Path $repoRoot 'hugen/_hugodocs' }
 if (-not $TargetDir) {
    $TargetDir = Join-Path $repoRoot ($Ref ? 'work/hugodocs-latest' : 'work/hugodocs')
 }
-if ($Ref -and $Update) {
-   throw "-Update cannot be combined with -Ref: adopting an unpinned scrape would decouple the snapshot from hugen/hugodocs/hugo.toml"
-}
-
 if (-not (Test-Path -PathType Container $SourceDir)) { throw "No such directory: $SourceDir" }
 if (Test-Path -PathType Container $TargetDir) { Remove-Item -Recurse -Force $TargetDir }
 [void](New-Item -ItemType Directory -Force -Path $TargetDir)
@@ -80,16 +85,47 @@ if ($Ref) {
    }
 }
 
+$resolvedVersion = $null
 try {
    Write-Verbose "hugo $($hugoArgs -join ' ')"
    & hugo @hugoArgs
    if ($LASTEXITCODE -ne 0) { throw "hugo failed with exit code $LASTEXITCODE" }
+   if ($Ref) {
+      # a plain build only rewrites hugo.direct.sum with the concrete pseudo-version it
+      # resolved $Ref to -- go.mod/go.sum are left alone unless you run `hugo mod get`
+      $directSumFile = Join-Path $SourceDir 'hugo.direct.sum'
+      $directSumMatch = Select-String -Path $directSumFile -Pattern 'github\.com/gohugoio/hugoDocs\s+(\S+)' -ErrorAction SilentlyContinue
+      if ($directSumMatch) { $resolvedVersion = $directSumMatch.Matches[0].Groups[1].Value }
+   }
 } finally {
-   foreach ($file in $moduleState.Keys) {
-      $current = if (Test-Path -PathType Leaf $file) { [System.IO.File]::ReadAllBytes($file) } else { @() }
-      if ([System.Convert]::ToBase64String($current) -ne [System.Convert]::ToBase64String($moduleState[$file])) {
-         Write-Verbose "Restore module state: $file"
-         [System.IO.File]::WriteAllBytes($file, $moduleState[$file])
+   $adopting = $Ref -and $Update -and $resolvedVersion
+   if ($adopting) {
+      # pin hugo.toml to the resolved version...
+      $liveConfig = Get-Content -Raw -Path $configFile
+      $newConfig = [regex]::Replace($liveConfig, "(?m)^(\s*version\s*=\s*)'[^']*'", "`${1}'$resolvedVersion'")
+      Set-Content -Encoding utf8 -NoNewline -Path $configFile -Value $newConfig
+      # ...and let Hugo properly sync go.mod/go.sum/hugo.direct.sum to it. A plain build
+      # (above) only ever touches hugo.direct.sum -- `hugo mod get` is the command that
+      # keeps all three consistent with an explicit pinned version.
+      Push-Location $SourceDir
+      try {
+         & hugo mod get "github.com/gohugoio/hugoDocs@$resolvedVersion"
+         if ($LASTEXITCODE -ne 0) {
+            Write-Warning "hugo mod get failed for '$resolvedVersion' - go.mod/go.sum may be out of sync with hugo.toml"
+         }
+      } finally {
+         Pop-Location
+      }
+   } else {
+      foreach ($file in $moduleState.Keys) {
+         $current = if (Test-Path -PathType Leaf $file) { [System.IO.File]::ReadAllBytes($file) } else { @() }
+         if ([System.Convert]::ToBase64String($current) -ne [System.Convert]::ToBase64String($moduleState[$file])) {
+            Write-Verbose "Restore module state: $file"
+            [System.IO.File]::WriteAllBytes($file, $moduleState[$file])
+         }
+      }
+      if ($Ref -and $Update -and -not $resolvedVersion) {
+         Write-Warning "Could not resolve '$Ref' to a concrete version - hugo.toml pin left unchanged."
       }
    }
 }
@@ -113,6 +149,10 @@ if ($env:GITHUB_STEP_SUMMARY) {
    $diffArgs.Append = $true
 }
 $diff = & (Join-Path $PSScriptRoot 'keywords-diff.ps1') @diffArgs
+if ($resolvedVersion) {
+   Add-Member -InputObject $diff -NotePropertyName ResolvedVersion -NotePropertyValue $resolvedVersion -Force
+   $diff.Text = "_Resolved ``$Ref`` to ``$resolvedVersion``._`n`n" + $diff.Text
+}
 
 if ($Update) {
    if ($diff.Changed) {
@@ -121,18 +161,26 @@ if ($Update) {
    } else {
       Write-Verbose "Keyword snapshot already up to date."
    }
+   if ($Ref) {
+      if ($resolvedVersion) {
+         Write-Host -ForegroundColor Green "Pinned hugen/hugodocs/hugo.toml to '$resolvedVersion' (was tracking '$Ref') - review and commit it."
+      } else {
+         Write-Warning "Could not resolve '$Ref' - hugo.toml pin left unchanged."
+      }
+   }
 } elseif ($diff.Changed) {
    if ($Ref) {
-      Write-Host -ForegroundColor Yellow ("hugoDocs '$Ref' differs from the pin in hugen/hugodocs/hugo.toml.`n" +
-         "To adopt it: bump that version, then run`n" +
-         "   ./build.ps1 -Steps ExtractKeywordsFromDocs -UpdateKeywords")
+      $versionNote = if ($resolvedVersion) { " (resolves to '$resolvedVersion')" } else { '' }
+      Write-Host -ForegroundColor Yellow ("hugoDocs '$Ref'$versionNote differs from the pin in hugen/hugodocs/hugo.toml.`n" +
+         "To adopt it: ./build.ps1 -Steps ExtractKeywordsLatest -UpdateKeywords -KeywordsLatestRef $Ref")
    } else {
       Write-Warning ("hugoDocs extraction in $SnapshotDir is out of date with the pinned hugoDocs version.`n" +
          "Grammars are built from the snapshot. Refresh it with:`n" +
          "   ./build.ps1 -Steps ExtractKeywordsFromDocs -UpdateKeywords")
    }
 } elseif ($Ref) {
-   Write-Host -ForegroundColor Green "hugoDocs '$Ref' matches the pinned keyword snapshot."
+   $versionNote = if ($resolvedVersion) { " (resolves to '$resolvedVersion')" } else { '' }
+   Write-Host -ForegroundColor Green "hugoDocs '$Ref'$versionNote matches the pinned keyword snapshot."
 }
 
 return $diff

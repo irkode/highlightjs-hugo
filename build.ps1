@@ -110,9 +110,19 @@ try {
       if ($LASTEXITCODE -ge 2) {
          throw "Required tools are missing - see the errors above. Install them before building."
       }
+      $KeywordsReports = @()
       foreach ($step in $Steps) {
          Write-Verbose "> Executing: [ $step ]"
-         & $step
+         $stepResult = & $step
+         if ($step -in @('ExtractKeywordsFromDocs', 'ExtractKeywordsLatest') -and $stepResult) {
+            $KeywordsReports += $stepResult
+         }
+      }
+      # everything relevant already ran and logged - resurface it here so it isn't lost
+      # among the highlight.js/hugo build output that follows
+      foreach ($report in $KeywordsReports) {
+         Write-Host ""
+         Write-Host $report.Text
       }
    } catch {
       Write-Error "$_`nBuild failed!" -ErrorAction Continue
