@@ -44,12 +44,12 @@ jobs:
               TYPE=$(git for-each-ref "refs/tags/${{ github.ref_name }}" \
                 --format='%(objecttype)')
               if [ "$TYPE" = "tag" ]; then
-                echo "::notice::annotated tag → release"
+                echo "PUSHED REF: annotated tag → release"
                 echo "is-release=true" >> "$GITHUB_OUTPUT"
                   else
-                echo "::notice::branch or lightweight tag → build only"
+                echo "PUSHED REF: branch or lightweight tag → build only"
                 echo "is-release=false" >> "$GITHUB_OUTPUT"
-                  fi
+              fi
 
    build:
       needs: check

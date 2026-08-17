@@ -135,22 +135,24 @@ jobs:
          # so fail loudly instead of silently building grammars from a stale snapshot.
          - name: Check keyword snapshot against pinned hugoDocs
            run: |
-              $diff = ./build/keywords-check.ps1 -Verbose
+              $diff = ./build/keywords-check.ps1 -NoSummary -Verbose
               if ($diff.Changed) {
-                 Write-Host "::error title=Keyword snapshot is out of date::hugen/_hugodocs/functions.json does not match the pinned hugoDocs version ($($diff.AddedCount) new, $($diff.RemovedCount) removed). Run './build.ps1 -Steps ExtractKeywordsFromDocs -UpdateKeywords' and commit the result."
+                 Write-Host "::error title=Keyword snapshot is out of date::hugen/_hugodocs/functions.json does not match the pinned hugoDocs version ($($diff.AddedCount) new, $($diff.RemovedCount) removed) - see the step log for details. Run './build.ps1 -Steps ExtractKeywordsFromDocs -UpdateKeywords' and commit the result."
                  exit 1
               }
 
          # Informational only: how far upstream has moved beyond our pin. Adopting it is a
-         # deliberate decision made on a branch, so this never fails the build. Skipped for
-         # tags: a release build stays fast and quiet.
+         # deliberate decision made on a branch, so continue-on-error keeps this from
+         # failing the job - but it still exits 1 on a change, so the step itself shows
+         # the warning-triangle icon in the run instead of a plain green check. Skipped
+         # for tags: a release build stays fast and quiet.
          - name: Check hugoDocs master for new keywords
            if: github.ref_type != 'tag'
            continue-on-error: true
            run: |
-              $diff = ./build/keywords-check.ps1 -Ref master -Verbose
+              $diff = ./build/keywords-check.ps1 -Ref master -NoSummary -Verbose
               if ($diff.Changed) {
-                 Write-Host "::warning title=hugoDocs 'master' has keyword changes::keyword changes detected: $($diff.AddedCount) new and $($diff.RemovedCount) deleted - see the job summary for details"
+                 Write-Host "::warning title=hugoDocs 'master' has keyword changes::keyword changes detected: $($diff.AddedCount) new and $($diff.RemovedCount) deleted - see the step log for details"
               }
 
          - name: Generate Highlight.js grammars

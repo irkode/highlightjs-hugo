@@ -45,11 +45,18 @@ param(
    # adopt the fresh extraction as the committed snapshot; combined with -Ref, also pins
    # hugo.toml to the resolved version instead of restoring it
    [Parameter(Mandatory = $false)][switch]$Update,
-   # emit a GitHub Actions ::notice:: and a job summary entry when something changed
-   [Parameter(Mandatory = $false)][switch]$Notice
+   # emit a GitHub Actions ::notice:: when something changed
+   [Parameter(Mandatory = $false)][switch]$Notice,
+   # skip appending the Markdown table to $env:GITHUB_STEP_SUMMARY - the caller is
+   # composing its own concise annotation and pointing at the step log instead
+   [Parameter(Mandatory = $false)][switch]$NoSummary
 )
 
 $ErrorActionPreference = 'Stop'
+
+# build.ps1 already imports this, but CI calls this script directly (not via build.ps1),
+# so it has to be self-sufficient to get the `exec` helper
+Import-Module (Join-Path $PSScriptRoot 'lib/utilities.ps1')
 
 $repoRoot = Split-Path -Parent $PSScriptRoot
 if (-not $SourceDir) { $SourceDir = Join-Path $repoRoot 'hugen/hugodocs' }
@@ -87,9 +94,9 @@ if ($Ref) {
 
 $resolvedVersion = $null
 try {
-   Write-Verbose "hugo $($hugoArgs -join ' ')"
-   & hugo @hugoArgs
-   if ($LASTEXITCODE -ne 0) { throw "hugo failed with exit code $LASTEXITCODE" }
+   # voided so hugo's own console lines don't leak into this script's captured return
+   # value when a caller does `$result = & keywords-check.ps1 ...`
+   [void](exec hugo @hugoArgs)
    if ($Ref) {
       # a plain build only rewrites hugo.direct.sum with the concrete pseudo-version it
       # resolved $Ref to -- go.mod/go.sum are left alone unless you run `hugo mod get`
@@ -109,10 +116,11 @@ try {
       # keeps all three consistent with an explicit pinned version.
       Push-Location $SourceDir
       try {
-         & hugo mod get "github.com/gohugoio/hugoDocs@$resolvedVersion"
-         if ($LASTEXITCODE -ne 0) {
-            Write-Warning "hugo mod get failed for '$resolvedVersion' - go.mod/go.sum may be out of sync with hugo.toml"
-         }
+         # soft-fail on purpose: this is a best-effort sync running inside a finally
+         # block, not worth throwing over
+         [void](exec hugo mod get "github.com/gohugoio/hugoDocs@$resolvedVersion")
+      } catch {
+         Write-Warning "hugo mod get failed for '$resolvedVersion' - go.mod/go.sum may be out of sync with hugo.toml"
       } finally {
          Pop-Location
       }
@@ -144,7 +152,7 @@ $diffArgs = @{
    NoticeTitle = if ($Ref) { "hugoDocs '$Ref' has keyword changes" } else { 'Keyword snapshot is out of date' }
 }
 if ($Notice) { $diffArgs.Notice = $true }
-if ($env:GITHUB_STEP_SUMMARY) {
+if ($env:GITHUB_STEP_SUMMARY -and -not $NoSummary) {
    $diffArgs.OutFile = $env:GITHUB_STEP_SUMMARY
    $diffArgs.Append = $true
 }

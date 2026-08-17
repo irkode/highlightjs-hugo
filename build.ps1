@@ -118,11 +118,14 @@ try {
             $KeywordsReports += $stepResult
          }
       }
-      # everything relevant already ran and logged - resurface it here so it isn't lost
-      # among the highlight.js/hugo build output that follows
+      # only resurface reports with an actual change - "no changes" was already said
+      # once and isn't worth repeating - so it doesn't get lost among the
+      # highlight.js/hugo build output that follows
       foreach ($report in $KeywordsReports) {
-         Write-Host ""
-         Write-Host $report.Text
+         if ($report.Changed) {
+            Write-Host ""
+            Write-Host $report.Text
+         }
       }
    } catch {
       Write-Error "$_`nBuild failed!" -ErrorAction Continue
