@@ -118,71 +118,109 @@ jobs:
               echo "### checksums.txt"
               cat checksums.txt
 
-         - name: Generate changelog
-           id: changelog
+         - name: Determine release refs
+           id: refs
            shell: bash
            run: |
-              # Find the tag of the latest published release (skip drafts)
               PREV_TAG=$(gh release list --limit 10 --json tagName,isDraft \
                 | jq -r '.[] | select(.isDraft == false) | select(.tagName != "${{ env.RELEASE_TAG }}") | .tagName' \
                 | head -1)
 
+              echo "prev-tag=${PREV_TAG}" >> "$GITHUB_OUTPUT"
+              echo "head-tag=${{ env.RELEASE_TAG }}" >> "$GITHUB_OUTPUT"
+
               if [ -z "$PREV_TAG" ]; then
-                RANGE="${{ env.RELEASE_TAG }}"
-                SINCE_LINE="Initial release"
+                echo "range=${{ env.RELEASE_TAG }}" >> "$GITHUB_OUTPUT"
               else
-                RANGE="${PREV_TAG}..${{ env.RELEASE_TAG }}"
-                SINCE_LINE="Changes since ${PREV_TAG}"
+                echo "range=${PREV_TAG}..${{ env.RELEASE_TAG }}" >> "$GITHUB_OUTPUT"
               fi
 
-              echo "Range: $RANGE"
-              echo "prev-tag=${PREV_TAG}" >> "$GITHUB_OUTPUT"
+         - name: Generate commit log
+           id: commitlog
+           shell: bash
+           env:
+             RANGE: ${{ steps.refs.outputs.range }}
+           run: |
+             LOG=$(git log "$RANGE" \
+               --pretty=format:"- [\`%h\`](${{ github.server_url }}/${{ github.repository }}/commit/%H) %ad — %s" \
+               --date=format:"%Y-%m-%d" \
+               --no-merges)
+             {
+               echo 'commitlog<<EOF'
+               echo "$LOG"
+               echo 'EOF'
+             } >> "$GITHUB_OUTPUT"
 
-              LOG=$(git log "$RANGE" \
-                --pretty=format:"- [\`%h\`](${{ github.server_url }}/${{ github.repository }}/commit/%H) %ad — %s" \
-                --date=format:"%Y-%m-%d" \
-                --no-merges)
-
-              {
-                echo "## ${SINCE_LINE}"
-                echo ""
-                echo "$LOG"
-              } > release-body.md
-
-              cat release-body.md
+         - name: Generate What's New
+           id: whats-new
+           uses: github/copilot-release-notes@main
+           with:
+             base-ref: ${{ steps.refs.outputs.prev-tag }}
+             head-ref: ${{ steps.refs.outputs.head-tag }}
+           env:
+             COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_GITHUB_TOKEN }}
 
          # hugen/_hugodocs is committed, so the delta between two releases is already in
          # git history - no rebuild needed. Goes in front of the commit list.
-         - name: Prepend keyword changes to release notes
+         - name: Generate keyword changes
+           id: keywords
            shell: pwsh
+           env:
+             PREV_TAG: ${{ steps.refs.outputs.prev-tag }}
            run: |
-              $prev = '${{ steps.changelog.outputs.prev-tag }}'
-              $prevDir = Join-Path '${{ github.workspace }}' 'work/prev-keywords'
-              [void](New-Item -ItemType Directory -Force -Path $prevDir)
-              if ($prev) {
-                 $json = git show "${prev}:hugen/_hugodocs/functions.json" 2>$null
-                 $gitShowExitCode = $LASTEXITCODE
-                 # pwsh actions steps fail on a stray non-zero $LASTEXITCODE even after
-                 # it has been handled here, so clear it once read
-                 $global:LASTEXITCODE = 0
-                 if ($gitShowExitCode -eq 0 -and $json) {
-                    $json | Set-Content -Encoding utf8 -Path (Join-Path $prevDir 'functions.json')
-                 } else {
-                    # tag predates the committed extraction -- reported as "no baseline"
-                    Write-Host "no hugen/_hugodocs/functions.json at $prev"
-                 }
+             $prevDir = Join-Path '${{ github.workspace }}' 'work/prev-keywords'
+             [void](New-Item -ItemType Directory -Force -Path $prevDir)
+
+             if ($env:PREV_TAG) {
+               $json = git show "${env:PREV_TAG}:hugen/_hugodocs/functions.json" 2>$null
+               $gitShowExitCode = $LASTEXITCODE
+
+               $global:LASTEXITCODE = 0
+
+               if ($gitShowExitCode -eq 0 -and $json) {
+               $json | Set-Content -Encoding utf8 -Path (Join-Path $prevDir 'functions.json')
+               } else {
+               Write-Host "no hugen/_hugodocs/functions.json at $env:PREV_TAG"
+               }
+             }
+
+             $heading = if ($env:PREV_TAG) {
+               "## Keyword changes since $env:PREV_TAG"
+             } else {
+               '## Keyword changes'
+             }
+
+             $diff = ./build/keywords-diff.ps1 `
+               -OldDir $prevDir `
+               -NewDir hugen/_hugodocs `
+               -Format Markdown `
+               -Heading $heading `
+               -OutFile keywords-section.md
+
+             # a missing baseline (tag predates the committed extraction) is not the same as
+             # "nothing changed" - say so instead of silently dropping the section
+             $includeSection = $diff.Changed -or -not $diff.HasBaseline
+             if ($includeSection) {
+               "include-section=true" >> $env:GITHUB_OUTPUT
+             } else {
+               "include-section=false" >> $env:GITHUB_OUTPUT
+               Write-Host 'no keyword changes - section omitted'
+             }
+
+         - name: Assemble release notes
+           shell: pwsh
+           env:
+             INCLUDE_KEYWORDS_SECTION: ${{ steps.keywords.outputs.include-section }}
+             WHATS_NEW: ${{ steps.whats-new.outputs.release-notes }}
+             COMMITLOG: ${{ steps.commitlog.outputs.commitlog }}
+           run: |
+              $parts = @()
+              if ($env:INCLUDE_KEYWORDS_SECTION -eq 'true') {
+                 $parts += (Get-Content -Raw keywords-section.md).TrimEnd()
               }
-              $heading = if ($prev) { "## Keyword changes since $prev" } else { '## Keyword changes' }
-              $diff = ./build/keywords-diff.ps1 -OldDir $prevDir -NewDir hugen/_hugodocs `
-                 -Format Markdown -Heading $heading -OutFile keywords-section.md
-              # most releases change nothing -- do not open the notes with an empty section
-              if ($diff.Changed) {
-                 $section = (Get-Content -Raw keywords-section.md).TrimEnd()
-                 $commits = (Get-Content -Raw release-body.md).TrimEnd()
-                 Set-Content -Encoding utf8 -Path release-body.md -Value "$section`n`n$commits`n"
-              } else {
-                 Write-Host 'no keyword changes - section omitted'
-              }
+              $parts += $env:WHATS_NEW.TrimEnd()
+              $parts += "## Full Changelog`n`n$($env:COMMITLOG.TrimEnd())"
+              Set-Content -Encoding utf8 -Path release-body.md -Value (($parts -join "`n`n") + "`n")
               Write-Host '### release-body.md'
               Get-Content release-body.md
 
