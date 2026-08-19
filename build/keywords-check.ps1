@@ -83,7 +83,7 @@ if ($Ref) {
    $overlay = Join-Path $TargetDir 'hugo.overlay.toml'
    Set-Content -Encoding utf8 -Path $overlay -Value $patched
    # right-most config file wins, so the overlay replaces the pinned module import
-   $hugoArgs += @('--config', "hugo.toml,$overlay")
+   $hugoArgs += @('--config', "'hugo.toml,$overlay'")
 
    # Hugo rewrites these for the version it resolves -- restore them afterwards
    foreach ($name in @('go.mod', 'go.sum', 'hugo.direct.sum')) {

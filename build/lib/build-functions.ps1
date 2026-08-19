@@ -201,6 +201,7 @@ function ExtractKeywordsFromDocs {
    [CmdLetBinding()]
    param()
    $SnapshotDir = Test-Folder -Create $HugenDir "_hugodocs"
+   $HugoDocsDir = Test-Folder -Create $HugenDir "hugodocs"
    $Step = "Extract hugoDocs functions (pinned version)"
    $result = $null
    try {
@@ -209,6 +210,8 @@ function ExtractKeywordsFromDocs {
       } else {
          Write-Verbose "CALL: $Step"
          $result = & (Join-Path $ScriptsDir "keywords-check.ps1") -Update:$UpdateKeywords -Notice
+         Set-Location $HugoDocsDir
+         exec hugo mod tidy
       }
       # the grammar build reads this, so it has to exist even when the step is skipped
       [void](Test-File $SnapshotDir "functions.json")

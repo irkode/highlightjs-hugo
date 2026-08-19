@@ -98,6 +98,9 @@ try {
       }
    }
 
+   if ($UpdateKeywords) {
+      $Steps = @('ExtractKeywordsLatest') + $Steps
+   }
    try {
       $hvmStatus = $ENV:HVM_SHOW_STATUS; $ENV:HVM_SHOW_STATUS = $false
       & $ScriptsDir/versions-set-wanted.ps1 -VersionConfigFile $ProjectRoot\.versions.json
