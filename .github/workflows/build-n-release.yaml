@@ -193,15 +193,7 @@ jobs:
            env:
               COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_GITHUB_TOKEN }}
 
-         - name: Show What's New
-           shell: bash
-           env:
-             WHATS_NEW: ${{ steps.whats-new.outputs.response }}
-           run: |
-             echo "Generated What's New:"
-             echo "$WHATS_NEW"
-
-              # KEEP it in here in case we switch to using PRs
+         # KEEP it in here in case we switch to using PRs
          # - name: Generate What's New
          #   id: whats-new
          #   uses: github/copilot-release-notes@main
