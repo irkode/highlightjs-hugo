@@ -153,12 +153,41 @@ jobs:
 
          - name: Generate What's New
            id: whats-new
-           uses: github/copilot-release-notes@main
+           uses: actions/ai-inference@v3
            with:
-             base-ref: ${{ steps.refs.outputs.prev-tag }}
-             head-ref: ${{ steps.refs.outputs.head-tag }}
+             model: gpt-4.1
+             system-prompt: |
+               You are generating release notes for a software project.
+
+               Summarize the supplied commit messages into a concise,
+               human-readable "What's New" section.
+
+               Rules:
+               - Return ONLY Markdown bullet points.
+               - Do not return a heading.
+               - Combine multiple commits that belong to the same feature or change.
+               - A series of implementation commits should normally become one bullet.
+               - Describe the user-visible result, not the individual commits.
+               - Ignore purely internal refactoring unless it has a meaningful
+               user-visible impact.
+               - Do not mention commit hashes or dates.
+               - Do not invent functionality that isn't represented by the commits.
+               - Keep each bullet concise, preferably one sentence.
+               - Do not produce a bullet for every commit.
+
+               Commit messages:
+               ${{ steps.commitlog.outputs.commitlog }}
            env:
-             COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_GITHUB_TOKEN }}
+              COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_GITHUB_TOKEN }}
+         # KEEP it in here in case we switch to using PRs
+         # - name: Generate What's New
+         #   id: whats-new
+         #   uses: github/copilot-release-notes@main
+         #   with:
+         #     base-ref: ${{ steps.refs.outputs.prev-tag }}
+         #     head-ref: ${{ steps.refs.outputs.head-tag }}
+         #   env:
+         #     COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_GITHUB_TOKEN }}
 
          # hugen/_hugodocs is committed, so the delta between two releases is already in
          # git history - no rebuild needed. Goes in front of the commit list.
