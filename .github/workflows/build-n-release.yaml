@@ -151,11 +151,17 @@ jobs:
                echo 'EOF'
              } >> "$GITHUB_OUTPUT"
 
+         - name: Set up Node.js
+           uses: actions/setup-node@v7
+
+         - name: Install Copilot CLI
+           run: npm install -g @github/copilot
+
          - name: Generate What's New
            id: whats-new
            uses: actions/ai-inference@v3
            with:
-             model: gpt-4.1
+             model: auto
              system-prompt: |
                You are generating release notes for a software project.
 
@@ -164,7 +170,7 @@ jobs:
 
                Rules:
                - Return ONLY Markdown bullet points.
-               - Do not return a heading.
+               - Use level two hading "What's new in ${{ steps.refs.outputs.head-tag }}".
                - Combine multiple commits that belong to the same feature or change.
                - A series of implementation commits should normally become one bullet.
                - Describe the user-visible result, not the individual commits.
@@ -175,11 +181,27 @@ jobs:
                - Keep each bullet concise, preferably one sentence.
                - Do not produce a bullet for every commit.
 
-               Commit messages:
+             prompt: |
+               Summarize the following commits for release ${{ steps.refs.outputs.head-tag }}.
+
+               These are the changes since ${{ steps.refs.outputs.prev-tag }}:
+
                ${{ steps.commitlog.outputs.commitlog }}
+
+               Produce the What's New bullet points now.
+
            env:
               COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_GITHUB_TOKEN }}
-         # KEEP it in here in case we switch to using PRs
+
+         - name: Show What's New
+           shell: bash
+           env:
+             WHATS_NEW: ${{ steps.whats-new.outputs.response }}
+           run: |
+             echo "Generated What's New:"
+             echo "$WHATS_NEW"
+
+              # KEEP it in here in case we switch to using PRs
          # - name: Generate What's New
          #   id: whats-new
          #   uses: github/copilot-release-notes@main
@@ -251,14 +273,14 @@ jobs:
            shell: pwsh
            env:
              INCLUDE_KEYWORDS_SECTION: ${{ steps.keywords.outputs.include-section }}
-             WHATS_NEW: ${{ steps.whats-new.outputs.release-notes }}
+             WHATS_NEW: ${{ steps.whats-new.outputs.response }}
              COMMITLOG: ${{ steps.commitlog.outputs.commitlog }}
            run: |
               $parts = @()
+              $parts += $env:WHATS_NEW.TrimEnd()
               if ($env:INCLUDE_KEYWORDS_SECTION -eq 'true') {
                  $parts += (Get-Content -Raw keywords-section.md).TrimEnd()
               }
-              $parts += $env:WHATS_NEW.TrimEnd()
               $parts += "## Full Changelog`n`n$($env:COMMITLOG.TrimEnd())"
               Set-Content -Encoding utf8 -Path release-body.md -Value (($parts -join "`n`n") + "`n")
               Write-Host '### release-body.md'
