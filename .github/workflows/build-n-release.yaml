@@ -200,16 +200,27 @@ jobs:
              $prevDir = Join-Path '${{ github.workspace }}' 'work/prev-keywords'
              [void](New-Item -ItemType Directory -Force -Path $prevDir)
 
-             if ($env:PREV_TAG) {
-               $json = git show "${env:PREV_TAG}:hugen/_hugodocs/functions.json" 2>$null
+             $baselineRef = $env:PREV_TAG
+             if ($baselineRef) {
+               $json = git show "${baselineRef}:hugen/_hugodocs/functions.json" 2>$null
                $gitShowExitCode = $LASTEXITCODE
 
                $global:LASTEXITCODE = 0
 
+               if ($gitShowExitCode -ne 0 -or -not $json) {
+                 # tag predates the committed extraction -- fall back to the oldest commit
+                 # that has it, so the section still shows real content instead of nothing
+                 Write-Host "no hugen/_hugodocs/functions.json at $baselineRef - falling back to oldest tracked commit"
+                 $baselineRef = (git log --format=%H -- hugen/_hugodocs/functions.json | Select-Object -Last 1)
+                 if ($baselineRef) {
+                   $json = git show "${baselineRef}:hugen/_hugodocs/functions.json" 2>$null
+                   $gitShowExitCode = $LASTEXITCODE
+                   $global:LASTEXITCODE = 0
+                 }
+               }
+
                if ($gitShowExitCode -eq 0 -and $json) {
-               $json | Set-Content -Encoding utf8 -Path (Join-Path $prevDir 'functions.json')
-               } else {
-               Write-Host "no hugen/_hugodocs/functions.json at $env:PREV_TAG"
+                 $json | Set-Content -Encoding utf8 -Path (Join-Path $prevDir 'functions.json')
                }
              }
 
