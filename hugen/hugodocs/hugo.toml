@@ -20,7 +20,7 @@ uglyUrls = 'true'
       ignoreConfig  = true
       ignoreImports = true
       path          = 'github.com/gohugoio/hugoDocs'
-      version       = 'v0.148.1-0.20260813143418-2a9c6b118ccc'
+      version       = 'v0.148.1-0.20260817191704-afbb977e5dba'
       [[module.imports.mounts]]
          source = "content/en/functions"
          target = "content/functions"

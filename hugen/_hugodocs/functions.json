@@ -47,6 +47,7 @@
   "crypto.SHA1": { "section": "crypto", "aliases": ["sha1"] },
   "crypto.SHA256": { "section": "crypto", "aliases": ["sha256"] },
   "css.Build": { "section": "css", "aliases": [] },
+  "css.ChromaStyles": { "section": "css", "aliases": [] },
   "css.PostCSS": { "section": "css", "aliases": ["postCSS"] },
   "css.Quoted": { "section": "css", "aliases": [] },
   "css.Sass": { "section": "css", "aliases": ["toCSS"] },
