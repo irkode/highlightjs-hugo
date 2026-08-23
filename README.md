@@ -1,31 +1,30 @@
+<!-- this README is generated with hugen/github -->
+<div>
 <img align="left" src="huggingface-96x96.png" style="width:96px;"/>
 <aside style="flex:1; padding-left:12px;">
 <h1>Advanced syntax highlighting for HuGo templates<br/></h1>
 </aside>
+</div>
+<p><img align="center" src="highlightjs-hugo.png"></p>
 
-Did you ever wonder why hugo templates get random highlighting in
-[Hugos Discourse Forum](https://discourse.gohugo.io/) ?
+Did you ever wonder why hugo templates get random highlighting in [Hugo’s Discourse Forum](https://discourse.gohugo.io/)?
 
-This is due to the use of [Highlight.js](https://highlightjs.org/), which does not natively support
-Go or Hugo templates. As a result, automatic language detection selects a best match, leading to
-incorrect or misleading highlighting.
+This is due to the use of [Highlight.js](https://highlightjs.org/), which does not natively support Go or Hugo templates. As a result, automatic language detection selects a best match, leading to incorrect or misleading highlighting.
 
 ## Features
-
-![preview](highlightjs-hugo.png)
 
 ### Highlight.js Grammars
 
 - Support for:
-   - Hugo and Go templates
-   - Html and Text templates
-
+  
+  - Hugo and Go templates
+  - Html and Text variants
 - Full coverage of:
-   - Template keywords
-   - Built-in functions
-   - Aliases
-
-- Improved automatic language detection[^1]
+  
+  - Template keywords
+  - Built-in functions
+  - Aliases
+- Improved automatic language detection (see [A word on Auto detection](https://irkode.github.io/highlightjs-hugo/highlightjs/autodetect))
 - Advanced highlighting scopes
 - Prebuilt **browser bundle** for immediate use
 
@@ -34,52 +33,46 @@ incorrect or misleading highlighting.
 - Theme components built on the provided grammars
 - Enables proper syntax highlighting in Discourse environments
 
-## Documentation
-
-- https://irkode.github.io/highlightjs-hugo/
-
-Each artifact includes its own `README.md` with usage instructions.
-
 ## Download
 
-Packages can be downloaded from:
-[Releases](https://github.com/irkode/highlightjs-hugo/releases/latest).
+Packages can be downloaded from: [Releases](https://github.com/irkode/highlightjs-hugo/releases/latest).
 
-- Discourse theme Components:
-  [highlightjs-hugo-discourse.zip](https://github.com/irkode/highlightjs-hugo/releases/latest/download/highlightjs-hugo-discourse.zip)
-- Highlight.js extra sources to build your own:
-  [highlightjs-hugo-extra-src.zip](https://github.com/irkode/highlightjs-hugo/releases/latest/download/highlightjs-hugo-extra-src.zip)
-- Ready to use Browser Javascripts:
-  [highlightjs-hugo-js-modules.zip](https://github.com/irkode/highlightjs-hugo/releases/latest/download/highlightjs-hugo-js-modules.zip)
+- Discourse theme Components: [highlightjs-hugo-discourse.zip](https://github.com/irkode/highlightjs-hugo/releases/latest/download/highlightjs-hugo-discourse.zip)
+- Highlight.js extra sources to build your own: [highlightjs-hugo-extra-src.zip](https://github.com/irkode/highlightjs-hugo/releases/latest/download/highlightjs-hugo-extra-src.zip)
+- Ready to use Browser Javascripts: [highlightjs-hugo-js-modules.zip](https://github.com/irkode/highlightjs-hugo/releases/latest/download/highlightjs-hugo-js-modules.zip)
 - repository sources - GitHub release standard assets
 
 As of now we do not publish anything to a CDN.
 
+## Documentation
+
+Downloaded artifacts contain their own `README.md` with instructions.
+
+For more details and examples visit the [Project documentation site](https://irkode.github.io/highlightjs-hugo/)
+
 ## Build from Source
 
-Build scripts are included to generate all artifacts. These scripts are tailored to the project’s
-internal workflow and environment and not intended as a general-purpose build system.
+Build scripts are included to generate all artifacts. These scripts are tailored to the project’s internal workflow and environment and not intended as a general-purpose build system.
 
-Development Environment is a Windows 11 Professional with a recent _Powershell Core_ installation.
+Development Environment is a Windows 11 Professional with a recent *Powershell Core* installation.
 
 - Components that have to be there
-   - Powershell Core
-   - Hugo ≥ v0.164.0
-   - Go ≥ 1.26.3
-   - Node 22.14.0 (highlight.js requirement)
-
+  
+  - Powershell Core
+  - Hugo ≥ v0.164.0
+  - Go ≥ 1.26.3
+  - Node 22.14.0 (highlight.js requirement)
 - Components automatically pulled by the build script
-   - Highlight.js 11.11.1 (as a clone)
-   - hugoDocs (as a hugo module)
-
+  
+  - Highlight.js 11.11.1 (as a clone)
+  - hugoDocs (as a hugo module)
 - Build all
-
-   ```text
-   git clone https://github.com/irkode/highlightjs-hugo/ highlightjs-hugo
-   Set-Location highlightjs-hugo
-   .\build.ps1 -Verbose
-   ```
-
+  
+  ```text
+  git clone https://github.com/irkode/highlightjs-hugo/ highlightjs-hugo
+  Set-Location highlightjs-hugo
+  .\build.ps1 -Verbose
+  ```
 - Build results are in `/release`.
 
 ### Notes
@@ -89,9 +82,7 @@ Development Environment is a Windows 11 Professional with a recent _Powershell C
 
 ## Support
 
-Feedback, issues, and ideas are welcome
-
-https://github.com/irkode/highlightjs-hugo/issues
+Feedback, issues, and ideas are welcome. Please post these to the [Project issue tracker](https://github.com/irkode/highlightjs-hugo/issues/)
 
 ## Hugo as a Generator
 
@@ -102,13 +93,11 @@ Hugo is used as a general-purpose generation engine to:
 - Build grammar modules and JavaScript libraries
 - Generate tests
 - Create Discourse plugins
-
 - Produce documentation and README files
 
-Take it as a nifty but hacky showcase to use Hugo as a generic templating and publishing engine –
-extended beyond static WEB web sites.
+Take it as a nifty but hacky showcase to use Hugo as a generic templating and publishing engine – extended beyond static WEB web sites.
 
-If you want to dig in, here's the source: https://github.com/irkode/highlightjs-hugo/tree/main/hugen
+If you want to dig in, here’s the source: [Hugen generator](https://github.com/irkode/highlightjs-hugo/tree/main/hugen)
 
 ## License
 
@@ -118,20 +107,16 @@ If you want to dig in, here's the source: https://github.com/irkode/highlightjs-
 Licenses for foreign assets may be different:
 
 - Highlight.js icon: © 2006, Ivan Sagalaev. (BSD-Clause-3)
-- Hugo _borrowed_ styles: © Hugo Authors (Apache-2.0)
+- Hugo *borrowed* styles: © Hugo Authors (Apache-2.0)
 
 ## Author
 
-- Irkode <irkode@rikode.de>
+- Irkode [irkode@rikode.de](mailto:irkode@rikode.de)
 
 ## References
 
-- Repository: https://github.com/irkode/highlightjs-hugo/
-- Documentation : https://irkode.github.io/highlightjs-hugo/
-- Highlight.js : https://highlightjs.org/
-- Hugo : https://gohugo.io/
-- Hugo Forum: https://discourse.gohugo.io/
-
-[^1]:
-    Check out details here:
-    [A word on auto detection](https://irkode.github.io/highlightjs-hugo/highlightjs/autodetect)
+- [Project GitHub Repository](https://github.com/irkode/highlightjs-hugo/)
+- [Project Documentation Site](https://irkode.github.io/highlightjs-hugo/)
+- [Highlight.JS Homepage](https://highlightjs.org/)
+- [Hugo Homepage](https://gohugo.io/)
+- [Hugo Discourse Forum](https://discourse.gohugo.io/)
