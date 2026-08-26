@@ -161,7 +161,7 @@ Real world examples from our docs layouts
 				{{- partial "header/menu.html" (dict "menuID" "main" "page" .) -}}
 			</div>
 			<div class="header-right">
-				{{- with site.Params.h4h.repository }}
+				{{- with $.Param "baseURLs.repo" }}
 					<a href="{{ . }}"><img id="github-mark" class="header-icon" alt="View on GitHub" /></a>
 				{{- end }}
 				<button type="button" id="theme-toggle" class="icon-button">
@@ -176,7 +176,7 @@ Real world examples from our docs layouts
 
 		<footer class="site-footer">
 			<div class="footer-left">
-				<p>{{- with .GitInfo }}<a href="{{ add site.Params.h4h.repository "/commit/" .Hash }}" aria-label="View commit {{ .AbbreviatedHash }} on GitHub">#{{- .AbbreviatedHash }}</a> &mdash; {{ end }}{{ .Lastmod.Format "2006-01-02" }}</p>
+				<p>{{- with .GitInfo }}<a href="{{ add ($.Param "baseURLs.repo") "/commit/" .Hash }}" aria-label="View commit {{ .AbbreviatedHash }} on GitHub">#{{- .AbbreviatedHash }}</a> &mdash; {{ end }}{{ .Lastmod.Format "2006-01-02" }}</p>
 			</div>
 			<div class="footer-center">
 				<p>&copy; {{ now.Year }}. Irkode &lt;github.com/irkode&gt;</p>
@@ -266,7 +266,7 @@ Real world examples from our docs layouts
 				{{- partial "header/menu.html" (dict "menuID" "main" "page" .) -}}
 			</div>
 			<div class="header-right">
-				{{- with site.Params.h4h.repository }}
+				{{- with $.Param "baseURLs.repo" }}
 					<a href="{{ . }}"><img id="github-mark" class="header-icon" alt="View on GitHub" /></a>
 				{{- end }}
 				<button type="button" id="theme-toggle" class="icon-button">
@@ -281,7 +281,7 @@ Real world examples from our docs layouts
 
 		<footer class="site-footer">
 			<div class="footer-left">
-				<p>{{- with .GitInfo }}<a href="{{ add site.Params.h4h.repository "/commit/" .Hash }}" aria-label="View commit {{ .AbbreviatedHash }} on GitHub">#{{- .AbbreviatedHash }}</a> &mdash; {{ end }}{{ .Lastmod.Format "2006-01-02" }}</p>
+				<p>{{- with .GitInfo }}<a href="{{ add ($.Param "baseURLs.repo") "/commit/" .Hash }}" aria-label="View commit {{ .AbbreviatedHash }} on GitHub">#{{- .AbbreviatedHash }}</a> &mdash; {{ end }}{{ .Lastmod.Format "2006-01-02" }}</p>
 			</div>
 			<div class="footer-center">
 				<p>&copy; {{ now.Year }}. Irkode &lt;github.com/irkode&gt;</p>

@@ -25,7 +25,8 @@ incorrect or misleading highlighting.
    - Built-in functions
    - Aliases
 
-- Improved automatic language detection (see [A word on Auto detection](/highlightjs/autodetect.md))
+- Improved automatic language detection (see
+  [A word on Auto detection](site://highlightjs/autodetect.md))
 - Advanced highlighting scopes
 - Prebuilt **browser bundle** for immediate use
 
@@ -36,15 +37,14 @@ incorrect or misleading highlighting.
 
 ## Download
 
-Packages can be downloaded from:
-[Releases](https://github.com/irkode/highlightjs-hugo/releases/latest).
+Packages can be downloaded from: [Releases](repo://releases/latest).
 
 - Discourse theme Components:
-  [highlightjs-hugo-discourse.zip](https://github.com/irkode/highlightjs-hugo/releases/latest/download/highlightjs-hugo-discourse.zip)
+  [highlightjs-hugo-discourse.zip](repo://releases/latest/download/highlightjs-hugo-discourse.zip)
 - Highlight.js extra sources to build your own:
-  [highlightjs-hugo-extra-src.zip](https://github.com/irkode/highlightjs-hugo/releases/latest/download/highlightjs-hugo-extra-src.zip)
+  [highlightjs-hugo-extra-src.zip](repo://releases/latest/download/highlightjs-hugo-extra-src.zip)
 - Ready to use Browser Javascripts:
-  [highlightjs-hugo-js-modules.zip](https://github.com/irkode/highlightjs-hugo/releases/latest/download/highlightjs-hugo-js-modules.zip)
+  [highlightjs-hugo-js-modules.zip](repo://releases/latest/download/highlightjs-hugo-js-modules.zip)
 - repository sources - GitHub release standard assets
 
 As of now we do not publish anything to a CDN.
@@ -54,7 +54,7 @@ As of now we do not publish anything to a CDN.
 Downloaded artifacts contain their own `README.md` with instructions.
 
 For more details and examples visit the
-[Project documentation site](https://irkode.github.io/highlightjs-hugo/)
+[Project documentation site](site://)
 
 ## Build from Source
 
@@ -76,7 +76,7 @@ Development Environment is a Windows 11 Professional with a recent _Powershell C
 - Build all
 
    ```text
-   git clone https://github.com/irkode/highlightjs-hugo/ highlightjs-hugo
+   git clone {{< param baseURLs.repo >}} highlightjs-hugo
    Set-Location highlightjs-hugo
    .\build.ps1 -Verbose
    ```
@@ -91,7 +91,7 @@ Development Environment is a Windows 11 Professional with a recent _Powershell C
 ## Support
 
 Feedback, issues, and ideas are welcome. Please post these to the
-[Project issue tracker](https://github.com/irkode/highlightjs-hugo/issues)
+[Project issue tracker](repo://issues)
 
 ## Hugo as a Generator
 
@@ -108,8 +108,7 @@ Hugo is used as a general-purpose generation engine to:
 Take it as a nifty but hacky showcase to use Hugo as a generic templating and publishing engine –
 extended beyond static WEB web sites.
 
-If you want to dig in, here's the source:
-[Hugen generator](https://github.com/irkode/highlightjs-hugo/tree/main/hugen)
+If you want to dig in, here's the source: [Hugen generator](repo://tree/main/hugen)
 
 ## License
 
@@ -127,8 +126,8 @@ Licenses for foreign assets may be different:
 
 ## References
 
-- [Project GitHub Repository](https://github.com/irkode/highlightjs-hugo/)
-- [Project Documentation Site](https://irkode.github.io/highlightjs-hugo/)
+- [Project GitHub Repository](repo://)
+- [Project Documentation Site](site://)
 - [Highlight.JS Homepage](https://highlightjs.org/)
 - [Hugo Homepage](https://gohugo.io/)
 - [Hugo Discourse Forum](https://discourse.gohugo.io/)
