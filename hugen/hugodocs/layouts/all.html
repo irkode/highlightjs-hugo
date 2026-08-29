@@ -1,0 +1,11 @@
+{{- $tpl := templates.Current.Name }}
+{{- .Store.Set "templateName" $tpl }}
+{{- .Store.Set "templateType" (path.Ext $tpl | strings.TrimPrefix ".") }}
+{{- $pagePath := .Path }}
+{{- $idx := math.Counter }}
+{{- with .Params.keywords }}
+	{{- warnf "[%04d][ %-20s ] CAUGHT PAGE : %s :: %s" $idx $tpl $pagePath . }}
+{{- else }}
+	{{- warnf "[%04d][ %-20s ] CAUGHT PAGE : %s" $idx $tpl $pagePath }}
+{{- end }}
+{{- /**/ -}}
