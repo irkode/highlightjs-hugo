@@ -2,9 +2,10 @@
 param(
    # Skip some of the default steps
    [Parameter(Mandatory = $false)][ValidateSet(
-      'BuildDocs',
-      'BuildHighlightJS',
       'BuildDiscoursePlugin',
+      'BuildDocs',
+      'BuildGitHub',
+      'BuildHighlightJS',
       'CloneHighlightJS',
       'DeveloperBuild',
       'ExtractKeywordsFromDocs',
@@ -19,9 +20,10 @@ param(
    # Proceed regardless of test failures
    [Parameter(Mandatory = $false)][switch]$IgnoreMarkupErrors,
    [Parameter(Mandatory = $false)][ValidateSet(
-      'BuildDocs',
-      'BuildHighlightJS',
       'BuildDiscoursePlugin',
+      'BuildDocs',
+      'BuildGitHub',
+      'BuildHighlightJS',
       'CloneHighlightJS',
       'DeveloperBuild',
       'ExtractKeywordsFromDocs',
@@ -54,6 +56,7 @@ if ($PSBoundParameters.Keys -notcontains 'Steps') {
       'BuildHighlightJS'
       'BuildDiscoursePlugin',
       'BuildDocs',
+      'BuildGitHub',
       'DeveloperBuild'
    )
 }

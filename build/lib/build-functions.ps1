@@ -103,6 +103,21 @@ function buildDocs {
       Set-Location $startCWD
    }
 }
+function buildGitHub {
+   [CmdLetBinding()]
+   param()
+   $Step = "Generate GitHub markdown files"
+   $SourceDir = Test-Folder $HugenDir "github"
+   try {
+      exec hugo build --source $SourceDir
+   } catch {
+      Write-Error "FAIL: $Step" -ErrorAction Continue
+      throw "$_"
+   } finally {
+      Set-Location $startCWD
+   }
+}
+
 function cloneHighlightJS {
    [CmdLetBinding()]
    param()
@@ -111,10 +126,14 @@ function cloneHighlightJS {
       if ($Skip -contains 'CloneHighlightJS') {
          Write-Verbose "SKIP: $Step"
       } else {
-         Write-Verbose "CALL: $Step"
+         Write-Verbose "CALL: $Step and activate node ${ENV:NODE_VERSION}"
          Set-Location $WorkDir
+         if ((Test-Path $HighlightJsDir -PathType Container) -and $Clean) {
+            Remove-Item $HighlightJsDir -Force -Recurse
+         }
          if (-not (Test-Path $HighlightJsDir -PathType Container)) {
             exec git clone --single-branch --depth 1 "-b" ${ENV:HIGHLIGHTJS_VERSION} https://github.com/highlightjs/highlight.js.git
+            "${ENV:NODE_VERSION}" | Set-Content -Encoding utf8 highlight.js\.node-version
          } else {
             Write-Warning "HighlightJS: keep current clone. To fresh up remove $HighLightJsDir"
          }
@@ -132,7 +151,6 @@ function cloneHighlightJS {
    } catch {
       Write-Error "FAIL: $Step" -ErrorAction Continue
       throw $_
-      throw
    } finally {
       Set-Location $startCWD
    }
