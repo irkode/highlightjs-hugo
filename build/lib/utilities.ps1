@@ -1,7 +1,21 @@
 function exec {
-   Write-Verbose "exec > $($args -join ' ')"
+   switch ($args[0]) {
+      'node' {
+         Write-Verbose "NODE $(node --version)> $($args -join ' ')"
+         break
+      }
+      'npm' {
+         Write-Verbose "NPM $(npm --version)> $($args -join ' ')"
+         break
+      }
+      default {
+         Write-Verbose "exec > $($args -join ' ')"
+      }
+   }
+
    $rc = 0; $thrown = $false
    try {
+      Write-Output "using: node: $(node --version)"
       Invoke-Expression ($args -join " ")
       $rc = $LastExitCode
    } catch {

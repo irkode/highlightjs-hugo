@@ -53,8 +53,7 @@ As of now we do not publish anything to a CDN.
 
 Downloaded artifacts contain their own `README.md` with instructions.
 
-For more details and examples visit the
-[Project documentation site](site://)
+For more details and examples visit the [Project documentation site](site://)
 
 ## Build from Source
 
@@ -65,7 +64,7 @@ Development Environment is a Windows 11 Professional with a recent _Powershell C
 
 - Components that have to be there
    - Powershell Core
-   - Hugo ≥ v0.164.0
+   - Hugo ≥ v0.165.0
    - Go ≥ 1.26.3
    - Node 22.14.0 (highlight.js requirement)
 
