@@ -1,10 +1,12 @@
 function exec {
    switch ($args[0]) {
       'node' {
+         exec fnm use $ENV:NODE_VERSION
          Write-Verbose "NODE $(node --version)> $($args -join ' ')"
          break
       }
       'npm' {
+         exec fnm use $ENV:NODE_VERSION
          Write-Verbose "NPM $(npm --version)> $($args -join ' ')"
          break
       }

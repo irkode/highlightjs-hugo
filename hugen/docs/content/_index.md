@@ -62,11 +62,13 @@ internal workflow and environment and not intended as a general-purpose build sy
 
 Development Environment is a Windows 11 Professional with a recent _Powershell Core_ installation.
 
-- Components that have to be there
+- Components we use and provide manually
    - Powershell Core
    - Hugo ≥ v0.165.0
    - Go ≥ 1.26.3
-   - Node 22.14.0 (highlight.js requirement)
+   - Node 22.22.3 (last known version that works on windows with highlight.js)
+   - Node 26 (for dev scripts)
+   - fnm - we switch node versions for highlight.js build
 
 - Components automatically pulled by the build script
    - Highlight.js 11.11.1 (as a clone)

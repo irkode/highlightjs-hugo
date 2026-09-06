@@ -1,6 +1,6 @@
 {
    "!go": { "source": "hugen/hugodocs/go.mod" },
    "!hugo": { "source": ".hvm" },
-   "!node": { "version": "22.14.0" },
+   "!node": { "version": "22.22.3" },
    "highlightjs": { "version": "11.11.1" }
 }
