@@ -4,7 +4,7 @@ title   = "Highlight 4 Hugo"
 
 disableKinds  = ['rss', 'taxonomy', 'term']
 enableGitInfo = true
-theme         = "huggingface"
+theme         = "huggingsite"
 
 [params]
    description = "Advanced syntax highlighting for HuGo templates"
@@ -14,9 +14,9 @@ theme         = "huggingface"
    [params.h4h]
       repository = "https://github.com/irkode/highlightjs-hugo/"
 
-   [params.huggingface]
+   [params.huggingsite]
       siteLogo = "img/site-logo.png"
-      [params.huggingface.markup]
+      [params.huggingsite.markup]
          enableHighlightJS = true
 
 [build]

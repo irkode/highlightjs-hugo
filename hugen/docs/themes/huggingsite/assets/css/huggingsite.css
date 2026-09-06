@@ -1,0 +1,18 @@
+/* heavily co-authored by https://claude.ai/chat/ and https://chatgpt.com/ */
+@import "huggingsite/000-reset.css";
+@import "huggingsite/005-colors.css";
+@import "huggingsite/005-vars.css";
+
+/* styles for chroma are added by head/css.html */
+@import "huggingsite/010-syntax/discourse-hljs.css";
+@import "huggingsite/010-syntax/discourse_bare-hljs.css";
+@import "huggingsite/010-syntax/hugodocs-hljs.css";
+@import "huggingsite/010-syntax/hugodocs_bare-hljs.css";
+@import "huggingsite/010-syntax/colorful-hljs.css";
+
+@import "huggingsite/020-layout.css";
+@import "huggingsite/025-theme-toggle.css";
+
+@import "huggingsite/030-menu.css";
+@import "huggingsite/040-media.css";
+@import "huggingsite/041-aside.css";

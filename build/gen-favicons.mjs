@@ -3,22 +3,22 @@ import favicons from 'favicons';
 import fs from 'fs/promises';
 import path from 'path';
 
-const src = 'hugen/docs/themes/huggingface/assets/img/huggingface-1254x1254.png'; // Icon base image
-const outputDir = 'hugen/docs/themes/huggingface/assets/img/favicons';
+const src = 'hugen/docs/themes/huggingsite/assets/img/huggingsite-1254x1254.png'; // Icon base image
+const outputDir = 'hugen/docs/themes/huggingsite/assets/img/favicons';
 
 const config = {
-  path: '/favicons',
-  appName: 'Highlight 4 Hugo',
-  background: '#ffffff',
-  theme_color: '#ffffff',
-  icons: {
-    android: true,        // 192x192 + 512x512
-    appleIcon: true,      // apple-touch-icon (180x180)
-    appleStartup: false,  // ~20 splash screens - skip for normal websites
-    favicons: true,       // favicon.ico + favicon-16x16, 32x32, 48x48
-    windows: false,       // MS Tiles - barely relevant anymore
-    yandex: false         // Yandex - negligible market share outside Russia
-  }
+   path: '/favicons',
+   appName: 'Highlight 4 Hugo',
+   background: '#ffffff',
+   theme_color: '#ffffff',
+   icons: {
+      android: true,        // 192x192 + 512x512
+      appleIcon: true,      // apple-touch-icon (180x180)
+      appleStartup: false,  // ~20 splash screens - skip for normal websites
+      favicons: true,       // favicon.ico + favicon-16x16, 32x32, 48x48
+      windows: false,       // MS Tiles - barely relevant anymore
+      yandex: false         // Yandex - negligible market share outside Russia
+   }
 };
 
 const response = await favicons(src, config);
@@ -27,16 +27,16 @@ await fs.mkdir(outputDir, { recursive: true });
 
 // Generate images
 await Promise.all(
-  response.images.map(img =>
-    fs.writeFile(path.join(outputDir, img.name), img.contents)
-  )
+   response.images.map(img =>
+      fs.writeFile(path.join(outputDir, img.name), img.contents)
+   )
 );
 
 // Generate supplemental files (manifest etc.)
 await Promise.all(
-  response.files.map(file =>
-    fs.writeFile(path.join(outputDir, file.name), file.contents)
-  )
+   response.files.map(file =>
+      fs.writeFile(path.join(outputDir, file.name), file.contents)
+   )
 );
 
 console.log(`\nDone! Files in: ${outputDir}`);

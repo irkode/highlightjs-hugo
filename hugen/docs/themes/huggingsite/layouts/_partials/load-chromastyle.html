@@ -1,6 +1,6 @@
 {{- $theme := printf ".chroma-%s .chroma" . }}
 {{- $style := "" }}
-{{- with add "css/huggingface/styles/chroma/" . "-light.css" }}
+{{- with add "css/huggingsite/styles/chroma/" . "-light.css" }}
 	{{- warnf "CSS: loading style: %s" . -}}
 	{{- with resources.Get . }}
 		{{- $style = replace (.Content | replaceRE `\/\* (Background|PreWrapper) \*\/(.*?)\}` "/* $1 $2 }*/") ".chroma" $theme }}
@@ -8,7 +8,7 @@
 		{{- errorf "CSS: failed to load style: %s" . -}}
 	{{- end }}
 {{- end }}
-{{- with add "css/huggingface/styles/chroma/" . "-dark.css" }}
+{{- with add "css/huggingsite/styles/chroma/" . "-dark.css" }}
 	{{- warnf "CSS: loading style: %s" . -}}
 	{{- with resources.Get . }}
 		{{ $content := replace (.Content | replaceRE `\/\* (Background|PreWrapper) \*\/(.*?)\}` "/* $1 $2 }*/" | replaceRE `\.dark\s+` "") ".chroma" $theme }}

@@ -1,5 +1,5 @@
 {{- $opts := . }}
-{{- $overlayPath := or (index $opts "overlay") site.Params.huggingface.images.overlay }}
+{{- $overlayPath := or (index $opts "overlay") site.Params.huggingsite.images.overlay }}
 {{- $imagePath := index $opts "image" }}
 {{- $tileSize := div (or (index $opts "size") 192) 4 }}
 {{- $imageSizeString := string (mul 4 $tileSize) }}

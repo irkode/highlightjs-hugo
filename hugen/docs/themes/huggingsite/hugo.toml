@@ -1,15 +1,15 @@
 # Hugginface default theme config
 
 [params]
-   [params.huggingface]
+   [params.huggingsite]
       # maybe a map here if we need more browser storage stuff
-      storageKey = "huggingface-theme"
-      siteLogo   = "img/huggingface-logo-48x48.png"
-      [params.huggingface.images]
+      storageKey = "huggingsite-theme"
+      siteLogo   = "img/huggingsite_logo-48x48.png"
+      [params.huggingsite.images]
          overlay = "img/highlightjs-icon.png"
-         site    = "img/huggingface-1254x1254.png"
-         error   = "img/huggingface_404-1254x1254.png"
-      [params.huggingface.markup]
+         site    = "img/huggingsite-1254x1254.png"
+         error   = "img/huggingsite_404-1254x1254.png"
+      [params.huggingsite.markup]
          enableHighlightJS = true
          chromaStyle       = "monokai"
          # language fallback settings

@@ -137,7 +137,7 @@ Real world examples from our docs layouts
 				{{- else }}
 					{{- errorf "Unable to get overlay %q" $path }}
 				{{- end }}
-				{{- with default "img/huggingface-logo-48x48.png" site.Params.huggingface.siteLogo }}
+				{{- with default "img/huggingsite_logo-48x48.png" site.Params.huggingsite.siteLogo }}
 					{{- with $logo := resources.Get . }}
 						{{ with $logo.Filter $filter }}
 							<a href="{{ absURL "" }}">
@@ -186,7 +186,7 @@ Real world examples from our docs layouts
 			</div>
 		</footer>
 
-		{{- if and (.Param "huggingface.markup.enableHighlightJS") (.Store.Get "loadHighlightJS") }}
+		{{- if and (.Param "huggingsite.markup.enableHighlightJS") (.Store.Get "loadHighlightJS") }}
 			{{- with resources.Get "js/highlight-hugo-docs.min.js" }}
 				{{- warnf "[%04d][ %-20s ] : %s :: LOAD %s" $idx $tpl $.Path . }}
 				<script src="{{ .RelPermalink }}"> </script>
@@ -242,7 +242,7 @@ Real world examples from our docs layouts
 				{{- else }}
 					{{- errorf "Unable to get overlay %q" $path }}
 				{{- end }}
-				{{- with default "img/huggingface-logo-48x48.png" site.Params.huggingface.siteLogo }}
+				{{- with default "img/huggingsite_logo-48x48.png" site.Params.huggingsite.siteLogo }}
 					{{- with $logo := resources.Get . }}
 						{{ with $logo.Filter $filter }}
 							<a href="{{ absURL "" }}">
@@ -291,7 +291,7 @@ Real world examples from our docs layouts
 			</div>
 		</footer>
 
-		{{- if and (.Param "huggingface.markup.enableHighlightJS") (.Store.Get "loadHighlightJS") }}
+		{{- if and (.Param "huggingsite.markup.enableHighlightJS") (.Store.Get "loadHighlightJS") }}
 			{{- with resources.Get "js/highlight-hugo-docs.min.js" }}
 				{{- warnf "[%04d][ %-20s ] : %s :: LOAD %s" $idx $tpl $.Path . }}
 				<script src="{{ .RelPermalink }}"> </script>

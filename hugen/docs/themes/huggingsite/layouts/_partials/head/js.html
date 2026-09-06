@@ -1,7 +1,7 @@
 {{- $tpl := templates.Current.Name }}
 {{- $idx := math.Counter }}
 {{- warnf "[%04d][ %-20s ] : %s " $idx $tpl .Path }}
-{{- $storageKey := default "huggingface-theme" site.Params.huggingface.storageKey }}
+{{- $storageKey := default "huggingsite-theme" site.Params.huggingsite.storageKey }}
 <script>
 	(function() {
 	var stored = window.localStorage?.getItem({{ $storageKey }});
