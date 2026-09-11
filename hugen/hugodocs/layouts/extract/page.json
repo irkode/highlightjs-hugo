@@ -1,5 +1,10 @@
 {{- /* printf, not jsonify: one line per function keeps diffs single-line */ -}}
-{{- $functions := partialCached "get-functions.html" "functions" }}
+{{- $tpl := templates.Current.Name }}
+{{- $idx := math.Counter }}
+{{- warnf "[%04d][ %-20s ] : %s " $idx $tpl .Path }}
+
+{{- $mountPoint := path.BaseName .Path }}
+{{- $functions := partialCached "get-functions.html" $mountPoint $mountPoint}}
 {{- $lines := slice }}
 {{- range $name, $entry := $functions }}
    {{- $aliases := slice }}

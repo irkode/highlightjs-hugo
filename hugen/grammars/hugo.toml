@@ -67,11 +67,11 @@ disablePathToLower = true
    [[module.mounts]]
       source = 'data'
       target = 'data'
-   # committed hugoDocs facts -- reading the tracked file (not work/) keeps this
-   # module buildable on a clean checkout and reproducible per commit
+   # hugoDocs facts scraped by hugen/hugodocs (ExtractKeywords step) -- mounting the single
+   # file (not the whole work/hugodocs folder) keeps the data key "hugodocs.functions"
    [[module.mounts]]
-      source = "../_hugodocs"
-      target = "data/hugodocs"
+      source = "../../work/hugodocs/pinned.json"
+      target = "data/hugodocs/functions.json"
 
    [module.hugoVersion]
       min = '0.165.0'

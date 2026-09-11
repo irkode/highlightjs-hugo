@@ -4,6 +4,9 @@ disableKinds = ['rss', 'sitemap', 'taxonomy', 'term']
 # for our json files
 uglyUrls = 'true'
 
+[permalinks]
+   [permalinks.page]
+      extract = '/:slugorcontentbasename'
 # we generate a JSON keyword-list file per language
 [outputFormats.json]
    isHTML         = false
@@ -15,7 +18,15 @@ uglyUrls = 'true'
 [module]
    # import function part of the documentation
    # PINNED: 'master' let the grammars change without a commit. After bumping, run
-   # `.\build.ps1 -Steps ExtractKeywordsFromDocs -UpdateKeywords`
+   # `.\build.ps1 -Steps ExtractKeywords -UpdateKeywords`
+   [[module.imports]]
+      ignoreConfig  = true
+      ignoreImports = true
+      path          = 'github.com/gohugoio/hugoDocs'
+      version       = 'master'
+      [[module.imports.mounts]]
+         source = "content/en/functions"
+         target = "content/latest"
    [[module.imports]]
       ignoreConfig  = true
       ignoreImports = true
@@ -23,7 +34,7 @@ uglyUrls = 'true'
       version       = 'v0.165.1-0.20260905093127-237e4cdf7fe5'
       [[module.imports.mounts]]
          source = "content/en/functions"
-         target = "content/functions"
+         target = "content/pinned"
       # these are referenced even if a page is not rendered
       [[module.imports.mounts]]
          source = "layouts/_shortcodes"

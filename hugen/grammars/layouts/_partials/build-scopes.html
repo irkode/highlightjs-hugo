@@ -31,7 +31,7 @@
 {{- if eq $lang "hugo" }}
    {{- $functions := hugo.Data.hugodocs.functions }}
    {{- if not $functions }}
-      {{- errorf "hugo.Data.hugodocs.functions is empty -- the committed extraction hugen/_hugodocs/functions.json is missing or unreadable; regenerate it with `.\\build.ps1 -Steps ExtractKeywordsFromDocs -UpdateKeywords`" }}
+      {{- errorf "hugo.Data.hugodocs.functions is empty -- work/hugodocs/pinned.json is missing or unreadable; regenerate it with `.\\build.ps1 -Steps ExtractKeywords`" }}
    {{- end }}
 
    {{- range $name, $entry := $functions }}

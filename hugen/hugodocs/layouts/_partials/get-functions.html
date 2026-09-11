@@ -3,26 +3,26 @@
 {{- warnf "[%04d][ %-20s ] : %s" $idx $tpl page.Path }}
 
 {{- $functions := dict }}
-{{- range $p := where site.RegularPages "Section" "functions" }}
-   {{- $name := $p.Title }}
-   {{- if not $name }}
-      {{- warnf "hugoDocs page without title, skipped: %s" $p.Path }}
-      {{- continue }}
-   {{- end }}
+{{- range $p := where site.RegularPages "Section" . }}
+	{{- $name := $p.Title }}
+	{{- if not $name }}
+		{{- warnf "hugoDocs page without title, skipped: %s" $p.Path }}
+		{{- continue }}
+	{{- end }}
 
-   {{- /* nested Aliases only -- a page's top-level `aliases` is a URL redirect */ -}}
-   {{- $aliases := slice }}
-   {{- range $a := $p.Params.functions_and_methods.Aliases }}
-      {{- if $a }}
-         {{- $aliases = $aliases | append $a }}
-      {{- else }}
-         {{- warnf "empty alias at page: %s" $p.Path }}
-      {{- end }}
-   {{- end }}
+	{{- /* nested Aliases only -- a page's top-level `aliases` is a URL redirect */ -}}
+	{{- $aliases := slice }}
+	{{- range $a := $p.Params.functions_and_methods.Aliases }}
+		{{- if $a }}
+			{{- $aliases = $aliases | append $a }}
+		{{- else }}
+			{{- warnf "empty alias at page: %s" $p.Path }}
+		{{- end }}
+	{{- end }}
 
-   {{- /* section from the path -- .Parent.LinkTitle renders go-template as "go template" */ -}}
-   {{- $entry := dict "section" (path.Base $p.Parent.Path) "aliases" (sort $aliases) }}
-   {{- $functions = merge $functions (dict $name $entry) }}
+	{{- /* section from the path -- .Parent.LinkTitle renders go-template as "go template" */ -}}
+	{{- $entry := dict "section" (path.Base $p.Parent.Path) "aliases" (sort $aliases) }}
+	{{- $functions = merge $functions (dict $name $entry) }}
 {{- end }}
 
 {{- return $functions }}
