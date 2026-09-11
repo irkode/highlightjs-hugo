@@ -3,7 +3,7 @@
    Compare two hugoDocs function extractions and report what changed.
 
 .DESCRIPTION
-   Diffs the `functions.json` written by hugen/hugodocs, one line per function:
+   Diffs the `functions.json` written by hugen/keywords, one line per function:
 
       { "cast.ToFloat": { "section": "cast", "aliases": ["float"] }, ... }
 
@@ -16,7 +16,7 @@
    HasBaseline and Text (the rendered Markdown, also written to -OutFile when given).
 
 .EXAMPLE
-   .\build\keywords-diff.ps1 -OldDir work\hugodocs -FileName pinned.json -NewDir work\hugodocs `
+   .\build\keywords-diff.ps1 -OldDir work\keywords -FileName pinned.json -NewDir work\keywords `
       -NewFileName latest.json
 
 .EXAMPLE

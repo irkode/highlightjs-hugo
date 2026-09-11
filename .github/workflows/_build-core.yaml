@@ -72,8 +72,8 @@ jobs:
               go-version: "${{ env.GO_VERSION }}"
               cache: true
               cache-dependency-path: |
-                 hugen/hugodocs/go.sum
-                 hugen/hugodocs/hugo.direct.sum
+                 hugen/keywords/go.sum
+                 hugen/keywords/hugo.direct.sum
 
          - name: Restore Cache - Hugo binary
            id: cache-hugo-bin
@@ -129,7 +129,7 @@ jobs:
               path: ${{ env.HIGHLIGHTJS_DIR }}
               key: highlightjs-${{ runner.os }}-${{ env.HIGHLIGHTJS_VERSION }}
 
-         # hugen/hugodocs mounts hugoDocs twice (pinned + master) so one build produces both
+         # hugen/keywords mounts hugoDocs twice (pinned + master) so one build produces both
          # pinned.json (the grammar build reads this - not gated on ref type, it's required)
          # and latest.json (informational: how far upstream has moved beyond our pin).
          - name: Extract hugoDocs keywords (pinned + master)
@@ -199,7 +199,7 @@ jobs:
          - name: Copy pinned keyword extraction into release artifact
            if: inputs.build-release-artifacts
            run: |
-              Copy-Item (Join-Path ${{ env.WORK_DIR }} "hugodocs/pinned.json") (Join-Path ${{ env.RELEASE_DIR }} "keywords.json")
+              Copy-Item (Join-Path ${{ env.WORK_DIR }} "keywords/pinned.json") (Join-Path ${{ env.RELEASE_DIR }} "keywords.json")
 
          - name: Upload build artifact
            if: inputs.build-release-artifacts

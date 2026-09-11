@@ -67,10 +67,12 @@ disablePathToLower = true
    [[module.mounts]]
       source = 'data'
       target = 'data'
-   # hugoDocs facts scraped by hugen/hugodocs (ExtractKeywords step) -- mounting the single
-   # file (not the whole work/hugodocs folder) keeps the data key "hugodocs.functions"
+   # hugoDocs facts scraped by hugen/keywords (ExtractKeywords step) -- mounting the single
+   # file (not the whole work/keywords folder) keeps the data key "hugodocs.functions".
+   # Kept as "hugodocs", not "keywords", so it doesn't collide with our own
+   # data/keywords/*.yaml mounted above
    [[module.mounts]]
-      source = "../../work/hugodocs/pinned.json"
+      source = "../../work/keywords/pinned.json"
       target = "data/hugodocs/functions.json"
 
    [module.hugoVersion]

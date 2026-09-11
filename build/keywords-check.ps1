@@ -1,11 +1,11 @@
 <#
 .SYNOPSIS
-   Build hugen/hugodocs and report how far the 'master' hugoDocs has moved beyond the pin.
+   Build hugen/keywords and report how far the 'master' hugoDocs has moved beyond the pin.
 
 .DESCRIPTION
-   hugen/hugodocs/hugo.toml imports github.com/gohugoio/hugoDocs twice - once at the pinned
+   hugen/keywords/hugo.toml imports github.com/gohugoio/hugoDocs twice - once at the pinned
    version, once at 'master' - mounted side by side. A single `hugo` build therefore
-   produces both hugen/hugodocs/public/pinned.json (grammars are built from this) and
+   produces both hugen/keywords/public/pinned.json (grammars are built from this) and
    .../latest.json (how far upstream has moved). This script builds once and diffs the two.
 
    -Update adopts 'master' as the new pin: the version it resolved to (read back from
@@ -26,9 +26,9 @@
 #>
 [CmdLetBinding()]
 param(
-   # the Hugo module doing the scraping (default: <repo>/hugen/hugodocs)
+   # the Hugo module doing the scraping (default: <repo>/hugen/keywords)
    [Parameter(Mandatory = $false)][string]$SourceDir,
-   # where the extraction is written (default: <repo>/work/hugodocs)
+   # where the extraction is written (default: <repo>/work/keywords)
    [Parameter(Mandatory = $false)][string]$TargetDir,
    # adopt 'master' as the new pin in hugo.toml
    [Parameter(Mandatory = $false)][switch]$Update,
@@ -46,8 +46,8 @@ $ErrorActionPreference = 'Stop'
 Import-Module (Join-Path $PSScriptRoot 'lib/utilities.ps1')
 
 $repoRoot = Split-Path -Parent $PSScriptRoot
-if (-not $SourceDir) { $SourceDir = Join-Path $repoRoot 'hugen/hugodocs' }
-if (-not $TargetDir) { $TargetDir = Join-Path $repoRoot 'work/hugodocs' }
+if (-not $SourceDir) { $SourceDir = Join-Path $repoRoot 'hugen/keywords' }
+if (-not $TargetDir) { $TargetDir = Join-Path $repoRoot 'work/keywords' }
 if (-not (Test-Path -PathType Container $SourceDir)) { throw "No such directory: $SourceDir" }
 if (Test-Path -PathType Container $TargetDir) { Remove-Item -Recurse -Force $TargetDir }
 [void](New-Item -ItemType Directory -Force -Path $TargetDir)
@@ -96,7 +96,7 @@ if ($Update) {
       } finally {
          Pop-Location
       }
-      Write-Host -ForegroundColor Green "Pinned hugen/hugodocs/hugo.toml to '$resolvedVersion' (was '$pinnedVersion') - review and commit it."
+      Write-Host -ForegroundColor Green "Pinned hugen/keywords/hugo.toml to '$resolvedVersion' (was '$pinnedVersion') - review and commit it."
    }
 }
 
@@ -118,7 +118,7 @@ $diff = & (Join-Path $PSScriptRoot 'keywords-diff.ps1') @diffArgs
 
 if (-not $Update) {
    if ($diff.Changed) {
-      Write-Host -ForegroundColor Yellow ("hugoDocs 'master' differs from the pin in hugen/hugodocs/hugo.toml.`n" +
+      Write-Host -ForegroundColor Yellow ("hugoDocs 'master' differs from the pin in hugen/keywords/hugo.toml.`n" +
          "To adopt it: ./build.ps1 -Steps ExtractKeywords -UpdateKeywords")
    } else {
       Write-Host -ForegroundColor Green "hugoDocs 'master' matches the pinned keyword set."

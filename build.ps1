@@ -29,7 +29,7 @@ param(
       'GenerateHugoGrammars',
       'TestHighlightJS'
    )][string[]]$Steps,
-   # adopt 'master' as the new pin in hugen/hugodocs/hugo.toml
+   # adopt 'master' as the new pin in hugen/keywords/hugo.toml
    [switch]$UpdateKeywords,
    # remove old doc build artifacts
    [switch]$Clean,
@@ -127,7 +127,7 @@ try {
             Write-Host ""
             Write-Host $report.Text
          }
-         Write-Warning ("hugoDocs 'master' differs from the pin in hugen/hugodocs/hugo.toml.`n" +
+         Write-Warning ("hugoDocs 'master' differs from the pin in hugen/keywords/hugo.toml.`n" +
             "To adopt it: ./build.ps1 -Steps ExtractKeywords -UpdateKeywords")
       }
    } catch {

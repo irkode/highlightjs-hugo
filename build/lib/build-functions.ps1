@@ -211,15 +211,15 @@ cssOptions.forEach(css => {
    }
 }
 
-# Builds hugen/hugodocs (it mounts hugoDocs both pinned and at 'master' in one config) and
+# Builds hugen/keywords (it mounts hugoDocs both pinned and at 'master' in one config) and
 # reports how far 'master' has moved beyond the pin -- reported, never fatal.
 # -UpdateKeywords adopts 'master' as the new pin (see keywords-check.ps1). Returns the
 # keywords-check.ps1 report so the caller can reprint it at the end of the build.
 function ExtractKeywords {
    [CmdLetBinding()]
    param()
-   $TargetDir = Join-Path $WorkDir "hugodocs"
-   $HugoDocsDir = Test-Folder -Create $HugenDir "hugodocs"
+   $TargetDir = Join-Path $WorkDir "keywords"
+   $KeywordsDir = Test-Folder -Create $HugenDir "keywords"
    $Step = "Extract hugoDocs keywords (pinned + master)"
    $result = $null
    try {
@@ -228,7 +228,7 @@ function ExtractKeywords {
       } else {
          Write-Verbose "CALL: $Step"
          $result = & (Join-Path $ScriptsDir "keywords-check.ps1") -Update:$UpdateKeywords -Notice
-         Set-Location $HugoDocsDir
+         Set-Location $KeywordsDir
          exec hugo mod tidy
       }
       # the grammar build reads this, so it has to exist even when the step is skipped
