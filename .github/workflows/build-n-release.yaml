@@ -203,8 +203,9 @@ jobs:
          #   env:
          #     COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_GITHUB_TOKEN }}
 
-         # hugen/_hugodocs is committed, so the delta between two releases is already in
-         # git history - no rebuild needed. Goes in front of the commit list.
+         # keywords.json rides along in the release artifact (built by _build-core.yaml from
+         # the pinned hugoDocs extraction) and is also attached to every GitHub Release, so
+         # the previous release's own copy is the baseline - no rebuild, no git history.
          - name: Generate keyword changes
            id: keywords
            shell: pwsh
@@ -214,28 +215,13 @@ jobs:
              $prevDir = Join-Path '${{ github.workspace }}' 'work/prev-keywords'
              [void](New-Item -ItemType Directory -Force -Path $prevDir)
 
-             $baselineRef = $env:PREV_TAG
-             if ($baselineRef) {
-               $json = git show "${baselineRef}:hugen/_hugodocs/functions.json" 2>$null
-               $gitShowExitCode = $LASTEXITCODE
-
+             if ($env:PREV_TAG) {
+               gh release download $env:PREV_TAG --pattern keywords.json --dir $prevDir --clobber 2>$null
+               if ($LASTEXITCODE -ne 0) {
+                 # tag predates keywords.json being attached to releases - no baseline
+                 Write-Host "no keywords.json attached to release $env:PREV_TAG"
+               }
                $global:LASTEXITCODE = 0
-
-               if ($gitShowExitCode -ne 0 -or -not $json) {
-                 # tag predates the committed extraction -- fall back to the oldest commit
-                 # that has it, so the section still shows real content instead of nothing
-                 Write-Host "no hugen/_hugodocs/functions.json at $baselineRef - falling back to oldest tracked commit"
-                 $baselineRef = (git log --format=%H -- hugen/_hugodocs/functions.json | Select-Object -Last 1)
-                 if ($baselineRef) {
-                   $json = git show "${baselineRef}:hugen/_hugodocs/functions.json" 2>$null
-                   $gitShowExitCode = $LASTEXITCODE
-                   $global:LASTEXITCODE = 0
-                 }
-               }
-
-               if ($gitShowExitCode -eq 0 -and $json) {
-                 $json | Set-Content -Encoding utf8 -Path (Join-Path $prevDir 'functions.json')
-               }
              }
 
              $heading = if ($env:PREV_TAG) {
@@ -246,13 +232,14 @@ jobs:
 
              $diff = ./build/keywords-diff.ps1 `
                -OldDir $prevDir `
-               -NewDir hugen/_hugodocs `
+               -NewDir $env:RELEASE_DIR `
+               -FileName keywords.json `
                -Format Markdown `
                -Heading $heading `
                -OutFile keywords-section.md
 
-             # a missing baseline (tag predates the committed extraction) is not the same as
-             # "nothing changed" - say so instead of silently dropping the section
+             # a missing baseline (tag predates keywords.json being attached) is not the same
+             # as "nothing changed" - say so instead of silently dropping the section
              $includeSection = $diff.Changed -or -not $diff.HasBaseline
              if ($includeSection) {
                "include-section=true" >> $env:GITHUB_OUTPUT
@@ -298,6 +285,7 @@ jobs:
                  highlightjs-hugo-extra-src.zip
                  highlightjs-hugo-js-modules.zip
                  checksums.txt
+                 ${{ env.RELEASE_DIR }}/keywords.json
 
    docs:
       if: ${{ !github.event.repository.private }}

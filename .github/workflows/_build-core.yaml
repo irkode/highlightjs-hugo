@@ -129,28 +129,12 @@ jobs:
               path: ${{ env.HIGHLIGHTJS_DIR }}
               key: highlightjs-${{ runner.os }}-${{ env.HIGHLIGHTJS_VERSION }}
 
-         # The committed snapshot must always match what the pin resolves to - a mismatch
-         # means someone bumped hugen/hugodocs/hugo.toml (or hand-edited the snapshot)
-         # without refreshing the other half. That's a broken commit, not routine drift,
-         # so fail loudly instead of silently building grammars from a stale snapshot.
-         - name: Check keyword snapshot against pinned hugoDocs
+         # hugen/hugodocs mounts hugoDocs twice (pinned + master) so one build produces both
+         # pinned.json (the grammar build reads this - not gated on ref type, it's required)
+         # and latest.json (informational: how far upstream has moved beyond our pin).
+         - name: Extract hugoDocs keywords (pinned + master)
            run: |
               $diff = ./build/keywords-check.ps1 -NoSummary -Verbose
-              if ($diff.Changed) {
-                 Write-Host "::error title=Keyword snapshot is out of date::hugen/_hugodocs/functions.json does not match the pinned hugoDocs version ($($diff.AddedCount) new, $($diff.RemovedCount) removed) - see the step log for details. Run './build.ps1 -Steps ExtractKeywordsFromDocs -UpdateKeywords' and commit the result."
-                 exit 1
-              }
-
-         # Informational only: how far upstream has moved beyond our pin. Adopting it is a
-         # deliberate decision made on a branch, so continue-on-error keeps this from
-         # failing the job - but it still exits 1 on a change, so the step itself shows
-         # the warning-triangle icon in the run instead of a plain green check. Skipped
-         # for tags: a release build stays fast and quiet.
-         - name: Check hugoDocs master for new keywords
-           if: github.ref_type != 'tag'
-           continue-on-error: true
-           run: |
-              $diff = ./build/keywords-check.ps1 -Ref master -NoSummary -Verbose
               if ($diff.Changed) {
                  Write-Host "::warning title=hugoDocs 'master' has keyword changes::keyword changes detected: $($diff.AddedCount) new and $($diff.RemovedCount) deleted - see the step log for details"
               }
@@ -209,6 +193,13 @@ jobs:
            if: inputs.build-release-artifacts
            run: |
               hugo --source ${{ env.HUGEN_DISCOURSE }} --destination ${{ env.RELEASE_DIR}}/discourse
+
+         # carried into the release artifact so the release job can diff it against the
+         # previous release's own attached copy, without rebuilding or reading git history
+         - name: Copy pinned keyword extraction into release artifact
+           if: inputs.build-release-artifacts
+           run: |
+              Copy-Item (Join-Path ${{ env.WORK_DIR }} "hugodocs/pinned.json") (Join-Path ${{ env.RELEASE_DIR }} "keywords.json")
 
          - name: Upload build artifact
            if: inputs.build-release-artifacts

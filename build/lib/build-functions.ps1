@@ -211,19 +211,19 @@ cssOptions.forEach(css => {
    }
 }
 
-# Re-scrape at the pinned version and compare against hugen/_hugodocs. A difference means
-# the pin was bumped without refreshing -- reported, never fatal. -UpdateKeywords is the
-# only thing that writes the committed file. Returns the keywords-check.ps1 report so the
-# caller can reprint it at the end of the build.
-function ExtractKeywordsFromDocs {
+# Builds hugen/hugodocs (it mounts hugoDocs both pinned and at 'master' in one config) and
+# reports how far 'master' has moved beyond the pin -- reported, never fatal.
+# -UpdateKeywords adopts 'master' as the new pin (see keywords-check.ps1). Returns the
+# keywords-check.ps1 report so the caller can reprint it at the end of the build.
+function ExtractKeywords {
    [CmdLetBinding()]
    param()
-   $SnapshotDir = Test-Folder -Create $HugenDir "_hugodocs"
+   $TargetDir = Join-Path $WorkDir "hugodocs"
    $HugoDocsDir = Test-Folder -Create $HugenDir "hugodocs"
-   $Step = "Extract hugoDocs functions (pinned version)"
+   $Step = "Extract hugoDocs keywords (pinned + master)"
    $result = $null
    try {
-      if ($Skip -contains 'ExtractKeywordsFromDocs') {
+      if ($Skip -contains 'ExtractKeywords') {
          Write-Verbose "SKIP: $Step"
       } else {
          Write-Verbose "CALL: $Step"
@@ -232,35 +232,11 @@ function ExtractKeywordsFromDocs {
          exec hugo mod tidy
       }
       # the grammar build reads this, so it has to exist even when the step is skipped
-      [void](Test-File $SnapshotDir "functions.json")
+      [void](Test-File $TargetDir "pinned.json")
       return $result
    } catch {
       Write-Error "FAIL: $Step" -ErrorAction Continue
       throw "$_"
-   } finally {
-      Set-Location $startCWD
-   }
-}
-
-# Reports how far $KeywordsLatestRef has moved beyond our pin. With -UpdateKeywords, adopts
-# it: pins hugo.toml to the resolved version and refreshes the snapshot (see
-# keywords-check.ps1). Never fails a build - network/upstream errors are caught and
-# downgraded to a warning. Returns the report so the caller can reprint it at the end.
-function ExtractKeywordsLatest {
-   [CmdLetBinding()]
-   param()
-   $Step = "Extract hugoDocs keywords ($KeywordsLatestRef)"
-   try {
-      if ($Skip -contains 'ExtractKeywordsLatest') {
-         Write-Verbose "SKIP: $Step"
-         return
-      }
-      Write-Verbose "CALL: $Step"
-      $result = & (Join-Path $ScriptsDir "keywords-check.ps1") -Ref $KeywordsLatestRef -Update:$UpdateKeywords -Notice
-      return $result
-   } catch {
-      # upstream lookup is informational - a network or upstream failure must not break a build
-      Write-Warning "SKIPPED: $Step - $_"
    } finally {
       Set-Location $startCWD
    }

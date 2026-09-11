@@ -8,8 +8,7 @@ param(
       'BuildHighlightJS',
       'CloneHighlightJS',
       'DeveloperBuild',
-      'ExtractKeywordsFromDocs',
-      'ExtractKeywordsLatest',
+      'ExtractKeywords',
       'GenerateHugoGrammars',
       'TestHighlightJS'
    )][string[]]$Skip,
@@ -26,15 +25,12 @@ param(
       'BuildHighlightJS',
       'CloneHighlightJS',
       'DeveloperBuild',
-      'ExtractKeywordsFromDocs',
-      'ExtractKeywordsLatest',
+      'ExtractKeywords',
       'GenerateHugoGrammars',
       'TestHighlightJS'
    )][string[]]$Steps,
-   # adopt the freshly extracted functions as the committed extraction in hugen/_hugodocs
+   # adopt 'master' as the new pin in hugen/hugodocs/hugo.toml
    [switch]$UpdateKeywords,
-   # branch or tag the ExtractKeywordsLatest step checks the pinned hugoDocs against
-   [string]$KeywordsLatestRef = 'master',
    # remove old doc build artifacts
    [switch]$Clean,
    # start the dev server
@@ -50,7 +46,7 @@ $ProgressPreference = 'SilentlyContinue'
 if ($PSBoundParameters.Keys -notcontains 'Steps') {
    $Steps = @(
       'CloneHighlightJS',
-      'ExtractKeywordsFromDocs',
+      'ExtractKeywords',
       'GenerateHugoGrammars',
       'TestHighlightJS',
       'BuildHighlightJS'
@@ -101,9 +97,6 @@ try {
       }
    }
 
-   if ($UpdateKeywords) {
-      $Steps = @('ExtractKeywordsLatest') + $Steps
-   }
    try {
       $hvmStatus = $ENV:HVM_SHOW_STATUS; $ENV:HVM_SHOW_STATUS = $false
       & $ScriptsDir/versions-set-wanted.ps1 -VersionConfigFile $ProjectRoot\.versions.json
@@ -120,18 +113,22 @@ try {
       foreach ($step in $Steps) {
          Write-Verbose "> Executing: [ $step ]"
          $stepResult = & $step
-         if ($step -in @('ExtractKeywordsFromDocs', 'ExtractKeywordsLatest') -and $stepResult) {
+         if ($step -eq 'ExtractKeywords' -and $stepResult) {
             $KeywordsReports += $stepResult
          }
       }
       # only resurface reports with an actual change - "no changes" was already said
       # once and isn't worth repeating - so it doesn't get lost among the
       # highlight.js/hugo build output that follows
-      foreach ($report in $KeywordsReports) {
-         if ($report.Changed) {
+
+      $changedKeywords = $KeywordsReports | Where-Object { $_.Changed }
+      if ($changedKeywords.Count) {
+         foreach ($report in $changedKeywords) {
             Write-Host ""
             Write-Host $report.Text
          }
+         Write-Warning ("hugoDocs 'master' differs from the pin in hugen/hugodocs/hugo.toml.`n" +
+            "To adopt it: ./build.ps1 -Steps ExtractKeywords -UpdateKeywords")
       }
    } catch {
       Write-Error "$_`nBuild failed!" -ErrorAction Continue

@@ -16,10 +16,11 @@
    HasBaseline and Text (the rendered Markdown, also written to -OutFile when given).
 
 .EXAMPLE
-   .\build\keywords-diff.ps1 -OldDir hugen\_hugodocs -NewDir work\hugodocs\extract
+   .\build\keywords-diff.ps1 -OldDir work\hugodocs -FileName pinned.json -NewDir work\hugodocs `
+      -NewFileName latest.json
 
 .EXAMPLE
-   .\build\keywords-diff.ps1 -OldDir work\prev-keywords -NewDir hugen\_hugodocs `
+   .\build\keywords-diff.ps1 -OldDir work\prev-keywords -NewDir release -FileName keywords.json `
       -Format Markdown -OutFile keywords-section.md
 #>
 [CmdLetBinding()]
@@ -39,14 +40,17 @@ param(
    [Parameter(Mandatory = $false)][string]$NoticeTitle = 'hugoDocs keyword changes',
    # cap the rows -- a GitHub release body is limited to 65k characters
    [Parameter(Mandatory = $false)][int]$MaxRows = 60,
-   [Parameter(Mandatory = $false)][string]$FileName = 'functions.json'
+   [Parameter(Mandatory = $false)][string]$FileName = 'functions.json',
+   # name of the file inside -NewDir, when it differs from -FileName (e.g. diffing
+   # pinned.json against latest.json living in the same directory)
+   [Parameter(Mandatory = $false)][string]$NewFileName = $FileName
 )
 
 $ErrorActionPreference = 'Stop'
 
 function Read-Functions {
-   param([string]$Dir)
-   $path = Join-Path $Dir $FileName
+   param([string]$Dir, [string]$Name)
+   $path = Join-Path $Dir $Name
    if (-not (Test-Path -PathType Leaf -Path $path)) {
       Write-Verbose "keywords-diff: no such file: $path"
       return $null
@@ -68,8 +72,8 @@ function Format-Alias {
 }
 
 # collect the differences
-$old = Read-Functions -Dir $OldDir
-$new = Read-Functions -Dir $NewDir
+$old = Read-Functions -Dir $OldDir -Name $FileName
+$new = Read-Functions -Dir $NewDir -Name $NewFileName
 $hasBaseline = $null -ne $old
 if (-not $new) { $new = @{} }
 
