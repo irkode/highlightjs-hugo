@@ -74,4 +74,4 @@ disablePathToLower = true
       target = "data/hugodocs/functions.json"
 
    [module.hugoVersion]
-      min = '0.165.0'
+      min = '0.166.0'
