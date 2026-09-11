@@ -31,7 +31,7 @@ uglyUrls = 'true'
       ignoreConfig  = true
       ignoreImports = true
       path          = 'github.com/gohugoio/hugoDocs'
-      version       = 'v0.165.1-0.20260905093127-237e4cdf7fe5'
+      version       = 'v0.165.1-0.20260910185609-f8356a77a416'
       [[module.imports.mounts]]
          source = "content/en/functions"
          target = "content/pinned"
