@@ -41,4 +41,4 @@ uglyUrls = 'true'
          target = "layouts/functions/_shortcodes"
 
    [module.hugoVersion]
-      min = '0.166.0'
+      min = '0.167.0'
