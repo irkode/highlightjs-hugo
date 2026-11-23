@@ -31,7 +31,7 @@ uglyUrls = 'true'
       ignoreConfig  = true
       ignoreImports = true
       path          = 'github.com/gohugoio/hugoDocs'
-      version       = 'v0.165.1-0.20261014044312-00a0baa605c2'
+      version       = 'v0.165.1-0.20261123192239-de77070e2a97'
       [[module.imports.mounts]]
          source = "content/en/functions"
          target = "content/pinned"
@@ -41,4 +41,4 @@ uglyUrls = 'true'
          target = "layouts/functions/_shortcodes"
 
    [module.hugoVersion]
-      min = '0.168.0'
+      min = '0.170.1'
